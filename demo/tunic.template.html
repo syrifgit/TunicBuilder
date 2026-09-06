@@ -157,10 +157,12 @@ select:focus-visible,button:focus-visible,.chk:focus-within{outline:2px solid va
 }
 .viewport.dragging{cursor:grabbing}
 .viewport svg{display:block; margin:0 auto}
-/* the print pages exist only on paper; the screen keeps the single unified view */
-.pageonly{display:none}
-body.paper #draw{display:none}
-body.paper .pageonly{display:block}
+/* The print pages exist only on paper; the screen keeps the single unified view.
+   These need to out-specify `.viewport svg` above (0,1,1), so they are written as
+   `.viewport svg.pageonly` rather than a bare class. */
+.viewport svg.pageonly{display:none}
+body.paper .viewport svg#draw{display:none}
+body.paper .viewport svg.pageonly{display:block}
 body.paper .viewport{
   aspect-ratio:auto; display:block; padding:0; gap:0;
 }

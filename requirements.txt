@@ -1,3 +1,5 @@
+# Reading the poster PDF
 pymupdf>=1.24
+
+# Segmenting, trimming and packing badge artwork
 Pillow>=10.0
-openpyxl>=3.1

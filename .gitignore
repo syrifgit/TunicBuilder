@@ -9,7 +9,13 @@ private/
 ACRCCP750DA003.pdf
 *.pdf
 rcac_badges.zip
-art/
+# Generated packs. Note `art/*` not `art/` - git cannot re-include anything
+# under an excluded DIRECTORY, so the directory itself must stay visible.
+art/*
+!art/Shoulder Title Kit/
+# The kit's script is hand-written source and is tracked. Its PNGs are traced
+# from the issued Crown copyright plate, so they stay out like the rest of the art.
+art/Shoulder Title Kit/*.png
 
 # ---- generated: rebuild with build_all.py ----
 # These carry the inlined artwork, so they are both large and Crown copyright.

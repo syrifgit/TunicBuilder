@@ -279,13 +279,19 @@ body.paper .viewport svg{
   }
   @page{ size:letter landscape; margin:12mm }
   html,body{ background:#fff !important }
-  .rail, .zoombar, .masthead .stamp, footer.foot .noprint{ display:none !important }
+  /* no title page: the renders start on page 1 */
+  .rail, .zoombar, .masthead, .legend, footer.foot, .noprint{ display:none !important }
   .shell{ display:block }
   .stage{ padding:0; gap:12px }
   .sheetwrap{ border:none; box-shadow:none }
   .viewport{ overflow:visible !important; max-height:none !important; padding:0 }
   #draw{ display:none !important }
-  .pageonly{ display:block !important; width:100% !important; height:auto !important }
+  /* Constrain by HEIGHT so a drawing cannot run past the fold. Fitting by width let
+     the 1.29:1 sleeve page reach 19.8 cm on a 19.19 cm page and split in two. */
+  .pageonly{
+    display:block !important; height:18.4cm !important; width:auto !important;
+    max-width:100% !important; margin:0 auto;
+  }
   /* a page each for the sleeves and the front, then the guide */
   #drawSleeves{ break-after:page; page-break-after:always }
   .sheetwrap{ break-after:page; page-break-after:always }
@@ -438,7 +444,7 @@ body.paper .viewport svg{
       </div>
     </section>
 
-    <section class="panel">
+    <section class="panel noprint">
       <header>
         <h2>Artwork coverage</h2>
         <span class="note">What the poster gives us, and what it doesn&rsquo;t. Separate from the placement rules.</span>
@@ -1406,14 +1412,14 @@ function drawSleeve(g, items, side, cx, ybase, out){
   }
 }
 
-function drawPocket(g, items, side, cx, ptopY, out){
+function drawPocket(g, items, side, cx, ptopY, out, topCm){
   const mirror = side === "right" ? 1 : -1;      // inboard-positive -> image x
   const IX = xcm => cx + mirror * xcm * SC;
   const flapH = state.front.flapH;
   const halfP = POCKET_W/2*SC;
   const gx = cx + out*(halfP + 14);
   const lx = gx + out*30;
-  const topCm = 13;
+  topCm = topCm || 13;
 
   g.appendChild(el("rect",{x:cx-halfP, y:ptopY, width:POCKET_W*SC, height:POCKET_H*SC,
     rx:3, fill:"var(--cloth)", stroke:"var(--cloth-edge)", "stroke-width":1.5}));
@@ -1549,9 +1555,14 @@ function paintSleeves(svg, L, R){
 /* Pockets only, at a much larger cm scale. Text does not scale with SC, so the
    pockets grow against the labels rather than the whole thing shrinking. */
 function paintPockets(svg, fr){
+  // Reserve only the headroom the layout actually uses. The tallest case is ribbons,
+  // nametag and expedition insignia stacked, which reaches about 7.8 cm - so a flat
+  // 13 cm threw away a third of the page.
+  const highest = [...fr.R, ...fr.L].reduce((m, i) => Math.max(m, i.y + i.h), 0);
+  const topCm = Math.max(4, Math.ceil(highest) + 1);
   SC = 19;
   svg.textContent = "";
-  const topCm = 13, tall = topCm + POCKET_H;
+  const tall = topCm + POCKET_H;
   const col = GUT_OUT + POCKET_W*SC + GUT_IN;
   const W = PAD_L + col*2 + COLGAP + PAD_R;
   const Hh = PAD_T + tall*SC + PAD_B;
@@ -1563,8 +1574,8 @@ function paintPockets(svg, fr){
   const midX = (rpX + lpX)/2;
   g.appendChild(el("line",{x1:midX, y1:PAD_T, x2:midX, y2:ptopY + POCKET_H*SC + 8,
     stroke:"var(--rule)", "stroke-width":1, "stroke-dasharray":"2 5"}));
-  drawPocket(g, fr.R, "right", rpX, ptopY, -1);
-  drawPocket(g, fr.L, "left",  lpX, ptopY, +1);
+  drawPocket(g, fr.R, "right", rpX, ptopY, -1, topCm);
+  drawPocket(g, fr.L, "left",  lpX, ptopY, +1, topCm);
   for (const [cx,t1,t2] of [[rpX,"THEIR RIGHT BREAST","outboard ←  |  → inboard"],
                             [lpX,"THEIR LEFT BREAST","inboard ←  |  → outboard"]]){
     g.appendChild(txt(cx, ptopY + POCKET_H*SC + 30, t1, {"text-anchor":"middle",

@@ -9,8 +9,10 @@
  * page against a stub DOM, so a missing identifier or a null property surfaces
  * here instead of as a blank drawing in the browser.
  *
- * The stub is deliberately dumb: it does not verify anything about the output,
- * only that the code completes a full render without throwing.
+ * What it does NOT check: anything visual. There is no layout, no cascade and no
+ * specificity here, so a page that builds a perfect SVG and then hides it behind a
+ * losing CSS rule passes clean. That has happened. Any CSS change still needs a
+ * real browser - `chrome --headless=new --dump-dom` is enough to confirm the DOM.
  */
 const fs = require("fs");
 const vm = require("vm");

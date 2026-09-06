@@ -329,21 +329,20 @@ body.paper .viewport svg{
       <div class="eyebrow">Front &mdash; right breast <span class="slotid">front_right_*</span></div>
       <div class="field"><label for="fName">Nametag</label>
         <input type="text" id="fName" maxlength="16" placeholder="Surname" style="width:100%; padding:5px 8px; background:var(--paper); border:1px solid var(--rule); border-radius:3px"></div>
-      <div class="field"><label for="fRibbons">Ribbons</label><select id="fRibbons"></select></div>
+      <div class="field"><label for="fOrder">Order</label><select id="fOrder"></select></div>
+      <div class="field"><label for="fRibbons" id="fRibbonsLbl">Ribbons</label><select id="fRibbons"></select></div>
       <div class="field"><label for="fDofe">DofE pin</label><select id="fDofe"></select></div>
       <div class="field"><label for="fExped">Expedition</label><select id="fExped"></select></div>
       <p style="margin:0; font-size:11px; color:var(--ink-3); line-height:1.35">Worn above the nametag on this side, not with the pocket pins.</p>
       <div class="toggles" style="margin-top:2px">
-        <label class="toggle"><input type="checkbox" id="fMedals"> Wear medals instead of ribbons</label>
         <label class="toggle"><input type="checkbox" id="fAnniv"> Anniversary pin</label>
-        <label class="toggle"><input type="checkbox" id="fCadetCom"> Commander&rsquo;s Cadet Commendation</label>
-        <label class="toggle"><input type="checkbox" id="fNavy"> Navy League Commendation</label>
       </div>
+      <div class="eyebrow" style="margin-top:4px">Commendations <span class="slotid">right_commendation_stack</span></div>
+      <div class="toggles" id="commendPick"></div>
     </div>
 
     <div class="group">
       <div class="eyebrow">Front &mdash; left breast <span class="slotid">front_left_*</span></div>
-      <div class="field"><label for="fNatCom">Commend.</label><select id="fNatCom"></select></div>
       <div class="eyebrow" style="margin-top:2px">Pocket pins <span class="slotid" id="pinCount"></span></div>
       <div id="pinPick" style="display:flex; flex-direction:column; gap:6px"></div>
       <p style="margin:0; font-size:11px; color:var(--ink-3); line-height:1.35">One per stream, highest held. Three may be worn in total.</p>
@@ -639,8 +638,8 @@ const state = {
   rcacD:6.35,                              // MEASURED: 2.5 in. Rules pack v0.2-draft.
   sleeveLen:57.0,                          // size 6436, the only one measured
   front:{
-    ribbons:3, medals:false, nametag:"Beal", anniversary:false,
-    cadetCommend:false, navyLeague:false, dofe:"none", nationalCommend:"none",
+    order:"C2", ribbons:3, nametag:"Beal", anniversary:false,
+    commend:{cds:false, command:false, cadet:true, navy:false}, dofe:"none",
     parachutist:false, commemorative:false, poppy:false, expedition:"regional",
     pins:{bisley:"none", mkComp:"comp_mk_prov", biComp:"none"},
     flapH:4.0                              // UNMEASURED placeholder
@@ -934,8 +933,6 @@ const EXPEDITION = {
 };
 // Unmeasured placeholders. Everything using one is flagged by the validator.
 const FLAP_H_DEFAULT = 4.0;
-const COMMEND_W = 5.0, COMMEND_H = 1.3;
-const DOFE_D = 2.2;
 const PARA_W = 9.0, PARA_H = 3.87;           // poster aspect 2.328 at a guessed width
 const ANNIV_D = 2.0;
 // Medals hang from the same line as the ribbon bar: the suspension top sits one
@@ -946,6 +943,30 @@ const ANNIV_D = 2.0;
 const MEDAL_W = 3.5, MEDAL_BAR_H = RIBBON_H, MEDAL_LEN = 10.0;
 
 const DOFE = {none:"None", bronze:"Bronze", silver:"Silver", gold:"Gold"};
+
+// Order of dress gates the whole right breast: medals with C1, undress ribbons with
+// C2 / C3 / C3B. Never both, and none of it is worn on outerwear.
+const ORDERS = {
+  C1:  {label:"C1 — Ceremonial", medals:true},
+  C2:  {label:"C2 — Service dress", medals:false},
+  C3:  {label:"C3 — Routine", medals:false},
+  C3B: {label:"C3B — Routine, shirt", medals:false}
+};
+
+// Commendation and award pins: ONE stack on the right pocket, 0.5 cm apart, in this
+// order of precedence. Sizes are from Annex D. Only the DofE pin is undimensioned.
+const COMMEND = [
+  {key:"cds",     label:"Chief of the Defence Staff Commendation",
+   desc:"gold plated satin bar, three maple leaves",   w:2.0, h:0.50},
+  {key:"command", label:"Command Commendation",
+   desc:"silver plated satin bar, three maple leaves", w:2.0, h:0.50,
+   note:"Follows CAF Dress Instructions A-DH-265-000/AG-001, not Chapter 5."},
+  {key:"cadet",   label:"Cadet Commendation",
+   desc:"silver plated bar, single maple leaf",        w:2.0, h:0.50},
+  {key:"navy",    label:"Navy League Award of Commendation",
+   desc:"silver plated bar, single anchor",            w:2.0, h:0.75}
+];
+const DOFE_W = 2.0, DOFE_H = 1.6;   // oval; Annex D gives no dimensions
 
 // Left-pocket pinned insignia. Every stream is Highest Only / Max Worn 1 in QualMap,
 // so each is a single choice. `w`/`h` default to the 1 in square; anything measured
@@ -972,8 +993,7 @@ const PIN_STREAMS = [
 ];
 const PIN_OPT = {};
 for (const st of PIN_STREAMS) for (const o of st.opts) if (o.v !== "none") PIN_OPT[o.v] = {...o, stream: st};
-const NATCOM = {none:"None", cds:"Chief of the Defence Staff Commendation",
-                command:"Command Commendation (VCDS / RCN / CA / RCAF)"};
+
 
 /* Rows of ribbons. Max three per row, no interval anywhere. Rows fill from the
    bottom and a partial row sits on TOP, centred on the row below. Precedence 1 is
@@ -1004,10 +1024,12 @@ function resolveFront(){
 
   // where a pin sits on a pocket: centred between the flap's lower edge and the
   // pocket's lower seam, so the whole stack is centred on that midpoint
-  const pinBand = { top: -flapH, bottom: -POCKET_H };
-  const pinMid  = (pinBand.top + pinBand.bottom) / 2;
-  function pinStack(arr, side, pins){
+  // The stack is centred in a band. Normally that band runs from the flap's lower
+  // edge to the pocket's lower seam; when medals are worn it runs from the BOTTOM OF
+  // THE MEDALS to the lower seam instead, which is what keeps the two off each other.
+  function pinStack(arr, side, pins, bandTop){
     if (!pins.length) return;
+    const pinMid = (bandTop + -POCKET_H) / 2;
     const totalH = pins.reduce((a,p)=>a+p.h,0) + (pins.length-1)*0.5;
     let y = pinMid + totalH/2;
     pins.forEach((pn,i) => {
@@ -1023,30 +1045,44 @@ function resolveFront(){
     });
   }
 
-  /* ---------------- RIGHT breast ---------------- */
+  /* ---------------- RIGHT breast ----------------
+     Everything Chapter 5 covers is worn here. Chapter 3's participation and
+     commemorative pins are the left pocket, so the two chapters do not contend. */
+  const order = ORDERS[F.order] || ORDERS.C2;
   let suspendedTop = null;          // top edge of whatever hangs above the pocket
+  let medalBottom = null;           // set only when medals are worn
 
-  if (F.medals && F.ribbons > 0){
-    add("Medals and undress ribbons are alternatives — ribbons represent the medals when the medals themselves are not worn. Showing medals.",
-        "crit", "Chapter 5");
-  }
-
-  if (F.medals){
-    const n = Math.max(1, Math.min(F.ribbons || 1, 3));
-    put(R,{ face:"front", side:"right", slot:"front_right_medals",
-      label:`Medals × ${n}`, x:0, y: MEDAL_BAR_H - MEDAL_LEN,
-      w: n*MEDAL_W, h: MEDAL_LEN, art:null,
-      fdatum:"pocket_top", edge:"suspension",
-      cite:"Ch5 s7 court mountings — 10 cm suspender top to medal bottom edge" });
-    suspendedTop = MEDAL_BAR_H;      // same line as a ribbon bar
-    add(`Court mounted: ${MEDAL_LEN.toFixed(1)} cm from the top of the suspender to the bottom edge of the medal, so the medals finish ${(MEDAL_LEN - MEDAL_BAR_H).toFixed(1)} cm down a ${POCKET_H} cm pocket. The nametag sits where it would for ribbons.`,
-        "info", "Ch5 s7; CH5-A 5A-1");
-    add("Medal width and the mounting panel are not modelled. The panel's lower edge runs in line with the centre of the medals and its size follows the number worn.",
-        "warn", "Ch5 s7 court mountings");
+  if (order.medals){
+    const n = Math.max(1, F.ribbons || 1);
+    // one row if they fit; past about four they overlap, highest priority fully
+    // visible. The true limit is the wearer's arm seam and is not a policy number.
+    const overlap = n > 4;
+    const pitch = overlap ? (4*MEDAL_W - MEDAL_W) / (n - 1) : MEDAL_W;
+    const barW = MEDAL_W + pitch*(n - 1);
+    medalBottom = MEDAL_BAR_H - MEDAL_LEN;
+    for (let i = n - 1; i >= 0; i--){          // draw outboard first, #1 on top
+      put(R,{ face:"front", side:"right", slot:"right_medals",
+        label:`Medal ${i+1}`, seq:i+1,
+        x: barW/2 - MEDAL_W/2 - i*pitch,       // #1 inboard, toward the chest centre
+        y: medalBottom, w:MEDAL_W, h:MEDAL_LEN, art:null, medal:true,
+        fdatum:"pocket_top", edge:"suspension",
+        cite:"CH5-A 5A-1; CH5-S7 — 10 cm suspender top to medal bottom edge" });
+    }
+    suspendedTop = MEDAL_BAR_H;                // same line as a ribbon bar
+    add(`Court mounted: ${MEDAL_LEN.toFixed(1)} cm from the top of the suspender to the bottom edge of the medal, finishing ${(MEDAL_LEN - MEDAL_BAR_H).toFixed(1)} cm down a ${POCKET_H} cm pocket. The nametag sits where it would for ribbons.`,
+        "info", "CH5-S7; CH5-A 5A-1");
+    if (overlap)
+      add(`${n} medals will not fit in a row, so they overlap with the highest priority fully visible. The bar is ${barW.toFixed(1)} cm wide here, but the real limit is the wearer's arm seam — a physique measurement, not a policy number. Check it on the cadet.`,
+          "warn", "CH5-A — maximum mounting width is physique-dependent");
+    else if (barW > POCKET_W)
+      add(`The medal bar is ${barW.toFixed(1)} cm wide against a ${POCKET_W} cm pocket. Centred on the pocket it must not run past the jacket arm seam — check it on the cadet.`,
+          "warn", "CH5-A");
+    add("Medal precedence order is not in Chapter 5; it lives in CATO 13-16, which has not been sourced. The numbering here is your selection order, not authority.",
+        "crit", "CATO 13-16 not sourced");
   } else if (F.ribbons > 0){
     const rr = ribbonRows(F.ribbons);
     for (const c of rr.items){
-      put(R,{ face:"front", side:"right", slot:"front_right_ribbons",
+      put(R,{ face:"front", side:"right", slot:"right_ribbons",
         label:`Undress ribbon ${c.seq}`, seq:c.seq, x:c.x, y:c.y,
         w:RIBBON_W, h:RIBBON_H, art:null, ribbon:true,
         fdatum: c.row === 0 ? "pocket_top" : "row_below",
@@ -1056,8 +1092,10 @@ function resolveFront(){
     }
     suspendedTop = rr.rows * RIBBON_H;
     if (rr.rows > 1)
-      add(`${F.ribbons} ribbons make ${rr.rows} rows. No interval between ribbons or rows; a partial row sits on top, centred. Precedence 1 is top row, innermost.`,
+      add(`${F.ribbons} ribbons make ${rr.rows} rows. No gaps between ribbons or between rows; a partial row sits on top, centred on the row below. Precedence 1 is top row, innermost.`,
           "info", "CH5-C 5C-1.2");
+    add("Ribbon precedence order is not in Chapter 5; it lives in CATO 13-16, which has not been sourced. The numbering here is your selection order, not authority.",
+        "crit", "CATO 13-16 not sourced");
   }
 
   // anniversary pin, 3 cm above the pocket top
@@ -1070,18 +1108,18 @@ function resolveFront(){
       cite:"CH5-A 5A-1 — 3 cm above and centred on the top of the pocket" });
   }
 
-  // nametag: 0.5 above whatever is suspended, else midway between pin and pocket top
+  // nametag: 0.5 above whatever is suspended, else midway to the pin, else flush
   let tagY, tagRel = null, tagCite;
   if (suspendedTop != null){
     tagY = suspendedTop + 0.5;
-    tagRel = {of: F.medals ? "the top of the medals" : "the top of the ribbons",
-              ofShort: F.medals ? "Medals" : "Ribbons", gap:0.5, dir:"above"};
+    tagRel = {of: order.medals ? "the top of the medals" : "the top of the ribbons",
+              ofShort: order.medals ? "Medals" : "Ribbons", gap:0.5, dir:"above"};
     tagCite = "CH5-A 5A-1; CH5-B 5B-1.1 — 0.5 cm above and centred";
   } else if (annivBottom != null){
-    tagY = (annivBottom - NAMETAG_H)/2;         // equidistant: pocket top to pin bottom
+    tagY = (annivBottom - NAMETAG_H)/2;
     tagCite = "CH5-A 5A-1 — equidistant between the anniversary pin and the top of the pocket";
   } else {
-    tagY = 0;                       // flush: bottom edge on the pocket top seam
+    tagY = 0;
     tagCite = "CH5-A 5A-1 — nothing suspended, so the tag sits flush on the pocket top";
     add("Nothing is worn above the pocket, so the nametag's bottom edge sits flush on the top of the pocket.",
         "info", "confirmed by Lt Beal");
@@ -1100,23 +1138,34 @@ function resolveFront(){
       fdatum:"above_nametag", edge:"bottom",
       rel:{of:"the nametag", ofShort:"Nametag", gap:0.5, dir:"above"},
       cite:"CH5-B expedition figure — over the RIGHT pocket, centred 0.5 cm over the nametag" });
-    add("Expedition insignia sits over the RIGHT pocket, 0.5 cm above the nametag — not with the left-pocket competition pins. The workbook slots it out_of_scope_left_pocket, which the Chapter 5 figure supersedes.",
-        "info", "CH5-B expedition figure vs D - Qual Info");
   } else if (ex.worn === false){
     add(`Expedition ${ex.label.split(" (")[0]} is recorded but nothing is worn for it. Only Regional and National carry a pin.`,
         "info", "D - Qual Info");
   }
 
-  // right pocket pins, in precedence order
+  // commendation and award pins: one stack on this pocket, in precedence order
   const rp = [];
-  if (F.cadetCommend) rp.push({slot:"front_right_pocket_pins", label:"Commander's Cadet Commendation",
-    w:COMMEND_W, h:COMMEND_H, art:null, cite:"CH5-D 5D-2"});
-  if (F.navyLeague) rp.push({slot:"front_right_pocket_pins", label:"Navy League Award of Commendation",
-    w:COMMEND_W, h:COMMEND_H, art:null, cite:"CH5-D 5D-2"});
-  if (F.dofe !== "none") rp.push({slot:"front_right_pocket_pins",
-    label:`Duke of Edinburgh's Award — ${DOFE[F.dofe]}`,
-    w:DOFE_D, h:DOFE_D, art:"dofe_"+F.dofe, cite:"CH5-D 5D-3, 5D-4 — jacket only"});
-  pinStack(R, "right", rp);
+  for (const c of COMMEND){
+    if (!F.commend[c.key]) continue;
+    rp.push({slot:"right_commendation_stack", label:c.label, w:c.w, h:c.h, art:null,
+             cite:"CH5-D 5D-1, 5D-2 — " + c.desc});
+    if (c.note) add(`${c.label}: ${c.note}`, "info", "CH5-D");
+  }
+  if (F.dofe !== "none")
+    rp.push({slot:"right_commendation_stack",
+      label:`Duke of Edinburgh's Award — ${DOFE[F.dofe]}`,
+      w:DOFE_W, h:DOFE_H, art:"dofe_"+F.dofe, conf:"placeholder",
+      cite:"CH5-D 5D-3, 5D-4 — oval, jacket only"});
+  // band top: the medals when worn, otherwise the flap's lower edge
+  pinStack(R, "right", rp, medalBottom != null ? medalBottom : -flapH);
+  if (rp.length){
+    if (medalBottom != null)
+      add(`Medals are worn, so the pin stack sits between the bottom of the medals (${medalBottom.toFixed(1)} cm) and the pocket's lower seam, not between the flap and the seam.`,
+          "info", "CH5-D — conditional placement");
+    if (F.dofe !== "none")
+      add("The Duke of Edinburgh pin is an oval and Annex D gives no dimensions for it. Drawn at a placeholder size; the other four pins are dimensioned.",
+          "warn", "CH5-D 5D-3");
+  }
 
   /* ---------------- LEFT breast ---------------- */
   if (F.parachutist){
@@ -1124,11 +1173,6 @@ function resolveFront(){
       label:"Parachutist", x:0, y:0.5, w:PARA_W, h:PARA_H, art:"parachutist",
       conf:"placeholder", fdatum:"pocket_top", edge:"bottom",
       cite:"CH3S1 3.b.(1) — 0.5 cm above the left breast pocket" });
-  }
-  if (F.nationalCommend !== "none"){
-    pinStack(L, "left", [{slot:"front_left_national_commendation",
-      label:NATCOM[F.nationalCommend], w:COMMEND_W, h:COMMEND_H, art:null,
-      cite:"CH5-D 5D-1 — centred on the LEFT breast pocket"}]);
   }
   // one pick per stream; the three-pin cap then applies across all four
   const held = PIN_STREAMS.map(st => F.pins[st.key])
@@ -1746,18 +1790,16 @@ for (const [id,key] of [["rcacD","rcacD"],["sleeveLen","sleeveLen"]]){
   });
 }
 const FRONT_BIND = {
-  fName:"nametag", fRibbons:"ribbons", fDofe:"dofe", fNatCom:"nationalCommend",
-  fMedals:"medals", fAnniv:"anniversary",
-  fCadetCom:"cadetCommend", fNavy:"navyLeague", fPara:"parachutist",
-  fExped:"expedition",
+  fName:"nametag", fRibbons:"ribbons", fDofe:"dofe", fOrder:"order",
+  fAnniv:"anniversary", fPara:"parachutist", fExped:"expedition",
   fCommem:"commemorative", fPoppy:"poppy", fFlap:"flapH"
 };
 (function wireFront(){
   const num = v => { const n = parseFloat(v); return isNaN(n) ? 0 : n; };
-  fillNum("fRibbons", 0, 9, n => n === 0 ? "None" : `${n} ribbon${n>1?"s":""}`);
+  fillNum("fRibbons", 0, 9, n => n === 0 ? "None" : `${n}`);
 
   fill("fDofe", DOFE, k => DOFE[k]);
-  fill("fNatCom", NATCOM, k => NATCOM[k]);
+  fill("fOrder", ORDERS, k => ORDERS[k].label);
   fill("fExped", EXPEDITION, k => EXPEDITION[k].label);
   for (const id in FRONT_BIND){
     const el2 = document.getElementById(id), key = FRONT_BIND[id];
@@ -1770,6 +1812,21 @@ const FRONT_BIND = {
     });
   }
 })();
+// commendation checkboxes, built from COMMEND so order and sizes stay in one place
+(function wireCommend(){
+  const box = document.getElementById("commendPick");
+  for (const c of COMMEND){
+    const lab = document.createElement("label");
+    lab.className = "toggle";
+    lab.innerHTML = `<input type="checkbox" id="cm_${c.key}">` +
+      `<span>${c.label} <span style="color:var(--ink-3)">${c.w} × ${c.h} cm</span></span>`;
+    box.appendChild(lab);
+    lab.querySelector("input").addEventListener("change", e => {
+      state.front.commend[c.key] = e.target.checked; render();
+    });
+  }
+})();
+
 function fillNum(id, lo, hi, label){
   const sel = document.getElementById(id);
   sel.textContent = "";
@@ -1780,6 +1837,11 @@ function fillNum(id, lo, hi, label){
 }
 
 function syncAll(){
+  for (const c of COMMEND)
+    document.getElementById("cm_" + c.key).checked = !!state.front.commend[c.key];
+  // the count above the pocket is medals under C1, ribbons otherwise
+  document.getElementById("fRibbonsLbl").textContent =
+    (ORDERS[state.front.order] || {}).medals ? "Medals" : "Ribbons";
   for (const id in FRONT_BIND){
     const el2 = document.getElementById(id), v = state.front[FRONT_BIND[id]];
     if (el2.type === "checkbox") el2.checked = !!v; else el2.value = v;

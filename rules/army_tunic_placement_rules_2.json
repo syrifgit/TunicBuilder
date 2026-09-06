@@ -1,6 +1,6 @@
 {
   "$comment": "Placement rules for Royal Canadian Army Cadet tunic (jacket) insignia. Sleeves only. Front of tunic not yet in scope.",
-  "version": "0.10-draft",
+  "version": "0.11-draft",
   "scope": "army_cadet_sleeves_and_front",
   "sources": [
     {
@@ -62,6 +62,11 @@
     {
       "id": "CH5-S7",
       "title": "CJCR Dress Instructions, Chapter 5 s7 - Court Mountings"
+    },
+    {
+      "id": "CATO-13-16",
+      "title": "CATO 13-16 - order of precedence for cadet honours and awards",
+      "status": "NOT SOURCED - blocks correct ordering"
     }
   ],
   "datums": {
@@ -230,15 +235,47 @@
       "note": "Worn in rows of at most three with NO interval between ribbons or between rows, so a full row is exactly 10.5 cm wide and each row adds exactly 1.0 cm of height."
     },
     "commendation_pin": {
-      "w": null,
-      "h": null,
-      "confidence": "unknown",
-      "note": "CDS, Command, Commander's Cadet and Navy League pins are all drawn as the same landscape bar. Not measured."
+      "confidence": "regulation",
+      "source": "CH5-D Annex D",
+      "pins": [
+        {
+          "n": 1,
+          "name": "Chief of the Defence Staff Commendation",
+          "w": 2.0,
+          "h": 0.5,
+          "desc": "gold plated satin bar, three maple leaves"
+        },
+        {
+          "n": 2,
+          "name": "Command Commendation (VCDS / RCN / CA / RCAF)",
+          "w": 2.0,
+          "h": 0.5,
+          "desc": "silver plated satin bar, three maple leaves",
+          "note": "Follows CAF Dress Instructions A-DH-265-000/AG-001, not Chapter 5."
+        },
+        {
+          "n": 3,
+          "name": "Cadet Commendation",
+          "w": 2.0,
+          "h": 0.5,
+          "desc": "silver plated bar, single maple leaf"
+        },
+        {
+          "n": 4,
+          "name": "Navy League of Canada Award of Commendation",
+          "w": 2.0,
+          "h": 0.75,
+          "desc": "silver plated bar, single anchor"
+        }
+      ],
+      "note": "Was a 5.0 x 1.3 placeholder. Real dimensions now recorded."
     },
     "dofe_pin": {
-      "diameter": null,
+      "w": null,
+      "h": null,
+      "shape": "oval",
       "confidence": "unknown",
-      "note": "Bronze / Silver / Gold. Drawn as a circle. Not measured."
+      "note": "Duke of Edinburgh cypher, bronze / silver / gold by level. Annex D gives no dimensions and the oval shape means BOTH are needed. Jacket only."
     },
     "national_winner_award": {
       "w": null,
@@ -506,7 +543,7 @@
       ]
     },
     {
-      "id": "front_right_ribbons",
+      "id": "right_ribbons",
       "face": "front",
       "side": "right",
       "type": "row_stack",
@@ -519,27 +556,31 @@
       "column_gap_cm": 0,
       "fill": "rows fill from the bottom; a partial row goes on TOP, centred on the row below",
       "order": "precedence 1 is highest and sits on the TOP row, closest to the centre of the chest; numbering runs outward and downward from there",
-      "condition": "undress ribbons held",
+      "condition": "C2, C3 and C3B only",
       "citation": "CH5-B 5B-1.2; CH5-C 5C-1",
       "notes": [
         "No interval between ribbons within a row, and none between rows. A row of three is exactly 10.5 cm wide; each extra row adds exactly 1.0 cm.",
-        "On the RIGHT breast viewed from the front, the centre of the chest is image-right, so precedence 1 sits at the inboard end of the top row."
+        "On the RIGHT breast viewed from the front, the centre of the chest is image-right, so precedence 1 sits at the inboard end of the top row.",
+        "A full row of three is 10.5 cm at the locally measured 3.5 x 1.0 cm ribbon, against a 13 cm pocket - fits with 1.25 cm each side.",
+        "Precedence order is NOT in Chapter 5. It is in CATO 13-16, unsourced."
       ],
       "sleeve": null
     },
     {
-      "id": "front_right_medals",
+      "id": "right_medals",
       "face": "front",
       "side": "right",
       "anchor": "pocket_top",
       "offset_cm": 0,
       "anchor_edge": "suspension_bar_on_the_ribbon_line",
       "align": "centre",
-      "condition": "medals worn (full dress); mutually exclusive with undress ribbons",
+      "condition": "C1 only",
       "citation": "CH5-A 5A-1; CH5-S7",
       "notes": [
-        "Medals hang from the SAME line as the ribbon bar and spill downward OVER the pocket. The nametag therefore sits in the same place whether medals or ribbons are worn - it is not pushed up by the medals. Confirmed by Lt Beal.",
-        "Length is 10 cm from the top of the suspender to the bottom edge of the medal (Ch5 s7). The suspender top sits one ribbon height above the pocket top, so the medal finishes 9 cm down a 15 cm pocket."
+        "One row if they fit. Past about five they overlap horizontally with the highest priority fully visible.",
+        "Maximum mounting width is set by the wearer's physique, not a number: centred on the pocket, the bar must not run past the jacket arm seam. The renderer flags this rather than computing it.",
+        "Length is 10 cm, suspender top to medal bottom edge (CH5-S7), so the medal finishes 9 cm down a 15 cm pocket.",
+        "Precedence order is NOT in Chapter 5. It is in CATO 13-16, unsourced."
       ],
       "sleeve": null,
       "length_cm": 10.0
@@ -597,7 +638,7 @@
       ]
     },
     {
-      "id": "front_right_pocket_pins",
+      "id": "right_commendation_stack",
       "face": "front",
       "side": "right",
       "type": "stack",
@@ -607,6 +648,8 @@
       "gap_cm": 0.5,
       "direction": "downward",
       "order_top_to_bottom": [
+        "Chief of the Defence Staff Commendation",
+        "Command Commendation",
         "Cadet Commendation",
         "Navy League of Canada Award of Commendation",
         "Duke of Edinburgh's International Award"
@@ -621,11 +664,12 @@
       "conflicts": [
         {
           "field": "which_pocket",
-          "alternate_value": "all commendation pins stacked together on one pocket",
-          "source": "CH5-B 5B-1.3, whose precedence list runs CDS > Command > Cadet > Navy League > DofE and says they are worn one above the other 0.5 cm apart",
-          "resolution": "Annex D is more specific and governs: National Commendations (CDS, Command) go on the LEFT pocket per 5D-1, while Cadet Commendations and the DofE pin go on the RIGHT per 5D-2 and 5D-3. Annex B's single list therefore describes precedence, not co-location - the 0.5 cm stacking rule applies WITHIN a pocket. A cadet holding both a national and a cadet commendation wears one on each side. LOCAL READING; worth confirming with RCSU before a printed guide relies on it."
+          "alternate_value": "National Commendations on the LEFT breast pocket",
+          "source": "Figure 5D-1 text as supplied: 'A National Commendation Pin shall be worn centered on the left breast pocket, equidistant between the lower seam and the lower edge of the pocket flap.'",
+          "resolution": "ALL FIVE pins on the RIGHT pocket in one stack, per the Chapter 5 review: everything in the chapter is right breast, and 5B-1's single precedence list runs CDS > Command > Cadet > Navy League > DofE as one 0.5 cm stack. UNRESOLVED CONTRADICTION: the 5D-1 figure text says left. Two sources say one right-hand stack, one says national goes left. Confirm before printing a guide - getting it wrong puts a CDS Commendation on the wrong side."
         }
-      ]
+      ],
+      "conditional_placement": "Normally centred between the pocket's lower seam and the lower edge of the flap. WHEN MEDALS ARE WORN it sits between the BOTTOM OF THE MEDALS and the pocket's lower seam instead."
     },
     {
       "id": "front_left_parachutist",
@@ -640,22 +684,6 @@
       "notes": [
         "Sewn, not pinned. The only sewn item on the front."
       ],
-      "sleeve": null
-    },
-    {
-      "id": "front_left_national_commendation",
-      "face": "front",
-      "side": "left",
-      "anchor": "pocket_flap_bottom",
-      "anchor_edge": "centred_between_flap_bottom_and_pocket_lower_seam",
-      "align": "centre",
-      "max_worn": 1,
-      "order_of_precedence": [
-        "Chief of the Defence Staff Commendation",
-        "Command Commendation"
-      ],
-      "condition": "national commendation held",
-      "citation": "CH5-D 5D-1",
       "sleeve": null
     },
     {
@@ -730,7 +758,8 @@
       "Medal and suspender dimensions (Chapter 5 gives placement but no sizes).",
       "Anniversary pin dimensions.",
       "Breast pocket flap height, which every pocket-mounted pin depends on.",
-      "Shirt layouts. Only the jacket is modelled; the DofE pin is jacket-only and the poppy figure is drawn for the shirt."
+      "Shirt layouts. Only the jacket is modelled; the DofE pin is jacket-only and the poppy figure is drawn for the shirt.",
+      "Canadian Honours System medals (Queen's Jubilee and similar). A cadet may hold one, but the CO must seek wear instructions through the chain of command. Chapter 5 covers only National Cadet Honours and Awards."
     ]
   },
   "global_limits": [
@@ -798,8 +827,11 @@
     "MWO aspect still disagrees with the poster (1.26 drawn vs 1.50 from the recorded bounding box) and is unresolved. The Distinguished half of that question is CLOSED: remeasured at 6 x 8 cm, so the poster is the outlier, not the measurement.",
     "Breast pocket FLAP height is not measured and not in the instruction, but every pocket-mounted pin is centred between the flap's lower edge and the pocket's lower seam. Blocks exact pin placement.",
     "Annex B lists national and cadet commendations in one 0.5 cm stack while Annex D puts them on opposite pockets. Resolved in favour of Annex D as the more specific source - confirm with RCSU.",
-    "Medal, anniversary pin and commendation pin dimensions are all unmeasured, so the front render places them by rule but sizes them by placeholder.",
-    "National-winner award pins (Vamplew / Clement Tremblay, and Bedard / Keddie / Le Guellec) are confirmed non-standard in size and have never been measured. Drawn at 1 in."
+    "National-winner award pins (Vamplew / Clement Tremblay, and Bedard / Keddie / Le Guellec) are confirmed non-standard in size and have never been measured. Drawn at 1 in.",
+    "CATO 13-16 is not sourced. It holds the precedence order for every medal and ribbon, so nothing on the right breast can be correctly ORDERED yet - only correctly placed.",
+    "Figure 5D-1 says National Commendations go on the LEFT pocket while the rest of Chapter 5 puts everything on the right in one stack. Adopted right; needs confirming.",
+    "Medal bar maximum width is physique-dependent (must not pass the jacket arm seam). Needs a per-cadet measurement or it stays a flag.",
+    "Duke of Edinburgh pin is an oval with no dimensions given in Annex D."
   ],
   "changelog": [
     {
@@ -837,6 +869,30 @@
     {
       "version": "0.10-draft",
       "change": "Medal length fixed at 10 cm by the court mounting rule, replacing a guessed hang. Court mounting panel geometry recorded."
+    },
+    {
+      "version": "0.11-draft",
+      "change": "Aligned the front with the Chapter 5 review: order of dress gates medals (C1) against undress ribbons (C2/C3/C3B); all five commendation pins moved into one right-pocket stack with the real Annex D sizes; stack repositions under the medals when worn; medals overlap past four; slots renamed to right_medals / right_ribbons / right_commendation_stack. CATO 13-16 recorded as blocking."
     }
-  ]
+  ],
+  "orders_of_dress": {
+    "$comment": "Chapter 5 renders differently by order of dress. Nothing on the sleeves depends on this; the right breast does.",
+    "C1": {
+      "medals": true,
+      "ribbons": false
+    },
+    "C2": {
+      "medals": false,
+      "ribbons": true
+    },
+    "C3": {
+      "medals": false,
+      "ribbons": true
+    },
+    "C3B": {
+      "medals": false,
+      "ribbons": true
+    },
+    "outerwear": "None of Chapter 5 is worn on outerwear."
+  }
 }

@@ -289,7 +289,7 @@ body.paper .viewport svg{
   /* Constrain by HEIGHT so a drawing cannot run past the fold. Fitting by width let
      the 1.29:1 sleeve page reach 19.8 cm on a 19.19 cm page and split in two. */
   .pageonly{
-    display:block !important; height:18.4cm !important; width:auto !important;
+    display:block !important; height:19cm !important; width:auto !important;
     max-width:100% !important; margin:0 auto;
   }
   /* a page each for the sleeves and the front, then the guide */
@@ -1345,7 +1345,7 @@ function drawSleeve(g, items, side, cx, ybase, out){
     stroke:"var(--cloth-edge)", "stroke-width":1.5}));
 
   scaleBar(g, gx, ybase, topY, SLEEVE_LEN, -1, out);
-  g.appendChild(txt(gx, ybase + 15, "▲ cm from cuff",
+  g.appendChild(txt(gx, ybase + 15, "▲ cm up from the cuff (sleeve end)",
     {"text-anchor":"middle", class:"mono", "font-size":7.5, fill:"var(--ink-2)"}));
 
   for (const y of [0, SLEEVE_LEN]){
@@ -1393,8 +1393,9 @@ function drawSleeve(g, items, side, cx, ybase, out){
         const py = ybase - d.atY*SC;
         g.appendChild(el("line",{x1: out < 0 ? x : x + w, y1:py, x2:gx, y2:py,
           stroke:"var(--brass)", "stroke-width":.6, opacity:.45}));
+        // kept short: the long form overran its gutter and clipped
         dimLabel(g, lx, py, out, d.cm.toFixed(2),
-                 d.from === "shoulder" ? "from shoulder seam" : "from cuff (sleeve end)");
+                 d.from === "shoulder" ? "from shoulder" : "from cuff");
       } else if (it.dimShow !== false && d.cm > 0.005){
         // gap bracket hugs the badge on the inboard side, clear of the scale
         const bx = cx - out*(flatWidth((d.y0+d.y1)/2)/2*SC + 9);
@@ -1447,15 +1448,17 @@ function drawPocket(g, items, side, cx, ptopY, out, topCm){
     } else if (it.nametag){
       g.appendChild(el("rect",{x,y,width:w,height:h, rx:1, fill:"#14181A",
         stroke:"var(--ink-3)", "stroke-width":.6}));
+      // lettering is 0.6 cm on a 1.2 cm tag, so tie it to the tag, not to a constant
       g.appendChild(txt(x+w/2, y+h*0.74, (state.front.nametag||"SURNAME").toUpperCase(),
-        {"text-anchor":"middle", class:"mono", "font-size":5.6, fill:"#F2F2F2",
-         "letter-spacing":".4"}));
+        {"text-anchor":"middle", class:"mono", fill:"#F2F2F2",
+         "font-size": Math.max(5.6, NAMETAG_H*SC*0.46), "letter-spacing":".4"}));
     } else if (it.ribbon){
       g.appendChild(el("rect",{x,y,width:w,height:h,
         fill:RIBBON_COLOURS[(it.seq-1) % RIBBON_COLOURS.length],
         stroke:"var(--cloth-edge)", "stroke-width":.5}));
       g.appendChild(txt(x+w/2, y+h*0.78, it.seq,
-        {"text-anchor":"middle", class:"mono", "font-size":5.5, fill:"#1A1A1A"}));
+        {"text-anchor":"middle", class:"mono", fill:"#1A1A1A",
+         "font-size": Math.max(5.5, RIBBON_H*SC*0.5)}));
     } else {
       g.appendChild(el("rect",{x,y,width:w,height:h, rx: round ? w/2 : 2,
         fill:"var(--brass-soft)", stroke:"var(--brass)", "stroke-width":1,
@@ -1530,23 +1533,26 @@ function paintUnified(svg, L, R, fr){
 /* Sleeves only. Two columns comes out at about 1.28:1, so it nearly fills a
    landscape page on its own. */
 function paintSleeves(svg, L, R){
+  // Two 57 cm sleeves on a 21.6 cm page are height-bound, so every unit of vertical
+  // padding costs drawing size directly. Trimmed to what the labels actually need.
+  const PT = 20, PB = 34;
   SC = 7;
   svg.textContent = "";
   const col = GUT_OUT + SLEEVE_MAX_W*SC + GUT_IN;
   const W = PAD_L + col*2 + COLGAP + PAD_R;
-  const Hh = PAD_T + SLEEVE_LEN*SC + PAD_B;
+  const Hh = PT + SLEEVE_LEN*SC + PB;
   svg.setAttribute("viewBox", `0 0 ${W} ${Hh}`);
   const g = el("g",{});
-  const ybase = PAD_T + SLEEVE_LEN*SC;
+  const ybase = PT + SLEEVE_LEN*SC;
   const rsX = PAD_L + GUT_OUT + SLEEVE_MAX_W/2*SC;
   const lsX = PAD_L + col + COLGAP + GUT_IN + SLEEVE_MAX_W/2*SC;
   drawSleeve(g, R, "right", rsX, ybase, -1);
   drawSleeve(g, L, "left",  lsX, ybase, +1);
   for (const [cx,t1,t2] of [[rsX,"THEIR RIGHT SLEEVE","rear ←  |  → front"],
                             [lsX,"THEIR LEFT SLEEVE","front ←  |  → rear"]]){
-    g.appendChild(txt(cx, ybase + 30, t1, {"text-anchor":"middle", class:"mono",
+    g.appendChild(txt(cx, ybase + 22, t1, {"text-anchor":"middle", class:"mono",
       "font-size":9, "letter-spacing":"1.2", fill:"var(--ink-2)"}));
-    g.appendChild(txt(cx, ybase + 41, t2, {"text-anchor":"middle", class:"mono",
+    g.appendChild(txt(cx, ybase + 32, t2, {"text-anchor":"middle", class:"mono",
       "font-size":7, fill:"var(--ink-3)"}));
   }
   svg.appendChild(g);

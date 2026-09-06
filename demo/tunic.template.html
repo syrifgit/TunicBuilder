@@ -147,9 +147,32 @@ select:focus-visible,button:focus-visible,.chk:focus-within{outline:2px solid va
 .stage{padding:18px 20px 40px; display:flex; flex-direction:column; gap:22px; min-width:0}
 .sheetwrap{
   background:var(--sheet); border:1px solid var(--rule); border-radius:3px;
-  box-shadow:var(--shadow); padding:8px; overflow-x:auto;
+  box-shadow:var(--shadow); position:relative;
 }
-.sheetwrap svg{display:block; margin:0 auto; max-width:100%; height:auto}
+/* one finger pans, two fingers pinch (handled in script) */
+.viewport{
+  overflow:auto; padding:8px; max-height:78vh;
+  touch-action:pan-x pan-y; -webkit-overflow-scrolling:touch; overscroll-behavior:contain;
+  cursor:grab;
+}
+.viewport.dragging{cursor:grabbing}
+.viewport svg{display:block; margin:0 auto}
+.zoombar{
+  display:flex; align-items:center; gap:5px; flex-wrap:wrap;
+  padding:6px 8px; border-bottom:1px solid var(--rule-2);
+}
+.zoombar button{
+  min-width:30px; height:26px; padding:0 8px; font-size:13px; line-height:1;
+  background:var(--paper); color:var(--ink-2); border:1px solid var(--rule);
+  border-radius:3px; cursor:pointer;
+}
+.zoombar button:hover{border-color:var(--green); color:var(--green)}
+.zoombar .pct{
+  font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3);
+  min-width:44px; text-align:right; font-variant-numeric:tabular-nums;
+}
+.zoombar .hint{font-size:11px; color:var(--ink-3)}
+@media (max-width:900px){ .viewport{max-height:62vh} .zoombar .hint{display:none} }
 
 .legend{display:flex; flex-wrap:wrap; gap:6px 16px; font-size:11.5px; color:var(--ink-2)}
 .legend span{display:inline-flex; align-items:center; gap:6px}
@@ -247,10 +270,11 @@ code{font-family:"IBM Plex Mono",monospace; font-size:.92em; background:var(--ru
         <input type="text" id="fName" maxlength="16" placeholder="Surname" style="width:100%; padding:5px 8px; background:var(--paper); border:1px solid var(--rule); border-radius:3px"></div>
       <div class="field"><label for="fRibbons">Ribbons</label><select id="fRibbons"></select></div>
       <div class="field"><label for="fDofe">DofE pin</label><select id="fDofe"></select></div>
+      <div class="field"><label for="fExped">Expedition</label><select id="fExped"></select></div>
+      <p style="margin:0; font-size:11px; color:var(--ink-3); line-height:1.35">Worn above the nametag on this side, not with the pocket pins.</p>
       <div class="toggles" style="margin-top:2px">
         <label class="toggle"><input type="checkbox" id="fMedals"> Wear medals instead of ribbons</label>
         <label class="toggle"><input type="checkbox" id="fAnniv"> Anniversary pin</label>
-        <label class="toggle"><input type="checkbox" id="fExped"> Expedition insignia</label>
         <label class="toggle"><input type="checkbox" id="fCadetCom"> Commander&rsquo;s Cadet Commendation</label>
         <label class="toggle"><input type="checkbox" id="fNavy"> Navy League Commendation</label>
       </div>
@@ -259,7 +283,9 @@ code{font-family:"IBM Plex Mono",monospace; font-size:.92em; background:var(--ru
     <div class="group">
       <div class="eyebrow">Front &mdash; left breast <span class="slotid">front_left_*</span></div>
       <div class="field"><label for="fNatCom">Commend.</label><select id="fNatCom"></select></div>
-      <div class="field"><label for="fPartic">Comp. pins</label><select id="fPartic"></select></div>
+      <div class="eyebrow" style="margin-top:2px">Pocket pins <span class="slotid" id="pinCount"></span></div>
+      <div id="pinPick" style="display:flex; flex-direction:column; gap:6px"></div>
+      <p style="margin:0; font-size:11px; color:var(--ink-3); line-height:1.35">One per stream, highest held. Three may be worn in total.</p>
       <div class="toggles" style="margin-top:2px">
         <label class="toggle"><input type="checkbox" id="fPara"> Parachutist</label>
         <label class="toggle"><input type="checkbox" id="fCommem"> Commemorative pin</label>
@@ -298,22 +324,28 @@ code{font-family:"IBM Plex Mono",monospace; font-size:.92em; background:var(--ru
   </aside>
 
   <main class="stage">
-    <div class="sheetwrap"><svg id="draw" role="img" aria-label="Left and right tunic sleeve insignia layout"></svg></div>
+    <div class="sheetwrap">
+      <div class="zoombar">
+        <button type="button" id="zOut" aria-label="Zoom out">&minus;</button>
+        <button type="button" id="zIn" aria-label="Zoom in">+</button>
+        <span class="pct" id="zPct">100%</span>
+        <button type="button" id="zFit">Fit</button>
+        <button type="button" id="zOne">1:1</button>
+        <span class="hint">Pinch to zoom, drag to pan. Ctrl + scroll also zooms.</span>
+      </div>
+      <div class="viewport" id="viewport">
+        <svg id="draw" role="img" aria-label="Full tunic insignia layout as seen facing the cadet"></svg>
+      </div>
+    </div>
     <div class="legend">
       <span><i class="swatch" style="border-top-color:var(--brass)"></i> datum</span>
       <span><i class="swatch" style="border-top-color:var(--crit); border-top-style:dashed"></i> collision</span>
       <span><i class="swatch" style="border-top-color:var(--ink-3); border-top-style:dashed"></i> vacant slot &mdash; nothing is sewn here</span>
-      <span><strong>Left scale</strong> &mdash; cm up from the cuff bottom (sleeve end)</span>
-      <span><strong>Right scale</strong> &mdash; cm down from the shoulder seam</span>
-      <span><i class="swatch" style="border-top-color:var(--brass)"></i> bracket = gap from the badge it hangs off</span>
-      <span>Front = toward the chest. Both sleeves drawn flat, outside face toward you.</span>
-    </div>
-
-    <div class="sheetwrap"><svg id="drawFront" role="img" aria-label="Front of tunic insignia layout"></svg></div>
-    <div class="legend">
-      <span>Viewed from the front, so the wearer&rsquo;s right pocket is on the left</span>
-      <span>Scale reads cm up from the pocket top edge</span>
-      <span>Pinned insignia sit on the pocket, centred between the flap edge and the lower seam</span>
+      <span>Laid out as you see the cadet: their right side on your left</span>
+      <span><i class="swatch" style="border-top-color:var(--brass)"></i> datum &middot; every scale reads in cm</span>
+      <span><i class="swatch" style="border-top-color:var(--crit); border-top-style:dashed"></i> collision</span>
+      <span><i class="swatch" style="border-top-color:var(--ink-3); border-top-style:dashed"></i> vacant slot</span>
+      <span>Sleeve height against pocket height is presentational &mdash; no measurement crosses between them</span>
     </div>
 
     <section class="panel">
@@ -545,9 +577,10 @@ const state = {
   rcacD:6.35,                              // MEASURED: 2.5 in. Rules pack v0.2-draft.
   sleeveLen:57.0,                          // size 6436, the only one measured
   front:{
-    ribbons:3, medals:false, nametag:"Beal", anniversary:false, expedition:false,
+    ribbons:3, medals:false, nametag:"Beal", anniversary:false,
     cadetCommend:false, navyLeague:false, dofe:"none", nationalCommend:"none",
-    parachutist:false, participation:0, commemorative:false, poppy:false,
+    parachutist:false, commemorative:false, poppy:false, expedition:"regional",
+    pins:{mkComp:"comp_mk_prov", biComp:"none", rifleTeam:"none"},
     flapH:4.0                              // UNMEASURED placeholder
   },
   dims:true, env:false, ghost:true, hsrc:"measured"
@@ -841,7 +874,17 @@ const RIBBON_W = 3.5, RIBBON_H = 1.0, ROW_MAX = 3;
 const NAMETAG_W = 6.3, NAMETAG_H = 1.2;      // regulation, Ch1 s13.a
 const PIN_STRIP_W = 3.0, PIN_STRIP_H = 9.0;  // measured
 const COMP_PIN = 2.54;                       // 1 in square
+// Expedition participation insignia. Worn over the RIGHT pocket, 0.5 cm above the
+// nametag - not with the left-pocket competition pins. Levels 1 and 2 are recorded
+// but carry nothing, same as ALP.
 const EXPED_D = 2.54;                        // ESTIMATE, 1 in circle
+const EXPEDITION = {
+  none:      {label:"None"},
+  lvl1:      {label:"Level 1 (nothing worn)", worn:false},
+  lvl2:      {label:"Level 2 (nothing worn)", worn:false},
+  regional:  {label:"Regional", art:"exped_regional"},
+  national:  {label:"National / International", art:"exped_national"}
+};
 // Unmeasured placeholders. Everything using one is flagged by the validator.
 const FLAP_H_DEFAULT = 4.0;
 const COMMEND_W = 5.0, COMMEND_H = 1.3;
@@ -851,6 +894,32 @@ const ANNIV_D = 2.0;
 const MEDAL_W = 3.5, MEDAL_DROP = 6.5;       // ribbon width, total suspended drop
 
 const DOFE = {none:"None", bronze:"Bronze", silver:"Silver", gold:"Gold"};
+
+// Left-pocket pinned insignia. Every stream is Highest Only / Max Worn 1 in QualMap,
+// so each is a single choice. `w`/`h` default to the 1 in square; anything measured
+// otherwise, or never measured at all, carries its own size and an `est` flag.
+// Unmeasured pins are drawn at 2.54 cm wide with the height taken from the artwork's
+// own aspect, so their real proportions show rather than being forced square.
+const PIN_STREAMS = [
+  {key:"mkComp", label:"Marksmanship", slot:"Marksmanship Competition", opts:[
+    {v:"none",           nm:"None"},
+    {v:"comp_mk_zone",   nm:"Zone Championship"},
+    {v:"comp_mk_prov",   nm:"Provincial Championship"},
+    {v:"comp_mk_nat",    nm:"National Championship"},
+    {v:"comp_mk_winner", nm:"Vamplew & Clément Tremblay Awards", est:true}]},
+  {key:"biComp", label:"Biathlon", slot:"Biathlon Competition", opts:[
+    {v:"none",           nm:"None"},
+    {v:"comp_bi_zone",   nm:"Zone Championship"},
+    {v:"comp_bi_prov",   nm:"Provincial Championship"},
+    {v:"comp_bi_nat",    nm:"National Championship"},
+    {v:"comp_bi_winner", nm:"Bédard / Keddie / Le Guellec Awards", est:true}]},
+  {key:"rifleTeam", label:"Rifle team", slot:"National Rifle Team", opts:[
+    {v:"none",           nm:"None"},
+    {v:"pin_rifle_team", nm:"RCAC National Rifle Team", est:true},
+    {v:"pin_belzile",    nm:"LGen C.H. Belzile Trophy", est:true}]}
+];
+const PIN_OPT = {};
+for (const st of PIN_STREAMS) for (const o of st.opts) if (o.v !== "none") PIN_OPT[o.v] = {...o, stream: st};
 const NATCOM = {none:"None", cds:"Chief of the Defence Staff Commendation",
                 command:"Command Commendation (VCDS / RCN / CA / RCAF)"};
 
@@ -968,13 +1037,19 @@ function resolveFront(){
     fdatum: tagRel ? "above_suspended" : "pocket_top", rel:tagRel, edge:"bottom",
     cite:tagCite });
 
-  if (F.expedition){
+  const ex = EXPEDITION[F.expedition] || EXPEDITION.none;
+  if (ex.art){
     put(R,{ face:"front", side:"right", slot:"front_right_expedition",
-      label:"Expedition participation insignia", x:0, y: tagY + NAMETAG_H + 0.5,
-      w:EXPED_D, h:EXPED_D, art:"exped", conf:"estimate",
+      label:`Expedition – ${ex.label}`, x:0, y: tagY + NAMETAG_H + 0.5,
+      w:EXPED_D, h:EXPED_D, art:ex.art, conf:"estimate",
       fdatum:"above_nametag", edge:"bottom",
       rel:{of:"the nametag", ofShort:"Nametag", gap:0.5, dir:"above"},
-      cite:"CH5-B expedition figure — centred 0.5 cm over the nametag" });
+      cite:"CH5-B expedition figure — over the RIGHT pocket, centred 0.5 cm over the nametag" });
+    add("Expedition insignia sits over the RIGHT pocket, 0.5 cm above the nametag — not with the left-pocket competition pins. The workbook slots it out_of_scope_left_pocket, which the Chapter 5 figure supersedes.",
+        "info", "CH5-B expedition figure vs D - Qual Info");
+  } else if (ex.worn === false){
+    add(`Expedition ${ex.label.split(" (")[0]} is recorded but nothing is worn for it. Only Regional and National carry a pin.`,
+        "info", "D - Qual Info");
   }
 
   // right pocket pins, in precedence order
@@ -1000,20 +1075,41 @@ function resolveFront(){
       label:NATCOM[F.nationalCommend], w:COMMEND_W, h:COMMEND_H, art:null,
       cite:"CH5-D 5D-1 — centred on the LEFT breast pocket"}]);
   }
-  if (F.participation > 0){
-    const n = Math.min(F.participation, 3);
-    const gap = (PIN_STRIP_H - n*COMP_PIN) / (n + 1);
-    for (let i=0;i<n;i++){
+  // one pick per stream; the three-pin cap then applies across all four
+  const held = PIN_STREAMS.map(st => F.pins[st.key])
+    .filter(v => v && v !== "none").map(v => PIN_OPT[v]).filter(Boolean);
+  const worn = held.filter(o => o.worn !== false);
+  if (held.length > worn.length)
+    add("Expedition Level 1 and Level 2 are recorded but nothing is worn for them — the workbook has no badge or pin against either. Same rule as ALP: wear the highest level that carries something.",
+        "info", "D - Qual Info; CH3S1 4.b");
+  if (worn.length){
+    const shown = worn.slice(0, 3);
+    const gap = (PIN_STRIP_H - shown.length*COMP_PIN) / (shown.length + 1);
+    shown.forEach((pin, i) => {
       const top = -flapH - gap - i*(COMP_PIN + gap);
+      // measured pins are square; unmeasured ones keep the artwork's own proportions
+      const art = BADGE_ART[pin.v];
+      const h = pin.est && art ? COMP_PIN / art.aspect : COMP_PIN;
       put(L,{ face:"front", side:"left", slot:"front_left_participation_pins",
-        label:`Participation / competition pin ${i+1}`, x:0, y: top - COMP_PIN,
-        w:COMP_PIN, h:COMP_PIN, art:null, onPocket:true, conf:"placeholder",
+        // each slot in the strip is COMP_PIN tall; centre the pin in its slot
+        label:`${pin.stream.slot} – ${pin.nm}`, x:0, y: top - COMP_PIN/2 - h/2,
+        w:COMP_PIN, h, art:pin.v, onPocket:true, seq:i+1,
+        conf: pin.est ? "estimate" : null,
         fdatum:"pin_strip", edge:"centre",
         cite:"CH3S1 4.b — maximum three combined" });
-    }
-    if (F.participation > 3)
-      add(`${F.participation} participation pins selected. Maximum is three combined — the rest are dropped. The 3 × 9 cm strip fits exactly three 1 in pins, which independently confirms the cap.`,
+    });
+    if (worn.length > 3)
+      add(`${worn.length} pins held across the four streams, but only three may be worn. The last ${worn.length-3} are dropped. The 3 × 9 cm strip fits exactly three 1 in pins, which independently confirms the cap.`,
           "crit", "CH3S1 4.b");
+    if (shown.length > 1)
+      add("Policy gives no precedence between the pin streams, so they are placed top to bottom in the order marksmanship, biathlon, expedition, rifle team. LOCAL DECISION.",
+          "info", "CH3S1 4.b — no order stated");
+    if (shown.some(o => o.stream.key === "rifleTeam"))
+      add("National Rifle Team pin location is NOT confirmed. It is drawn on the left pocket with the competition pins because the workbook slots it there, but that has not been checked against a figure. Do not sew from this row yet.",
+          "crit", "pending validation");
+    if (shown.some(o => o.est))
+      add("Only the championship pins (zone, provincial, national) are confirmed 1 in square. The award, expedition and rifle team pins have never been measured — they are drawn 2.54 cm wide with the height taken from the artwork, so the shape is right but the scale is a guess.",
+          "warn", "rules pack: national_winner_award, expedition_pin");
   }
   if (F.commemorative){
     put(L,{ face:"front", side:"left", slot:"front_left_commemorative_pin",
@@ -1039,76 +1135,17 @@ function resolveFront(){
   return {R, L, warn};
 }
 
-/* Front view. Viewer faces the cadet, so the WEARER'S RIGHT pocket is drawn on the
-   image left. Inboard (toward the chest centre) is therefore image-right for the
-   right pocket and image-left for the left pocket - the same mirror trick the
-   sleeves use, applied once here. */
-function drawFront(g, items, side, cx, ptopY){
-  const mirror = side === "right" ? 1 : -1;   // inboard-positive -> image x
-  const IX = xcm => cx + mirror * xcm * MM;
-  const flapH = state.front.flapH;
 
-  // pocket body, flap, and the two vertical seams that make the pin strip
-  g.appendChild(el("rect",{x:cx-POCKET_W/2*MM, y:ptopY, width:POCKET_W*MM, height:POCKET_H*MM,
-    rx:3, fill:"var(--cloth)", stroke:"var(--cloth-edge)", "stroke-width":1.5}));
-  g.appendChild(el("rect",{x:cx-POCKET_W/2*MM, y:ptopY, width:POCKET_W*MM, height:flapH*MM,
-    rx:3, fill:"none", stroke:"var(--cloth-edge)", "stroke-width":1.2}));
-  for (const sx of [-PIN_STRIP_W/2, PIN_STRIP_W/2])
-    g.appendChild(el("line",{x1:cx+sx*MM, y1:ptopY+flapH*MM, x2:cx+sx*MM,
-      y2:ptopY+POCKET_H*MM, stroke:"var(--cloth-edge)", "stroke-width":.8, opacity:.7}));
-
-  g.appendChild(txt(cx, ptopY + POCKET_H*MM + 15,
-    side === "right" ? "WEARER'S RIGHT" : "WEARER'S LEFT",
-    {"text-anchor":"middle", class:"mono", "font-size":9, "letter-spacing":"1.2",
-     fill:"var(--ink-2)"}));
-  g.appendChild(txt(cx, ptopY + POCKET_H*MM + 26,
-    side === "right" ? "inboard →" : "← inboard",
-    {"text-anchor":"middle", class:"mono", "font-size":7.5, fill:"var(--ink-3)"}));
-
-  for (const it of items){
-    const x = IX(it.x) - it.w/2*MM;
-    const y = ptopY - (it.y + it.h)*MM;
-    const w = it.w*MM, h = it.h*MM;
-    const art = it.art && BADGE_ART[it.art];
-    const round = Math.abs(it.w - it.h) < 1e-6;
-
-    if (art){
-      g.appendChild(el("image",{x, y, width:w, height:h, preserveAspectRatio:"none",
-        href:"data:image/png;base64,"+art.d}));
-    } else if (it.nametag){
-      g.appendChild(el("rect",{x, y, width:w, height:h, rx:1, fill:"#14181A",
-        stroke:"var(--ink-3)", "stroke-width":.6}));
-      g.appendChild(txt(x+w/2, y+h*0.72, (state.front.nametag||"SURNAME").toUpperCase(),
-        {"text-anchor":"middle", class:"mono", "font-size":6.4, fill:"#F2F2F2",
-         "letter-spacing":".5"}));
-    } else if (it.ribbon){
-      g.appendChild(el("rect",{x, y, width:w, height:h,
-        fill:RIBBON_COLOURS[(it.seq-1) % RIBBON_COLOURS.length],
-        stroke:"var(--cloth-edge)", "stroke-width":.5}));
-      g.appendChild(txt(x+w/2, y+h*0.75, it.seq,
-        {"text-anchor":"middle", class:"mono", "font-size":6, fill:"#1A1A1A"}));
-    } else {
-      g.appendChild(el("rect",{x, y, width:w, height:h, rx: round ? w/2 : 2,
-        fill:"var(--brass-soft)", stroke:"var(--brass)", "stroke-width":1,
-        "stroke-dasharray":"4 3", opacity:.95}));
-    }
-    if (it.clash)
-      g.appendChild(el("rect",{x:x-1.5, y:y-1.5, width:w+3, height:h+3, fill:"none",
-        stroke:"var(--crit)", "stroke-width":1.6, "stroke-dasharray":"5 3"}));
-  }
-
-  // pocket-top datum: the zero every front measurement is taken from
-  g.appendChild(el("line",{x1:cx-POCKET_W/2*MM-16, y1:ptopY, x2:cx+POCKET_W/2*MM+16, y2:ptopY,
-    stroke:"var(--brass)", "stroke-width":1, "stroke-dasharray":"6 4", opacity:.85}));
-}
-const RIBBON_COLOURS = ["#1E4FA3","#E8B71E","#8C1D2C","#1F7A45","#5B3A8C",
-                        "#C7532A","#2E8FA8","#7A6B22","#94324F"];
 
 /* ============================================================
    DRAW
    1 SVG user unit = 1 mm. Front/rear becomes image x here and nowhere else.
    ============================================================ */
-const MM = 10, PAD_T = 26, PAD_B = 44, GUT_L = 110, GUT_R = 116, GAPX = 54, PAD_L = 14, PAD_R = 14;
+const MM = 10;                 // 1 cm in drawing units at full size
+let   SC = 7;                  // the scale actually used; four columns need less than two
+const PAD_T = 30, PAD_B = 46, GUT_OUT = 112, GUT_IN = 22, COLGAP = 22, PAD_L = 14, PAD_R = 14;
+const POCKET_TOP_BELOW_SHOULDER = 22;   // PRESENTATIONAL ONLY - never measured, and no
+                                        // measurement in the guide crosses sleeve to front
 const SLEEVE_MAX_W = 21.0;
 const NS = "http://www.w3.org/2000/svg";
 
@@ -1123,20 +1160,44 @@ function txt(x,y,s,a){
   t.textContent = s; return t;
 }
 
-function sleeveOutline(cx, ybase, mirror){
-  // taper profile -> symmetric flat-sleeve silhouette
+function sleeveOutline(cx, ybase){
   const right = [], left = [];
   for (const [y,w] of TAPER){
-    const py = ybase - y*MM, hw = w/2*MM;
+    const py = ybase - y*SC, hw = w/2*SC;
     right.push([cx + hw, py]);
     left.unshift([cx - hw, py]);
   }
   return right.concat(left).map(p => p.join(",")).join(" ");
 }
 
-// What a person with a ruler would actually measure for this badge, and from which
-// end of the sleeve. Shoulder-rooted badges are quoted down from the seam to the edge
-// that the regulation pins; everything else is quoted up from the cuff to its bottom.
+/* A vertical tick scale. dir -1 counts up from the bottom, +1 counts down from the
+   top. `out` is -1 when the scale sits to the left of its column, +1 to the right. */
+function scaleBar(g, gx, y0, y1, len, dir, out){
+  g.appendChild(el("line",{x1:gx, y1:y0, x2:gx, y2:y1, stroke:"var(--rule)", "stroke-width":1}));
+  for (let d=0; d<=len; d++){
+    const py = dir < 0 ? y0 - d*SC : y1 + d*SC;
+    const five = d%5===0, t = five ? 6 : 3;
+    g.appendChild(el("line",{x1:gx + out*t, y1:py, x2:gx, y2:py,
+      stroke:"var(--rule)", "stroke-width":five?1:.6}));
+    if (five) g.appendChild(txt(gx + out*10, py+3, d,
+      {"text-anchor": out < 0 ? "end" : "start", class:"mono", "font-size":8,
+       fill:"var(--ink-3)"}));
+  }
+}
+
+/* Dimension label: the figure, then the datum it is taken from, on two lines.
+   Always on the OUTER edge of the column so the middle of the sheet stays clear. */
+function dimLabel(g, lx, py, out, value, from){
+  const anchor = out < 0 ? "end" : "start";
+  g.appendChild(txt(lx, py - 3, `${value} cm`,
+    {"text-anchor":anchor, class:"mono", "font-size":8.5, fill:"var(--brass)"}));
+  if (from) g.appendChild(txt(lx, py + 6, from,
+    {"text-anchor":anchor, class:"mono", "font-size":6.5, fill:"var(--ink-3)"}));
+}
+
+/* What a person with a ruler actually measures for this badge, and from where.
+   Relative badges report the gap to what they hang off; absolute ones report the
+   distance to their own datum. */
 function dimOf(it){
   if (it.rel){
     const mine   = it.rel.dir === "above" ? it.y : it.y + it.h;
@@ -1151,61 +1212,46 @@ function dimOf(it){
   return {kind:"abs", from:"cuff", cm: it.y, atY: it.y};
 }
 
-function drawSleeve(g, items, side, cx, ybase){
-  const mirror = side === "left" ? -1 : 1;     // front = image-left on the left sleeve
-  const IX = xcm => cx + mirror * xcm * MM;
-  const halfW = SLEEVE_MAX_W/2*MM;
-  const gxL = cx - halfW - 14;                 // cuff scale, reads upward
-  const gxR = cx + halfW + 14;                 // shoulder scale, reads downward
-  const topY = ybase - SLEEVE_LEN*MM;
+function drawSleeve(g, items, side, cx, ybase, out){
+  // Facing the cadet: their right sleeve is on your left, and "front" (toward the
+  // chest) points inboard on both sleeves. One mirror, applied here only.
+  const mirror = side === "left" ? -1 : 1;
+  const IX = xcm => cx + mirror * xcm * SC;
+  const halfW = SLEEVE_MAX_W/2*SC;
+  const gx = cx + out*(halfW + 14);          // scale on the outer edge
+  const lx = gx + out*30;                    // dimension labels beyond it
+  const topY = ybase - SLEEVE_LEN*SC;
 
   g.appendChild(el("polygon",{points:sleeveOutline(cx,ybase), fill:"var(--cloth)",
     stroke:"var(--cloth-edge)", "stroke-width":1.5, "stroke-linejoin":"round"}));
-
-  const cw = flatWidth(CUFF_H)/2*MM;
-  g.appendChild(el("line",{x1:cx-cw, y1:ybase-CUFF_H*MM, x2:cx+cw, y2:ybase-CUFF_H*MM,
+  const cw = flatWidth(CUFF_H)/2*SC;
+  g.appendChild(el("line",{x1:cx-cw, y1:ybase-CUFF_H*SC, x2:cx+cw, y2:ybase-CUFF_H*SC,
     stroke:"var(--cloth-edge)", "stroke-width":1.5}));
 
-  // two scales. dir -1 counts up from the cuff, +1 counts down from the shoulder.
-  function scale(gx, dir, anchor, labelDx){
-    g.appendChild(el("line",{x1:gx, y1:ybase, x2:gx, y2:topY,
-      stroke:"var(--rule)", "stroke-width":1}));
-    for (let d=0; d<=SLEEVE_LEN; d++){
-      const py = dir < 0 ? ybase - d*MM : topY + d*MM;
-      const five = d%5===0, len = five ? 6 : 3;
-      g.appendChild(el("line",{x1:gx + (anchor==="end" ? -len : len), y1:py, x2:gx, y2:py,
-        stroke:"var(--rule)", "stroke-width":five?1:.6}));
-      if (five) g.appendChild(txt(gx+labelDx, py+3, d,
-        {"text-anchor":anchor, class:"mono", "font-size":8.5, fill:"var(--ink-3)"}));
-    }
-  }
-  scale(gxL, -1, "end",   -9);
-  scale(gxR, +1, "start",  9);
+  scaleBar(g, gx, ybase, topY, SLEEVE_LEN, -1, out);
+  g.appendChild(txt(gx, ybase + 15, "▲ cm from cuff",
+    {"text-anchor":"middle", class:"mono", "font-size":7.5, fill:"var(--ink-2)"}));
 
-  g.appendChild(txt(gxL, ybase + 15, "▲ cm from cuff (sleeve end)",
-    {"text-anchor":"middle", class:"mono", "font-size":8, fill:"var(--ink-2)"}));
-  g.appendChild(txt(gxR, topY - 9, "▼ cm from shoulder seam",
-    {"text-anchor":"middle", class:"mono", "font-size":8, fill:"var(--ink-2)"}));
-
-  // datum lines: the zero of each scale
   for (const y of [0, SLEEVE_LEN]){
-    const py = ybase - y*MM;
-    g.appendChild(el("line",{x1:gxL, y1:py, x2:gxR, y2:py, stroke:"var(--brass)",
-      "stroke-width":1, "stroke-dasharray":"6 4", opacity:.85}));
+    const py = ybase - y*SC;
+    g.appendChild(el("line",{x1:cx - halfW - 14, y1:py, x2:cx + halfW + 14, y2:py,
+      stroke:"var(--brass)", "stroke-width":1, "stroke-dasharray":"6 4", opacity:.85}));
   }
+  g.appendChild(txt(cx, topY - 10, "shoulder seam",
+    {"text-anchor":"middle", class:"mono", "font-size":7, fill:"var(--brass)"}));
 
   if (state.env){
     const pts=[];
-    for (let y=0;y<=SLEEVE_LEN;y+=1) pts.push([IX(flatWidth(y)/2 - 1), ybase-y*MM]);
-    for (let y=SLEEVE_LEN;y>=0;y-=1) pts.push([IX(-(flatWidth(y)/2 - 1)), ybase-y*MM]);
-    g.appendChild(el("polygon",{points:pts.map(p=>p.join(",")).join(" "),
+    for (let y=0;y<=SLEEVE_LEN;y+=1) pts.push([IX(flatWidth(y)/2 - 1), ybase-y*SC]);
+    for (let y=SLEEVE_LEN;y>=0;y-=1) pts.push([IX(-(flatWidth(y)/2 - 1)), ybase-y*SC]);
+    g.appendChild(el("polygon",{points:pts.map(q=>q.join(",")).join(" "),
       fill:"none", stroke:"var(--brass)", "stroke-width":.8, "stroke-dasharray":"3 3", opacity:.55}));
   }
 
   for (const it of items){
     if (it.ghost && !state.ghost) continue;
-    const x = IX(it.x) - it.w/2*MM, y = ybase - (it.y + it.h)*MM;
-    const w = it.w*MM, h = it.h*MM;
+    const x = IX(it.x) - it.w/2*SC, y = ybase - (it.y + it.h)*SC;
+    const w = it.w*SC, h = it.h*SC;
     const art = it.art && BADGE_ART[it.art];
 
     if (art && !it.ghost){
@@ -1217,61 +1263,103 @@ function drawSleeve(g, items, side, cx, ybase){
         stroke: it.ghost ? "var(--ink-3)" : "var(--brass)",
         "stroke-width":1, "stroke-dasharray":"4 3", opacity:.9}));
       if (!it.ghost) g.appendChild(txt(x+w/2, y+h/2+3, "no art",
-        {"text-anchor":"middle", class:"mono", "font-size":8, fill:"var(--brass)"}));
+        {"text-anchor":"middle", class:"mono", "font-size":7, fill:"var(--brass)"}));
       if (it.ghost && it.ghostLabel) g.appendChild(txt(x+w/2, y+h+9, it.ghostLabel,
-        {"text-anchor":"middle", class:"mono", "font-size":7.5, fill:"var(--ink-3)"}));
+        {"text-anchor":"middle", class:"mono", "font-size":7, fill:"var(--ink-3)"}));
     }
-
-    if (it.clash){
+    if (it.clash)
       g.appendChild(el("rect",{x:x-1.5,y:y-1.5,width:w+3,height:h+3, fill:"none",
         stroke:"var(--crit)", "stroke-width":1.6, "stroke-dasharray":"5 3"}));
-    }
 
-    // Absolute badges are dimensioned to their own scale. Relative ones get a gap
-    // bracket beside the sleeve instead, because that is the measurement taken.
     if (state.dims && !it.ghost){
       const d = dimOf(it);
       if (d.kind === "abs"){
-        const py = ybase - d.atY*MM;
-        const toRight = d.from === "shoulder";
-        const gx = toRight ? gxR : gxL;
-        const anchor = toRight ? "start" : "end";
-        const lx = gx + (toRight ? 28 : -28);
-        g.appendChild(el("line",{x1: toRight ? x + w : x, y1:py, x2:gx, y2:py,
-          stroke:"var(--brass)", "stroke-width":.6, opacity:.5}));
-        g.appendChild(txt(lx, py - 3, `${d.cm.toFixed(2)} cm`,
-          {"text-anchor":anchor, class:"mono", "font-size":8.5, fill:"var(--brass)"}));
-        g.appendChild(txt(lx, py + 6,
-          toRight ? "from shoulder seam" : "from cuff (sleeve end)",
-          {"text-anchor":anchor, class:"mono", "font-size":6.5, fill:"var(--ink-3)"}));
+        const py = ybase - d.atY*SC;
+        g.appendChild(el("line",{x1: out < 0 ? x : x + w, y1:py, x2:gx, y2:py,
+          stroke:"var(--brass)", "stroke-width":.6, opacity:.45}));
+        dimLabel(g, lx, py, out, d.cm.toFixed(2),
+                 d.from === "shoulder" ? "from shoulder seam" : "from cuff (sleeve end)");
       } else if (it.dimShow !== false && d.cm > 0.005){
-        // bracket sits on the side away from this item's own ruler, so gap dimensions
-        // and absolute callouts never compete for the same margin
-        const leftSide = it.root === "shoulder";
-        const half = flatWidth((d.y0 + d.y1)/2)/2*MM;
-        const bx = cx + (leftSide ? -(half + 10) : (half + 10));
-        const yTop = ybase - d.y1*MM, yBot = ybase - d.y0*MM;
+        // gap bracket hugs the badge on the inboard side, clear of the scale
+        const bx = cx - out*(flatWidth((d.y0+d.y1)/2)/2*SC + 9);
+        const yTop = ybase - d.y1*SC, yBot = ybase - d.y0*SC;
         g.appendChild(el("line",{x1:bx, y1:yTop, x2:bx, y2:yBot,
           stroke:"var(--brass)", "stroke-width":.9}));
         for (const ty of [yTop, yBot])
           g.appendChild(el("line",{x1:bx-3.5, y1:ty, x2:bx+3.5, y2:ty,
             stroke:"var(--brass)", "stroke-width":.9}));
-        const ly = ybase - d.atY*MM;
-        g.appendChild(el("line",{x1: leftSide ? x : x + w, y1:ly, x2:bx, y2:ly,
-          stroke:"var(--brass)", "stroke-width":.5, opacity:.4}));
-        g.appendChild(txt(bx + 6, (yTop + yBot)/2 + 3, `${d.cm.toFixed(2)} cm`,
-          {"text-anchor":"start", class:"mono", "font-size":8, fill:"var(--brass)"}));
+        g.appendChild(txt(bx - out*6, (yTop+yBot)/2 + 3, `${d.cm.toFixed(2)} cm`,
+          {"text-anchor": out < 0 ? "start" : "end", class:"mono", "font-size":7.5,
+           fill:"var(--brass)"}));
       }
     }
   }
-
-  g.appendChild(txt(cx, ybase + 30, side === "left" ? "LEFT SLEEVE" : "RIGHT SLEEVE",
-    {"text-anchor":"middle", class:"mono", "font-size":9.5, "letter-spacing":"1.4",
-     fill:"var(--ink-2)"}));
-  g.appendChild(txt(cx, ybase + 41,
-    side === "left" ? "front ←   |   → rear" : "rear ←   |   → front",
-    {"text-anchor":"middle", class:"mono", "font-size":8, fill:"var(--ink-3)"}));
 }
+
+function drawPocket(g, items, side, cx, ptopY, out){
+  const mirror = side === "right" ? 1 : -1;      // inboard-positive -> image x
+  const IX = xcm => cx + mirror * xcm * SC;
+  const flapH = state.front.flapH;
+  const halfP = POCKET_W/2*SC;
+  const gx = cx + out*(halfP + 14);
+  const lx = gx + out*30;
+  const topCm = 13;
+
+  g.appendChild(el("rect",{x:cx-halfP, y:ptopY, width:POCKET_W*SC, height:POCKET_H*SC,
+    rx:3, fill:"var(--cloth)", stroke:"var(--cloth-edge)", "stroke-width":1.5}));
+  g.appendChild(el("rect",{x:cx-halfP, y:ptopY, width:POCKET_W*SC, height:flapH*SC,
+    rx:3, fill:"none", stroke:"var(--cloth-edge)", "stroke-width":1.2}));
+  for (const sx of [-PIN_STRIP_W/2, PIN_STRIP_W/2])
+    g.appendChild(el("line",{x1:cx+sx*SC, y1:ptopY+flapH*SC, x2:cx+sx*SC,
+      y2:ptopY+POCKET_H*SC, stroke:"var(--cloth-edge)", "stroke-width":.8, opacity:.7}));
+
+  scaleBar(g, gx, ptopY, ptopY - topCm*SC, topCm, -1, out);
+  g.appendChild(txt(gx, ptopY + 15, "▲ cm from pocket top",
+    {"text-anchor":"middle", class:"mono", "font-size":7, fill:"var(--ink-2)"}));
+  g.appendChild(el("line",{x1:cx-halfP-14, y1:ptopY, x2:cx+halfP+14, y2:ptopY,
+    stroke:"var(--brass)", "stroke-width":1, "stroke-dasharray":"6 4", opacity:.85}));
+
+  for (const it of items){
+    const x = IX(it.x) - it.w/2*SC, y = ptopY - (it.y + it.h)*SC;
+    const w = it.w*SC, h = it.h*SC;
+    const art = it.art && BADGE_ART[it.art];
+    const round = Math.abs(it.w - it.h) < 1e-6;
+
+    if (art){
+      g.appendChild(el("image",{x,y,width:w,height:h, preserveAspectRatio:"none",
+        href:"data:image/png;base64,"+art.d}));
+    } else if (it.nametag){
+      g.appendChild(el("rect",{x,y,width:w,height:h, rx:1, fill:"#14181A",
+        stroke:"var(--ink-3)", "stroke-width":.6}));
+      g.appendChild(txt(x+w/2, y+h*0.74, (state.front.nametag||"SURNAME").toUpperCase(),
+        {"text-anchor":"middle", class:"mono", "font-size":5.6, fill:"#F2F2F2",
+         "letter-spacing":".4"}));
+    } else if (it.ribbon){
+      g.appendChild(el("rect",{x,y,width:w,height:h,
+        fill:RIBBON_COLOURS[(it.seq-1) % RIBBON_COLOURS.length],
+        stroke:"var(--cloth-edge)", "stroke-width":.5}));
+      g.appendChild(txt(x+w/2, y+h*0.78, it.seq,
+        {"text-anchor":"middle", class:"mono", "font-size":5.5, fill:"#1A1A1A"}));
+    } else {
+      g.appendChild(el("rect",{x,y,width:w,height:h, rx: round ? w/2 : 2,
+        fill:"var(--brass-soft)", stroke:"var(--brass)", "stroke-width":1,
+        "stroke-dasharray":"4 3", opacity:.95}));
+    }
+    if (it.clash)
+      g.appendChild(el("rect",{x:x-1.5,y:y-1.5,width:w+3,height:h+3, fill:"none",
+        stroke:"var(--crit)", "stroke-width":1.6, "stroke-dasharray":"5 3"}));
+
+    // only items above the pocket carry a figure; pinned ones are "centred", not measured
+    if (state.dims && it.y > 0 && !it.rel){
+      const py = ptopY - it.y*SC;
+      g.appendChild(el("line",{x1: out < 0 ? x : x + w, y1:py, x2:gx, y2:py,
+        stroke:"var(--brass)", "stroke-width":.6, opacity:.45}));
+      dimLabel(g, lx, py, out, it.y.toFixed(2), "from pocket top");
+    }
+  }
+}
+const RIBBON_COLOURS = ["#1E4FA3","#E8B71E","#8C1D2C","#1F7A45","#5B3A8C",
+                        "#C7532A","#2E8FA8","#7A6B22","#94324F"];
 
 /* ============================================================
    RENDER
@@ -1322,26 +1410,50 @@ function render(){
   validate(L,"Left",warn);
   validate(R,"Right",warn);
 
-  /* --- drawing --- */
-  const svg = document.getElementById("draw");
-  svg.textContent = "";
-  const colW = GUT_L + SLEEVE_MAX_W*MM + GUT_R;
-  const W = PAD_L + colW*2 + GAPX + PAD_R;
-  const Hh = PAD_T + SLEEVE_LEN*MM + PAD_B;
-  svg.setAttribute("viewBox", `0 0 ${W} ${Hh}`);
-  svg.setAttribute("width", W); svg.setAttribute("height", Hh);
-  const g = el("g",{});
-  const ybase = PAD_T + SLEEVE_LEN*MM;
-  drawSleeve(g, L, "left",  PAD_L + GUT_L + SLEEVE_MAX_W/2*MM, ybase);
-  drawSleeve(g, R, "right", PAD_L + colW + GAPX + GUT_L + SLEEVE_MAX_W/2*MM, ybase);
-  svg.appendChild(g);
-
-  /* --- front drawing --- */
+  /* --- one drawing: as you see the cadet --- */
   const fr = resolveFront();
   validate(fr.R, "Front right", fr.warn);
   validate(fr.L, "Front left",  fr.warn);
   warn.push(...fr.warn);
-  drawFrontPanel(fr);
+
+  const svg = document.getElementById("draw");
+  svg.textContent = "";
+  const sleeveCol = GUT_OUT + SLEEVE_MAX_W*SC + GUT_IN;
+  const pocketCol = GUT_OUT + POCKET_W*SC + GUT_IN;
+  const W = PAD_L + sleeveCol*2 + pocketCol*2 + COLGAP*3 + PAD_R;
+  const Hh = PAD_T + SLEEVE_LEN*SC + PAD_B;
+  svg.setAttribute("viewBox", `0 0 ${W} ${Hh}`);
+  svg.setAttribute("width", W); svg.setAttribute("height", Hh);
+  const g = el("g",{});
+  const ybase = PAD_T + SLEEVE_LEN*SC;
+  const ptopY = ybase - (SLEEVE_LEN - POCKET_TOP_BELOW_SHOULDER)*SC;
+
+  // columns left to right: their right sleeve, right pocket, left pocket, left sleeve
+  let x0 = PAD_L;
+  const rsX = x0 + GUT_OUT + SLEEVE_MAX_W/2*SC;                 x0 += sleeveCol + COLGAP;
+  const rpX = x0 + GUT_OUT + POCKET_W/2*SC;                     x0 += pocketCol + COLGAP;
+  const lpX = x0 + GUT_IN  + POCKET_W/2*SC;                     x0 += pocketCol + COLGAP;
+  const lsX = x0 + GUT_IN  + SLEEVE_MAX_W/2*SC;
+
+  const midX = (rpX + lpX)/2;
+  g.appendChild(el("line",{x1:midX, y1:ptopY - 13*SC, x2:midX, y2:ptopY + POCKET_H*SC + 8,
+    stroke:"var(--rule)", "stroke-width":1, "stroke-dasharray":"2 5"}));
+
+  drawSleeve(g, R,    "right", rsX, ybase, -1);
+  drawPocket(g, fr.R, "right", rpX, ptopY, -1);
+  drawPocket(g, fr.L, "left",  lpX, ptopY, +1);
+  drawSleeve(g, L,    "left",  lsX, ybase, +1);
+
+  for (const [cx, t1, t2] of [[rsX,"THEIR RIGHT SLEEVE","rear ←  |  → front"],
+                              [rpX,"THEIR RIGHT BREAST","outboard ←  |  → inboard"],
+                              [lpX,"THEIR LEFT BREAST","inboard ←  |  → outboard"],
+                              [lsX,"THEIR LEFT SLEEVE","front ←  |  → rear"]]){
+    g.appendChild(txt(cx, ybase + 30, t1, {"text-anchor":"middle", class:"mono",
+      "font-size":9, "letter-spacing":"1.2", fill:"var(--ink-2)"}));
+    g.appendChild(txt(cx, ybase + 41, t2, {"text-anchor":"middle", class:"mono",
+      "font-size":7, fill:"var(--ink-3)"}));
+  }
+  svg.appendChild(g);
 
   /* --- sewing guide --- */
   const tb = document.getElementById("guide");
@@ -1384,47 +1496,101 @@ function render(){
     }
   }
 
+  view.refresh();
+  syncPins();
   document.getElementById("ctccount").textContent =
     `${state.ctc.length} selected · max 6 · click order = award order`;
   syncCtc();
 }
 
-function drawFrontPanel(fr){
-  const svg = document.getElementById("drawFront");
-  svg.textContent = "";
-  const topCm = 13;                                   // headroom above the pocket
-  const W = PAD_L*2 + (POCKET_W*2 + POCKET_GAP)*MM + 150;
-  const Hh = PAD_T + (topCm + POCKET_H)*MM + 46;
-  svg.setAttribute("viewBox", `0 0 ${W} ${Hh}`);
-  svg.setAttribute("width", W); svg.setAttribute("height", Hh);
-  const g = el("g",{});
-  const ptopY = PAD_T + topCm*MM;
-  const midX = W/2;
-  const rcx = midX - (POCKET_GAP/2 + POCKET_W/2)*MM;   // wearer's right -> image left
-  const lcx = midX + (POCKET_GAP/2 + POCKET_W/2)*MM;
+/* ============================================================
+   ZOOM AND PAN
+   The SVG is sized in px rather than left to scale itself, so the viewport can
+   scroll it. `scale` is px per drawing unit: 1.0 is 1:1, fit is whatever makes the
+   sheet's width match the viewport.
+   ============================================================ */
+const view = (function(){
+  const wrap = document.getElementById("viewport");
+  const svg  = document.getElementById("draw");
+  const pct  = document.getElementById("zPct");
+  let scale = null, userSet = false;
 
-  // centre line of the jacket
-  g.appendChild(el("line",{x1:midX, y1:PAD_T-6, x2:midX, y2:ptopY + POCKET_H*MM + 6,
-    stroke:"var(--rule)", "stroke-width":1, "stroke-dasharray":"2 5"}));
-
-  // scale up from the pocket top, on the outside edge
-  const sx = rcx - POCKET_W/2*MM - 26;
-  g.appendChild(el("line",{x1:sx, y1:ptopY, x2:sx, y2:ptopY - topCm*MM,
-    stroke:"var(--rule)", "stroke-width":1}));
-  for (let d=0; d<=topCm; d++){
-    const py = ptopY - d*MM, five = d%5===0;
-    g.appendChild(el("line",{x1:sx-(five?6:3), y1:py, x2:sx, y2:py,
-      stroke:"var(--rule)", "stroke-width":five?1:.6}));
-    if (five) g.appendChild(txt(sx-9, py+3, d, {"text-anchor":"end", class:"mono",
-      "font-size":8.5, fill:"var(--ink-3)"}));
+  const box = () => {
+    const vb = (svg.getAttribute("viewBox") || "0 0 1000 600").split(/\s+/);
+    return {w: parseFloat(vb[2]) || 1000, h: parseFloat(vb[3]) || 600};
+  };
+  const fitScale = () => {
+    const {w} = box();
+    return Math.max(0.05, (wrap.clientWidth - 18) / w);
+  };
+  function apply(keepCentre){
+    const {w, h} = box();
+    const before = {x: wrap.scrollLeft + wrap.clientWidth/2, y: wrap.scrollTop + wrap.clientHeight/2,
+                    w: parseFloat(svg.style.width) || 1};
+    svg.style.width  = (w * scale) + "px";
+    svg.style.height = (h * scale) + "px";
+    pct.textContent = Math.round(scale * 100) + "%";
+    if (keepCentre && before.w > 1){
+      const k = (w * scale) / before.w;
+      wrap.scrollLeft = before.x * k - wrap.clientWidth/2;
+      wrap.scrollTop  = before.y * k - wrap.clientHeight/2;
+    }
   }
-  g.appendChild(txt(sx, ptopY + 15, "▲ cm from pocket top",
-    {"text-anchor":"middle", class:"mono", "font-size":7.5, fill:"var(--ink-2)"}));
+  function set(v, keepCentre){
+    scale = Math.min(3, Math.max(fitScale() * 0.6, v));
+    userSet = true;
+    apply(keepCentre !== false);
+  }
+  function fit(){ scale = fitScale(); userSet = false; apply(false); }
 
-  drawFront(g, fr.R, "right", rcx, ptopY);
-  drawFront(g, fr.L, "left",  lcx, ptopY);
-  svg.appendChild(g);
-}
+  // called after every render, since the viewBox changes with sleeve length
+  function refresh(){ if (scale === null || !userSet) fit(); else apply(false); }
+
+  document.getElementById("zIn").addEventListener("click", () => set(scale * 1.35));
+  document.getElementById("zOut").addEventListener("click", () => set(scale / 1.35));
+  document.getElementById("zFit").addEventListener("click", fit);
+  document.getElementById("zOne").addEventListener("click", () => set(1));
+
+  // pinch: two fingers zoom, one finger is left alone so the viewport scrolls
+  let pinch = null;
+  const spread = t => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+  wrap.addEventListener("touchstart", e => {
+    if (e.touches.length === 2) pinch = {d: spread(e.touches), s: scale};
+  }, {passive:true});
+  wrap.addEventListener("touchmove", e => {
+    if (e.touches.length === 2 && pinch){
+      e.preventDefault();
+      set(pinch.s * spread(e.touches) / pinch.d);
+    }
+  }, {passive:false});
+  for (const ev of ["touchend","touchcancel"])
+    wrap.addEventListener(ev, () => { pinch = null; }, {passive:true});
+
+  wrap.addEventListener("wheel", e => {
+    if (!e.ctrlKey) return;                 // plain scroll still scrolls
+    e.preventDefault();
+    set(scale * (e.deltaY < 0 ? 1.12 : 1/1.12));
+  }, {passive:false});
+
+  // drag to pan with a mouse
+  let drag = null;
+  wrap.addEventListener("pointerdown", e => {
+    if (e.pointerType === "touch" || e.button !== 0) return;
+    drag = {x:e.clientX, y:e.clientY, l:wrap.scrollLeft, t:wrap.scrollTop};
+    wrap.classList.add("dragging"); wrap.setPointerCapture(e.pointerId);
+  });
+  wrap.addEventListener("pointermove", e => {
+    if (!drag) return;
+    wrap.scrollLeft = drag.l - (e.clientX - drag.x);
+    wrap.scrollTop  = drag.t - (e.clientY - drag.y);
+  });
+  for (const ev of ["pointerup","pointercancel","pointerleave"])
+    wrap.addEventListener(ev, () => { drag = null; wrap.classList.remove("dragging"); });
+
+  let rt;
+  window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(refresh, 150); });
+  return {refresh};
+})();
 
 /* ============================================================
    CONTROLS
@@ -1469,6 +1635,31 @@ function syncCtc(){
   }
 }
 
+// one dropdown per stream: each is Highest Only / Max Worn 1 in the workbook
+const pinBox = document.getElementById("pinPick");
+for (const st of PIN_STREAMS){
+  const row = document.createElement("div");
+  row.className = "field";
+  row.innerHTML = `<label for="pin_${st.key}">${st.label}</label><select id="pin_${st.key}"></select>`;
+  pinBox.appendChild(row);
+  const sel = row.querySelector("select");
+  for (const o of st.opts){
+    const opt = document.createElement("option");
+    opt.value = o.v; opt.textContent = o.nm; sel.appendChild(opt);
+  }
+  sel.addEventListener("change", e => { state.front.pins[st.key] = e.target.value; render(); });
+}
+function syncPins(){
+  let n = 0;
+  for (const st of PIN_STREAMS){
+    const v = state.front.pins[st.key] || "none";
+    document.getElementById("pin_" + st.key).value = v;
+    const o = PIN_OPT[v];
+    if (o && o.worn !== false) n++;
+  }
+  document.getElementById("pinCount").textContent = `${n} worn of max 3`;
+}
+
 const presetBox = document.getElementById("presets");
 for (const name in PRESETS){
   const b = document.createElement("button");
@@ -1492,16 +1683,18 @@ for (const [id,key] of [["rcacD","rcacD"],["sleeveLen","sleeveLen"]]){
 }
 const FRONT_BIND = {
   fName:"nametag", fRibbons:"ribbons", fDofe:"dofe", fNatCom:"nationalCommend",
-  fPartic:"participation", fMedals:"medals", fAnniv:"anniversary", fExped:"expedition",
+  fMedals:"medals", fAnniv:"anniversary",
   fCadetCom:"cadetCommend", fNavy:"navyLeague", fPara:"parachutist",
+  fExped:"expedition",
   fCommem:"commemorative", fPoppy:"poppy", fFlap:"flapH"
 };
 (function wireFront(){
   const num = v => { const n = parseFloat(v); return isNaN(n) ? 0 : n; };
   fillNum("fRibbons", 0, 9, n => n === 0 ? "None" : `${n} ribbon${n>1?"s":""}`);
-  fillNum("fPartic", 0, 4, n => n === 0 ? "None" : `${n} pin${n>1?"s":""}`);
+
   fill("fDofe", DOFE, k => DOFE[k]);
   fill("fNatCom", NATCOM, k => NATCOM[k]);
+  fill("fExped", EXPEDITION, k => EXPEDITION[k].label);
   for (const id in FRONT_BIND){
     const el2 = document.getElementById(id), key = FRONT_BIND[id];
     el2.addEventListener(el2.type === "checkbox" ? "change" : "input", e => {

@@ -1,6 +1,6 @@
 {
   "$comment": "Placement rules for Royal Canadian Army Cadet tunic (jacket) insignia. Sleeves only. Front of tunic not yet in scope.",
-  "version": "0.6-draft",
+  "version": "0.8-draft",
   "scope": "army_cadet_sleeves_and_front",
   "sources": [
     {
@@ -150,13 +150,15 @@
     "expedition_pin": {
       "diameter": 2.54,
       "source_units": "1 in circle",
-      "confidence": "ESTIMATE"
+      "confidence": "ESTIMATE",
+      "note": "Circular. Poster draws it at roughly 1.5x the championship pins in the same block, which is a within-band comparison and so more trustworthy than a cross-band one - 1 in is probably low. Still an estimate; measure one."
     },
     "competition_pin": {
       "w": 2.54,
       "h": 2.54,
       "source_units": "1 in square",
-      "confidence": "measured"
+      "confidence": "measured",
+      "note": "Applies to the CHAMPIONSHIP pins only (zone, provincial, national) in both the marksmanship and biathlon streams. Poster artwork trims to aspect 1.00-1.03, consistent with a square."
     },
     "medal_ribbon": {
       "w": 3.5,
@@ -233,6 +235,12 @@
       "diameter": null,
       "confidence": "unknown",
       "note": "Bronze / Silver / Gold. Drawn as a circle. Not measured."
+    },
+    "national_winner_award": {
+      "w": null,
+      "h": null,
+      "confidence": "unknown",
+      "note": "The Vamplew & Clement Tremblay Awards (marksmanship) and the Myriam Bedard, Nikki Keddie & Jean-Philippe Le Guellec Awards (biathlon). 'National Winners' in the workbook is SHORTHAND for these, not a separate award. Confirmed by Lt Beal as a NON-STANDARD size: not 1 in square. Poster draws them at aspect 1.07 and about a third larger than the championship pins in the same block. Unmeasured."
     }
   },
   "slots": [
@@ -563,9 +571,18 @@
       "condition": "expedition participation insignia held",
       "citation": "CH5-B expedition figure",
       "notes": [
-        "Worn over the right pocket, centred 0.5 cm over the nametag."
+        "Worn over the right pocket, centred 0.5 cm over the nametag.",
+        "Levels 1 and 2 are recorded in the workbook but carry no badge or pin, so nothing is worn for them. Only Regional and National / International have insignia."
       ],
-      "sleeve": null
+      "sleeve": null,
+      "conflicts": [
+        {
+          "field": "which_pocket",
+          "alternate_value": "left pocket, with the participation and competition pins",
+          "source": "D - Qual Info slots every Participation | Expedition row as out_of_scope_left_pocket, following CH3S1 4.b",
+          "resolution": "RIGHT pocket, above the nametag. The Chapter 5 Annex B expedition figure is explicit and specific: 'Expedition participation insignia is worn over the right jacket/shirt pocket, centred 0.5 cm over the nametag.' CH3S1 4.b is the general rule for participation pins and the figure is the specific case, so the figure governs. Confirmed by Lt Beal. The workbook's Slot value for these rows should be corrected."
+        }
+      ]
     },
     {
       "id": "front_right_pocket_pins",
@@ -641,7 +658,9 @@
       "condition": "participation or competition pins held",
       "citation": "CH3S1 4.b",
       "notes": [
-        "Maximum three combined. The measured 3 x 9 cm strip fits exactly three 1 in pins with 0.23 cm side clearance and 0.34 cm gaps, which independently confirms the cap."
+        "Maximum three combined. The measured 3 x 9 cm strip fits exactly three 1 in pins with 0.23 cm side clearance and 0.34 cm gaps, which independently confirms the cap.",
+        "UNVALIDATED: the RCAC National Rifle Team and LGen C.H. Belzile Trophy pins are drawn here because the workbook slots them out_of_scope_left_pocket, but no figure has been found confirming it. Lt Beal is checking. Do not sew from that row.",
+        "Three streams share the maximum of three on this pocket: marksmanship championships, biathlon championships, and National Rifle Team. Expedition is NOT one of them - it is worn on the right, above the nametag."
       ],
       "sleeve": null
     },
@@ -760,7 +779,9 @@
     "MWO aspect still disagrees with the poster (1.26 drawn vs 1.50 from the recorded bounding box) and is unresolved. The Distinguished half of that question is CLOSED: remeasured at 6 x 8 cm, so the poster is the outlier, not the measurement.",
     "Breast pocket FLAP height is not measured and not in the instruction, but every pocket-mounted pin is centred between the flap's lower edge and the pocket's lower seam. Blocks exact pin placement.",
     "Annex B lists national and cadet commendations in one 0.5 cm stack while Annex D puts them on opposite pockets. Resolved in favour of Annex D as the more specific source - confirm with RCSU.",
-    "Medal, anniversary pin and commendation pin dimensions are all unmeasured, so the front render places them by rule but sizes them by placeholder."
+    "Medal, anniversary pin and commendation pin dimensions are all unmeasured, so the front render places them by rule but sizes them by placeholder.",
+    "National-winner award pins (Vamplew / Clement Tremblay, and Bedard / Keddie / Le Guellec) are confirmed non-standard in size and have never been measured. Drawn at 1 in.",
+    "National Rifle Team and Belzile Trophy pin placement is unconfirmed. Placed on the left pocket per the workbook, but no figure sourced. Being validated."
   ],
   "changelog": [
     {
@@ -782,6 +803,14 @@
     {
       "version": "0.6-draft",
       "change": "Front of tunic added: 11 slots covering medals, undress ribbons, nametag, anniversary and expedition insignia, commendation and DofE pins, parachutist, participation pins and the poppy. Scope is now sleeves plus front."
+    },
+    {
+      "version": "0.7-draft",
+      "change": "Competition and expedition pin artwork recovered from the poster. Championship pins confirmed 1 in square; national-winner awards recorded as non-standard and unmeasured. 'National Winners' documented as workbook shorthand."
+    },
+    {
+      "version": "0.8-draft",
+      "change": "Expedition insignia corrected to the RIGHT pocket, 0.5 cm above the nametag, per the CH5-B figure; it had wrongly been carried as a left-pocket pin stream as well. Conflict with the workbook's out_of_scope_left_pocket recorded. National Rifle Team placement marked unvalidated."
     }
   ]
 }

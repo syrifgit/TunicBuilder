@@ -1,6 +1,6 @@
 {
   "$comment": "Placement rules for Royal Canadian Army Cadet tunic (jacket) insignia. Sleeves only. Front of tunic not yet in scope.",
-  "version": "0.8-draft",
+  "version": "0.10-draft",
   "scope": "army_cadet_sleeves_and_front",
   "sources": [
     {
@@ -58,6 +58,10 @@
       "figures_used": [
         "4A-1"
       ]
+    },
+    {
+      "id": "CH5-S7",
+      "title": "CJCR Dress Instructions, Chapter 5 s7 - Court Mountings"
     }
   ],
   "datums": {
@@ -241,6 +245,12 @@
       "h": null,
       "confidence": "unknown",
       "note": "The Vamplew & Clement Tremblay Awards (marksmanship) and the Myriam Bedard, Nikki Keddie & Jean-Philippe Le Guellec Awards (biathlon). 'National Winners' in the workbook is SHORTHAND for these, not a separate award. Confirmed by Lt Beal as a NON-STANDARD size: not 1 in square. Poster draws them at aspect 1.07 and about a third larger than the championship pins in the same block. Unmeasured."
+    },
+    "medal_court_mount": {
+      "length": 10.0,
+      "confidence": "regulation",
+      "source_units": "10 cm, top of the medal bar suspender to the bottom edge of the medal",
+      "note": "Court mounting is optional and at no cost to the public, with no minimum number of medals. The ribbons and medals mount on a panel whose size follows the number worn; the panel's lower edge runs in line with the CENTRE of the medals, and each ribbon runs from that lower edge up the front of the panel and back down to the medal. Panel geometry is recorded but not modelled."
     }
   },
   "slots": [
@@ -523,14 +533,16 @@
       "side": "right",
       "anchor": "pocket_top",
       "offset_cm": 0,
-      "anchor_edge": "suspended_immediately_above",
+      "anchor_edge": "suspension_bar_on_the_ribbon_line",
       "align": "centre",
       "condition": "medals worn (full dress); mutually exclusive with undress ribbons",
-      "citation": "CH5-A 5A-1",
+      "citation": "CH5-A 5A-1; CH5-S7",
       "notes": [
-        "Medal and suspender dimensions are not given in the instruction and are not measured."
+        "Medals hang from the SAME line as the ribbon bar and spill downward OVER the pocket. The nametag therefore sits in the same place whether medals or ribbons are worn - it is not pushed up by the medals. Confirmed by Lt Beal.",
+        "Length is 10 cm from the top of the suspender to the bottom edge of the medal (Ch5 s7). The suspender top sits one ribbon height above the pocket top, so the medal finishes 9 cm down a 15 cm pocket."
       ],
-      "sleeve": null
+      "sleeve": null,
+      "length_cm": 10.0
     },
     {
       "id": "front_right_anniversary_pin",
@@ -555,8 +567,8 @@
       "condition": "always",
       "citation": "CH5-A 5A-1; CH5-B 5B-1.1",
       "notes": [
-        "Two rules, applied in this order: (a) if ribbons or medals are worn, the tag sits 0.5 cm above their top edge; (b) if an anniversary pin is worn and nothing is suspended, the tag is EQUIDISTANT between the anniversary pin and the pocket top.",
-        "6.3 x 1.2 cm, surname only, black."
+        "Three cases, in this order: (a) ribbons or medals worn -> 0.5 cm above their top edge; (b) nothing suspended but an anniversary pin worn -> EQUIDISTANT between the pin and the pocket top; (c) nothing above the pocket at all -> the tag's bottom edge sits FLUSH on the pocket top. Case (c) confirmed by Lt Beal; it was previously guessed at 0.5 cm.",
+        "6.3 x 1.2 cm, surname only, black for army."
       ],
       "sleeve": null
     },
@@ -658,11 +670,16 @@
       "condition": "participation or competition pins held",
       "citation": "CH3S1 4.b",
       "notes": [
-        "Maximum three combined. The measured 3 x 9 cm strip fits exactly three 1 in pins with 0.23 cm side clearance and 0.34 cm gaps, which independently confirms the cap.",
-        "UNVALIDATED: the RCAC National Rifle Team and LGen C.H. Belzile Trophy pins are drawn here because the workbook slots them out_of_scope_left_pocket, but no figure has been found confirming it. Lt Beal is checking. Do not sew from that row.",
-        "Three streams share the maximum of three on this pocket: marksmanship championships, biathlon championships, and National Rifle Team. Expedition is NOT one of them - it is worn on the right, above the nametag."
+        "Order of precedence top to bottom is sourced, not a local decision: Bisley Series, then Canadian Cadet Movement Marksmanship Series, then Canadian Cadet Movement Biathlon Series. Confirmed by Lt Beal.",
+        "The Bisley Series covers the RCAC National Rifle Team and LGen C.H. Belzile Trophy pins. Its place in this precedence list confirms it is worn on this pocket alongside the other two series.",
+        "Three streams share the maximum of three. Expedition is NOT one of them - it is worn on the right, above the nametag."
       ],
-      "sleeve": null
+      "sleeve": null,
+      "order_top_to_bottom": [
+        "Bisley Series",
+        "Canadian Cadet Movement Marksmanship Series",
+        "Canadian Cadet Movement Biathlon Series"
+      ]
     },
     {
       "id": "front_left_commemorative_pin",
@@ -696,13 +713,15 @@
     "master_cadet": {
       "citation": "CH3S1 3.b.(4)",
       "former_slot": "left sleeve, 1 cm below RCAC badge",
-      "status": "terminated"
+      "status": "terminated",
+      "renderer": "Not drawn. The slot stays vacant in policy, but showing an empty placeholder on the layout was more confusing than useful. Wire it back in if anything is ever authorised for this position."
     },
     "national_star_of_excellence": {
       "citation": "ANNEX-H 3H-3",
       "former_slot": "left sleeve, 1 cm below RCAC badge",
       "status": "terminated",
-      "note": "Annex H's name for the same slot CH3S1 calls master cadet achievement."
+      "note": "Annex H's name for the same slot CH3S1 calls master cadet achievement.",
+      "renderer": "Not drawn. The slot stays vacant in policy, but showing an empty placeholder on the layout was more confusing than useful. Wire it back in if anything is ever authorised for this position."
     }
   },
   "out_of_scope": {
@@ -780,8 +799,7 @@
     "Breast pocket FLAP height is not measured and not in the instruction, but every pocket-mounted pin is centred between the flap's lower edge and the pocket's lower seam. Blocks exact pin placement.",
     "Annex B lists national and cadet commendations in one 0.5 cm stack while Annex D puts them on opposite pockets. Resolved in favour of Annex D as the more specific source - confirm with RCSU.",
     "Medal, anniversary pin and commendation pin dimensions are all unmeasured, so the front render places them by rule but sizes them by placeholder.",
-    "National-winner award pins (Vamplew / Clement Tremblay, and Bedard / Keddie / Le Guellec) are confirmed non-standard in size and have never been measured. Drawn at 1 in.",
-    "National Rifle Team and Belzile Trophy pin placement is unconfirmed. Placed on the left pocket per the workbook, but no figure sourced. Being validated."
+    "National-winner award pins (Vamplew / Clement Tremblay, and Bedard / Keddie / Le Guellec) are confirmed non-standard in size and have never been measured. Drawn at 1 in."
   ],
   "changelog": [
     {
@@ -811,6 +829,14 @@
     {
       "version": "0.8-draft",
       "change": "Expedition insignia corrected to the RIGHT pocket, 0.5 cm above the nametag, per the CH5-B figure; it had wrongly been carried as a left-pocket pin stream as well. Conflict with the workbook's out_of_scope_left_pocket recorded. National Rifle Team placement marked unvalidated."
+    },
+    {
+      "version": "0.9-draft",
+      "change": "Nametag sits flush on the pocket top when nothing is suspended. Medals hang from the ribbon line and spill over the pocket, so the nametag does not move for them. Left-pocket pin precedence sourced (Bisley, then CCM Marksmanship, then CCM Biathlon), which also confirms the Bisley pins belong on that pocket. Vacant Master Cadet / NSE slot no longer drawn."
+    },
+    {
+      "version": "0.10-draft",
+      "change": "Medal length fixed at 10 cm by the court mounting rule, replacing a guessed hang. Court mounting panel geometry recorded."
     }
   ]
 }

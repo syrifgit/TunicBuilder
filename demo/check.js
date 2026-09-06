@@ -55,8 +55,12 @@ function run(file) {
     getElementById(id) { asked.add(id); return stubElement("div"); },
     createElement: stubElement,
     createElementNS: (_ns, t) => stubElement(t),
+    body: stubElement("body"),
+    documentElement: stubElement("html"),
     activeElement: null,
     addEventListener() {},
+    querySelector: () => stubElement("div"),
+    querySelectorAll: () => [],
   };
 
   // The stub only needs to be complete enough not to raise errors a real browser

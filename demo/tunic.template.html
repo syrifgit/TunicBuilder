@@ -157,6 +157,17 @@ select:focus-visible,button:focus-visible,.chk:focus-within{outline:2px solid va
 }
 .viewport.dragging{cursor:grabbing}
 .viewport svg{display:block; margin:0 auto}
+/* the print pages exist only on paper; the screen keeps the single unified view */
+.pageonly{display:none}
+body.paper #draw{display:none}
+body.paper .pageonly{display:block}
+body.paper .viewport{
+  aspect-ratio:auto; display:block; padding:0; gap:0;
+}
+body.paper .pageonly{
+  aspect-ratio:11/8.5; width:100%; height:auto; max-height:none;
+  border:1px solid var(--rule); margin-bottom:10px; padding:8px; box-sizing:border-box;
+}
 .zoombar{
   display:flex; align-items:center; gap:5px; flex-wrap:wrap;
   padding:6px 8px; border-bottom:1px solid var(--rule-2);
@@ -271,8 +282,10 @@ body.paper .viewport svg{
   .stage{ padding:0; gap:12px }
   .sheetwrap{ border:none; box-shadow:none }
   .viewport{ overflow:visible !important; max-height:none !important; padding:0 }
-  .viewport svg{ width:100% !important; height:auto !important; max-width:100% }
-  /* one page for the drawing, then the guide */
+  #draw{ display:none !important }
+  .pageonly{ display:block !important; width:100% !important; height:auto !important }
+  /* a page each for the sleeves and the front, then the guide */
+  #drawSleeves{ break-after:page; page-break-after:always }
   .sheetwrap{ break-after:page; page-break-after:always }
   .panel{ break-inside:auto }
   thead{ display:table-header-group }
@@ -397,6 +410,8 @@ body.paper .viewport svg{
       </div>
       <div class="viewport" id="viewport">
         <svg id="draw" role="img" aria-label="Full tunic insignia layout as seen facing the cadet"></svg>
+        <svg id="drawSleeves" class="pageonly" role="img" aria-label="Both sleeves"></svg>
+        <svg id="drawPockets" class="pageonly" role="img" aria-label="Both breast pockets"></svg>
       </div>
     </div>
     <div class="legend">
@@ -1457,6 +1472,110 @@ function drawPocket(g, items, side, cx, ptopY, out){
 const RIBBON_COLOURS = ["#1E4FA3","#E8B71E","#8C1D2C","#1F7A45","#5B3A8C",
                         "#C7532A","#2E8FA8","#7A6B22","#94324F"];
 
+
+/* ============================================================
+   PAGE PAINTERS
+   One unified view for the screen, and two print pages sized so each fills a
+   letter landscape sheet instead of leaving half of it blank.
+   ============================================================ */
+function paintUnified(svg, L, R, fr){
+  SC = 7;
+
+  
+  svg.textContent = "";
+  const sleeveCol = GUT_OUT + SLEEVE_MAX_W*SC + GUT_IN;
+  const pocketCol = GUT_OUT + POCKET_W*SC + GUT_IN;
+  const W = PAD_L + sleeveCol*2 + pocketCol*2 + COLGAP*3 + PAD_R;
+  const Hh = PAD_T + SLEEVE_LEN*SC + PAD_B;
+  svg.setAttribute("viewBox", `0 0 ${W} ${Hh}`);
+  svg.setAttribute("width", W); svg.setAttribute("height", Hh);
+  const g = el("g",{});
+  const ybase = PAD_T + SLEEVE_LEN*SC;
+  const ptopY = ybase - (SLEEVE_LEN - POCKET_TOP_BELOW_SHOULDER)*SC;
+
+  // columns left to right: their right sleeve, right pocket, left pocket, left sleeve
+  let x0 = PAD_L;
+  const rsX = x0 + GUT_OUT + SLEEVE_MAX_W/2*SC;                 x0 += sleeveCol + COLGAP;
+  const rpX = x0 + GUT_OUT + POCKET_W/2*SC;                     x0 += pocketCol + COLGAP;
+  const lpX = x0 + GUT_IN  + POCKET_W/2*SC;                     x0 += pocketCol + COLGAP;
+  const lsX = x0 + GUT_IN  + SLEEVE_MAX_W/2*SC;
+
+  const midX = (rpX + lpX)/2;
+  g.appendChild(el("line",{x1:midX, y1:ptopY - 13*SC, x2:midX, y2:ptopY + POCKET_H*SC + 8,
+    stroke:"var(--rule)", "stroke-width":1, "stroke-dasharray":"2 5"}));
+
+  drawSleeve(g, R,    "right", rsX, ybase, -1);
+  drawPocket(g, fr.R, "right", rpX, ptopY, -1);
+  drawPocket(g, fr.L, "left",  lpX, ptopY, +1);
+  drawSleeve(g, L,    "left",  lsX, ybase, +1);
+
+  for (const [cx, t1, t2] of [[rsX,"THEIR RIGHT SLEEVE","rear ←  |  → front"],
+                              [rpX,"THEIR RIGHT BREAST","outboard ←  |  → inboard"],
+                              [lpX,"THEIR LEFT BREAST","inboard ←  |  → outboard"],
+                              [lsX,"THEIR LEFT SLEEVE","front ←  |  → rear"]]){
+    g.appendChild(txt(cx, ybase + 30, t1, {"text-anchor":"middle", class:"mono",
+      "font-size":9, "letter-spacing":"1.2", fill:"var(--ink-2)"}));
+    g.appendChild(txt(cx, ybase + 41, t2, {"text-anchor":"middle", class:"mono",
+      "font-size":7, fill:"var(--ink-3)"}));
+  }
+  svg.appendChild(g);
+
+}
+
+/* Sleeves only. Two columns comes out at about 1.28:1, so it nearly fills a
+   landscape page on its own. */
+function paintSleeves(svg, L, R){
+  SC = 7;
+  svg.textContent = "";
+  const col = GUT_OUT + SLEEVE_MAX_W*SC + GUT_IN;
+  const W = PAD_L + col*2 + COLGAP + PAD_R;
+  const Hh = PAD_T + SLEEVE_LEN*SC + PAD_B;
+  svg.setAttribute("viewBox", `0 0 ${W} ${Hh}`);
+  const g = el("g",{});
+  const ybase = PAD_T + SLEEVE_LEN*SC;
+  const rsX = PAD_L + GUT_OUT + SLEEVE_MAX_W/2*SC;
+  const lsX = PAD_L + col + COLGAP + GUT_IN + SLEEVE_MAX_W/2*SC;
+  drawSleeve(g, R, "right", rsX, ybase, -1);
+  drawSleeve(g, L, "left",  lsX, ybase, +1);
+  for (const [cx,t1,t2] of [[rsX,"THEIR RIGHT SLEEVE","rear ←  |  → front"],
+                            [lsX,"THEIR LEFT SLEEVE","front ←  |  → rear"]]){
+    g.appendChild(txt(cx, ybase + 30, t1, {"text-anchor":"middle", class:"mono",
+      "font-size":9, "letter-spacing":"1.2", fill:"var(--ink-2)"}));
+    g.appendChild(txt(cx, ybase + 41, t2, {"text-anchor":"middle", class:"mono",
+      "font-size":7, fill:"var(--ink-3)"}));
+  }
+  svg.appendChild(g);
+}
+
+/* Pockets only, at a much larger cm scale. Text does not scale with SC, so the
+   pockets grow against the labels rather than the whole thing shrinking. */
+function paintPockets(svg, fr){
+  SC = 19;
+  svg.textContent = "";
+  const topCm = 13, tall = topCm + POCKET_H;
+  const col = GUT_OUT + POCKET_W*SC + GUT_IN;
+  const W = PAD_L + col*2 + COLGAP + PAD_R;
+  const Hh = PAD_T + tall*SC + PAD_B;
+  svg.setAttribute("viewBox", `0 0 ${W} ${Hh}`);
+  const g = el("g",{});
+  const ptopY = PAD_T + topCm*SC;
+  const rpX = PAD_L + GUT_OUT + POCKET_W/2*SC;
+  const lpX = PAD_L + col + COLGAP + GUT_IN + POCKET_W/2*SC;
+  const midX = (rpX + lpX)/2;
+  g.appendChild(el("line",{x1:midX, y1:PAD_T, x2:midX, y2:ptopY + POCKET_H*SC + 8,
+    stroke:"var(--rule)", "stroke-width":1, "stroke-dasharray":"2 5"}));
+  drawPocket(g, fr.R, "right", rpX, ptopY, -1);
+  drawPocket(g, fr.L, "left",  lpX, ptopY, +1);
+  for (const [cx,t1,t2] of [[rpX,"THEIR RIGHT BREAST","outboard ←  |  → inboard"],
+                            [lpX,"THEIR LEFT BREAST","inboard ←  |  → outboard"]]){
+    g.appendChild(txt(cx, ptopY + POCKET_H*SC + 30, t1, {"text-anchor":"middle",
+      class:"mono", "font-size":9, "letter-spacing":"1.2", fill:"var(--ink-2)"}));
+    g.appendChild(txt(cx, ptopY + POCKET_H*SC + 41, t2, {"text-anchor":"middle",
+      class:"mono", "font-size":7, fill:"var(--ink-3)"}));
+  }
+  svg.appendChild(g);
+}
+
 /* ============================================================
    RENDER
    ============================================================ */
@@ -1506,50 +1625,15 @@ function render(){
   validate(L,"Left",warn);
   validate(R,"Right",warn);
 
-  /* --- one drawing: as you see the cadet --- */
+  /* --- drawings --- */
   const fr = resolveFront();
   validate(fr.R, "Front right", fr.warn);
   validate(fr.L, "Front left",  fr.warn);
   warn.push(...fr.warn);
 
-  const svg = document.getElementById("draw");
-  svg.textContent = "";
-  const sleeveCol = GUT_OUT + SLEEVE_MAX_W*SC + GUT_IN;
-  const pocketCol = GUT_OUT + POCKET_W*SC + GUT_IN;
-  const W = PAD_L + sleeveCol*2 + pocketCol*2 + COLGAP*3 + PAD_R;
-  const Hh = PAD_T + SLEEVE_LEN*SC + PAD_B;
-  svg.setAttribute("viewBox", `0 0 ${W} ${Hh}`);
-  svg.setAttribute("width", W); svg.setAttribute("height", Hh);
-  const g = el("g",{});
-  const ybase = PAD_T + SLEEVE_LEN*SC;
-  const ptopY = ybase - (SLEEVE_LEN - POCKET_TOP_BELOW_SHOULDER)*SC;
-
-  // columns left to right: their right sleeve, right pocket, left pocket, left sleeve
-  let x0 = PAD_L;
-  const rsX = x0 + GUT_OUT + SLEEVE_MAX_W/2*SC;                 x0 += sleeveCol + COLGAP;
-  const rpX = x0 + GUT_OUT + POCKET_W/2*SC;                     x0 += pocketCol + COLGAP;
-  const lpX = x0 + GUT_IN  + POCKET_W/2*SC;                     x0 += pocketCol + COLGAP;
-  const lsX = x0 + GUT_IN  + SLEEVE_MAX_W/2*SC;
-
-  const midX = (rpX + lpX)/2;
-  g.appendChild(el("line",{x1:midX, y1:ptopY - 13*SC, x2:midX, y2:ptopY + POCKET_H*SC + 8,
-    stroke:"var(--rule)", "stroke-width":1, "stroke-dasharray":"2 5"}));
-
-  drawSleeve(g, R,    "right", rsX, ybase, -1);
-  drawPocket(g, fr.R, "right", rpX, ptopY, -1);
-  drawPocket(g, fr.L, "left",  lpX, ptopY, +1);
-  drawSleeve(g, L,    "left",  lsX, ybase, +1);
-
-  for (const [cx, t1, t2] of [[rsX,"THEIR RIGHT SLEEVE","rear ←  |  → front"],
-                              [rpX,"THEIR RIGHT BREAST","outboard ←  |  → inboard"],
-                              [lpX,"THEIR LEFT BREAST","inboard ←  |  → outboard"],
-                              [lsX,"THEIR LEFT SLEEVE","front ←  |  → rear"]]){
-    g.appendChild(txt(cx, ybase + 30, t1, {"text-anchor":"middle", class:"mono",
-      "font-size":9, "letter-spacing":"1.2", fill:"var(--ink-2)"}));
-    g.appendChild(txt(cx, ybase + 41, t2, {"text-anchor":"middle", class:"mono",
-      "font-size":7, fill:"var(--ink-3)"}));
-  }
-  svg.appendChild(g);
+  paintUnified(document.getElementById("draw"), L, R, fr);
+  paintSleeves(document.getElementById("drawSleeves"), L, R);
+  paintPockets(document.getElementById("drawPockets"), fr);
 
   /* --- sewing guide --- */
   const tb = document.getElementById("guide");

@@ -1,0 +1,158 @@
+# Cadet Tunic Layout
+
+Works out where every badge goes on a Royal Canadian Army Cadet tunic, and how far
+that is from something you can put a ruler on.
+
+Give it one cadet's insignia and it produces two things:
+
+1. **A check drawing** of both sleeves and the front, to scale, with dimensions.
+2. **A sewing guide** listing each badge with the measurement you actually take -
+   from the cuff, from the shoulder seam, from the pocket top, or as a gap from the
+   badge it hangs off.
+
+Built for 242 RCACC (Fredericton) but the placement rules are national, so it should
+work for any army cadet corps.
+
+## Why it exists
+
+The dress instructions state placement in prose, spread across Chapter 3 Section 1,
+Chapter 3 Annex H, Chapter 4 Annex A and Chapter 5 Annexes A-D. Some of it is
+contradictory. Turning "the chevron tips shall be 1 cm below the RCAC badge" into
+"top edge 13.00 cm down from the shoulder seam" by hand, for 88 cadets, is where
+mistakes come from.
+
+Every geometric claim in `rules/army_tunic_placement_rules_2.json` carries a
+citation. Where the sources disagree, the file records the conflict, the alternative
+value, and the reasoning for what was adopted - rather than silently picking one.
+There are three such conflicts so far, and the illustration lost all three.
+
+## Quick start
+
+```bash
+pip install -r requirements.txt
+
+# you supply these two - see "What you need to provide"
+#   ACRCCP750DA003.pdf     the national symbols poster
+#   rcac_badges.zip        output of src/extract_badges.py
+
+python build_all.py           # regenerate artwork + build the pages
+open demo/tunic.html          # the layout tool
+open demo/plate.html          # the badge identification sheet
+```
+
+Both pages are single self-contained HTML files with the artwork inlined. No server,
+no build step at view time, no network calls except the webfont.
+
+## What you need to provide
+
+Nothing in this repo is Crown copyright artwork or cadet data, and nothing that is
+should ever be committed to it. `.gitignore` is set up to keep it that way.
+
+| File | What it is | Where to get it |
+|---|---|---|
+| `ACRCCP750DA003.pdf` | A-CR-CCP-750/DA-003, *Symbols of the Royal Canadian Army Cadets*, March 2018 | National publication |
+| `rcac_badges.zip` | Badge artwork extracted from that poster | `python src/extract_badges.py ACRCCP750DA003.pdf out_dir` |
+
+The badge artwork is **Crown copyright**. Fine for internal corps use. If this ever
+becomes a public web tool that changes, and the artwork would have to come out.
+
+## Layout
+
+```
+rules/    army_tunic_placement_rules_2.json   the source of truth. Start here.
+data/     labels.py       slug -> confirmed badge identity (beats poster captions)
+          badge_map.csv   generated from labels.py; hand-maintained, not regenerated
+          manifest.csv    output of extract_badges.py
+src/      extract_badges.py   pull badge artwork out of the poster PDF
+          recut_*.py          recover badges the extractor merged or skipped
+          build_art.py        pack artwork for the layout tool
+          build_plate.py      pack artwork for the identification sheet
+          build_badge_map.py  labels.py -> badge_map.csv
+          poster_scale.py     check whether the poster is drawn to scale (it is not)
+demo/     tunic.template.html   the layout tool, source
+          plate.template.html   the identification sheet, source
+          build.py, build_plate_html.py   inline the artwork -> *.html
+docs/     CLAUDE_1.md     project brief and settled decisions
+```
+
+Edit a `.template.html`, run its build script, and the `.html` next to it is
+regenerated with the artwork inlined. Never edit the built `.html` directly.
+
+## The coordinate model
+
+One axis per surface, and nothing ever measures in two directions at once.
+
+- **Sleeves** - `y` in cm upward from the cuff bottom edge, `x` front-positive from
+  the sleeve centre. The shoulder seam is simply `y = sleeve length`.
+- **Front** - `y` in cm upward from each pocket's top edge, `x` inboard-positive.
+  Negative `y` is on the pocket itself, where the pinned insignia go.
+
+Front/rear and inboard/outboard become image-left/right exactly once, at draw time.
+Get that wrong and the whole block mirrors.
+
+### Two datum families, and why it matters
+
+On the sleeve, the corps name title, the RCAC badge and the LCpl-Sgt chevrons are
+measured **down from the shoulder seam**. Everything else is measured **up from the
+cuff**. The distance between those two families is the sleeve length, so the gap
+between a shoulder-referenced badge and a cuff-referenced one **changes with tunic
+size**.
+
+That is not academic. A Sergeant who is also Drum Major has 2.00 cm between the
+chevron and the appointment badge on a 57 cm sleeve, 0.00 cm at 55 cm, and an
+overlap below that. The tool has a sleeve-length control so you can see it.
+
+### Absolute or relative
+
+A badge is quoted absolutely only where the regulation gives it a fixed anchor.
+Everything else is quoted as a gap from what it hangs off, because that is the
+measurement a person actually takes:
+
+> CTC grid, bottom row - bottom edge **1.00 cm above the training level star**
+
+not "9.71 cm from the cuff".
+
+## Known gaps
+
+`rules/army_tunic_placement_rules_2.json` carries the full list in
+`open_questions`. The ones that would change output:
+
+- **Chevron heights.** Measured 6.5 / 8.0 / 9.5 / 11.0 cm at 10 cm wide; the poster
+  artwork implies 7.28 / 8.91 / 10.04 / 12.05. Unresolved. The tool has a toggle to
+  render either.
+- **Breast pocket flap height** is unmeasured, and every pocket-mounted pin is
+  centred between the flap's lower edge and the pocket's lower seam.
+- **Medal, anniversary pin and commendation pin dimensions** are unmeasured, so the
+  front places them by rule but sizes them by placeholder.
+- **Only tunic size 6436 is measured.** The taper profile is stretched
+  proportionally for other lengths, which is an approximation.
+- **`Date Awarded` drives CTC grid fill order** and is placeholder data upstream, so
+  grid *order* is not yet sewing-safe even though grid *geometry* is.
+
+## Working rules
+
+Three of these were learned the hard way.
+
+- **Artwork identifies badges. It does not dimension them.** Poster aspect ratios
+  were used to infer a marksmanship rifle width of 5.5 cm; the real badge is 6.0 cm.
+  The poster is also not drawn to a single scale - it runs 13 to 24 points per cm
+  depending on which family you measure.
+- **Poster captions are a hint, not an identity.** The extractor reads whatever text
+  sits under a badge, which produced "Canadian Armed Forces" for the parachutist
+  wings and "Maple Leaf" for the Maple Leaf Exchange. `data/labels.py` is
+  authoritative.
+- **Where the instruction and the illustration disagree, the instruction governs.**
+  Annex H's 12 cm proficiency anchor, its five-badge stagger, and the poster's wider
+  marksmanship gap were all wrong.
+- **Flag discrepancies, never reconcile them silently.** The validator reports
+  overlaps, tight clearances and anything resting on an estimate. It never adjusts a
+  position to make a problem go away.
+
+## Sources
+
+- CJCR Dress Instructions, Chapter 3 Section 1 - the governing instruction
+- CJCR Dress Instructions, Chapter 3 Annex H - sleeve placement figures
+- CJCR Dress Instructions, Chapter 4 Annex A - poppy
+- CJCR Dress Instructions, Chapter 5 Annexes A-D - medals, ribbons, commendations
+- A-CR-CCP-750/DA-003, *Symbols of the Royal Canadian Army Cadets*, March 2018 -
+  artwork only. Still shows terminated programmes, so treat it as art, not currency.

@@ -1,0 +1,99 @@
+n,slug,poster_caption,label,family,slot,aspect_trimmed,extracted,note
+1,symboles_des_cadets,SYMBOLES DES CADETS,Poster title,not_a_badge,,4.8337,yes,
+2,royaux_de_larmée,ROYAUX DE L'ARMÉE,Poster title,not_a_badge,,2.2157,yes,
+3,unnamed,,Poster title block,not_a_badge,,1.1826,yes,
+4,royaux,ROYAUX,Poster title fragment,not_a_badge,,1.4938,yes,
+5,cadets,CADETS,Poster title fragment,not_a_badge,,2.6559,yes,
+6,canadienne,CANADIENNE,Poster title fragment,not_a_badge,,1.4938,yes,
+7,larmée_canadienne,L'ARMÉE CANADIENNE,Poster title fragment,not_a_badge,,2.6559,yes,
+8,emblem,Emblem,RCAC Emblem,heraldry,,0.8936,yes,Marketing use. Not worn on uniform.
+9,headdress_badge,Headdress Badge,Headdress Badge,heraldry,,0.9209,yes,"Cap badge, not a sleeve item."
+10,unnamed_2,,RCAC Banner,heraldry,,1.343,yes,
+11,royal_canadian_army_cadets_camp_flag,Royal Canadian Army Cadets Camp Flag,Camp Flag,heraldry,,1.157,yes,
+12,unnamed_3,,Cadets Flag,heraldry,,1.2915,yes,
+13,pipe_banner,Pipe Banner,Pipe Banner,heraldry,,0.6714,yes,
+14,trumpet_banner,Trumpet Banner,Trumpet Banner,heraldry,,0.7515,yes,
+15,da_vi_d_d_e_f_al_ar_de,Da vi d- d e- F al ar de,Shoulder title + RCAC badge (example 1),shoulder,*_corps_name / *_rcac_badge,1.1226,yes,BAD CROP: merges corps name title with the RCAC circle below it.
+16,unnamed_4,,Commander's Cadet Commendation Pin,out_of_scope,out_of_scope_*,4.0625,yes,"Pinned insignia, front of tunic."
+17,unnamed_5,,Shoulder title + RCAC badge (example 2),shoulder,*_corps_name / *_rcac_badge,1.1226,yes,"BAD CROP: same template as item 15, different corps name."
+18,master_corporal,Master Corporal,Master Corporal,rank,right_rank_*,0.9961,yes,
+19,sergeant,Sergeant,Sergeant,rank,right_rank_*,0.8295,yes,
+20,chief_warrant_officer,Chief Warrant Officer,Chief Warrant Officer,rank,right_rank_*,0.7439,yes,
+21,drum_major,Drum Major,Drum Major,appointment,right_appointment,0.8826,yes,
+22,pipe_major,Pipe Major,Pipe Major,appointment,right_appointment,0.8826,yes,
+23,corporal,Corporal,Corporal,rank,right_rank_*,1.1216,yes,
+24,master_warrant_officer,Master Warrant Officer,Master Warrant Officer,rank,right_rank_*,1.2749,yes,
+25,lance_corporal,Lance Corporal,Lance Corporal,rank,right_rank_*,1.3743,yes,
+26,unnamed_6,,Warrant Officer,rank,right_rank_*,1.0194,yes,Caption lost by the extractor.
+27,level_1,Level 1,National Star of Excellence 1,terminated,,1.0,yes,Terminated programme.
+28,level_2,Level 2,National Star of Excellence 2,terminated,,1.0,yes,Terminated programme.
+29,level_3,Level 3,National Star of Excellence 3,terminated,,1.0,yes,Terminated programme.
+30,level_4,Level 4,National Star of Excellence 4,terminated,,1.0,yes,Terminated programme.
+31,green_star,Green Star,Green Star,star,right_star_level,1.0468,yes,
+32,red_star,Red Star,Red Star,star,right_star_level,1.0487,yes,
+33,silver_star,Silver Star,Silver Star,star,right_star_level,1.0487,yes,
+34,gold_star,Gold Star,Gold Star,star,right_star_level,1.0468,yes,
+35,master_cadet,Master Cadet,Master Cadet,terminated,,1.8371,yes,Terminated programme. Slot stays vacant.
+36,bronze_level,Bronze Level,Duke of Edinburgh's Award – Bronze,dofe,,1.197,yes,Pin. Not in QualMap.
+37,silver_level,Silver Level,Duke of Edinburgh's Award – Silver,dofe,,1.197,yes,Pin. Not in QualMap.
+38,gold_level,Gold Level,Duke of Edinburgh's Award – Gold,dofe,,1.197,yes,Pin. Not in QualMap.
+39,general_training,General Training,General Training,ctc,right_ctc_grid,1.0,yes,No matching QualMap row.
+40,basic_expedition,Basic Expedition,Expedition – Basic,ctc,right_ctc_grid,0.9982,yes,
+41,expedition_instructor,Expedition Instructor,Expedition – Instructor,ctc,right_ctc_grid,1.0,yes,
+42,leadership_and_challenge,Leadership and Challenge,Expedition – Leadership and Challenge,ctc,right_ctc_grid,1.0,yes,
+43,basic_marksman,Basic Marksman,Marksmanship – Basic,ctc,right_ctc_grid,1.0,yes,
+44,air_rifle_marksmanship,Air Rifle Marksmanship,Air Rifle Marksmanship Instructor,ctc,right_ctc_grid,0.9982,yes,
+45,fullbore_marksmanship,Fullbore Marksmanship,Marksmanship – Fullbore Phase 1,ctc,right_ctc_grid,1.0,yes,
+46,fullbore_marksmanship_2,Fullbore Marksmanship,Marksmanship – Fullbore Phase 2,ctc,right_ctc_grid,1.0,yes,
+47,basic_fitness_and_sports,Basic Fitness and Sports,Fitness and Sports – Basic,ctc,right_ctc_grid,1.0,yes,
+48,fitness_and_sports_instructor,Fitness and Sports Instructor,Fitness and Sports – Instructor,ctc,right_ctc_grid,1.0,yes,
+49,basic_drill_and_ceremonial,Basic Drill and Ceremonial,Drill and Ceremonial – Basic,ctc,right_ctc_grid,0.9982,yes,
+50,and_ceremonial_instructor,and Ceremonial Instructor,Drill and Ceremonial – Instructor,ctc,right_ctc_grid,1.0,yes,
+51,staff_cadet,Staff Cadet,Staff Cadet,ctc,right_ctc_grid,1.0,yes,
+52,army_cadet_voyage,Army Cadet Voyage,Army Cadet Voyage,ctc,right_ctc_grid,1.0,yes,No matching QualMap row.
+53,maple_leaf,Maple Leaf,Maple Leaf Exchange,ctc,right_ctc_grid,1.0,yes,No matching QualMap row. Caption was wrong.
+54,canadian_armed_forces,Canadian Armed Forces,Parachutist badge,out_of_scope,out_of_scope_*,2.418,yes,"Left breast, 0.5 cm above the pocket. Caption was wrong."
+55,military_band,Military Band,Military Band – Basic,ctc,right_ctc_grid,1.0,yes,
+56,military_band_2,Military Band,Military Band – Intermediate,ctc,right_ctc_grid,1.0,yes,
+57,military_band_3,Military Band,Military Band – Advanced,ctc,right_ctc_grid,1.0,yes,
+58,pipe_band,Pipe Band,Pipe Band – Basic,ctc,right_ctc_grid,1.0,yes,
+59,pipe_band_2,Pipe Band,Pipe Band – Intermediate,ctc,right_ctc_grid,1.0,yes,
+60,pipe_band_3,Pipe Band,Pipe Band – Advanced,ctc,right_ctc_grid,1.0,yes,
+61,marksman,Marksman,Marksman,marksmanship,left_marksmanship,0.724,yes,
+62,first_class_marksman,First Class Marksman,First Class Marksman,marksmanship,left_marksmanship,0.724,yes,
+63,expert_marksman,Expert Marksman,Expert Marksman,marksmanship,left_marksmanship,0.724,yes,
+64,distinguished_marksman,Distinguished Marksman,Distinguished Marksman,marksmanship,left_marksmanship,0.8311,yes,
+65,emergency,Emergency,First Aid – Emergency,first_aid,left_proficiency_stack,0.9981,yes,
+66,standard,Standard,First Aid – Standard,first_aid,left_proficiency_stack,1.0,yes,
+67,basic_qualification,Basic Qualification,Music – Basic,music,left_proficiency_stack,0.9982,yes,
+68,qualification_level_1,Qualification Level 1,Music – Level 1,music,left_proficiency_stack,1.0,yes,
+69,unnamed_7,,Music levels 2-5 + Canada wordmark,music,left_proficiency_stack,1.2446,yes,BAD CROP: levels 2-4 recovered by recut_music.py.
+70,level_5,Level 5,Music – Level 5,music,left_proficiency_stack,1.0,yes,
+71,unnamed_8,,Unidentified fragment,not_a_badge,,1.0037,yes,Effectively blank.
+72,unnamed_9,,Expedition – Regional pin,out_of_scope,out_of_scope_*,1.0,yes,"Front of tunic, left pocket."
+73,unnamed_10,,Poster footer element,not_a_badge,,1.9792,yes,
+74,unnamed_11,,Poster footer element,not_a_badge,,3.2232,yes,
+75,unnamed_12,,Poster footer element,not_a_badge,,2.6624,yes,
+76,unnamed_13,,Poster footer element,not_a_badge,,1.4979,yes,
+77,unnamed_14,,Poster footer element,not_a_badge,,2.6656,yes,
+78,recut__fit_bronze,,Fitness – Bronze,fitness,left_proficiency_stack,0.9981,recovered,"Missed region, recovered from the source PDF."
+79,recut__fit_silver,,Fitness – Silver,fitness,left_proficiency_stack,0.9981,recovered,"Missed region, recovered from the source PDF."
+80,recut__fit_gold,,Fitness – Gold,fitness,left_proficiency_stack,0.9981,recovered,"Missed region, recovered from the source PDF."
+81,recut__fit_excellence,,Fitness – Excellence,fitness,left_proficiency_stack,0.9981,recovered,"Missed region, recovered from the source PDF."
+82,recut__band0_col0,,Music – Level 2,music,left_proficiency_stack,1.0,recovered,Split out of the unnamed_7 bad crop.
+83,recut__band0_col1,,Music – Level 3,music,left_proficiency_stack,1.0,recovered,Split out of the unnamed_7 bad crop.
+84,recut__band0_col2,,Music – Level 4,music,left_proficiency_stack,1.0,recovered,Split out of the unnamed_7 bad crop.
+85,recut__corps_name_title__da_vi_d_d_e_f_al_ar_de,,Corps name title,shoulder,*_corps_name / *_rcac_badge,3.1753,recovered,Split from item 15. Title = 1.923 x RCAC diameter wide.
+86,recut__rcac_badge__da_vi_d_d_e_f_al_ar_de,,RCAC badge,shoulder,*_corps_name / *_rcac_badge,1.0,recovered,Split from item 15. A true circle; diameter still unmeasured.
+M01,,,Army Cadet Service Medal (+ bar),medal,out_of_scope_medals,,NO,Medal row
+M02,,,Order of St George,medal,out_of_scope_medals,,NO,Medal row
+M03,,,ANAVETS Medal of Merit,medal,out_of_scope_medals,,NO,Medal row
+M04,,,Major-General W.A. Howard Award,medal,out_of_scope_medals,,NO,Medal row
+M05,,,Legion Medal of Excellence,medal,out_of_scope_medals,,NO,Medal row
+M06,,,Lord Strathcona Medal,medal,out_of_scope_medals,,NO,Medal row
+M07,,,Cadet Award for Bravery,medal,out_of_scope_medals,,NO,Medal row
+M08,,,RCAC National Rifle Team pin,out_of_scope,out_of_scope_*,,NO,Summer training bottom row
+M09,,,Belzile Trophy pin,out_of_scope,out_of_scope_*,,NO,Summer training bottom row
+M10,,,Marksmanship competition pins x4,out_of_scope,out_of_scope_*,,NO,Zones / Prov / Nat / Nat Winners
+M11,,,Biathlon competition pins x4,out_of_scope,out_of_scope_*,,NO,Zones / Prov / Nat / Nat Winners
+M12,,,Expedition pins (National etc.),out_of_scope,out_of_scope_*,,NO,Only Regional was extracted

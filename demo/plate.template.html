@@ -1,0 +1,434 @@
+<title>Badge Plate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --paper:#EDF0EA; --sheet:#F7F9F4; --card:#FFFFFF;
+  --ink:#161C18; --ink-2:#5E6B62; --ink-3:#8A968D;
+  --rule:#CBD4CB; --rule-2:#DFE5DD;
+  --green:#0F4A32; --green-soft:#E2EBE3;
+  --brass:#A87A12; --brass-soft:#F3E7C7;
+  --warn:#9A5410; --warn-soft:#F7E7D2;
+  --crit:#98282B; --crit-soft:#F7DEDD;
+  --ok:#2C6647; --ok-soft:#DCEBE1;
+  --plate:#F2F4F0;
+  --shadow:0 1px 2px rgba(16,32,24,.07);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#10150F; --sheet:#171D18; --card:#1C231D;
+    --ink:#E3E9E1; --ink-2:#94A197; --ink-3:#6B776F;
+    --rule:#2C3830; --rule-2:#222C26;
+    --green:#5FBE8E; --green-soft:#1B2E24;
+    --brass:#D9AC4A; --brass-soft:#33290F;
+    --warn:#D68A3C; --warn-soft:#33240F;
+    --crit:#E0716F; --crit-soft:#33191A;
+    --ok:#5FBE8E; --ok-soft:#172C21;
+    --plate:#232B24;
+    --shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#10150F; --sheet:#171D18; --card:#1C231D;
+  --ink:#E3E9E1; --ink-2:#94A197; --ink-3:#6B776F;
+  --rule:#2C3830; --rule-2:#222C26; --green:#5FBE8E; --green-soft:#1B2E24;
+  --brass:#D9AC4A; --brass-soft:#33290F; --warn:#D68A3C; --warn-soft:#33240F;
+  --crit:#E0716F; --crit-soft:#33191A; --ok:#5FBE8E; --ok-soft:#172C21;
+  --plate:#232B24; --shadow:0 1px 2px rgba(0,0,0,.4);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:Archivo,"Helvetica Neue",Arial,sans-serif; font-size:14px; line-height:1.45;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2{margin:0; font-weight:600; letter-spacing:-.01em; text-wrap:balance}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace; font-variant-numeric:tabular-nums}
+
+/* ---------- masthead ---------- */
+.masthead{
+  position:sticky; top:0; z-index:20; background:var(--sheet);
+  border-bottom:1px solid var(--rule); padding:12px 20px;
+  display:flex; flex-direction:column; gap:10px;
+}
+.mrow{display:flex; flex-wrap:wrap; align-items:baseline; gap:8px 14px}
+.masthead h1{font-size:17px}
+.masthead .sub{font-size:12.5px; color:var(--ink-2)}
+.spacer{flex:1 1 auto}
+.pill{
+  font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.09em;
+  text-transform:uppercase; padding:2px 7px; border-radius:2px; white-space:nowrap;
+  border:1px solid var(--rule); color:var(--ink-2);
+}
+.pill.live{border-color:var(--ok); color:var(--ok)}
+.pill.local{border-color:var(--warn); color:var(--warn)}
+
+.tools{display:flex; flex-wrap:wrap; gap:7px; align-items:center}
+input[type=search], input[type=text], select, button, textarea{font-family:inherit; color:var(--ink)}
+input[type=search]{
+  padding:5px 9px; min-width:190px; font-size:13px; background:var(--paper);
+  border:1px solid var(--rule); border-radius:3px;
+}
+.filters{display:flex; flex-wrap:wrap; gap:4px}
+.fbtn{
+  padding:3px 9px; font-size:11.5px; background:var(--paper); color:var(--ink-2);
+  border:1px solid var(--rule); border-radius:3px; cursor:pointer;
+}
+.fbtn:hover{border-color:var(--green); color:var(--green)}
+.fbtn[aria-pressed="true"]{background:var(--green); color:var(--sheet); border-color:var(--green)}
+.fbtn .ct{opacity:.65; margin-left:4px; font-family:"IBM Plex Mono",monospace; font-size:10px}
+:where(button,input,select,textarea):focus-visible{outline:2px solid var(--brass); outline-offset:1px}
+
+.bar{height:4px; background:var(--rule-2); border-radius:2px; overflow:hidden; width:130px}
+.bar i{display:block; height:100%; background:var(--ok); width:0%}
+
+/* ---------- plate ---------- */
+.plate{
+  padding:16px 20px 44px;
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(236px,1fr)); gap:12px;
+}
+.card{
+  background:var(--card); border:1px solid var(--rule); border-radius:3px;
+  box-shadow:var(--shadow); display:flex; flex-direction:column; overflow:hidden;
+}
+.card.reviewed{border-color:var(--ok)}
+.card.recovered > .art{background:var(--brass-soft)}
+.card.recovered .idx{color:var(--brass); border-color:var(--brass)}
+.card.hidden{display:none}
+.card > .art{
+  background:var(--plate); border-bottom:1px solid var(--rule-2);
+  height:140px; display:grid; place-items:center; padding:9px; position:relative;
+}
+.card > .art img{max-width:100%; max-height:100%; display:block}
+.idx{
+  position:absolute; top:5px; left:6px; font-family:"IBM Plex Mono",monospace;
+  font-size:10px; color:var(--ink-3); background:var(--card);
+  border:1px solid var(--rule-2); border-radius:2px; padding:0 4px;
+}
+.state{
+  position:absolute; top:5px; right:6px; font-family:"IBM Plex Mono",monospace;
+  font-size:9px; letter-spacing:.07em; text-transform:uppercase;
+  padding:1px 5px; border-radius:2px; display:none;
+}
+.card.reviewed .state{display:block; background:var(--ok-soft); color:var(--ok)}
+.card.edited  .state{display:block; background:var(--brass-soft); color:var(--brass)}
+
+.meta{padding:8px 9px 0; display:flex; flex-direction:column; gap:2px}
+.meta .slug{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink); word-break:break-all}
+.meta .cap{font-size:11.5px; color:var(--ink-2); min-height:1.2em}
+.meta .cap em{color:var(--ink-3); font-style:normal}
+.meta .nums{font-family:"IBM Plex Mono",monospace; font-size:9.5px; color:var(--ink-3)}
+.meta .nums b{font-weight:500; color:var(--warn)}
+.meta .base{
+  font-size:10.5px; color:var(--ink-3); margin-top:3px; padding-top:5px;
+  border-top:1px dashed var(--rule-2);
+}
+
+.edit{padding:7px 9px 9px; display:flex; flex-direction:column; gap:5px; margin-top:auto}
+.edit input[type=text], .edit select, .edit textarea{
+  width:100%; padding:4px 7px; font-size:12px; background:var(--paper);
+  border:1px solid var(--rule); border-radius:3px;
+}
+.edit textarea{resize:vertical; min-height:30px; line-height:1.35}
+.edit select{
+  appearance:none;
+  background-image:linear-gradient(45deg,transparent 50%,var(--ink-3) 50%),linear-gradient(135deg,var(--ink-3) 50%,transparent 50%);
+  background-position:calc(100% - 13px) 50%,calc(100% - 8px) 50%;
+  background-size:5px 5px,5px 5px; background-repeat:no-repeat;
+}
+.edit .ok{
+  padding:4px 7px; font-size:11.5px; background:var(--paper); color:var(--ink-2);
+  border:1px solid var(--rule); border-radius:3px; cursor:pointer;
+}
+.edit .ok:hover{border-color:var(--ok); color:var(--ok)}
+.card.reviewed .edit .ok{background:var(--ok-soft); border-color:var(--ok); color:var(--ok)}
+
+.note{padding:11px 20px; margin:0 20px 4px; border-radius:3px; font-size:12.5px}
+.note.warn{background:var(--warn-soft); color:var(--warn); border:1px solid var(--warn)}
+.empty{padding:40px 20px; color:var(--ink-3); text-align:center; grid-column:1/-1}
+.missing{margin:4px 20px 24px; padding:14px 16px; background:var(--sheet);
+  border:1px solid var(--rule); border-radius:3px}
+.missing h2{font-size:12.5px; margin-bottom:4px}
+.missing p{margin:0 0 9px; font-size:11.5px; color:var(--ink-3); max-width:80ch}
+.missing ul{list-style:none; margin:0; padding:0; display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(268px,1fr)); gap:4px 14px}
+.missing li{font-size:12px; display:flex; gap:7px; align-items:baseline}
+.missing li b{font-weight:500}
+.missing li span{color:var(--ink-3); font-size:10.5px}
+footer.foot{padding:0 20px 40px; color:var(--ink-3); font-size:11.5px; max-width:78ch}
+footer.foot p{margin:.5em 0}
+code{font-family:"IBM Plex Mono",monospace; font-size:.92em; background:var(--rule-2); padding:1px 4px; border-radius:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="masthead">
+  <div class="mrow">
+    <h1>Badge Plate</h1>
+    <span class="sub">A-CR-CCP-750/DA-003 &middot; every object, identified &middot; correct any label in place</span>
+    <span class="spacer"></span>
+    <span class="bar"><i id="barfill"></i></span>
+    <span class="pill" id="progress">reviewed</span>
+    <span class="pill" id="conn">connecting&hellip;</span>
+  </div>
+  <div class="tools">
+    <input type="search" id="q" placeholder="Search slug, caption or note" aria-label="Search badges">
+    <div class="filters" id="filters"></div>
+  </div>
+</div>
+
+<div id="banner"></div>
+<div class="plate" id="plate"></div>
+
+<section class="missing">
+  <h2>On the poster, never extracted</h2>
+  <p>Found by cross-checking the poster layout against what came out of <code>extract_badges.py</code>.
+     All front-of-tunic, so none of it blocks the sleeve model &mdash; but it is what the next stage needs.</p>
+  <ul id="missinglist"></ul>
+</section>
+
+<footer class="foot">
+  <p><strong>How this works.</strong> Every object off the poster, in poster order, with the confirmed identity under each. Amber cards numbered <code>R##</code> are artwork recovered since the first pass &mdash; either split out of a bad crop or pulled from a region the extractor skipped &mdash; and those are the ones worth a second look. Correct anything and it saves as you type; I read it back from here.</p>
+  <p><strong>Aspect</strong> shows the manifest crop ratio and the ratio after trimming to the artwork's true alpha bounds. Where those disagree, the crop carried dead space and the manifest number is wrong.</p>
+  <p>Badge artwork is Crown copyright, from <em>Symbols of the Royal Canadian Army Cadets</em>, March 2018. Internal corps use. This page is organisation-internal and cannot be shared publicly.</p>
+</footer>
+
+<script>
+/*__PLATE_PACK__*/
+</script>
+
+<script>
+"use strict";
+
+const FAMILIES = [
+  ["unknown",     "Unknown / unsure"],
+  ["rank",        "Rank"],
+  ["appointment", "Appointment"],
+  ["star",        "Star level"],
+  ["marksmanship","Marksmanship (sleeve)"],
+  ["first_aid",   "Proficiency – first aid"],
+  ["music",       "Proficiency – music"],
+  ["fitness",     "Proficiency – fitness"],
+  ["ctc",         "CTC / summer training"],
+  ["dofe",        "Duke of Edinburgh's Award"],
+  ["terminated",  "Terminated programme"],
+  ["out_of_scope","Front of tunic / out of scope"],
+  ["heraldry",    "Heraldry, flags, banners"],
+  ["shoulder",    "Shoulder title / RCAC badge"],
+  ["medal",       "Medal"],
+  ["not_a_badge", "Not a badge (poster furniture)"]
+];
+const FAMLABEL = Object.fromEntries(FAMILIES);
+
+/* ---------- store: db when granted, localStorage otherwise ---------- */
+const LS = "badge-plate-corrections";
+let db = null, edits = {}, saveTimers = {};
+
+function loadLocal(){
+  try { edits = JSON.parse(localStorage.getItem(LS) || "{}"); } catch { edits = {}; }
+}
+function saveLocal(){
+  try { localStorage.setItem(LS, JSON.stringify(edits)); } catch {}
+}
+const docId = n => "b" + String(n).padStart(3,"0");   // slugs carry accents; ids must not
+
+function commit(n){
+  const rec = edits[docId(n)];
+  saveLocal();
+  if (!db || !rec) return;
+  clearTimeout(saveTimers[n]);
+  saveTimers[n] = setTimeout(() => {
+    db.doc("corrections/" + docId(n)).set(rec).catch(e => {
+      setConn(`save failed: ${e.code || "error"}`, "local");
+    });
+  }, 550);
+}
+
+function setConn(text, cls){
+  const el = document.getElementById("conn");
+  el.textContent = text;
+  el.className = "pill" + (cls ? " " + cls : "");
+}
+
+/* ---------- cards ---------- */
+const plate = document.getElementById("plate");
+const cards = new Map();
+
+function baselineLine(b){
+  const fam = FAMLABEL[b.fam] || b.fam;
+  const name = b.label ? `<strong style="color:var(--ink)">${b.label}</strong> &middot; ` : "";
+  return name + fam + (b.note ? ` &mdash; ${b.note}` : "");
+}
+
+function build(b){
+  const id = docId(b.n);
+  const card = document.createElement("div");
+  card.className = "card" + (b.rec ? " recovered" : "");
+  card.dataset.n = b.n;
+
+  const drift = Math.abs(b.crop - b.trim) > 0.02;
+  const aspect = `aspect ${b.crop.toFixed(3)} → ` +
+    (drift ? `<b>${b.trim.toFixed(3)}</b>` : b.trim.toFixed(3));
+
+  card.innerHTML = `
+    <div class="art">
+      <span class="idx">${b.rec ? "R" : ""}${String(b.n).padStart(2,"0")}</span>
+      <span class="state"></span>
+      <img alt="${b.slug}" src="data:image/png;base64,${PLATE_ART[b.slug]}">
+    </div>
+    <div class="meta">
+      <span class="slug">${b.slug}</span>
+      <span class="cap">${b.cap ? b.cap : "<em>no caption on the poster</em>"}</span>
+      <span class="nums">${b.rec ? "recovered artwork" : `x${Math.round(b.x)} y${Math.round(b.y)}`} &middot; ${aspect}</span>
+      <span class="base">${baselineLine(b)}</span>
+    </div>
+    <div class="edit">
+      <input type="text" class="f-label" placeholder="Correct label" aria-label="Correct label for ${b.slug}">
+      <select class="f-fam" aria-label="Family for ${b.slug}"></select>
+      <textarea class="f-note" rows="1" placeholder="Note" aria-label="Note for ${b.slug}"></textarea>
+      <button type="button" class="ok">Baseline is right</button>
+    </div>`;
+
+  const sel = card.querySelector(".f-fam");
+  for (const [v,l] of FAMILIES){
+    const o = document.createElement("option");
+    o.value = v; o.textContent = l; sel.appendChild(o);
+  }
+  sel.value = b.fam && FAMLABEL[b.fam] ? b.fam : "unknown";
+
+  const touch = patch => {
+    const rec = edits[id] || (edits[id] = {slug:b.slug, n:b.n});
+    Object.assign(rec, patch, {ts: Date.now()});
+    commit(b.n);
+    paint(b);
+  };
+
+  card.querySelector(".f-label").addEventListener("input", e => touch({label:e.target.value.trim(), confirmed:false}));
+  card.querySelector(".f-note").addEventListener("input",  e => touch({note:e.target.value.trim(),  confirmed:false}));
+  sel.addEventListener("change", e => touch({fam:e.target.value, confirmed:false}));
+  card.querySelector(".ok").addEventListener("click", () => {
+    const rec = edits[id];
+    touch({confirmed: !(rec && rec.confirmed)});
+  });
+
+  cards.set(b.n, card);
+  plate.appendChild(card);
+  paint(b);
+}
+
+function paint(b){
+  const card = cards.get(b.n), rec = edits[docId(b.n)] || {};
+  const edited = !!(rec.label || rec.note || (rec.fam && rec.fam !== b.fam));
+  const reviewed = !!rec.confirmed || edited;
+  card.classList.toggle("reviewed", !!rec.confirmed);
+  card.classList.toggle("edited", edited && !rec.confirmed);
+  card.querySelector(".state").textContent = rec.confirmed ? "confirmed" : edited ? "corrected" : "";
+  card.querySelector(".ok").textContent = rec.confirmed ? "Confirmed" : "Baseline is right";
+
+  for (const [cls,key] of [[".f-label","label"],[".f-note","note"]]){
+    const el = card.querySelector(cls);
+    if (document.activeElement !== el) el.value = rec[key] || "";
+  }
+  const sel = card.querySelector(".f-fam");
+  if (document.activeElement !== sel) sel.value = rec.fam || b.fam || "unknown";
+
+  card.dataset.reviewed = reviewed ? "1" : "0";
+  card.dataset.fam = rec.fam || b.fam || "unknown";
+  return reviewed;
+}
+
+/* ---------- filters ---------- */
+let filter = "all", query = "";
+
+function buildFilters(){
+  const counts = {};
+  for (const b of PLATE) counts[b.fam] = (counts[b.fam]||0)+1;
+  const nrec = PLATE.filter(b => b.rec).length;
+  const opts = [["all","All",PLATE.length],["todo","Needs review",PLATE.length],
+                ["rec","Recovered",nrec]]
+    .concat(FAMILIES.filter(f => counts[f[0]]).map(f => [f[0], f[1], counts[f[0]]]));
+  const box = document.getElementById("filters");
+  for (const [v,l,c] of opts){
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "fbtn"; b.dataset.v = v;
+    b.setAttribute("aria-pressed", v === "all" ? "true" : "false");
+    b.innerHTML = `${l}<span class="ct">${c}</span>`;
+    b.addEventListener("click", () => {
+      filter = v;
+      for (const x of box.children) x.setAttribute("aria-pressed", x.dataset.v === v ? "true":"false");
+      apply();
+    });
+    box.appendChild(b);
+  }
+}
+
+function apply(){
+  let shown = 0, reviewed = 0;
+  for (const b of PLATE){
+    const card = cards.get(b.n);
+    const rec = edits[docId(b.n)] || {};
+    const isRev = card.dataset.reviewed === "1";
+    if (isRev) reviewed++;
+    const hay = (b.slug + " " + b.cap + " " + (b.note||"") + " " + (rec.label||"") + " " + (rec.note||"")).toLowerCase();
+    const okQ = !query || hay.includes(query);
+    const okF = filter === "all" ? true
+              : filter === "todo" ? !isRev
+              : filter === "rec"  ? !!b.rec
+              : card.dataset.fam === filter;
+    const vis = okQ && okF;
+    card.classList.toggle("hidden", !vis);
+    if (vis) shown++;
+  }
+  document.getElementById("progress").textContent = `${reviewed} / ${PLATE.length} reviewed`;
+  document.getElementById("barfill").style.width = (reviewed/PLATE.length*100).toFixed(1) + "%";
+  let e = document.getElementById("noneleft");
+  if (!shown && !e){
+    e = document.createElement("div"); e.id = "noneleft"; e.className = "empty";
+    e.textContent = "Nothing matches that filter.";
+    plate.appendChild(e);
+  } else if (e && shown){ e.remove(); }
+}
+
+const ml = document.getElementById("missinglist");
+for (const m of (typeof NOT_EXTRACTED !== "undefined" ? NOT_EXTRACTED : [])){
+  const li = document.createElement("li");
+  li.innerHTML = `<b>${m.label}</b> <span>${FAMLABEL[m.fam] || m.fam} &middot; ${m.note}</span>`;
+  ml.appendChild(li);
+}
+
+document.getElementById("q").addEventListener("input", e => { query = e.target.value.trim().toLowerCase(); apply(); });
+
+/* ---------- boot ---------- */
+loadLocal();
+buildFilters();
+for (const b of PLATE) build(b);
+apply();
+setConn("saving locally", "local");
+
+(async () => {
+  const ns = await claude.use("db");
+  if (!ns){
+    document.getElementById("banner").innerHTML =
+      `<div class="note warn">Shared saving isn't available in this view, so corrections are kept in this browser only.
+       They'll still be here on reload, but I can't read them back &mdash; paste them to me instead.</div>`;
+    return;
+  }
+  db = ns;
+  setConn("saved & shared", "live");
+  db.collection("corrections").onSnapshot(snap => {
+    for (const d of snap.docs){
+      const data = d.data(); if (!data) continue;
+      const local = edits[d.id];
+      if (!local || (data.ts || 0) >= (local.ts || 0)) edits[d.id] = data;
+    }
+    saveLocal();
+    for (const b of PLATE) paint(b);
+    apply();
+  }, err => setConn(`sync stopped: ${err.code}`, "local"));
+
+  // push anything typed before the store came up
+  for (const b of PLATE) if (edits[docId(b.n)]) commit(b.n);
+})();
+</script>

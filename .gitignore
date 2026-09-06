@@ -1,0 +1,30 @@
+# ---- never commit: Protected A cadet data ----
+*.xlsx
+*.xls
+~$*
+private/
+
+# ---- never commit: Crown copyright source artwork ----
+# The poster PDF and everything derived from it. Supply your own copy locally.
+ACRCCP750DA003.pdf
+*.pdf
+rcac_badges.zip
+art/
+
+# ---- generated: rebuild with build_all.py ----
+# These carry the inlined artwork, so they are both large and Crown copyright.
+demo/tunic.html
+demo/plate.html
+
+# ---- python ----
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# ---- editors / os ----
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

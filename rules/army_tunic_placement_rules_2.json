@@ -1,0 +1,787 @@
+{
+  "$comment": "Placement rules for Royal Canadian Army Cadet tunic (jacket) insignia. Sleeves only. Front of tunic not yet in scope.",
+  "version": "0.6-draft",
+  "scope": "army_cadet_sleeves_and_front",
+  "sources": [
+    {
+      "id": "CH3S1",
+      "title": "CJCR Gp Dress Instructions, Chapter 3 Insignia Section 1 Guidelines",
+      "url": "https://www.canada.ca/en/department-national-defence/services/cadets-junior-canadian-rangers/cjcr-policy/cjcr-dress-instructions/chapter-3.html",
+      "page_modified": "2024-12-23"
+    },
+    {
+      "id": "ANNEX-H",
+      "title": "CJCR Gp Dress Instructions, Chapter 3 Annex H Insignia Placement",
+      "url": "https://www.canada.ca/en/department-national-defence/services/cadets-junior-canadian-rangers/cjcr-policy/cjcr-dress-instructions/chapter-3/annex-h.html",
+      "page_modified": "2023-05-23",
+      "figures_used": [
+        "3H-3",
+        "3H-4-1",
+        "3H-4-2",
+        "3H-4-3"
+      ]
+    },
+    {
+      "id": "CH5-A",
+      "title": "CJCR Dress Instructions, Chapter 5 Annex A - Method of wear for Cadet Medals",
+      "figures_used": [
+        "5A-1"
+      ]
+    },
+    {
+      "id": "CH5-B",
+      "title": "CJCR Dress Instructions, Chapter 5 Annex B - Method of Wear of Cadet Undress Ribbons",
+      "figures_used": [
+        "5B-1"
+      ]
+    },
+    {
+      "id": "CH5-C",
+      "title": "CJCR Dress Instructions, Chapter 5 Annex C - Precedence of Undress Ribbon Rows",
+      "figures_used": [
+        "5C-1"
+      ]
+    },
+    {
+      "id": "CH5-D",
+      "title": "CJCR Dress Instructions, Chapter 5 Annex D - National Commendations, Cadet Commendations, The Duke of Edinburgh Award",
+      "figures_used": [
+        "5D-1",
+        "5D-2",
+        "5D-3",
+        "5D-4"
+      ]
+    },
+    {
+      "id": "CH4-A",
+      "title": "CJCR Dress Instructions, Chapter 4 Annex A - Poppy",
+      "figures_used": [
+        "4A-1"
+      ]
+    }
+  ],
+  "datums": {
+    "shoulder_seam": "Upper seam of the sleeve at the shoulder. Offsets measured downward.",
+    "cuff_bottom": "Bottom edge of the cuff, not the top cuff seam. Offsets measured upward.",
+    "pocket_top": "Top edge of the breast pocket. Front offsets measured upward. One frame per pocket, left and right.",
+    "pocket_flap_bottom": "Lower edge of the breast pocket flap. Pocket-mounted pins are centred between this and the pocket's lower seam."
+  },
+  "measured_constants_cm": {
+    "$comment": "All values in cm. Policy gives only gaps between items, never badge sizes, so these are local measurements. 'confidence' flags how much weight a renderer should put on each.",
+    "status": "partial",
+    "source": "Local measurement, 242 RCACC, unless noted.",
+    "star_level_badge": {
+      "shape": "5-point equal star, point up",
+      "outer_diameter": 3.0,
+      "inner_diameter": 2.0,
+      "bbox_w": 2.85,
+      "bbox_h": 2.71,
+      "confidence": "measured",
+      "note": "Inner/outer ratio is 0.667. A classic pentagram star is 0.382, so this is a noticeably fatter star. Renderer must build from the two diameters, not from a default star primitive."
+    },
+    "marksmanship_numeral": {
+      "w": 3.81,
+      "h": 1.905,
+      "source_units": "1.5 x 0.75 in",
+      "confidence": "measured"
+    },
+    "marksmanship_rifles": {
+      "w": 6.0,
+      "h": 5.08,
+      "source_units": "6 cm wide x 2 in tall",
+      "confidence": "measured",
+      "note": "Both dimensions measured by Lt Beal. Supersedes w=5.5, which was inferred from the poster aspect 0.742 and is 8% low. Same width as the Distinguished assembly. Poster artwork trims to aspect 1.003 (square), implying 5.98 cm tall at this width against the 5.08 cm measured - treat poster aspects as unreliable for sizing."
+    },
+    "marksmanship_crowned": {
+      "w": 6.0,
+      "h": 8.0,
+      "confidence": "measured",
+      "note": "Distinguished only. Single piece, replaces rifles + numeral. Remeasured by Lt Beal and confirmed. Poster artwork trims to aspect 0.831 against the 0.750 measured; the measurement stands."
+    },
+    "rank_chevron": {
+      "confidence": "measured",
+      "w": 10.0,
+      "heights": {
+        "Cdt": null,
+        "LCpl": 6.5,
+        "Cpl": 8.0,
+        "MCpl": 9.5,
+        "Sgt": 11.0
+      },
+      "note": "Cdt wears no rank insignia. Heights step +1.5 cm per rank."
+    },
+    "rank_wo": {
+      "w": 5.08,
+      "h": 5.08,
+      "source_units": "2 x 2 in bounding box",
+      "confidence": "measured"
+    },
+    "rank_mwo": {
+      "w": 7.62,
+      "h": 5.08,
+      "source_units": "3 x 2 in bounding box",
+      "confidence": "measured"
+    },
+    "rank_cwo": {
+      "w": 7.62,
+      "h": 10.16,
+      "source_units": "3 x 4 in bounding box",
+      "confidence": "ESTIMATE - unverified",
+      "note": "Guess only. Suspect: MWO is landscape (wider than tall) and this estimate is portrait and twice MWO's height. CWO insignia is the coat of arms rather than a crown so a taller box is plausible, but measure before trusting."
+    },
+    "appointment_badge": {
+      "w": 10.0,
+      "h": 11.0,
+      "confidence": "measured for pipe major and drum major only",
+      "note": "Same 10 x 11 cm bounding box as Sgt rank. Anchored by its bottom edge at 20 cm, so it spans 20 to 31 cm above the cuff bottom. Other appointment insignia not measured."
+    },
+    "circle_badge": {
+      "diameter": 3.0,
+      "confidence": "confirmed by fit",
+      "applies_to": [
+        "CTC qualification",
+        "Fitness proficiency",
+        "First aid proficiency",
+        "Music proficiency"
+      ],
+      "note": "3 cm confirmed geometrically. The CTC grid is 3 circles wide. At 3 cm the grid is 9 cm on a 12.26 cm flat sleeve at that height, leaving 1.63 cm each side. At 4 cm it would be 12 cm on the same 12.26 cm, leaving 0.13 cm each side, which cannot be sewn. Measured on size 6436; smaller sizes make the 4 cm case worse still.",
+      "level_identifier": "None. Music levels are now built into the circle rather than carried on a separate numeral."
+    },
+    "expedition_pin": {
+      "diameter": 2.54,
+      "source_units": "1 in circle",
+      "confidence": "ESTIMATE"
+    },
+    "competition_pin": {
+      "w": 2.54,
+      "h": 2.54,
+      "source_units": "1 in square",
+      "confidence": "measured"
+    },
+    "medal_ribbon": {
+      "w": 3.5,
+      "h": 1.0,
+      "confidence": "measured"
+    },
+    "corps_name_title": {
+      "w": 12.21,
+      "h": 3.85,
+      "confidence": "derived",
+      "note": "Derived, not measured. The poster draws the corps name title and the RCAC badge together as one template, twice, for two example corps (manifest items 15 and 17; both pixel-identical). Title is 1.923 x the badge diameter wide and 0.606 x it tall, so the measured 6.35 cm diameter fixes both. Leaves 1.8 cm of cloth between the title's bottom edge and the badge's top."
+    },
+    "rcac_badge": {
+      "shape": "circle",
+      "diameter": 6.35,
+      "w": 6.35,
+      "h": 6.35,
+      "source_units": "2.5 in diameter",
+      "confidence": "measured",
+      "note": "Measured locally by Lt Beal. Artwork on the poster is a true circle (895 x 895 px trimmed), which agrees."
+    },
+    "garment": {
+      "cuff_height": 5.0,
+      "breast_pocket": {
+        "w": 13.0,
+        "h": 15.0,
+        "confidence": "measured",
+        "note": "13 cm across the top edge, 15 cm top to bottom. Taller than wide, which is unusual for a patch pocket, so it was previously flagged as possibly transposed - Lt Beal has confirmed the orientation explicitly. Load-bearing for every front placement."
+      },
+      "competition_pin_strip": {
+        "w": 3.0,
+        "h": 9.0,
+        "note": "Fits exactly three 1 in pins with 0.23 cm side clearance and 0.34 cm gaps. Independently confirms the CH3S1 4.b cap of three."
+      },
+      "tunic_size_measured": "6436",
+      "sleeve_length_shoulder_seam_to_cuff_end": 57.0,
+      "sleeve_length_armpit_seam_to_cuff_end": 43.0,
+      "sleeve_taper_flat_width": {
+        "$comment": "Height above the cuff END mapped to flattened sleeve width. Interpolate linearly between points. Size 6436 only - smaller sizes will be narrower and are the binding case.",
+        "0": 10.5,
+        "5": 11.0,
+        "20": 15.0,
+        "45": 19.0,
+        "57": 21.0
+      },
+      "note": "Only one tunic size measured. A renderer that warns on clearance must either carry a profile per size or state that it is checking against 6436.",
+      "breast_pocket_flap_h": {
+        "h": null,
+        "confidence": "unknown",
+        "note": "Needed to place every pocket-mounted pin, since the regulation centres them between the flap's lower edge and the pocket's lower seam. Not measured."
+      }
+    },
+    "name_tag": {
+      "w": 6.3,
+      "h": 1.2,
+      "lettering_h": 0.6,
+      "source_units": "2-1/2 in x 1/2 in, 1/4 in lettering",
+      "confidence": "regulation",
+      "note": "Standard CAF pattern, laminated and detachable, surname only. BLACK for army and sea cadets, air force blue for air. Obtained locally."
+    },
+    "undress_ribbon": {
+      "w": 3.5,
+      "h": 1.0,
+      "confidence": "measured",
+      "note": "Worn in rows of at most three with NO interval between ribbons or between rows, so a full row is exactly 10.5 cm wide and each row adds exactly 1.0 cm of height."
+    },
+    "commendation_pin": {
+      "w": null,
+      "h": null,
+      "confidence": "unknown",
+      "note": "CDS, Command, Commander's Cadet and Navy League pins are all drawn as the same landscape bar. Not measured."
+    },
+    "dofe_pin": {
+      "diameter": null,
+      "confidence": "unknown",
+      "note": "Bronze / Silver / Gold. Drawn as a circle. Not measured."
+    }
+  },
+  "slots": [
+    {
+      "id": "left_corps_name",
+      "sleeve": "left",
+      "anchor": "shoulder_seam",
+      "offset_cm": 0,
+      "anchor_edge": "top_of_badge",
+      "align": "centre",
+      "condition": "always",
+      "citation": "ANNEX-H 3H-3; CH3S1 3.b.(2)"
+    },
+    {
+      "id": "left_rcac_badge",
+      "sleeve": "left",
+      "anchor": "shoulder_seam",
+      "offset_cm": 12,
+      "anchor_edge": "bottom_of_badge",
+      "align": "centre",
+      "condition": "always",
+      "citation": "ANNEX-H 3H-3; CH3S1 3.b.(3)"
+    },
+    {
+      "id": "left_proficiency_stack",
+      "sleeve": "left",
+      "type": "stack",
+      "anchor": "cuff_bottom",
+      "offset_cm": 20,
+      "anchor_edge": "bottom_of_lowest_worn_badge",
+      "gap_cm": 1,
+      "direction": "upward",
+      "align": "centre",
+      "order_bottom_to_top": [
+        "Fitness",
+        "First Aid",
+        "Music"
+      ],
+      "collapse": true,
+      "max_slots": 3,
+      "condition": "highest level held in each eligible category",
+      "citation": "CH3S1 3.b.(5)",
+      "conflicts": [
+        {
+          "field": "offset_cm",
+          "alternate_value": 12,
+          "source": "ANNEX-H figure 3H-3 bracket dimension",
+          "resolution": "20 cm adopted per CH3S1 3.b.(5). Annex H's 12 cm is geometrically impossible: the marksmanship assembly is anchored at 6 cm and the rifles carry it to roughly 13 cm, so a proficiency badge with its bottom edge at 12 cm would overlap it. Section 1 is the instruction and the annex is illustrative, so Section 1 governs. Confirmed against a photograph of a worn tunic."
+        }
+      ],
+      "house_rules": [
+        "Annex H illustrates only two positions. Chapter 3 names three eligible categories (music, first aid, fitness), so the stack is treated as open-ended up to three. LOCAL DECISION.",
+        "No precedence order is given in policy for which category sits lowest. Fitness / first aid / music adopted bottom to top. LOCAL DECISION.",
+        "Collapse applies within the proficiency stack only. The lowest worn proficiency badge takes the 20 cm slot and the rest chain upward. A missing category does not leave a gap inside the stack. LOCAL DECISION."
+      ],
+      "notes": [
+        "The 20 cm anchor is fixed and does not move when marksmanship is absent. A cadet with proficiency badges and no marksmanship wears a visible empty band between 6 cm and 20 cm. This is correct, not a layout error. Renderers must not close the gap."
+      ]
+    },
+    {
+      "id": "left_marksmanship",
+      "sleeve": "left",
+      "type": "assembly",
+      "anchor": "cuff_bottom",
+      "offset_cm": 6,
+      "anchor_edge": "bottom_of_assembly",
+      "align": "centre",
+      "internal_gap_cm": 0.5,
+      "components_bottom_to_top": {
+        "Marksman": [
+          "marksmanship_numeral",
+          "marksmanship_rifles"
+        ],
+        "First Class Marksman": [
+          "marksmanship_numeral",
+          "marksmanship_rifles"
+        ],
+        "Expert Marksman": [
+          "marksmanship_numeral",
+          "marksmanship_rifles"
+        ],
+        "Distinguished Marksman": [
+          "marksmanship_rifles",
+          "marksmanship_crown"
+        ]
+      },
+      "condition": "highest marksmanship level only",
+      "citation": "ANNEX-H 3H-3; CH3S1 3.b.(6)",
+      "notes": [
+        "Independent of the proficiency stack. Not a member of it, and does not anchor it. The stack holds at 20 cm whether or not this assembly is present.",
+        "Distinguished composition is not illustrated in Annex H. Confirmed locally.",
+        "Levels 1-3 are TWO separately sewn pieces: the numeral tab anchored at 6 cm, then 0.5 cm of cloth, then the crossed rifles. Total 7.485 cm tall against 8.0 cm for the single-piece Distinguished. Anchored at the bottom, so the 0.515 cm difference only pushes the top up; nothing sits above before 20 cm, so there is no collision. Both are 6.0 cm wide.",
+        "Levels 1-3 are two PHYSICALLY SEPARATE badges, confirmed by Lt Beal handling them: the numeral tab and the crossed rifles are sewn independently with 0.5 cm of cloth between. The sewing guide must therefore emit two rows, not one assembly."
+      ],
+      "internal_gap_source": "CH3S1 3.b.(6) — regulation, not a local measurement",
+      "conflicts": [
+        {
+          "field": "internal_gap_cm",
+          "alternate_value": "roughly 0.73 to 0.86 cm",
+          "source": "A-CR-CCP-750/DA-003 artwork, measured off all three levels by recut_marksmanship.py",
+          "resolution": "0.5 cm stands. It is stated in CH3S1 3.b.(6); the poster is illustrative artwork and carries no dimensions. Same class as Annex H figure 3H-3's 12 cm and its five-badge stagger: where the drawing disagrees with Section 1, Section 1 governs. The range is wide because the poster's rifles are drawn square while the real badge is 6.0 x 5.08 cm, so scaling through height and through width give different answers - further reason not to size from art."
+        }
+      ]
+    },
+    {
+      "id": "right_corps_name",
+      "sleeve": "right",
+      "anchor": "shoulder_seam",
+      "offset_cm": 0,
+      "anchor_edge": "top_of_badge",
+      "align": "centre",
+      "condition": "always",
+      "citation": "ANNEX-H 3H-4-1; CH3S1 3.b.(2)"
+    },
+    {
+      "id": "right_rcac_badge",
+      "sleeve": "right",
+      "anchor": "shoulder_seam",
+      "offset_cm": 12,
+      "anchor_edge": "bottom_of_badge",
+      "align": "centre",
+      "condition": "always",
+      "citation": "ANNEX-H 3H-4-1; CH3S1 3.b.(3)"
+    },
+    {
+      "id": "right_rank_junior",
+      "sleeve": "right",
+      "anchor": "right_rcac_badge",
+      "offset_cm": 1,
+      "anchor_edge": "chevron_tips_below_anchor",
+      "align": "centre",
+      "condition": "rank in [Cdt, LCpl, Cpl, MCpl, Sgt]",
+      "citation": "ANNEX-H 3H-4-1; CH3S1 3.b.(7)(i)"
+    },
+    {
+      "id": "right_rank_senior_no_appointment",
+      "sleeve": "right",
+      "anchor": "cuff_bottom",
+      "offset_cm": 20,
+      "anchor_edge": "bottom_of_badge",
+      "align": "centre",
+      "condition": "rank in [WO, MWO, CWO] and no appointment insignia worn",
+      "citation": "ANNEX-H 3H-4-2; CH3S1 3.b.(7)(ii)"
+    },
+    {
+      "id": "right_rank_senior_with_appointment",
+      "sleeve": "right",
+      "anchor": "right_appointment",
+      "offset_cm": 1,
+      "anchor_edge": "bottom_of_badge_1cm_above_appointment_top",
+      "align": "centre",
+      "condition": "rank in [WO, MWO, CWO] and appointment insignia worn",
+      "citation": "ANNEX-H 3H-4-3; CH3S1 3.b.(7)(ii)"
+    },
+    {
+      "id": "right_appointment",
+      "sleeve": "right",
+      "anchor": "cuff_bottom",
+      "offset_cm": 20,
+      "anchor_edge": "bottom_of_badge",
+      "align": "centre",
+      "max_worn": 1,
+      "condition": "appointment insignia held",
+      "citation": "ANNEX-H 3H-4-3; CH3S1 3.b.(8)",
+      "notes": [
+        "Annex H illustrates only the band appointment. CH3S1 3.b.(8) is generic to any appointment insignia.",
+        "'Chevron points' means the lowest points of the badge, so the badge builds UPWARD from 20 cm. Confirmed by Annex H 3H-4-3, which draws the drum major badge clearly above the CTC grid, not overlapping it.",
+        "Terminology inconsistency in Annex H: the Sgt rule says chevron 'tips' 1 cm below the RCAC badge (apex, i.e. top edge), the appointment rule says chevron 'points' at 20 cm (leg ends, i.e. bottom edge). Same word family, opposite edge. Do not generalise one to the other.",
+        "Eligible appointment insignia list not yet sourced. See Annex E."
+      ]
+    },
+    {
+      "id": "right_ctc_grid",
+      "sleeve": "right",
+      "type": "grid",
+      "anchor": "right_star_level",
+      "offset_cm": 1,
+      "anchor_edge": "bottom_of_grid_above_anchor",
+      "align": "centre",
+      "rows": 2,
+      "columns": 3,
+      "max_worn": 6,
+      "column_gap_cm": 0,
+      "row_gap_cm": 0,
+      "fill_order": [
+        {
+          "seq": 1,
+          "row": "bottom",
+          "col": "centre"
+        },
+        {
+          "seq": 2,
+          "row": "bottom",
+          "col": "front"
+        },
+        {
+          "seq": 3,
+          "row": "bottom",
+          "col": "rear"
+        },
+        {
+          "seq": 4,
+          "row": "top",
+          "col": "centre"
+        },
+        {
+          "seq": 5,
+          "row": "top",
+          "col": "front"
+        },
+        {
+          "seq": 6,
+          "row": "top",
+          "col": "rear"
+        }
+      ],
+      "sequence_basis": "order awarded, ascending",
+      "supersession": "advanced qualification supersedes basic within the same qualification stream",
+      "condition": "CTC qualification, staff, deployment or exchange insignia held",
+      "citation": "CH3S1 3.b.(9); ANNEX-H 3H-4-2 and 3H-4-3",
+      "conflicts": [
+        {
+          "field": "grid_geometry",
+          "alternate_value": "three bottom with two directly on top, bottom edges touching",
+          "source": "ANNEX-H text version, figures 3H-4-2 and 3H-4-3",
+          "resolution": "Aligned 2x3 grid adopted per CH3S1 3.b.(9) and the drawn figures. The Annex H text version describes only five positions and omits the centre-out fill order."
+        }
+      ],
+      "notes": [
+        "'front' is toward the chest, 'rear' is toward the back. On the right sleeve viewed flat from outside, front is image-right. Output sewing guides in front/rear terms, not left/right, or the block will be mirrored."
+      ]
+    },
+    {
+      "id": "right_star_level",
+      "sleeve": "right",
+      "anchor": "cuff_bottom",
+      "offset_cm": 6,
+      "anchor_edge": "bottom_of_badge",
+      "align": "centre",
+      "condition": "highest star level held that carries a badge",
+      "worn_for": [
+        "Green",
+        "Red",
+        "Silver",
+        "Gold"
+      ],
+      "citation": "ANNEX-H 3H-4-1; CH3S1 3.b.(10)",
+      "house_rules": [
+        "ALP has no star insignia of its own yet, so an ALP cadet continues to wear the Gold Star - the highest level they hold that carries a badge. This follows from the general rule below rather than being a special case, so the slot is never vacant and no phantom box is needed. Confirmed by Lt Beal. SUPERSEDES the earlier LOCAL DECISION that left the slot empty and held the CTC grid's position."
+      ],
+      "no_badge_of_its_own": [
+        "Advanced Leadership Program"
+      ]
+    },
+    {
+      "id": "front_right_ribbons",
+      "face": "front",
+      "side": "right",
+      "type": "row_stack",
+      "anchor": "pocket_top",
+      "offset_cm": 0,
+      "anchor_edge": "bottom_of_lowest_row",
+      "align": "centre",
+      "row_capacity": 3,
+      "row_gap_cm": 0,
+      "column_gap_cm": 0,
+      "fill": "rows fill from the bottom; a partial row goes on TOP, centred on the row below",
+      "order": "precedence 1 is highest and sits on the TOP row, closest to the centre of the chest; numbering runs outward and downward from there",
+      "condition": "undress ribbons held",
+      "citation": "CH5-B 5B-1.2; CH5-C 5C-1",
+      "notes": [
+        "No interval between ribbons within a row, and none between rows. A row of three is exactly 10.5 cm wide; each extra row adds exactly 1.0 cm.",
+        "On the RIGHT breast viewed from the front, the centre of the chest is image-right, so precedence 1 sits at the inboard end of the top row."
+      ],
+      "sleeve": null
+    },
+    {
+      "id": "front_right_medals",
+      "face": "front",
+      "side": "right",
+      "anchor": "pocket_top",
+      "offset_cm": 0,
+      "anchor_edge": "suspended_immediately_above",
+      "align": "centre",
+      "condition": "medals worn (full dress); mutually exclusive with undress ribbons",
+      "citation": "CH5-A 5A-1",
+      "notes": [
+        "Medal and suspender dimensions are not given in the instruction and are not measured."
+      ],
+      "sleeve": null
+    },
+    {
+      "id": "front_right_anniversary_pin",
+      "face": "front",
+      "side": "right",
+      "anchor": "pocket_top",
+      "offset_cm": 3,
+      "anchor_edge": "bottom_of_pin",
+      "align": "centre",
+      "condition": "anniversary pin held",
+      "citation": "CH5-A 5A-1",
+      "sleeve": null
+    },
+    {
+      "id": "front_right_nametag",
+      "face": "front",
+      "side": "right",
+      "anchor": "front_right_ribbons",
+      "offset_cm": 0.5,
+      "anchor_edge": "bottom_of_tag_above_anchor",
+      "align": "centre",
+      "condition": "always",
+      "citation": "CH5-A 5A-1; CH5-B 5B-1.1",
+      "notes": [
+        "Two rules, applied in this order: (a) if ribbons or medals are worn, the tag sits 0.5 cm above their top edge; (b) if an anniversary pin is worn and nothing is suspended, the tag is EQUIDISTANT between the anniversary pin and the pocket top.",
+        "6.3 x 1.2 cm, surname only, black."
+      ],
+      "sleeve": null
+    },
+    {
+      "id": "front_right_expedition",
+      "face": "front",
+      "side": "right",
+      "anchor": "front_right_nametag",
+      "offset_cm": 0.5,
+      "anchor_edge": "bottom_above_anchor",
+      "align": "centre",
+      "condition": "expedition participation insignia held",
+      "citation": "CH5-B expedition figure",
+      "notes": [
+        "Worn over the right pocket, centred 0.5 cm over the nametag."
+      ],
+      "sleeve": null
+    },
+    {
+      "id": "front_right_pocket_pins",
+      "face": "front",
+      "side": "right",
+      "type": "stack",
+      "anchor": "pocket_flap_bottom",
+      "anchor_edge": "centred_between_flap_bottom_and_pocket_lower_seam",
+      "align": "centre",
+      "gap_cm": 0.5,
+      "direction": "downward",
+      "order_top_to_bottom": [
+        "Cadet Commendation",
+        "Navy League of Canada Award of Commendation",
+        "Duke of Edinburgh's International Award"
+      ],
+      "condition": "cadet commendation or DofE pin held",
+      "citation": "CH5-D 5D-2, 5D-3, 5D-4; CH5-B 5B-1.3",
+      "notes": [
+        "A single pin is centred between the flap's lower edge and the pocket's lower seam. Two or more are worn one above the other, 0.5 cm apart, in precedence order.",
+        "The DofE pin is worn on the JACKET ONLY; the cadet commendation pins may be worn on the jacket or the shirt."
+      ],
+      "sleeve": null,
+      "conflicts": [
+        {
+          "field": "which_pocket",
+          "alternate_value": "all commendation pins stacked together on one pocket",
+          "source": "CH5-B 5B-1.3, whose precedence list runs CDS > Command > Cadet > Navy League > DofE and says they are worn one above the other 0.5 cm apart",
+          "resolution": "Annex D is more specific and governs: National Commendations (CDS, Command) go on the LEFT pocket per 5D-1, while Cadet Commendations and the DofE pin go on the RIGHT per 5D-2 and 5D-3. Annex B's single list therefore describes precedence, not co-location - the 0.5 cm stacking rule applies WITHIN a pocket. A cadet holding both a national and a cadet commendation wears one on each side. LOCAL READING; worth confirming with RCSU before a printed guide relies on it."
+        }
+      ]
+    },
+    {
+      "id": "front_left_parachutist",
+      "face": "front",
+      "side": "left",
+      "anchor": "pocket_top",
+      "offset_cm": 0.5,
+      "anchor_edge": "bottom_of_badge",
+      "align": "centre",
+      "condition": "parachutist qualification held",
+      "citation": "CH3S1 3.b.(1)",
+      "notes": [
+        "Sewn, not pinned. The only sewn item on the front."
+      ],
+      "sleeve": null
+    },
+    {
+      "id": "front_left_national_commendation",
+      "face": "front",
+      "side": "left",
+      "anchor": "pocket_flap_bottom",
+      "anchor_edge": "centred_between_flap_bottom_and_pocket_lower_seam",
+      "align": "centre",
+      "max_worn": 1,
+      "order_of_precedence": [
+        "Chief of the Defence Staff Commendation",
+        "Command Commendation"
+      ],
+      "condition": "national commendation held",
+      "citation": "CH5-D 5D-1",
+      "sleeve": null
+    },
+    {
+      "id": "front_left_participation_pins",
+      "face": "front",
+      "side": "left",
+      "type": "strip",
+      "anchor": "pocket",
+      "anchor_edge": "on_the_pocket",
+      "align": "centre",
+      "max_worn": 3,
+      "condition": "participation or competition pins held",
+      "citation": "CH3S1 4.b",
+      "notes": [
+        "Maximum three combined. The measured 3 x 9 cm strip fits exactly three 1 in pins with 0.23 cm side clearance and 0.34 cm gaps, which independently confirms the cap."
+      ],
+      "sleeve": null
+    },
+    {
+      "id": "front_left_commemorative_pin",
+      "face": "front",
+      "side": "left",
+      "anchor": "pocket",
+      "anchor_edge": "on_the_pocket",
+      "align": "centre",
+      "max_worn": 1,
+      "condition": "commemorative pin authorised by the RCSU CO",
+      "citation": "CH3S1 4.a",
+      "sleeve": null
+    },
+    {
+      "id": "front_left_poppy",
+      "face": "front",
+      "side": "left",
+      "anchor": "pocket_flap",
+      "anchor_edge": "on_the_flap",
+      "align": "centre",
+      "condition": "remembrance period only",
+      "citation": "CH4-A 4A-1",
+      "notes": [
+        "Worn on the left pocket flap. Seasonal, so it is not part of a standing layout."
+      ],
+      "sleeve": null
+    }
+  ],
+  "terminated_programs": {
+    "$comment": "Referenced in policy but no longer awarded. Slots left vacant, nothing reflows into them.",
+    "master_cadet": {
+      "citation": "CH3S1 3.b.(4)",
+      "former_slot": "left sleeve, 1 cm below RCAC badge",
+      "status": "terminated"
+    },
+    "national_star_of_excellence": {
+      "citation": "ANNEX-H 3H-3",
+      "former_slot": "left sleeve, 1 cm below RCAC badge",
+      "status": "terminated",
+      "note": "Annex H's name for the same slot CH3S1 calls master cadet achievement."
+    }
+  },
+  "out_of_scope": {
+    "$comment": "Everything that was deferred is now modelled. What remains is genuinely absent from the sources to hand.",
+    "items": [
+      "Medal and suspender dimensions (Chapter 5 gives placement but no sizes).",
+      "Anniversary pin dimensions.",
+      "Breast pocket flap height, which every pocket-mounted pin depends on.",
+      "Shirt layouts. Only the jacket is modelled; the DofE pin is jacket-only and the poppy figure is drawn for the shirt."
+    ]
+  },
+  "global_limits": [
+    {
+      "rule": "Proficiency: only the highest level achieved in each category is worn.",
+      "citation": "CH3S1 3.b.(5)"
+    },
+    {
+      "rule": "Marksmanship: only the highest achievement is worn.",
+      "citation": "CH3S1 3.b.(6)"
+    },
+    {
+      "rule": "Star level: the highest level held that CARRIES A BADGE is worn. ALP has no badge, so an ALP cadet wears Gold.",
+      "citation": "CH3S1 3.b.(10)"
+    },
+    {
+      "rule": "Appointment: only one appointment insignia is worn.",
+      "citation": "CH3S1 3.b.(8)"
+    },
+    {
+      "rule": "CTC / staff / deployment / exchange: maximum six combined.",
+      "citation": "CH3S1 3.b.(9)"
+    },
+    {
+      "rule": "Participation / competition pins: maximum three combined. Not yet modelled, front of tunic.",
+      "citation": "CH3S1 4.b"
+    },
+    {
+      "rule": "Commemorative pins: maximum one. Not yet modelled, front of tunic.",
+      "citation": "CH3S1 4.a"
+    },
+    {
+      "rule": "Badges are sewn with thread matched to the base cloth. Never glued or ironed.",
+      "citation": "CH3S1 3.c"
+    },
+    {
+      "rule": "General: within any category where only the highest is worn, 'highest' means the highest level that carries a badge. A level marked not_worn in QualMap (ALP, Fitness 'Participated') is skipped and the next one down is worn.",
+      "citation": "CH3S1 3.b.(5), 3.b.(6), 3.b.(10); resolves the ALP case without a special rule"
+    },
+    {
+      "rule": "Undress ribbons: maximum three per row, no interval between ribbons or rows. A fourth ribbon starts a new row, centred on the row below.",
+      "citation": "CH5-C 5C-1.2"
+    },
+    {
+      "rule": "Medals and undress ribbons are alternatives - undress ribbons represent the medals when the medals themselves are not worn. Never both.",
+      "citation": "Chapter 5"
+    },
+    {
+      "rule": "Commendation and DofE pins: multiple pins are worn one above the other, 0.5 cm apart, in precedence order CDS > Command > Cadet > Navy League > DofE.",
+      "citation": "CH5-B 5B-1.3"
+    },
+    {
+      "rule": "The Duke of Edinburgh pin is worn on the JACKET ONLY. Cadet commendation pins may be worn on either the jacket or the shirt.",
+      "citation": "CH5-D 5D-3"
+    }
+  ],
+  "open_questions": [
+    "Chevron heights disagree with the poster art. Poster aspects imply LCpl 7.41 / Cpl 8.98 / MCpl 10.13 / Sgt 12.02 cm at 10 cm wide, against measured 6.5 / 8.0 / 9.5 / 11.0. Likely embroidered field vs merrowed edge. Remeasure Sgt first.",
+    "CWO rank dimensions still an estimate, though poster aspect 0.753 matches the 0.750 guess.",
+    "Only tunic size 6436 measured. Clearance warnings need a profile per size, or a stated assumption.",
+    "Eligible appointment insignia confirmed as Drum Major and Pipe Major only, per A-CR-CCP-750/DA-003 APPOINTMENT section. Confirm against Annex E when sourced.",
+    "The 20 cm proficiency anchor was confirmed photographically. Record the source of that photograph so the conflict resolution is auditable.",
+    "Annex H figure 3H-3 carries an incorrect dimension. Worth reporting up so it gets corrected at the national level.",
+    "Corps name title dimensions (12.21 x 3.85 cm) are DERIVED from the poster's title-plus-badge template and the measured 6.35 cm badge diameter, not measured directly. Worth checking a real title with a ruler.",
+    "MWO aspect still disagrees with the poster (1.26 drawn vs 1.50 from the recorded bounding box) and is unresolved. The Distinguished half of that question is CLOSED: remeasured at 6 x 8 cm, so the poster is the outlier, not the measurement.",
+    "Breast pocket FLAP height is not measured and not in the instruction, but every pocket-mounted pin is centred between the flap's lower edge and the pocket's lower seam. Blocks exact pin placement.",
+    "Annex B lists national and cadet commendations in one 0.5 cm stack while Annex D puts them on opposite pockets. Resolved in favour of Annex D as the more specific source - confirm with RCSU.",
+    "Medal, anniversary pin and commendation pin dimensions are all unmeasured, so the front render places them by rule but sizes them by placeholder."
+  ],
+  "changelog": [
+    {
+      "version": "0.2-draft",
+      "change": "RCAC sleeve badge measured at 2.5 in (6.35 cm) diameter; corps name title derived from it at 12.21 x 3.85 cm using the poster's shared template."
+    },
+    {
+      "version": "0.3-draft",
+      "change": "ALP cadets wear the Gold Star, not a vacant slot. Generalised to: wear the highest level in a category that carries a badge. Removes the phantom-box local decision."
+    },
+    {
+      "version": "0.4-draft",
+      "change": "Marksmanship rifles measured at 6.0 x 5.08 cm; width corrected from 5.5 (poster-aspect inference, 8% low). Distinguished confirmed at 6.0 x 8.0. Both pieces share the same width."
+    },
+    {
+      "version": "0.5-draft",
+      "change": "Marksmanship internal gap confirmed as regulation (CH3S1 3.b.(6)), not a local measurement. Poster's wider drawn gap recorded as a conflict with the instruction governing. Levels 1-3 confirmed as two physically separate badges."
+    },
+    {
+      "version": "0.6-draft",
+      "change": "Front of tunic added: 11 slots covering medals, undress ribbons, nametag, anniversary and expedition insignia, commendation and DofE pins, parachutist, participation pins and the poppy. Scope is now sleeves plus front."
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+"""Extract sleeve-relevant badges from rcac_badges.zip, trim transparent margins,
+downsize, and emit a JS art pack for the demo renderer.
+
+Trimming matters: several poster crops carry dead space (level_5 is ~35% empty),
+so the manifest aspect ratios are not the art's true aspect. We recompute."""
+import _paths  # noqa: F401  - chdir to repo root, expose data/
+import zipfile, os, io, base64, json, sys
+from PIL import Image
+
+sys.stdout.reconfigure(encoding="utf-8")
+ZIP = "rcac_badges.zip"
+MAXPX = 260
+
+WANTED = {
+    # star level
+    "green_star": "star_green", "red_star": "star_red",
+    "silver_star": "star_silver", "gold_star": "star_gold",
+    # rank
+    "lance_corporal": "rank_LCpl", "corporal": "rank_Cpl",
+    "master_corporal": "rank_MCpl", "sergeant": "rank_Sgt",
+    "unnamed_6": "rank_WO", "master_warrant_officer": "rank_MWO",
+    "chief_warrant_officer": "rank_CWO",
+    # appointment
+    "drum_major": "appt_drum_major", "pipe_major": "appt_pipe_major",
+    # marksmanship (poster art is the whole assembly, rifles + numeral)
+    "marksman": "mk_1", "first_class_marksman": "mk_2",
+    "expert_marksman": "mk_3", "distinguished_marksman": "mk_4",
+    # proficiency - fitness: recovered from the source PDF by recut_fitness.py.
+    # extract_badges.py skipped the whole PHYSICAL FITNESS block. Not to be confused
+    # with the poster's bronze/silver/gold ellipses, which are Duke of Edinburgh.
+    # proficiency - first aid (green cross, numeral = level)
+    "emergency": "fa_1", "standard": "fa_2",
+    # proficiency - music (music note; level numeral inside the circle)
+    "basic_qualification": "mus_basic",   # not a level in QualMap
+    "qualification_level_1": "mus_1",
+    "level_5": "mus_5",
+    # music 2-4 recovered from the bad unnamed_7 crop by recut_music.py
+    # Duke of Edinburgh's Award - real badges, but absent from QualMap and from the
+    # placement rules. Carried so the demo can show them as unslotted.
+    "bronze_level": "dofe_bronze", "silver_level": "dofe_silver", "gold_level": "dofe_gold",
+    # Unidentified: crossed swords + star + 1-4 maple leaves, sitting in the
+    # star / master-cadet band. Not music. Source not yet confirmed.
+    "level_1": "unid_1", "level_2": "unid_2", "level_3": "unid_3", "level_4": "unid_4",
+    "master_cadet": "master_cadet",
+    # Parachutist wings - poster caption says "Canadian Armed Forces", which is wrong.
+    # QualMap slots this out_of_scope_left_breast.
+    "canadian_armed_forces": "parachutist",
+    # Expedition Regional pin (compass rose). Front of tunic.
+    "unnamed_9": "exped",
+    # CTC grid
+    "basic_expedition": "ctc_exped_1", "expedition_instructor": "ctc_exped_2",
+    "leadership_and_challenge": "ctc_exped_3",
+    "basic_drill_and_ceremonial": "ctc_dc_1", "and_ceremonial_instructor": "ctc_dc_2",
+    "basic_fitness_and_sports": "ctc_fit_1", "fitness_and_sports_instructor": "ctc_fit_2",
+    "air_rifle_marksmanship": "ctc_arm_2",
+    "basic_marksman": "ctc_mk_1", "fullbore_marksmanship": "ctc_mk_2",
+    "fullbore_marksmanship_2": "ctc_mk_3",
+    "pipe_band": "ctc_pb_1", "pipe_band_2": "ctc_pb_2", "pipe_band_3": "ctc_pb_3",
+    "military_band": "ctc_mb_1", "military_band_2": "ctc_mb_2", "military_band_3": "ctc_mb_3",
+    "staff_cadet": "ctc_staff",
+}
+
+# Badges recovered from bad crops by recut_music.py / recut_shoulder.py.
+RECUT = {
+    "art/recut/band0_col0.png": "mus_2",
+    "art/recut/band0_col1.png": "mus_3",
+    "art/recut/band0_col2.png": "mus_4",
+    "art/recut/mk_1_rifles.png": "mk_1_rifles",
+    "art/recut/mk_1_numeral.png": "mk_1_num",
+    "art/recut/mk_2_rifles.png": "mk_2_rifles",
+    "art/recut/mk_2_numeral.png": "mk_2_num",
+    "art/recut/mk_3_rifles.png": "mk_3_rifles",
+    "art/recut/mk_3_numeral.png": "mk_3_num",
+    "art/recut/fit_bronze.png": "fit_2",
+    "art/recut/fit_silver.png": "fit_3",
+    "art/recut/fit_gold.png": "fit_4",
+    "art/recut/fit_excellence.png": "fit_5",
+    "art/recut/corps_name_title__da_vi_d_d_e_f_al_ar_de.png": "corps_title",
+    "art/recut/rcac_badge__da_vi_d_d_e_f_al_ar_de.png": "rcac_badge",
+}
+
+z = zipfile.ZipFile(ZIP)
+art, report = {}, []
+for slug, key in WANTED.items():
+    name = f"{slug}.png"
+    if name not in z.namelist():
+        report.append((key, slug, "MISSING", "", ""))
+        continue
+    im = Image.open(io.BytesIO(z.read(name))).convert("RGBA")
+    raw_aspect = im.width / im.height
+    bbox = im.getbbox()          # alpha-based: true art extent
+    im = im.crop(bbox)
+    trim_aspect = im.width / im.height
+    scale = MAXPX / max(im.width, im.height)
+    if scale < 1:
+        im = im.resize((max(1, round(im.width * scale)),
+                        max(1, round(im.height * scale))), Image.LANCZOS)
+    buf = io.BytesIO()
+    im.save(buf, "PNG", optimize=True)
+    art[key] = {"d": base64.b64encode(buf.getvalue()).decode(),
+                "aspect": round(trim_aspect, 4)}
+    report.append((key, slug, "ok", round(raw_aspect, 3), round(trim_aspect, 3)))
+
+for path, key in RECUT.items():
+    if not os.path.exists(path):
+        report.append((key, path, "MISSING", "", "")); continue
+    im = Image.open(path).convert("RGBA")
+    im = im.crop(im.getbbox())
+    trim_aspect = im.width / im.height
+    scale = MAXPX / max(im.width, im.height)
+    if scale < 1:
+        im = im.resize((max(1, round(im.width*scale)), max(1, round(im.height*scale))), Image.LANCZOS)
+    buf = io.BytesIO(); im.save(buf, "PNG", optimize=True)
+    art[key] = {"d": base64.b64encode(buf.getvalue()).decode(), "aspect": round(trim_aspect, 4)}
+    report.append((key, os.path.basename(path), "ok", round(trim_aspect,3), round(trim_aspect,3)))
+
+os.makedirs("art", exist_ok=True)
+with open(os.path.join("art", "art_pack.js"), "w", encoding="utf-8") as f:
+    f.write("// Generated by build_art.py. Crown copyright artwork, internal corps use.\n")
+    f.write("const BADGE_ART = " + json.dumps(art, separators=(",", ":")) + ";\n")
+
+total = sum(len(v["d"]) for v in art.values())
+print(f"{len(art)} badges packed, {total/1e6:.2f} MB base64")
+print(f"{'key':18} {'slug':32} {'crop':>7} {'trimmed':>8}  drift")
+for key, slug, st, a, b in report:
+    if st != "ok":
+        print(f"{key:18} {slug:32}  MISSING"); continue
+    drift = "  <-- crop had dead space" if abs(a - b) > 0.02 else ""
+    print(f"{key:18} {slug:32} {a:7} {b:8}{drift}")

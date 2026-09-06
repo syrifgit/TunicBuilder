@@ -1,0 +1,1540 @@
+<title>Cadet Tunic Layout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --paper:#EDF0EA;      /* drafting stock, cool with a green bias */
+  --sheet:#F7F9F4;
+  --ink:#161C18;
+  --ink-2:#5E6B62;
+  --ink-3:#8A968D;
+  --rule:#CBD4CB;
+  --rule-2:#DFE5DD;
+  --green:#0F4A32;      /* rifle green, sampled from the badge art */
+  --green-soft:#E2EBE3;
+  --brass:#A87A12;      /* dimension callouts + accent */
+  --brass-soft:#F3E7C7;
+  --warn:#9A5410;
+  --warn-soft:#F7E7D2;
+  --crit:#98282B;
+  --crit-soft:#F7DEDD;
+  --ok:#2C6647;
+  --cloth:#123D2C;      /* the sleeve fill */
+  --cloth-edge:#0A2A1E;
+  --shadow:0 1px 2px rgba(16,32,24,.08);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#10150F;
+    --sheet:#171D18;
+    --ink:#E3E9E1;
+    --ink-2:#94A197;
+    --ink-3:#6B776F;
+    --rule:#2C3830;
+    --rule-2:#222C26;
+    --green:#5FBE8E;
+    --green-soft:#1B2E24;
+    --brass:#D9AC4A;
+    --brass-soft:#33290F;
+    --warn:#D68A3C;
+    --warn-soft:#33240F;
+    --crit:#E0716F;
+    --crit-soft:#33191A;
+    --ok:#5FBE8E;
+    --cloth:#16402F;
+    --cloth-edge:#0B241A;
+    --shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#10150F; --sheet:#171D18; --ink:#E3E9E1; --ink-2:#94A197; --ink-3:#6B776F;
+  --rule:#2C3830; --rule-2:#222C26; --green:#5FBE8E; --green-soft:#1B2E24;
+  --brass:#D9AC4A; --brass-soft:#33290F; --warn:#D68A3C; --warn-soft:#33240F;
+  --crit:#E0716F; --crit-soft:#33191A; --ok:#5FBE8E;
+  --cloth:#16402F; --cloth-edge:#0B241A; --shadow:0 1px 2px rgba(0,0,0,.4);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:Archivo,"Helvetica Neue",Arial,sans-serif;
+  font-size:14px; line-height:1.45;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{margin:0; text-wrap:balance; font-weight:600; letter-spacing:-.01em}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace; font-variant-numeric:tabular-nums}
+.eyebrow{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:10px; font-weight:500;
+  text-transform:uppercase; letter-spacing:.14em; color:var(--ink-3);
+}
+
+/* ---------- frame ---------- */
+.masthead{
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:8px 16px;
+  padding:14px 20px; border-bottom:1px solid var(--rule); background:var(--sheet);
+}
+.masthead h1{font-size:17px}
+.masthead .sub{color:var(--ink-2); font-size:12.5px}
+.masthead .spacer{flex:1 1 auto}
+.stamp{
+  font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--crit); border:1px solid var(--crit);
+  padding:2px 7px; border-radius:2px;
+}
+
+.shell{display:grid; grid-template-columns:326px minmax(0,1fr); align-items:start}
+@media (max-width:900px){ .shell{grid-template-columns:1fr} }
+
+/* ---------- control rail ---------- */
+.rail{
+  background:var(--sheet); border-right:1px solid var(--rule);
+  padding:16px; display:flex; flex-direction:column; gap:18px;
+  position:sticky; top:0; max-height:100vh; overflow-y:auto;
+}
+@media (max-width:900px){ .rail{position:static; max-height:none; border-right:none; border-bottom:1px solid var(--rule)} }
+
+.group{display:flex; flex-direction:column; gap:8px}
+.group > .eyebrow{display:flex; align-items:baseline; gap:8px}
+.group > .eyebrow .slotid{
+  color:var(--ink-3); text-transform:none; letter-spacing:.02em; font-size:9.5px; opacity:.8;
+}
+.field{display:grid; grid-template-columns:76px minmax(0,1fr); align-items:center; gap:10px}
+.field label{font-size:12px; color:var(--ink-2)}
+select, button, input{font-family:inherit; font-size:13px; color:var(--ink)}
+select{
+  width:100%; padding:5px 8px; background:var(--paper);
+  border:1px solid var(--rule); border-radius:3px; appearance:none;
+  background-image:linear-gradient(45deg,transparent 50%,var(--ink-3) 50%),linear-gradient(135deg,var(--ink-3) 50%,transparent 50%);
+  background-position:calc(100% - 14px) 50%,calc(100% - 9px) 50%;
+  background-size:5px 5px,5px 5px; background-repeat:no-repeat;
+}
+select:focus-visible,button:focus-visible,.chk:focus-within{outline:2px solid var(--brass); outline-offset:1px}
+
+/* CTC picker: click order is award order */
+.ctc{display:flex; flex-direction:column; gap:3px}
+.chk{
+  display:grid; grid-template-columns:20px minmax(0,1fr) auto; align-items:center; gap:8px;
+  padding:3px 6px; border-radius:3px; cursor:pointer; border:1px solid transparent;
+}
+.chk:hover{background:var(--green-soft)}
+.chk input{margin:0; accent-color:var(--green); cursor:pointer}
+.chk .nm{font-size:12.5px; line-height:1.25}
+.chk .nm small{display:block; color:var(--ink-3); font-size:10.5px}
+.chk .seq{
+  font-family:"IBM Plex Mono",monospace; font-size:10px; font-weight:600;
+  width:17px; height:17px; display:grid; place-items:center; border-radius:50%;
+  background:var(--green); color:var(--sheet); visibility:hidden;
+}
+.chk.on{background:var(--green-soft); border-color:var(--rule)}
+.chk.on .seq{visibility:visible}
+.chk.over .seq{background:var(--crit)}
+.chk.disabled{opacity:.42}
+
+.presets{display:flex; flex-wrap:wrap; gap:5px}
+.presets button, .btn{
+  padding:4px 9px; background:var(--paper); border:1px solid var(--rule);
+  border-radius:3px; cursor:pointer; font-size:11.5px; color:var(--ink-2);
+}
+.presets button:hover,.btn:hover{border-color:var(--green); color:var(--green)}
+
+.toggles{display:flex; flex-direction:column; gap:6px}
+.toggle{display:flex; align-items:center; gap:8px; cursor:pointer; font-size:12px; color:var(--ink-2)}
+.toggle input{accent-color:var(--brass); margin:0}
+
+/* ---------- stage ---------- */
+.stage{padding:18px 20px 40px; display:flex; flex-direction:column; gap:22px; min-width:0}
+.sheetwrap{
+  background:var(--sheet); border:1px solid var(--rule); border-radius:3px;
+  box-shadow:var(--shadow); padding:8px; overflow-x:auto;
+}
+.sheetwrap svg{display:block; margin:0 auto; max-width:100%; height:auto}
+
+.legend{display:flex; flex-wrap:wrap; gap:6px 16px; font-size:11.5px; color:var(--ink-2)}
+.legend span{display:inline-flex; align-items:center; gap:6px}
+.swatch{width:16px; height:0; border-top-width:2px; border-top-style:solid; display:inline-block}
+
+/* ---------- panels ---------- */
+.panel{background:var(--sheet); border:1px solid var(--rule); border-radius:3px; box-shadow:var(--shadow)}
+.panel > header{
+  display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+  padding:9px 13px; border-bottom:1px solid var(--rule-2);
+}
+.panel > header h2{font-size:12.5px}
+.panel > header .note{font-size:11.5px; color:var(--ink-3)}
+.tblwrap{overflow-x:auto}
+table{width:100%; border-collapse:collapse; font-size:12.5px}
+th{
+  text-align:left; font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:500;
+  text-transform:uppercase; letter-spacing:.1em; color:var(--ink-3);
+  padding:7px 13px; border-bottom:1px solid var(--rule-2); white-space:nowrap;
+}
+td{padding:6px 13px; border-bottom:1px solid var(--rule-2); vertical-align:top}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--green-soft)}
+td.num{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; white-space:nowrap}
+td.slot{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3)}
+.sleevetag{
+  font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.08em;
+  text-transform:uppercase; padding:1px 5px; border-radius:2px;
+  background:var(--green-soft); color:var(--green); border:1px solid var(--rule);
+}
+
+/* findings */
+.finding{display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; padding:9px 13px; border-bottom:1px solid var(--rule-2)}
+.finding:last-child{border-bottom:none}
+.finding .tag{
+  font-family:"IBM Plex Mono",monospace; font-size:9px; letter-spacing:.08em; text-transform:uppercase;
+  padding:2px 6px; border-radius:2px; height:fit-content; white-space:nowrap;
+}
+.tag.crit{background:var(--crit-soft); color:var(--crit)}
+.tag.warn{background:var(--warn-soft); color:var(--warn)}
+.tag.info{background:var(--brass-soft); color:var(--brass)}
+.finding .msg{font-size:12.5px}
+.finding .msg .cite{display:block; color:var(--ink-3); font-size:11px; margin-top:2px}
+.clear{padding:11px 13px; font-size:12.5px; color:var(--ok)}
+
+footer.foot{padding:0 20px 34px; color:var(--ink-3); font-size:11.5px; max-width:78ch}
+footer.foot p{margin:.5em 0}
+code{font-family:"IBM Plex Mono",monospace; font-size:.92em; background:var(--rule-2); padding:1px 4px; border-radius:2px}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
+</style>
+
+<div class="masthead">
+  <h1>Cadet Tunic Layout</h1>
+  <span class="sub">CJCR dress instructions &middot; sleeves and front &middot; measurements in cm</span>
+  <span class="spacer"></span>
+
+</div>
+
+<div class="shell">
+  <aside class="rail">
+    <div class="group">
+      <div class="eyebrow">Presets <span class="slotid">start from a worked example</span></div>
+      <div class="presets" id="presets"></div>
+    </div>
+
+    <div class="group">
+      <div class="eyebrow">Rank <span class="slotid">right_rank_*</span></div>
+      <div class="field"><label for="rank">Rank</label><select id="rank"></select></div>
+      <div class="field"><label for="appt">Appointment</label><select id="appt"></select></div>
+    </div>
+
+    <div class="group">
+      <div class="eyebrow">Right sleeve <span class="slotid">right_star_level</span></div>
+      <div class="field"><label for="star">Star level</label><select id="star"></select></div>
+      <p style="margin:0; font-size:11px; color:var(--ink-3); line-height:1.35">Highest level that carries a badge. ALP has none of its own, so it shows Gold.</p>
+    </div>
+
+    <div class="group">
+      <div class="eyebrow">Left sleeve <span class="slotid">left_marksmanship / left_proficiency_stack</span></div>
+      <div class="field"><label for="mk">Marksman</label><select id="mk"></select></div>
+      <div class="field"><label for="fit">Fitness</label><select id="fit"></select></div>
+      <div class="field"><label for="fa">First aid</label><select id="fa"></select></div>
+      <div class="field"><label for="mus">Music</label><select id="mus"></select></div>
+    </div>
+
+    <div class="group">
+      <div class="eyebrow">CTC / summer training <span class="slotid" id="ctccount"></span></div>
+      <div class="ctc" id="ctc"></div>
+    </div>
+
+    <div class="group">
+      <div class="eyebrow">Front &mdash; right breast <span class="slotid">front_right_*</span></div>
+      <div class="field"><label for="fName">Nametag</label>
+        <input type="text" id="fName" maxlength="16" placeholder="Surname" style="width:100%; padding:5px 8px; background:var(--paper); border:1px solid var(--rule); border-radius:3px"></div>
+      <div class="field"><label for="fRibbons">Ribbons</label><select id="fRibbons"></select></div>
+      <div class="field"><label for="fDofe">DofE pin</label><select id="fDofe"></select></div>
+      <div class="toggles" style="margin-top:2px">
+        <label class="toggle"><input type="checkbox" id="fMedals"> Wear medals instead of ribbons</label>
+        <label class="toggle"><input type="checkbox" id="fAnniv"> Anniversary pin</label>
+        <label class="toggle"><input type="checkbox" id="fExped"> Expedition insignia</label>
+        <label class="toggle"><input type="checkbox" id="fCadetCom"> Commander&rsquo;s Cadet Commendation</label>
+        <label class="toggle"><input type="checkbox" id="fNavy"> Navy League Commendation</label>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="eyebrow">Front &mdash; left breast <span class="slotid">front_left_*</span></div>
+      <div class="field"><label for="fNatCom">Commend.</label><select id="fNatCom"></select></div>
+      <div class="field"><label for="fPartic">Comp. pins</label><select id="fPartic"></select></div>
+      <div class="toggles" style="margin-top:2px">
+        <label class="toggle"><input type="checkbox" id="fPara"> Parachutist</label>
+        <label class="toggle"><input type="checkbox" id="fCommem"> Commemorative pin</label>
+        <label class="toggle"><input type="checkbox" id="fPoppy"> Poppy (seasonal)</label>
+      </div>
+      <div class="field" style="margin-top:2px">
+        <label for="fFlap">Flap ht</label>
+        <input type="number" id="fFlap" min="1" max="9" step="0.5" style="width:100%; padding:5px 8px; background:var(--paper); border:1px solid var(--rule); border-radius:3px">
+      </div>
+      <p style="margin:0; font-size:11px; color:var(--ink-3); line-height:1.35">Flap height is unmeasured. Every pocket pin is centred between the flap edge and the pocket seam, so this moves them all.</p>
+    </div>
+
+    <div class="group">
+      <div class="eyebrow">Drawing</div>
+      <div class="toggles">
+        <label class="toggle"><input type="checkbox" id="tDims" checked> Dimension callouts</label>
+        <label class="toggle"><input type="checkbox" id="tEnv"> Taper clearance envelope</label>
+        <label class="toggle"><input type="checkbox" id="tGhost" checked> Vacant slots (Master Cadet / NSE)</label>
+      </div>
+      <div class="field" style="margin-top:2px">
+        <label for="sleeveLen">Sleeve len</label>
+        <input type="number" id="sleeveLen" min="40" max="70" step="1" style="width:100%; padding:5px 8px; background:var(--paper); border:1px solid var(--rule); border-radius:3px">
+      </div>
+      <div class="field">
+        <label for="rcacD" title="Measured at 2.5 in">RCAC dia</label>
+        <input type="number" id="rcacD" min="3" max="9" step="0.25" style="width:100%; padding:5px 8px; background:var(--paper); border:1px solid var(--rule); border-radius:3px">
+      </div>
+      <div class="field">
+        <label for="hsrc">Heights</label>
+        <select id="hsrc">
+          <option value="measured">Measured (local)</option>
+          <option value="poster">Poster-derived</option>
+        </select>
+      </div>
+    </div>
+  </aside>
+
+  <main class="stage">
+    <div class="sheetwrap"><svg id="draw" role="img" aria-label="Left and right tunic sleeve insignia layout"></svg></div>
+    <div class="legend">
+      <span><i class="swatch" style="border-top-color:var(--brass)"></i> datum</span>
+      <span><i class="swatch" style="border-top-color:var(--crit); border-top-style:dashed"></i> collision</span>
+      <span><i class="swatch" style="border-top-color:var(--ink-3); border-top-style:dashed"></i> vacant slot &mdash; nothing is sewn here</span>
+      <span><strong>Left scale</strong> &mdash; cm up from the cuff bottom (sleeve end)</span>
+      <span><strong>Right scale</strong> &mdash; cm down from the shoulder seam</span>
+      <span><i class="swatch" style="border-top-color:var(--brass)"></i> bracket = gap from the badge it hangs off</span>
+      <span>Front = toward the chest. Both sleeves drawn flat, outside face toward you.</span>
+    </div>
+
+    <div class="sheetwrap"><svg id="drawFront" role="img" aria-label="Front of tunic insignia layout"></svg></div>
+    <div class="legend">
+      <span>Viewed from the front, so the wearer&rsquo;s right pocket is on the left</span>
+      <span>Scale reads cm up from the pocket top edge</span>
+      <span>Pinned insignia sit on the pocket, centred between the flap edge and the lower seam</span>
+    </div>
+
+    <section class="panel">
+      <header>
+        <h2>Sewing guide</h2>
+        <span class="note">Each badge is stated the way the regulation states it. Only the badges the rules give a fixed anchor &mdash; corps title and RCAC badge from the shoulder seam; marksmanship, the star, the appointment badge, WO&ndash;CWO rank and the lowest proficiency badge from the cuff &mdash; carry an absolute figure. Everything else is a gap from the badge it hangs off, which is what you actually measure. Work down the list in order and each row is ready to sew.</span>
+      </header>
+      <div class="tblwrap">
+        <table>
+          <thead><tr>
+            <th>Sleeve</th><th>Item</th><th>Datum</th><th>Measurement</th><th>Size w &times; h</th><th>Slot</th>
+          </tr></thead>
+          <tbody id="guide"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <header>
+        <h2>Artwork coverage</h2>
+        <span class="note">What the poster gives us, and what it doesn&rsquo;t. Separate from the placement rules.</span>
+      </header>
+      <div>
+        <div class="finding"><span class="tag info">recovered</span><span class="msg">
+          <strong>Cadet Fitness Assessment</strong>, Bronze to Excellence &mdash; <code>extract_badges.py</code> skipped the whole PHYSICAL FITNESS block. Pulled off the source PDF by <code>recut_fitness.py</code>. All four measure 63.0 pt at aspect 0.998, the same circle family as first aid, which independently confirms the 3 cm circle for fitness.
+          <span class="cite">every sleeve badge now has artwork</span></span></div>
+        <div class="finding"><span class="tag warn">not extracted</span><span class="msg">
+          <strong>Seven medals, the National Rifle Team and Belzile Trophy pins, and the marksmanship, biathlon and expedition pin blocks</strong> &mdash; missed by the same coverage gap. All front-of-tunic, so none of them blocks the sleeves, and the source PDF is now on hand to recover them for that stage.
+          <span class="cite">badge_map.csv rows M01&ndash;M16</span></span></div>
+        <div class="finding"><span class="tag info">recovered</span><span class="msg">
+          <strong>Music levels 2, 3 and 4</strong> &mdash; were trapped in one bad crop (<code>unnamed_7</code>). Segmented back out by <code>recut_music.py</code>, so the family is now complete: Basic plus levels 1&ndash;5.
+          <span class="cite">art/recut/band0_col0&ndash;2.png</span></span></div>
+        <div class="finding"><span class="tag info">recovered</span><span class="msg">
+          <strong>Corps name title and RCAC badge</strong> &mdash; the poster draws them together, twice, as one pixel-identical template, and the extractor merged each pair into a single crop. Split by <code>recut_shoulder.py</code>, which gives exact proportions for two badges nobody has measured.
+          <span class="cite">manifest.csv items 15 and 17</span></span></div>
+        <div class="finding"><span class="tag info">out of scope</span><span class="msg">
+          <strong>Duke of Edinburgh&rsquo;s Award</strong>, Bronze / Silver / Gold &mdash; pinned insignia, so front of tunic rather than sleeve, and absent from QualMap either way.
+          <span class="cite">confirmed by Lt Beal</span></span></div>
+        <div class="finding"><span class="tag info">no qual row</span><span class="msg">
+          <strong>General Training, Army Cadet Voyage and Maple Leaf Exchange</strong> &mdash; three summer-training badges that belong in the CTC grid but have no row in <code>D - Qual Info</code>. Selectable here so the geometry can be tested; the workbook can&rsquo;t record them yet.
+          <span class="cite">21 CTC badges on the poster against 18 QualMap rows</span></span></div>
+        <div class="finding"><span class="tag info">out of scope</span><span class="msg">
+          <strong>&ldquo;Level 1&rdquo; to &ldquo;Level 4&rdquo;</strong> &mdash; National Star of Excellence levels 1&ndash;4. Terminated programme, so that slot stays vacant and nothing reflows into it.
+          <span class="cite">confirmed by Lt Beal &middot; CH3S1 3.b.(4)</span></span></div>
+        <div class="finding"><span class="tag info">miscaptioned</span><span class="msg">
+          <strong>Parachutist wings</strong> are captioned &ldquo;Canadian Armed Forces&rdquo;, and the <strong>Maple Leaf Exchange</strong> is captioned &ldquo;Maple Leaf&rdquo;. Caption text is a hint, never the identity &mdash; every slug is now confirmed against the poster layout in <code>labels.py</code>.
+          <span class="cite">badge_map.csv</span></span></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <header>
+        <h2>Validator</h2>
+        <span class="note">Flags, never fixes. Sleeve clearance is checked against tunic size 6436, the only size measured. Anything resting on an unmeasured or estimated dimension is called out.</span>
+      </header>
+      <div id="findings"></div>
+    </section>
+  </main>
+</div>
+
+<footer class="foot">
+  <p><strong>What this is.</strong> Enter one cadet&rsquo;s insignia and get their tunic layout: a check drawing of both sleeves and the front, plus a sewing guide giving every badge&rsquo;s position in centimetres from the datum it is actually measured from. Nothing is stored and nothing leaves this page.</p>
+  <p><strong>How to use it.</strong> Work down the rail setting rank, star level, marksmanship, proficiency badges and summer training, then the front. The drawing updates as you go. When it looks right, work down the sewing guide in order &mdash; it is sorted so that anything a later badge hangs off is already placed.</p>
+  <p><strong>Coordinate model.</strong> One axis per sleeve: <code>y</code> in cm upward from the cuff bottom edge, <code>x</code> front-positive from the sleeve centre. The shoulder seam is <code>y&nbsp;=&nbsp;sleeve&nbsp;length</code>, so nothing in the model ever measures downward. Front/rear is converted to image-left/right once, at draw time.</p>
+  <p><strong>Highest badged level wins.</strong> Where policy says only the highest in a category is worn, that means the highest that actually carries a badge. A level marked <code>not_worn</code> in the workbook is skipped and the next one down is worn &mdash; which is why an ALP cadet shows the Gold Star, and a cadet whose only fitness result is &ldquo;Participated&rdquo; shows nothing.</p>
+  <p><strong>Two datum families.</strong> The corps name title, the RCAC badge and the LCpl&ndash;Sgt chevrons are measured <em>down from the shoulder seam</em>; the chevrons hang off the RCAC badge, so they inherit it. Everything else &mdash; marksmanship, the proficiency stack, the star, the CTC grid, the appointment badge and WO&ndash;CWO rank &mdash; is measured <em>up from the cuff bottom</em>. The sewing guide always quotes a badge in its own family&rsquo;s terms. That matters because the distance between the two families is the sleeve length: change the tunic size and every shoulder-referenced badge moves relative to every cuff-referenced one. The taper profile was measured on size 6436 and is stretched proportionally for other lengths, which is an approximation &mdash; real grading is not linear.</p>
+  <p><strong>Artwork is stretched to the declared box.</strong> Switch <em>Heights</em> to <em>Poster-derived</em> and any badge that looks distorted under <em>Measured</em> is one where the local measurement and the poster art disagree. That distortion is the conflict, drawn rather than hidden.</p>
+  <p>Badge artwork is Crown copyright, from A-CR-CCP-750/DA-003. Internal corps use.</p>
+</footer>
+
+<script>
+/*__ART_PACK__*/
+</script>
+
+<script>
+"use strict";
+
+/* ============================================================
+   GEOMETRY  -  all cm. Source of truth is army_tunic_placement_rules_2.json.
+   `conf` mirrors the JSON's confidence field so the validator can speak up.
+   ============================================================ */
+let SLEEVE_LEN = 57.0;                       // shoulder seam -> cuff end; set per render
+const SLEEVE_LEN_6436 = 57.0;                // the only size actually measured
+const TAPER = [[0,10.5],[5,11.0],[20,15.0],[45,19.0],[57,21.0]];
+const CUFF_H = 5.0;
+
+function flatWidth(y){
+  // The profile was measured on size 6436. For any other length we stretch it
+  // proportionally, which is an approximation - real grading is not linear.
+  const k = SLEEVE_LEN / SLEEVE_LEN_6436;
+  const T = TAPER.map(([ty,tw]) => [ty*k, tw]);
+  if (y <= T[0][0]) return T[0][1];
+  if (y >= T[T.length-1][0]) return T[T.length-1][1];
+  for (let i=0;i<T.length-1;i++){
+    const [y0,w0]=T[i], [y1,w1]=T[i+1];
+    if (y>=y0 && y<=y1) return w0 + (y-y0)/(y1-y0)*(w1-w0);
+  }
+  return T[T.length-1][1];
+}
+
+// Poster-derived height = measured width / trimmed art aspect. Lets us A/B the
+// open questions about chevron + MWO + distinguished aspects without editing code.
+function posterH(artKey, w){
+  const a = BADGE_ART[artKey] && BADGE_ART[artKey].aspect;
+  return a ? w/a : null;
+}
+
+const RANKS = {
+  Cdt : {label:"Cadet",                 cls:"none"},
+  LCpl: {label:"Lance Corporal",        cls:"chevron", w:10.00, h: 6.50, art:"rank_LCpl"},
+  Cpl : {label:"Corporal",              cls:"chevron", w:10.00, h: 8.00, art:"rank_Cpl"},
+  MCpl: {label:"Master Corporal",       cls:"chevron", w:10.00, h: 9.50, art:"rank_MCpl"},
+  Sgt : {label:"Sergeant",              cls:"chevron", w:10.00, h:11.00, art:"rank_Sgt"},
+  WO  : {label:"Warrant Officer",       cls:"crown",   w: 5.08, h: 5.08, art:"rank_WO"},
+  MWO : {label:"Master Warrant Officer",cls:"crown",   w: 7.62, h: 5.08, art:"rank_MWO"},
+  CWO : {label:"Chief Warrant Officer", cls:"crown",   w: 7.62, h:10.16, art:"rank_CWO", conf:"estimate"}
+};
+const JUNIOR = ["LCpl","Cpl","MCpl","Sgt"];
+const SENIOR = ["WO","MWO","CWO"];
+
+const APPTS = {
+  none        : {label:"None"},
+  drum_major  : {label:"Drum Major", w:10.0, h:11.0, art:"appt_drum_major"},
+  pipe_major  : {label:"Pipe Major", w:10.0, h:11.0, art:"appt_pipe_major"}
+};
+
+// ALP has no badge of its own yet, so an ALP cadet keeps the Gold Star - the highest
+// level they hold that carries one. Not a special case: the same rule covers Fitness
+// "Participated", which is also not_worn in QualMap. Rules pack v0.3-draft.
+const STARS = {
+  none  : {label:"None"},
+  Green : {label:"Green Star",  art:"star_green"},
+  Red   : {label:"Red Star",    art:"star_red"},
+  Silver: {label:"Silver Star", art:"star_silver"},
+  Gold  : {label:"Gold Star",   art:"star_gold"},
+  ALP   : {label:"Gold Star (worn for ALP)", art:"star_gold", viaALP:true}
+};
+const STAR_W = 2.85, STAR_H = 2.71;
+
+// Levels 1-3 are TWO physically separate badges: a numeral tab anchored at 6 cm and
+// the crossed rifles 0.5 cm above it, sewn independently. The 0.5 cm is regulation
+// (CH3S1 3.b.(6)), not a local measurement, so the poster drawing it wider does not
+// put it in doubt. Distinguished is one piece, rifles fused with a crown.
+// Rifles measured at 6.0 x 5.08 cm. The old 5.5 width was inferred from the poster
+// aspect and was 8% low. Same width as the Distinguished assembly. Pack v0.4-draft.
+const MK_NUM_W = 3.81, MK_NUM_H = 1.905, MK_RIF_W = 6.0, MK_RIF_H = 5.08, MK_GAP = 0.5;
+const MARKS = {
+  none : {label:"None"},
+  mk_1 : {label:"Marksman",              two:true, num:"mk_1_num", rifles:"mk_1_rifles"},
+  mk_2 : {label:"First Class Marksman",  two:true, num:"mk_2_num", rifles:"mk_2_rifles"},
+  mk_3 : {label:"Expert Marksman",       two:true, num:"mk_3_num", rifles:"mk_3_rifles"},
+  mk_4 : {label:"Distinguished Marksman",w:6.0, h:8.000, art:"mk_4"}
+};
+
+const CIRCLE = 3.0;
+
+// Corps name title and RCAC sleeve badge. The poster draws them together as one
+// template (twice, for two example corps), so their proportions are exact: the badge
+// is a true circle, the title is 1.923 x that diameter wide by 0.606 x it tall.
+// The badge is MEASURED at 2.5 in = 6.35 cm, which fixes the title at 12.21 x 3.85 cm
+// and leaves 1.80 cm of cloth between them. The title itself is still derived, not
+// measured. Rules pack v0.2-draft.
+const TITLE_W_RATIO = 1.923, TITLE_H_RATIO = 0.606;
+const RCAC_MEASURED = 6.35;
+const RCAC_CEILING = 12 / (1 + TITLE_H_RATIO);   // 7.47 cm: title meets badge
+// Cadet Fitness Assessment. extract_badges.py skipped the whole PHYSICAL FITNESS
+// block; recut_fitness.py pulls it off the source PDF. All four measure 63.0 pt at
+// aspect 0.998 - the same circle family as first aid and the CTC badges, which
+// confirms circle_badge (3.0 cm) covers fitness too. Not the poster's bronze/silver/
+// gold ellipses, which are the Duke of Edinburgh's Award.
+const FITNESS = {
+  none :{label:"None"},
+  fit_1:{label:"Participated (not worn)", worn:false},
+  fit_2:{label:"Bronze",     art:"fit_2"},
+  fit_3:{label:"Silver",     art:"fit_3"},
+  fit_4:{label:"Gold",       art:"fit_4"},
+  fit_5:{label:"Excellence", art:"fit_5"}
+};
+const FIRSTAID = {
+  none:{label:"None"}, fa_1:{label:"Emergency", art:"fa_1"}, fa_2:{label:"Standard", art:"fa_2"}
+};
+// Music. Six badges in a left-to-right line on the poster: Basic, then levels 1-5.
+// Levels 2-4 were trapped in one bad crop and were recovered by recut_music.py.
+const MUSIC = {
+  none :{label:"None"},
+  mus_1:{label:"Level 1", art:"mus_1"}, mus_2:{label:"Level 2", art:"mus_2"},
+  mus_3:{label:"Level 3", art:"mus_3"}, mus_4:{label:"Level 4", art:"mus_4"},
+  mus_5:{label:"Level 5", art:"mus_5"}
+};
+
+// CTC / summer training, straight off D - Qual Info where Slot = right_ctc_grid
+const CTC = [
+  {k:"ctc_exped_1", cat:"Expedition",        nm:"Team Member"},
+  {k:"ctc_exped_2", cat:"Expedition",        nm:"Team Leader"},
+  {k:"ctc_exped_3", cat:"Expedition",        nm:"Leadership and Challenge"},
+  {k:"ctc_dc_1",    cat:"Drill and Ceremonial", nm:"Basic"},
+  {k:"ctc_dc_2",    cat:"Drill and Ceremonial", nm:"Instructor"},
+  {k:"ctc_fit_1",   cat:"Fitness and Sports", nm:"Basic"},
+  {k:"ctc_fit_2",   cat:"Fitness and Sports", nm:"Instructor"},
+  {k:"ctc_mk_1",    cat:"Marksmanship",       nm:"Basic"},
+  {k:"ctc_mk_2",    cat:"Marksmanship",       nm:"Fullbore Phase 1"},
+  {k:"ctc_mk_3",    cat:"Marksmanship",       nm:"Fullbore Phase 2"},
+  {k:"ctc_arm_2",   cat:"Air Rifle Marksmanship", nm:"Instructor"},
+  {k:"ctc_pb_1",    cat:"Pipe Band",          nm:"Basic"},
+  {k:"ctc_pb_2",    cat:"Pipe Band",          nm:"Intermediate"},
+  {k:"ctc_pb_3",    cat:"Pipe Band",          nm:"Advanced"},
+  {k:"ctc_mb_1",    cat:"Military Band",      nm:"Basic"},
+  {k:"ctc_mb_2",    cat:"Military Band",      nm:"Intermediate"},
+  {k:"ctc_mb_3",    cat:"Military Band",      nm:"Advanced"},
+  {k:"ctc_staff",   cat:"Staff Cadet",        nm:"Staff Cadet"},
+  // On the poster in the summer-training rows, but with no row in D - Qual Info.
+  // Carried so the grid geometry can be exercised; flagged when worn.
+  {k:"ctc_gen",     cat:"General Training",   nm:"General Training",   noQual:true},
+  {k:"ctc_voyage",  cat:"Army Cadet Voyage",  nm:"Army Cadet Voyage",  noQual:true},
+  {k:"ctc_exchange",cat:"Maple Leaf Exchange",nm:"Maple Leaf Exchange",noQual:true}
+];
+const GRID_FILL = [
+  {row:0,col:0,nm:"bottom-centre"},{row:0,col:1,nm:"bottom-front"},{row:0,col:-1,nm:"bottom-rear"},
+  {row:1,col:0,nm:"top-centre"},   {row:1,col:1,nm:"top-front"},   {row:1,col:-1,nm:"top-rear"}
+];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const state = {
+  rank:"Cpl", appt:"none", star:"Red", mk:"mk_2",
+  fit:"fit_3", fa:"fa_1", mus:"none",
+  ctc:["ctc_exped_1","ctc_dc_1"],          // selection order == award order
+  rcacD:6.35,                              // MEASURED: 2.5 in. Rules pack v0.2-draft.
+  sleeveLen:57.0,                          // size 6436, the only one measured
+  front:{
+    ribbons:3, medals:false, nametag:"Beal", anniversary:false, expedition:false,
+    cadetCommend:false, navyLeague:false, dofe:"none", nationalCommend:"none",
+    parachutist:false, participation:0, commemorative:false, poppy:false,
+    flapH:4.0                              // UNMEASURED placeholder
+  },
+  dims:true, env:false, ghost:true, hsrc:"measured"
+};
+
+const PRESETS = {
+  "Worked example":    {rank:"Cpl", appt:"none", star:"Red", mk:"mk_2", fit:"fit_3", fa:"fa_1", mus:"none", ctc:["ctc_exped_1","ctc_dc_1"]},
+  "Full CTC grid (6)": {rank:"MCpl", appt:"none", star:"Gold", mk:"mk_3", fit:"fit_4", fa:"fa_2", mus:"none",
+                        ctc:["ctc_exped_1","ctc_dc_1","ctc_fit_1","ctc_mk_1","ctc_pb_1","ctc_staff"]},
+  "Three-high stack":  {rank:"Cpl", appt:"none", star:"Silver", mk:"mk_1", fit:"fit_4", fa:"fa_2", mus:"mus_3", ctc:["ctc_mb_1"]},
+  "Sgt + Drum Major":  {rank:"Sgt", appt:"drum_major", star:"Gold", mk:"mk_3", fit:"fit_4", fa:"fa_2", mus:"mus_5", ctc:["ctc_pb_1","ctc_pb_2"]},
+  "WO + Pipe Major":   {rank:"WO", appt:"pipe_major", star:"Gold", mk:"mk_4", fit:"fit_4", fa:"fa_2", mus:"mus_5", ctc:["ctc_pb_1","ctc_pb_2","ctc_pb_3","ctc_staff"]},
+  "CWO, no appt":      {rank:"CWO", appt:"none", star:"Gold", mk:"mk_4", fit:"fit_4", fa:"fa_2", mus:"mus_4", ctc:["ctc_staff","ctc_exped_3","ctc_dc_2"]},
+  "ALP cadet":         {rank:"MWO", appt:"none", star:"ALP", mk:"mk_3", fit:"fit_4", fa:"fa_2", mus:"none", ctc:["ctc_staff","ctc_fit_2","ctc_exped_3","ctc_mk_2"]},
+  "Bare Cdt":          {rank:"Cdt", appt:"none", star:"Green", mk:"none", fit:"none", fa:"none", mus:"none", ctc:[]},
+  "Stack, no marks":   {rank:"Cpl", appt:"none", star:"Red", mk:"none", fit:"fit_2", fa:"fa_1", mus:"none", ctc:[]}
+};
+
+/* ============================================================
+   RESOLVER
+   Slots resolve in dependency order. Every slot yields a box even when nothing
+   is worn (phantom), so downstream anchors read one uniform shape.
+   box: {x centre, y bottom, w, h}  -  x front-positive, y up from cuff bottom.
+   ============================================================ */
+function H(item, artKey, measuredH){
+  if (state.hsrc !== "poster") return measuredH;
+  const p = posterH(artKey, item.w);
+  return p != null ? p : measuredH;
+}
+
+function resolve(){
+  const L = [], R = [], warn = [];
+  const push = (arr,o) => { arr.push(o); return o; };
+  const add = (m,lvl,cite) => warn.push({lvl, msg:m, cite});
+
+  /* ---- shared shoulder items, both sleeves ---- */
+  const D  = state.rcacD;
+  const tw = TITLE_W_RATIO * D, th = TITLE_H_RATIO * D;
+  for (const [arr,side] of [[L,"left"],[R,"right"]]){
+    push(arr,{ slot:`${side}_corps_name`, label:"Corps name title (poster example art)",
+      sleeve:side, x:0, y:SLEEVE_LEN-th, w:tw, h:th, art:"corps_title", conf:"derived",
+      datum:"shoulder_seam", root:"shoulder", edge:"top", off:0,
+      cite:"ANNEX-H 3H-3 / 3H-4-1; CH3S1 3.b.(2)" });
+
+    push(arr,{ slot:`${side}_rcac_badge`, label:"RCAC badge", sleeve:side,
+      x:0, y:SLEEVE_LEN-12, w:D, h:D, art:"rcac_badge", conf:"derived",
+      datum:"shoulder_seam", root:"shoulder", edge:"bottom", off:12,
+      cite:"ANNEX-H 3H-3 / 3H-4-1; CH3S1 3.b.(3)" });
+  }
+  const rcacBottom = SLEEVE_LEN - 12;   // y = 45, independent of D
+
+  const clear = 12 - (1 + TITLE_H_RATIO) * D;
+  if (clear < 0){
+    add(`At diameter ${D.toFixed(2)} cm the RCAC badge runs into the corps name title by ${(-clear).toFixed(2)} cm. The badge bottom is pinned 12 cm below the shoulder seam and the title hangs from the seam, so anything over ${RCAC_CEILING.toFixed(2)} cm across cannot be worn.`,
+        "crit", "CH3S1 3.b.(2) + 3.b.(3), poster proportions");
+  } else if (clear < 1.0){
+    add(`Only ${clear.toFixed(2)} cm of cloth between the corps name title and the RCAC badge at diameter ${D.toFixed(2)} cm. Tight for two sewn edges.`,
+        "warn", "CH3S1 3.b.(2) + 3.b.(3)");
+  }
+  if (Math.abs(D - RCAC_MEASURED) < 0.005){
+    add(`RCAC badge measured at 2.5 in (${RCAC_MEASURED.toFixed(2)} cm). That fixes the corps name title at ${tw.toFixed(2)} x ${th.toFixed(2)} cm through the poster's shared template, leaving ${clear.toFixed(2)} cm of cloth between them. The title is derived from the badge, not measured directly.`,
+        "info", "rules pack v0.2-draft");
+  } else {
+    add(`Diameter overridden to ${D.toFixed(2)} cm for what-if. The measured value is ${RCAC_MEASURED.toFixed(2)} cm (2.5 in); geometry caps it under ${RCAC_CEILING.toFixed(2)} cm.`,
+        "warn", "rules pack v0.2-draft");
+  }
+
+  /* ---- LEFT: marksmanship, anchored bottom at 6 ---- */
+  if (state.mk !== "none"){
+    const m = MARKS[state.mk];
+    if (m.two){
+      const nh = H({w:MK_NUM_W}, m.num, MK_NUM_H);
+      push(L,{ slot:"left_marksmanship", label:`${m.label} — numeral`, sleeve:"left",
+        x:0, y:6, w:MK_NUM_W, h:nh, art:m.num,
+        datum:"cuff_bottom", root:"cuff", edge:"bottom", off:6,
+        cite:"ANNEX-H 3H-3; CH3S1 3.b.(6)" });
+      push(L,{ slot:"left_marksmanship", label:`${m.label} — crossed rifles`, sleeve:"left",
+        x:0, y:6 + nh + MK_GAP, w:MK_RIF_W, h:H({w:MK_RIF_W}, m.rifles, MK_RIF_H),
+        art:m.rifles,
+        datum:"cuff_bottom", root:"cuff", edge:"bottom", off:6 + nh + MK_GAP,
+        rel:{of:"the numeral", ofShort:"Marksmanship numeral", gap:MK_GAP, dir:"above"},
+        cite:"CH3S1 3.b.(6) — 0.5 cm internal gap, stated in the regulation" });
+      add(`Two physically separate badges: the numeral tab, then ${MK_GAP.toFixed(2)} cm of cloth, then the crossed rifles. The gap is stated in the regulation. The poster draws it wider (roughly 0.73 to 0.86 cm) but carries no dimensions — same as Annex H’s 12 cm and its five-badge stagger, the instruction governs.`,
+          "info", "CH3S1 3.b.(6); conflict logged in the rules pack");
+    } else {
+      push(L,{ slot:"left_marksmanship", label:m.label, sleeve:"left",
+        x:0, y:6, w:m.w, h:H({w:m.w},m.art,m.h), art:m.art,
+        datum:"cuff_bottom", root:"cuff", edge:"bottom", off:6,
+        cite:"ANNEX-H 3H-3; CH3S1 3.b.(6) — single piece" });
+    }
+  }
+
+  /* ---- LEFT: proficiency stack, bottom of lowest worn at 20, chain up 1 cm ---- */
+  const stack = [];
+  if (state.fit !== "none" && FITNESS[state.fit].worn !== false) stack.push({cat:"Fitness", d:FITNESS[state.fit]});
+  if (state.fa  !== "none") stack.push({cat:"First Aid", d:FIRSTAID[state.fa]});
+  if (state.mus !== "none") stack.push({cat:"Music", d:MUSIC[state.mus]});
+
+  let sy = 20, prevLabel = null;
+  for (const s of stack){
+    const label = `${s.cat} – ${s.d.label}`;
+    push(L,{ slot:"left_proficiency_stack", label, sleeve:"left",
+      x:0, y:sy, w:CIRCLE, h:CIRCLE, art:s.d.art, missingArt:!!s.d.missingArt,
+      datum:"cuff_bottom", root:"cuff", edge:"bottom", off:sy,
+      // only the lowest badge takes the 20 cm anchor; the rest chain off it
+      rel: prevLabel ? {of:`the ${prevLabel} badge`, ofShort:prevLabel, gap:1, dir:"above"} : null,
+      cite:"CH3S1 3.b.(5) — 20 cm anchor, not Annex H's 12 cm" });
+    prevLabel = s.cat; sy += CIRCLE + 1;
+  }
+  if (stack.length && state.mk === "none"){
+    add("Empty band from 0 to 20 cm on the left sleeve. Correct, not a layout error — the stack holds at 20 cm whether or not marksmanship is worn. Do not close the gap.",
+        "info", "rules JSON left_proficiency_stack.notes[0]");
+  }
+
+  /* ---- RIGHT: star level. ALP resolves to a phantom so the grid still anchors ---- */
+  const st = STARS[state.star];
+  const starWorn = state.star !== "none" && !!st.art;
+  const starBox = { slot:"right_star_level", label: starWorn ? st.label : "Star position (no training level yet)",
+    sleeve:"right", x:0, y:6, w:STAR_W, h:STAR_H, art:st.art || null,
+    ghost:!starWorn, datum:"cuff_bottom", root:"cuff", edge:"bottom", off:6,
+    cite:"ANNEX-H 3H-4-1; CH3S1 3.b.(10)" };
+  if (state.star !== "none") push(R, starBox);
+  if (st.viaALP){
+    add("ALP has no star insignia of its own yet, so the cadet keeps the Gold Star — the highest level they hold that carries a badge. The slot is never vacant, and nothing special happens to the CTC grid above it.",
+        "info", "rules pack v0.3-draft, right_star_level.house_rules[0]");
+  }
+
+  /* ---- RIGHT: CTC grid, bottom edge 1 cm above the star's top ---- */
+  const picks = state.ctc.slice(0,6);
+  if (picks.length){
+    const gridBottom = 6 + STAR_H + 1;                       // 9.71
+    const starRef = starWorn ? "the training level star" : "the star position";
+    let bottomDrawn = false;
+    picks.forEach((k,i) => {
+      const cell = GRID_FILL[i];
+      const q = CTC.find(c => c.k === k);
+      // bottom row hangs 1 cm off the star; top row sits straight on the bottom row
+      const rel = cell.row === 0
+        ? {of:starRef, ofShort:"Training level star", gap:1, dir:"above"}
+        : {of:"the row below", ofShort:"CTC grid, bottom row", gap:0, dir:"above"};
+      const show = cell.row === 0 && !bottomDrawn;
+      if (show) bottomDrawn = true;
+      push(R,{ slot:"right_ctc_grid", label:`${q.cat} – ${q.nm}`, sleeve:"right",
+        x: cell.col * CIRCLE, y: gridBottom + cell.row * CIRCLE, w:CIRCLE, h:CIRCLE,
+        art:q.k, cell:cell.nm, seq:i+1, rel, dimShow: show,
+        datum:"cuff_bottom", root:"cuff", edge:"bottom", off: gridBottom + cell.row*CIRCLE,
+        cite:"CH3S1 3.b.(9); ANNEX-H 3H-4-2 / 3H-4-3" });
+    });
+    const orphans = picks.map(k => CTC.find(c => c.k === k)).filter(q => q && q.noQual);
+    if (orphans.length){
+      add(`${orphans.map(q => q.cat).join(", ")} — on the poster in the summer-training rows, but with no row in D - Qual Info. Geometry is fine; the workbook can't record the award yet.`,
+          "warn", "A-CR-CCP-750/DA-003 vs D - Qual Info");
+    }
+    if (state.ctc.length > 6){
+      add(`${state.ctc.length} CTC qualifications selected. Maximum worn is six — the last ${state.ctc.length-6} are dropped.`,
+          "crit", "CH3S1 3.b.(9)");
+    }
+    add("Grid fill order here follows your click order. In production it sequences on Date Awarded ascending, which is still placeholder data in the workbook.",
+        "warn", "open question 4");
+  }
+
+  /* ---- RIGHT: appointment, bottom apex at 20 ---- */
+  let apptBox = null;
+  if (state.appt !== "none"){
+    const a = APPTS[state.appt];
+    const it = {w:a.w};
+    apptBox = push(R,{ slot:"right_appointment", label:a.label, sleeve:"right",
+      x:0, y:20, w:a.w, h:H(it,a.art,a.h), art:a.art,
+      datum:"cuff_bottom", root:"cuff", edge:"bottom", off:20,
+      cite:"CH3S1 3.b.(8); ANNEX-H 3H-4-3" });
+  }
+
+  /* ---- RIGHT: rank ---- */
+  const rk = RANKS[state.rank];
+  if (rk.cls !== "none"){
+    const it = {w:rk.w};
+    const h = H(it, rk.art, rk.h);
+    if (JUNIOR.includes(state.rank)){
+      // chevrons point down, so "tips" = bbox top, pinned 1 cm below the RCAC badge
+      push(R,{ slot:"right_rank_junior", label:rk.label, sleeve:"right",
+        x:0, y:rcacBottom - 1 - h, w:rk.w, h, art:rk.art, conf:rk.conf,
+        datum:"right_rcac_badge", root:"shoulder", edge:"top", off:1, dir:"below",
+        rel:{of:"the RCAC badge", ofShort:"RCAC badge", gap:1, dir:"below"},
+        cite:"ANNEX-H 3H-4-1; CH3S1 3.b.(7)(i)" });
+      if (state.appt !== "none"){
+        add(`${rk.label} is a junior rank and hangs from the RCAC badge, while the appointment badge sits at 20 cm. Both are drawn; check the gap between them.`,
+            "info", "CH3S1 3.b.(7)(i) vs 3.b.(8)");
+      }
+    } else {
+      const y = apptBox ? apptBox.y + apptBox.h + 1 : 20;
+      push(R,{ slot: apptBox ? "right_rank_senior_with_appointment" : "right_rank_senior_no_appointment",
+        label:rk.label, sleeve:"right", x:0, y, w:rk.w, h, art:rk.art, conf:rk.conf,
+        datum: apptBox ? "right_appointment" : "cuff_bottom", root:"cuff", edge:"bottom", off: apptBox ? 1 : 20,
+        dir: apptBox ? "above" : null,
+        rel: apptBox ? {of:`the ${apptBox.label} badge`, ofShort:"Appointment badge", gap:1, dir:"above"} : null,
+        cite: apptBox ? "ANNEX-H 3H-4-3; CH3S1 3.b.(7)(ii)" : "ANNEX-H 3H-4-2; CH3S1 3.b.(7)(ii)" });
+    }
+    if (rk.conf === "estimate"){
+      add(`${rk.label} dimensions are an unverified estimate (${rk.w} × ${rk.h} cm). Measure before cutting thread.`,
+          "warn", "rules JSON measured_constants_cm.rank_cwo.confidence");
+    }
+  }
+
+  /* ---- terminated slot, drawn vacant so nobody reflows into it ----
+     Master Cadet and the National Star of Excellence shared this slot, 1 cm below the
+     RCAC badge on the LEFT sleeve. Both programmes ended. Sized as the 3 cm circle
+     because the NSE artwork is a 1.0-aspect circle like every other circle badge;
+     the exact size is immaterial since nothing is ever sewn here. */
+  if (state.ghost){
+    L.push({ slot:"terminated", label:"Master Cadet / National Star of Excellence — vacant",
+      ghostLabel:"vacant · terminated",
+      sleeve:"left", x:0, y:rcacBottom-1-CIRCLE, w:CIRCLE, h:CIRCLE,
+      art:null, ghost:true, terminated:true,
+      datum:"left_rcac_badge", root:"shoulder", edge:"top", off:1, dir:"below",
+      rel:{of:"the RCAC badge", ofShort:"RCAC badge", gap:1, dir:"below"},
+      cite:"CH3S1 3.b.(4); ANNEX-H 3H-3 — both programmes terminated" });
+  }
+
+  return {L, R, warn};
+}
+
+/* ============================================================
+   VALIDATION  -  flags, never fixes
+   ============================================================ */
+function validate(items, sleeve, warn){
+  const real = items.filter(i => !i.ghost);
+
+  // pairwise overlap
+  for (let a=0;a<real.length;a++){
+    for (let b=a+1;b<real.length;b++){
+      const A=real[a], B=real[b];
+      if (A.slot==="right_ctc_grid" && B.slot==="right_ctc_grid") continue;  // grid cells touch by design
+      if (A.slot==="left_proficiency_stack" && B.slot==="left_proficiency_stack") continue;
+      const ox = Math.min(A.x+A.w/2, B.x+B.w/2) - Math.max(A.x-A.w/2, B.x-B.w/2);
+      const oy = Math.min(A.y+A.h,   B.y+B.h)   - Math.max(A.y,       B.y);
+      const crossFamily = A.root && B.root && A.root !== B.root;
+      if (crossFamily){
+        const gap = Math.max(A.y, B.y) - Math.min(A.y+A.h, B.y+B.h);
+        if (gap >= 0 && gap < 3.0){
+          const at = SLEEVE_LEN - gap;   // the length at which they meet
+          warn.push({lvl:"warn", cite:"two datum families",
+            msg:`${sleeve} sleeve: ${A.label} is measured from the ${A.root}, ${B.label} from the ${B.root}, and only ${gap.toFixed(2)} cm separates them. That gap moves with sleeve length — they touch at about ${at.toFixed(0)} cm, against ${SLEEVE_LEN.toFixed(0)} cm here.`});
+        }
+      }
+      if (ox > 1e-6 && oy > 1e-6){
+        A.clash = B.clash = true;
+        warn.push({lvl:"crit", cite:`${A.slot} ✕ ${B.slot}`,
+          msg:`${sleeve} sleeve: ${A.label} overlaps ${B.label} by ${oy.toFixed(2)} cm vertically.`});
+      }
+    }
+  }
+
+  // vertical gaps worth naming
+  const sorted = real.slice().sort((p,q)=>p.y-q.y);
+  for (let i=0;i<sorted.length-1;i++){
+    const A=sorted[i], B=sorted[i+1];
+    if (A.slot===B.slot) continue;
+    const gap = B.y - (A.y+A.h);
+    if (gap >= 0 && gap < 1.0){
+      warn.push({lvl:"warn", cite:`${A.slot} → ${B.slot}`,
+        msg:`${sleeve} sleeve: only ${gap.toFixed(2)} cm between ${A.label} and ${B.label}. Tight for a sewn edge.`});
+    }
+  }
+
+  // taper clearance at each item's narrowest point (its bottom edge)
+  for (const it of real){
+    if (it.face === "front") continue;          // the front has no taper
+    const avail = flatWidth(it.y);
+    const perSide = (avail - it.w)/2;
+    it.clearance = perSide;
+    if (perSide < 0){
+      warn.push({lvl:"crit", cite:"size 6436 taper profile",
+        msg:`${sleeve} sleeve: ${it.label} is ${it.w.toFixed(2)} cm wide but the sleeve is only ${avail.toFixed(2)} cm across at ${it.y.toFixed(1)} cm. It does not fit.`});
+    } else if (perSide < 1.0){
+      warn.push({lvl:"warn", cite:"size 6436 taper profile",
+        msg:`${sleeve} sleeve: ${it.label} leaves ${perSide.toFixed(2)} cm each side at ${it.y.toFixed(1)} cm. Smaller tunics are narrower and were never measured.`});
+    }
+  }
+}
+
+
+/* ============================================================
+   FRONT OF TUNIC
+   One axis per pocket: y in cm from the POCKET TOP EDGE, positive upward.
+   Negative y is on the pocket itself, which is where the pinned insignia go.
+   x is from that pocket's centre line, inboard-positive (toward the chest).
+   ============================================================ */
+const POCKET_W = 13.0, POCKET_H = 15.0;      // 13 across the top, 15 top to bottom
+const POCKET_GAP = 6.0;                      // PRESENTATIONAL ONLY, never measured
+const RIBBON_W = 3.5, RIBBON_H = 1.0, ROW_MAX = 3;
+const NAMETAG_W = 6.3, NAMETAG_H = 1.2;      // regulation, Ch1 s13.a
+const PIN_STRIP_W = 3.0, PIN_STRIP_H = 9.0;  // measured
+const COMP_PIN = 2.54;                       // 1 in square
+const EXPED_D = 2.54;                        // ESTIMATE, 1 in circle
+// Unmeasured placeholders. Everything using one is flagged by the validator.
+const FLAP_H_DEFAULT = 4.0;
+const COMMEND_W = 5.0, COMMEND_H = 1.3;
+const DOFE_D = 2.2;
+const PARA_W = 9.0, PARA_H = 3.87;           // poster aspect 2.328 at a guessed width
+const ANNIV_D = 2.0;
+const MEDAL_W = 3.5, MEDAL_DROP = 6.5;       // ribbon width, total suspended drop
+
+const DOFE = {none:"None", bronze:"Bronze", silver:"Silver", gold:"Gold"};
+const NATCOM = {none:"None", cds:"Chief of the Defence Staff Commendation",
+                command:"Command Commendation (VCDS / RCN / CA / RCAF)"};
+
+/* Rows of ribbons. Max three per row, no interval anywhere. Rows fill from the
+   bottom and a partial row sits on TOP, centred on the row below. Precedence 1 is
+   highest: top row, innermost. CH5-C 5C-1. */
+function ribbonRows(n){
+  const full = Math.floor(n/ROW_MAX), rem = n % ROW_MAX;
+  const sizes = [];                        // index 0 = bottom row
+  for (let i=0;i<full;i++) sizes.push(ROW_MAX);
+  if (rem) sizes.push(rem);
+  const out = [];
+  let seq = 1;
+  for (let j = sizes.length-1; j >= 0; j--){      // top row first
+    const size = sizes[j], rowW = size*RIBBON_W;
+    for (let k = 0; k < size; k++){               // innermost first
+      out.push({seq: seq++, row: j,
+                x: rowW/2 - (k + 0.5)*RIBBON_W,
+                y: j*RIBBON_H});
+    }
+  }
+  return {items: out, rows: sizes.length};
+}
+
+function resolveFront(){
+  const F = state.front, R = [], L = [], warn = [];
+  const flapH = F.flapH;
+  const add = (m,lvl,cite) => warn.push({lvl, msg:m, cite});
+  const put = (arr,o) => { arr.push(o); return o; };
+
+  // where a pin sits on a pocket: centred between the flap's lower edge and the
+  // pocket's lower seam, so the whole stack is centred on that midpoint
+  const pinBand = { top: -flapH, bottom: -POCKET_H };
+  const pinMid  = (pinBand.top + pinBand.bottom) / 2;
+  function pinStack(arr, side, pins){
+    if (!pins.length) return;
+    const totalH = pins.reduce((a,p)=>a+p.h,0) + (pins.length-1)*0.5;
+    let y = pinMid + totalH/2;
+    pins.forEach((pn,i) => {
+      y -= pn.h;
+      put(arr,{ face:"front", side, slot:pn.slot, label:pn.label,
+        x:0, y, w:pn.w, h:pn.h, art:pn.art, onPocket:true, conf:"placeholder",
+        fdatum: i === 0 ? "pocket_pin_band" : "pin_above",
+        rel: i === 0 ? null : {of:`the ${pins[i-1].label}`, ofShort:pins[i-1].label,
+                               gap:0.5, dir:"below"},
+        edge: i === 0 ? "centre" : "top",
+        cite: pn.cite });
+      y -= 0.5;
+    });
+  }
+
+  /* ---------------- RIGHT breast ---------------- */
+  let suspendedTop = null;          // top edge of whatever hangs above the pocket
+
+  if (F.medals && F.ribbons > 0){
+    add("Medals and undress ribbons are alternatives — ribbons represent the medals when the medals themselves are not worn. Showing medals.",
+        "crit", "Chapter 5");
+  }
+
+  if (F.medals){
+    put(R,{ face:"front", side:"right", slot:"front_right_medals",
+      label:`Medals × ${Math.max(1,F.ribbons)}`, x:0, y:0,
+      w: Math.max(1,Math.min(F.ribbons||1,3))*MEDAL_W, h:MEDAL_DROP, art:null,
+      conf:"placeholder", fdatum:"pocket_top", edge:"bottom",
+      cite:"CH5-A 5A-1 — suspended immediately above and centred" });
+    suspendedTop = MEDAL_DROP;
+    add("Medal and suspender dimensions are not in the instruction and have never been measured. The drop shown is a placeholder.",
+        "warn", "CH5-A");
+  } else if (F.ribbons > 0){
+    const rr = ribbonRows(F.ribbons);
+    for (const c of rr.items){
+      put(R,{ face:"front", side:"right", slot:"front_right_ribbons",
+        label:`Undress ribbon ${c.seq}`, seq:c.seq, x:c.x, y:c.y,
+        w:RIBBON_W, h:RIBBON_H, art:null, ribbon:true,
+        fdatum: c.row === 0 ? "pocket_top" : "row_below",
+        rel: c.row === 0 ? null : {of:"the row below", ofShort:"Row below", gap:0, dir:"above"},
+        edge:"bottom",
+        cite:"CH5-B 5B-1.2; CH5-C 5C-1" });
+    }
+    suspendedTop = rr.rows * RIBBON_H;
+    if (rr.rows > 1)
+      add(`${F.ribbons} ribbons make ${rr.rows} rows. No interval between ribbons or rows; a partial row sits on top, centred. Precedence 1 is top row, innermost.`,
+          "info", "CH5-C 5C-1.2");
+  }
+
+  // anniversary pin, 3 cm above the pocket top
+  let annivBottom = null;
+  if (F.anniversary){
+    annivBottom = 3.0;
+    put(R,{ face:"front", side:"right", slot:"front_right_anniversary_pin",
+      label:"Anniversary pin", x:0, y:3.0, w:ANNIV_D, h:ANNIV_D, art:null,
+      conf:"placeholder", fdatum:"pocket_top", edge:"bottom",
+      cite:"CH5-A 5A-1 — 3 cm above and centred on the top of the pocket" });
+  }
+
+  // nametag: 0.5 above whatever is suspended, else midway between pin and pocket top
+  let tagY, tagRel = null, tagCite;
+  if (suspendedTop != null){
+    tagY = suspendedTop + 0.5;
+    tagRel = {of: F.medals ? "the top of the medals" : "the top of the ribbons",
+              ofShort: F.medals ? "Medals" : "Ribbons", gap:0.5, dir:"above"};
+    tagCite = "CH5-A 5A-1; CH5-B 5B-1.1 — 0.5 cm above and centred";
+  } else if (annivBottom != null){
+    tagY = (annivBottom - NAMETAG_H)/2;         // equidistant: pocket top to pin bottom
+    tagCite = "CH5-A 5A-1 — equidistant between the anniversary pin and the top of the pocket";
+  } else {
+    tagY = 0.5;
+    tagCite = "CH5-A 5A-1 — nothing suspended; sits just above the pocket";
+    add("Nothing is worn above the pocket, so the nametag has no stated anchor. Placed 0.5 cm above the pocket top as a sensible default. LOCAL DECISION.",
+        "info", "CH5-A 5A-1");
+  }
+  put(R,{ face:"front", side:"right", slot:"front_right_nametag",
+    label:`Nametag${F.nametag ? ` — ${F.nametag.toUpperCase()}` : ""}`,
+    x:0, y:tagY, w:NAMETAG_W, h:NAMETAG_H, art:null, nametag:true,
+    fdatum: tagRel ? "above_suspended" : "pocket_top", rel:tagRel, edge:"bottom",
+    cite:tagCite });
+
+  if (F.expedition){
+    put(R,{ face:"front", side:"right", slot:"front_right_expedition",
+      label:"Expedition participation insignia", x:0, y: tagY + NAMETAG_H + 0.5,
+      w:EXPED_D, h:EXPED_D, art:"exped", conf:"estimate",
+      fdatum:"above_nametag", edge:"bottom",
+      rel:{of:"the nametag", ofShort:"Nametag", gap:0.5, dir:"above"},
+      cite:"CH5-B expedition figure — centred 0.5 cm over the nametag" });
+  }
+
+  // right pocket pins, in precedence order
+  const rp = [];
+  if (F.cadetCommend) rp.push({slot:"front_right_pocket_pins", label:"Commander's Cadet Commendation",
+    w:COMMEND_W, h:COMMEND_H, art:null, cite:"CH5-D 5D-2"});
+  if (F.navyLeague) rp.push({slot:"front_right_pocket_pins", label:"Navy League Award of Commendation",
+    w:COMMEND_W, h:COMMEND_H, art:null, cite:"CH5-D 5D-2"});
+  if (F.dofe !== "none") rp.push({slot:"front_right_pocket_pins",
+    label:`Duke of Edinburgh's Award — ${DOFE[F.dofe]}`,
+    w:DOFE_D, h:DOFE_D, art:"dofe_"+F.dofe, cite:"CH5-D 5D-3, 5D-4 — jacket only"});
+  pinStack(R, "right", rp);
+
+  /* ---------------- LEFT breast ---------------- */
+  if (F.parachutist){
+    put(L,{ face:"front", side:"left", slot:"front_left_parachutist",
+      label:"Parachutist", x:0, y:0.5, w:PARA_W, h:PARA_H, art:"parachutist",
+      conf:"placeholder", fdatum:"pocket_top", edge:"bottom",
+      cite:"CH3S1 3.b.(1) — 0.5 cm above the left breast pocket" });
+  }
+  if (F.nationalCommend !== "none"){
+    pinStack(L, "left", [{slot:"front_left_national_commendation",
+      label:NATCOM[F.nationalCommend], w:COMMEND_W, h:COMMEND_H, art:null,
+      cite:"CH5-D 5D-1 — centred on the LEFT breast pocket"}]);
+  }
+  if (F.participation > 0){
+    const n = Math.min(F.participation, 3);
+    const gap = (PIN_STRIP_H - n*COMP_PIN) / (n + 1);
+    for (let i=0;i<n;i++){
+      const top = -flapH - gap - i*(COMP_PIN + gap);
+      put(L,{ face:"front", side:"left", slot:"front_left_participation_pins",
+        label:`Participation / competition pin ${i+1}`, x:0, y: top - COMP_PIN,
+        w:COMP_PIN, h:COMP_PIN, art:null, onPocket:true, conf:"placeholder",
+        fdatum:"pin_strip", edge:"centre",
+        cite:"CH3S1 4.b — maximum three combined" });
+    }
+    if (F.participation > 3)
+      add(`${F.participation} participation pins selected. Maximum is three combined — the rest are dropped. The 3 × 9 cm strip fits exactly three 1 in pins, which independently confirms the cap.`,
+          "crit", "CH3S1 4.b");
+  }
+  if (F.commemorative){
+    put(L,{ face:"front", side:"left", slot:"front_left_commemorative_pin",
+      label:"Commemorative pin", x:0, y:-POCKET_H+1.5, w:COMP_PIN, h:COMP_PIN,
+      art:null, onPocket:true, conf:"placeholder", fdatum:"pocket", edge:"centre",
+      cite:"CH3S1 4.a — maximum one, RCSU CO selects" });
+  }
+  if (F.poppy){
+    put(L,{ face:"front", side:"left", slot:"front_left_poppy", label:"Poppy (seasonal)",
+      x:0, y:-flapH/2-1.4, w:2.8, h:2.8, art:null, onPocket:true, conf:"placeholder",
+      fdatum:"flap", edge:"centre",
+      cite:"CH4-A 4A-1 — on the left pocket flap" });
+  }
+
+  if ([...R,...L].some(i => i.onPocket)){
+    add(`Every pocket-mounted pin is centred between the flap's lower edge and the pocket's lower seam, but the flap height has never been measured. Drawn at ${flapH.toFixed(1)} cm — change it in the rail to see the effect.`,
+        "warn", "open question: breast_pocket_flap_h");
+  }
+  if ([...R,...L].some(i => i.conf === "placeholder"))
+    add("Some front items are drawn at placeholder sizes: medals, anniversary and commendation pins, the DofE pin and the parachutist badge are all unmeasured. Positions follow the regulation; sizes do not.",
+        "warn", "rules pack out_of_scope");
+
+  return {R, L, warn};
+}
+
+/* Front view. Viewer faces the cadet, so the WEARER'S RIGHT pocket is drawn on the
+   image left. Inboard (toward the chest centre) is therefore image-right for the
+   right pocket and image-left for the left pocket - the same mirror trick the
+   sleeves use, applied once here. */
+function drawFront(g, items, side, cx, ptopY){
+  const mirror = side === "right" ? 1 : -1;   // inboard-positive -> image x
+  const IX = xcm => cx + mirror * xcm * MM;
+  const flapH = state.front.flapH;
+
+  // pocket body, flap, and the two vertical seams that make the pin strip
+  g.appendChild(el("rect",{x:cx-POCKET_W/2*MM, y:ptopY, width:POCKET_W*MM, height:POCKET_H*MM,
+    rx:3, fill:"var(--cloth)", stroke:"var(--cloth-edge)", "stroke-width":1.5}));
+  g.appendChild(el("rect",{x:cx-POCKET_W/2*MM, y:ptopY, width:POCKET_W*MM, height:flapH*MM,
+    rx:3, fill:"none", stroke:"var(--cloth-edge)", "stroke-width":1.2}));
+  for (const sx of [-PIN_STRIP_W/2, PIN_STRIP_W/2])
+    g.appendChild(el("line",{x1:cx+sx*MM, y1:ptopY+flapH*MM, x2:cx+sx*MM,
+      y2:ptopY+POCKET_H*MM, stroke:"var(--cloth-edge)", "stroke-width":.8, opacity:.7}));
+
+  g.appendChild(txt(cx, ptopY + POCKET_H*MM + 15,
+    side === "right" ? "WEARER'S RIGHT" : "WEARER'S LEFT",
+    {"text-anchor":"middle", class:"mono", "font-size":9, "letter-spacing":"1.2",
+     fill:"var(--ink-2)"}));
+  g.appendChild(txt(cx, ptopY + POCKET_H*MM + 26,
+    side === "right" ? "inboard →" : "← inboard",
+    {"text-anchor":"middle", class:"mono", "font-size":7.5, fill:"var(--ink-3)"}));
+
+  for (const it of items){
+    const x = IX(it.x) - it.w/2*MM;
+    const y = ptopY - (it.y + it.h)*MM;
+    const w = it.w*MM, h = it.h*MM;
+    const art = it.art && BADGE_ART[it.art];
+    const round = Math.abs(it.w - it.h) < 1e-6;
+
+    if (art){
+      g.appendChild(el("image",{x, y, width:w, height:h, preserveAspectRatio:"none",
+        href:"data:image/png;base64,"+art.d}));
+    } else if (it.nametag){
+      g.appendChild(el("rect",{x, y, width:w, height:h, rx:1, fill:"#14181A",
+        stroke:"var(--ink-3)", "stroke-width":.6}));
+      g.appendChild(txt(x+w/2, y+h*0.72, (state.front.nametag||"SURNAME").toUpperCase(),
+        {"text-anchor":"middle", class:"mono", "font-size":6.4, fill:"#F2F2F2",
+         "letter-spacing":".5"}));
+    } else if (it.ribbon){
+      g.appendChild(el("rect",{x, y, width:w, height:h,
+        fill:RIBBON_COLOURS[(it.seq-1) % RIBBON_COLOURS.length],
+        stroke:"var(--cloth-edge)", "stroke-width":.5}));
+      g.appendChild(txt(x+w/2, y+h*0.75, it.seq,
+        {"text-anchor":"middle", class:"mono", "font-size":6, fill:"#1A1A1A"}));
+    } else {
+      g.appendChild(el("rect",{x, y, width:w, height:h, rx: round ? w/2 : 2,
+        fill:"var(--brass-soft)", stroke:"var(--brass)", "stroke-width":1,
+        "stroke-dasharray":"4 3", opacity:.95}));
+    }
+    if (it.clash)
+      g.appendChild(el("rect",{x:x-1.5, y:y-1.5, width:w+3, height:h+3, fill:"none",
+        stroke:"var(--crit)", "stroke-width":1.6, "stroke-dasharray":"5 3"}));
+  }
+
+  // pocket-top datum: the zero every front measurement is taken from
+  g.appendChild(el("line",{x1:cx-POCKET_W/2*MM-16, y1:ptopY, x2:cx+POCKET_W/2*MM+16, y2:ptopY,
+    stroke:"var(--brass)", "stroke-width":1, "stroke-dasharray":"6 4", opacity:.85}));
+}
+const RIBBON_COLOURS = ["#1E4FA3","#E8B71E","#8C1D2C","#1F7A45","#5B3A8C",
+                        "#C7532A","#2E8FA8","#7A6B22","#94324F"];
+
+/* ============================================================
+   DRAW
+   1 SVG user unit = 1 mm. Front/rear becomes image x here and nowhere else.
+   ============================================================ */
+const MM = 10, PAD_T = 26, PAD_B = 44, GUT_L = 110, GUT_R = 116, GAPX = 54, PAD_L = 14, PAD_R = 14;
+const SLEEVE_MAX_W = 21.0;
+const NS = "http://www.w3.org/2000/svg";
+
+function el(n, a, kids){
+  const e = document.createElementNS(NS, n);
+  for (const k in a) if (a[k] != null) e.setAttribute(k, a[k]);
+  (kids||[]).forEach(c => e.appendChild(c));
+  return e;
+}
+function txt(x,y,s,a){
+  const t = el("text", Object.assign({x,y}, a||{}));
+  t.textContent = s; return t;
+}
+
+function sleeveOutline(cx, ybase, mirror){
+  // taper profile -> symmetric flat-sleeve silhouette
+  const right = [], left = [];
+  for (const [y,w] of TAPER){
+    const py = ybase - y*MM, hw = w/2*MM;
+    right.push([cx + hw, py]);
+    left.unshift([cx - hw, py]);
+  }
+  return right.concat(left).map(p => p.join(",")).join(" ");
+}
+
+// What a person with a ruler would actually measure for this badge, and from which
+// end of the sleeve. Shoulder-rooted badges are quoted down from the seam to the edge
+// that the regulation pins; everything else is quoted up from the cuff to its bottom.
+function dimOf(it){
+  if (it.rel){
+    const mine   = it.rel.dir === "above" ? it.y : it.y + it.h;
+    const anchor = it.rel.dir === "above" ? mine - it.rel.gap : mine + it.rel.gap;
+    return {kind:"rel", cm: it.rel.gap, of: it.rel.of, dir: it.rel.dir,
+            y0: Math.min(mine, anchor), y1: Math.max(mine, anchor), atY: mine};
+  }
+  if (it.root === "shoulder"){
+    const edgeY = it.edge === "top" ? it.y + it.h : it.y;
+    return {kind:"abs", from:"shoulder", cm: SLEEVE_LEN - edgeY, atY: edgeY};
+  }
+  return {kind:"abs", from:"cuff", cm: it.y, atY: it.y};
+}
+
+function drawSleeve(g, items, side, cx, ybase){
+  const mirror = side === "left" ? -1 : 1;     // front = image-left on the left sleeve
+  const IX = xcm => cx + mirror * xcm * MM;
+  const halfW = SLEEVE_MAX_W/2*MM;
+  const gxL = cx - halfW - 14;                 // cuff scale, reads upward
+  const gxR = cx + halfW + 14;                 // shoulder scale, reads downward
+  const topY = ybase - SLEEVE_LEN*MM;
+
+  g.appendChild(el("polygon",{points:sleeveOutline(cx,ybase), fill:"var(--cloth)",
+    stroke:"var(--cloth-edge)", "stroke-width":1.5, "stroke-linejoin":"round"}));
+
+  const cw = flatWidth(CUFF_H)/2*MM;
+  g.appendChild(el("line",{x1:cx-cw, y1:ybase-CUFF_H*MM, x2:cx+cw, y2:ybase-CUFF_H*MM,
+    stroke:"var(--cloth-edge)", "stroke-width":1.5}));
+
+  // two scales. dir -1 counts up from the cuff, +1 counts down from the shoulder.
+  function scale(gx, dir, anchor, labelDx){
+    g.appendChild(el("line",{x1:gx, y1:ybase, x2:gx, y2:topY,
+      stroke:"var(--rule)", "stroke-width":1}));
+    for (let d=0; d<=SLEEVE_LEN; d++){
+      const py = dir < 0 ? ybase - d*MM : topY + d*MM;
+      const five = d%5===0, len = five ? 6 : 3;
+      g.appendChild(el("line",{x1:gx + (anchor==="end" ? -len : len), y1:py, x2:gx, y2:py,
+        stroke:"var(--rule)", "stroke-width":five?1:.6}));
+      if (five) g.appendChild(txt(gx+labelDx, py+3, d,
+        {"text-anchor":anchor, class:"mono", "font-size":8.5, fill:"var(--ink-3)"}));
+    }
+  }
+  scale(gxL, -1, "end",   -9);
+  scale(gxR, +1, "start",  9);
+
+  g.appendChild(txt(gxL, ybase + 15, "▲ cm from cuff (sleeve end)",
+    {"text-anchor":"middle", class:"mono", "font-size":8, fill:"var(--ink-2)"}));
+  g.appendChild(txt(gxR, topY - 9, "▼ cm from shoulder seam",
+    {"text-anchor":"middle", class:"mono", "font-size":8, fill:"var(--ink-2)"}));
+
+  // datum lines: the zero of each scale
+  for (const y of [0, SLEEVE_LEN]){
+    const py = ybase - y*MM;
+    g.appendChild(el("line",{x1:gxL, y1:py, x2:gxR, y2:py, stroke:"var(--brass)",
+      "stroke-width":1, "stroke-dasharray":"6 4", opacity:.85}));
+  }
+
+  if (state.env){
+    const pts=[];
+    for (let y=0;y<=SLEEVE_LEN;y+=1) pts.push([IX(flatWidth(y)/2 - 1), ybase-y*MM]);
+    for (let y=SLEEVE_LEN;y>=0;y-=1) pts.push([IX(-(flatWidth(y)/2 - 1)), ybase-y*MM]);
+    g.appendChild(el("polygon",{points:pts.map(p=>p.join(",")).join(" "),
+      fill:"none", stroke:"var(--brass)", "stroke-width":.8, "stroke-dasharray":"3 3", opacity:.55}));
+  }
+
+  for (const it of items){
+    if (it.ghost && !state.ghost) continue;
+    const x = IX(it.x) - it.w/2*MM, y = ybase - (it.y + it.h)*MM;
+    const w = it.w*MM, h = it.h*MM;
+    const art = it.art && BADGE_ART[it.art];
+
+    if (art && !it.ghost){
+      g.appendChild(el("image",{x,y,width:w,height:h, preserveAspectRatio:"none",
+        href:"data:image/png;base64,"+art.d}));
+    } else {
+      g.appendChild(el("rect",{x,y,width:w,height:h, rx: Math.abs(it.w-it.h)<1e-6 ? w/2 : 2,
+        fill: it.ghost ? "none" : "var(--brass-soft)",
+        stroke: it.ghost ? "var(--ink-3)" : "var(--brass)",
+        "stroke-width":1, "stroke-dasharray":"4 3", opacity:.9}));
+      if (!it.ghost) g.appendChild(txt(x+w/2, y+h/2+3, "no art",
+        {"text-anchor":"middle", class:"mono", "font-size":8, fill:"var(--brass)"}));
+      if (it.ghost && it.ghostLabel) g.appendChild(txt(x+w/2, y+h+9, it.ghostLabel,
+        {"text-anchor":"middle", class:"mono", "font-size":7.5, fill:"var(--ink-3)"}));
+    }
+
+    if (it.clash){
+      g.appendChild(el("rect",{x:x-1.5,y:y-1.5,width:w+3,height:h+3, fill:"none",
+        stroke:"var(--crit)", "stroke-width":1.6, "stroke-dasharray":"5 3"}));
+    }
+
+    // Absolute badges are dimensioned to their own scale. Relative ones get a gap
+    // bracket beside the sleeve instead, because that is the measurement taken.
+    if (state.dims && !it.ghost){
+      const d = dimOf(it);
+      if (d.kind === "abs"){
+        const py = ybase - d.atY*MM;
+        const toRight = d.from === "shoulder";
+        const gx = toRight ? gxR : gxL;
+        const anchor = toRight ? "start" : "end";
+        const lx = gx + (toRight ? 28 : -28);
+        g.appendChild(el("line",{x1: toRight ? x + w : x, y1:py, x2:gx, y2:py,
+          stroke:"var(--brass)", "stroke-width":.6, opacity:.5}));
+        g.appendChild(txt(lx, py - 3, `${d.cm.toFixed(2)} cm`,
+          {"text-anchor":anchor, class:"mono", "font-size":8.5, fill:"var(--brass)"}));
+        g.appendChild(txt(lx, py + 6,
+          toRight ? "from shoulder seam" : "from cuff (sleeve end)",
+          {"text-anchor":anchor, class:"mono", "font-size":6.5, fill:"var(--ink-3)"}));
+      } else if (it.dimShow !== false && d.cm > 0.005){
+        // bracket sits on the side away from this item's own ruler, so gap dimensions
+        // and absolute callouts never compete for the same margin
+        const leftSide = it.root === "shoulder";
+        const half = flatWidth((d.y0 + d.y1)/2)/2*MM;
+        const bx = cx + (leftSide ? -(half + 10) : (half + 10));
+        const yTop = ybase - d.y1*MM, yBot = ybase - d.y0*MM;
+        g.appendChild(el("line",{x1:bx, y1:yTop, x2:bx, y2:yBot,
+          stroke:"var(--brass)", "stroke-width":.9}));
+        for (const ty of [yTop, yBot])
+          g.appendChild(el("line",{x1:bx-3.5, y1:ty, x2:bx+3.5, y2:ty,
+            stroke:"var(--brass)", "stroke-width":.9}));
+        const ly = ybase - d.atY*MM;
+        g.appendChild(el("line",{x1: leftSide ? x : x + w, y1:ly, x2:bx, y2:ly,
+          stroke:"var(--brass)", "stroke-width":.5, opacity:.4}));
+        g.appendChild(txt(bx + 6, (yTop + yBot)/2 + 3, `${d.cm.toFixed(2)} cm`,
+          {"text-anchor":"start", class:"mono", "font-size":8, fill:"var(--brass)"}));
+      }
+    }
+  }
+
+  g.appendChild(txt(cx, ybase + 30, side === "left" ? "LEFT SLEEVE" : "RIGHT SLEEVE",
+    {"text-anchor":"middle", class:"mono", "font-size":9.5, "letter-spacing":"1.4",
+     fill:"var(--ink-2)"}));
+  g.appendChild(txt(cx, ybase + 41,
+    side === "left" ? "front ←   |   → rear" : "rear ←   |   → front",
+    {"text-anchor":"middle", class:"mono", "font-size":8, fill:"var(--ink-3)"}));
+}
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+const FRONT_DATUM = {
+  pocket_top:"Pocket top edge", row_below:"Row below", above_suspended:"Ribbons / medals",
+  above_nametag:"Nametag", pocket_pin_band:"Between flap edge and pocket seam",
+  pin_above:"Pin above", pin_strip:"Pocket pin strip", pocket:"Pocket", flap:"Pocket flap"
+};
+function fmtFront(it){
+  if (it.rel){
+    return it.rel.gap < 0.005
+      ? `${it.edge} edge sits directly on ${it.rel.of}`
+      : `${it.edge} edge ${it.rel.gap.toFixed(2)} cm ${it.rel.dir} ${it.rel.of}`;
+  }
+  if (it.fdatum === "pocket_pin_band" || it.fdatum === "pin_strip")
+    return "centred between the flap's lower edge and the pocket's lower seam";
+  if (it.fdatum === "flap")   return "centred on the pocket flap";
+  if (it.fdatum === "pocket") return "centred on the pocket";
+  return `${it.edge} edge ${it.y.toFixed(2)} cm above the pocket top`;
+}
+function fmtMeasure(it){
+  if (it.face === "front") return fmtFront(it);
+  const d = dimOf(it);
+  if (d.kind === "rel"){
+    return d.cm < 0.005
+      ? `${it.edge} edge sits directly on ${d.of}`
+      : `${it.edge} edge ${d.cm.toFixed(2)} cm ${d.dir} ${d.of}`;
+  }
+  if (d.from === "shoulder"){
+    return d.cm < 0.005
+      ? `${it.edge} edge level with the shoulder seam`
+      : `${it.edge} edge ${d.cm.toFixed(2)} cm down from the shoulder seam`;
+  }
+  return `${it.edge} edge ${d.cm.toFixed(2)} cm up from the cuff bottom`;
+}
+function datumOf(it){
+  if (it.face === "front" && !it.rel) return FRONT_DATUM[it.fdatum] || it.fdatum;
+  if (it.rel) return it.rel.ofShort || it.rel.of;
+  return it.root === "shoulder" ? "Shoulder seam" : "Cuff bottom edge";
+}
+const DATUM_LABEL = {shoulder_seam:"Shoulder seam", cuff_bottom:"Cuff bottom edge",
+  right_rcac_badge:"RCAC badge (bottom)", right_appointment:"Appointment badge (top)"};
+
+function render(){
+  SLEEVE_LEN = state.sleeveLen;
+  const {L,R,warn} = resolve();
+  validate(L,"Left",warn);
+  validate(R,"Right",warn);
+
+  /* --- drawing --- */
+  const svg = document.getElementById("draw");
+  svg.textContent = "";
+  const colW = GUT_L + SLEEVE_MAX_W*MM + GUT_R;
+  const W = PAD_L + colW*2 + GAPX + PAD_R;
+  const Hh = PAD_T + SLEEVE_LEN*MM + PAD_B;
+  svg.setAttribute("viewBox", `0 0 ${W} ${Hh}`);
+  svg.setAttribute("width", W); svg.setAttribute("height", Hh);
+  const g = el("g",{});
+  const ybase = PAD_T + SLEEVE_LEN*MM;
+  drawSleeve(g, L, "left",  PAD_L + GUT_L + SLEEVE_MAX_W/2*MM, ybase);
+  drawSleeve(g, R, "right", PAD_L + colW + GAPX + GUT_L + SLEEVE_MAX_W/2*MM, ybase);
+  svg.appendChild(g);
+
+  /* --- front drawing --- */
+  const fr = resolveFront();
+  validate(fr.R, "Front right", fr.warn);
+  validate(fr.L, "Front left",  fr.warn);
+  warn.push(...fr.warn);
+  drawFrontPanel(fr);
+
+  /* --- sewing guide --- */
+  const tb = document.getElementById("guide");
+  tb.textContent = "";
+  const faceOrder = {left:0, right:1, "front right":2, "front left":3};
+  const key = i => i.face === "front" ? "front " + i.side : i.sleeve;
+  const rows = L.concat(R, fr.R, fr.L).filter(i => !i.terminated)
+    .sort((a,b) => faceOrder[key(a)] !== faceOrder[key(b)]
+      ? faceOrder[key(a)] - faceOrder[key(b)] : b.y - a.y);
+  for (const it of rows){
+    const tr = document.createElement("tr");
+    const cell = it.cell ? ` <span style="color:var(--ink-3)">(${it.seq}: ${it.cell})</span>` : "";
+    const flag = it.ghost ? ` <span style="color:var(--ink-3)">— not measured</span>`
+              : it.missingArt ? ` <span style="color:var(--warn)">— no artwork</span>`
+              : it.conf === "estimate" ? ` <span style="color:var(--warn)">— estimated size</span>` : "";
+    tr.innerHTML =
+      `<td><span class="sleevetag">${key(it)}</span></td>` +
+      `<td>${it.label}${cell}${flag}</td>` +
+      `<td>${datumOf(it)}</td>` +
+      `<td class="num">${fmtMeasure(it)}</td>` +
+      `<td class="num">${it.w.toFixed(2)} × ${it.h.toFixed(2)}</td>` +
+      `<td class="slot">${it.slot}</td>`;
+    tb.appendChild(tr);
+  }
+
+  /* --- findings --- */
+  const fx = document.getElementById("findings");
+  fx.textContent = "";
+  const order = {crit:0, warn:1, info:2};
+  warn.sort((a,b) => order[a.lvl]-order[b.lvl]);
+  if (!warn.length){
+    fx.innerHTML = `<div class="clear">No collisions, no clearance problems, nothing resting on an estimated dimension.</div>`;
+  } else {
+    for (const w of warn){
+      const d = document.createElement("div");
+      d.className = "finding";
+      d.innerHTML = `<span class="tag ${w.lvl}">${w.lvl}</span>` +
+        `<span class="msg">${w.msg}<span class="cite">${w.cite}</span></span>`;
+      fx.appendChild(d);
+    }
+  }
+
+  document.getElementById("ctccount").textContent =
+    `${state.ctc.length} selected · max 6 · click order = award order`;
+  syncCtc();
+}
+
+function drawFrontPanel(fr){
+  const svg = document.getElementById("drawFront");
+  svg.textContent = "";
+  const topCm = 13;                                   // headroom above the pocket
+  const W = PAD_L*2 + (POCKET_W*2 + POCKET_GAP)*MM + 150;
+  const Hh = PAD_T + (topCm + POCKET_H)*MM + 46;
+  svg.setAttribute("viewBox", `0 0 ${W} ${Hh}`);
+  svg.setAttribute("width", W); svg.setAttribute("height", Hh);
+  const g = el("g",{});
+  const ptopY = PAD_T + topCm*MM;
+  const midX = W/2;
+  const rcx = midX - (POCKET_GAP/2 + POCKET_W/2)*MM;   // wearer's right -> image left
+  const lcx = midX + (POCKET_GAP/2 + POCKET_W/2)*MM;
+
+  // centre line of the jacket
+  g.appendChild(el("line",{x1:midX, y1:PAD_T-6, x2:midX, y2:ptopY + POCKET_H*MM + 6,
+    stroke:"var(--rule)", "stroke-width":1, "stroke-dasharray":"2 5"}));
+
+  // scale up from the pocket top, on the outside edge
+  const sx = rcx - POCKET_W/2*MM - 26;
+  g.appendChild(el("line",{x1:sx, y1:ptopY, x2:sx, y2:ptopY - topCm*MM,
+    stroke:"var(--rule)", "stroke-width":1}));
+  for (let d=0; d<=topCm; d++){
+    const py = ptopY - d*MM, five = d%5===0;
+    g.appendChild(el("line",{x1:sx-(five?6:3), y1:py, x2:sx, y2:py,
+      stroke:"var(--rule)", "stroke-width":five?1:.6}));
+    if (five) g.appendChild(txt(sx-9, py+3, d, {"text-anchor":"end", class:"mono",
+      "font-size":8.5, fill:"var(--ink-3)"}));
+  }
+  g.appendChild(txt(sx, ptopY + 15, "▲ cm from pocket top",
+    {"text-anchor":"middle", class:"mono", "font-size":7.5, fill:"var(--ink-2)"}));
+
+  drawFront(g, fr.R, "right", rcx, ptopY);
+  drawFront(g, fr.L, "left",  lcx, ptopY);
+  svg.appendChild(g);
+}
+
+/* ============================================================
+   CONTROLS
+   ============================================================ */
+function fill(id, obj, keyer){
+  const s = document.getElementById(id);
+  s.textContent = "";
+  for (const k in obj){
+    const o = document.createElement("option");
+    o.value = k; o.textContent = keyer ? keyer(k,obj[k]) : obj[k].label;
+    s.appendChild(o);
+  }
+}
+fill("rank", RANKS, (k,v) => k === "Cdt" ? "Cadet (no insignia)" : `${k} – ${v.label}`);
+fill("appt", APPTS);
+fill("star", STARS);
+fill("mk", MARKS);
+fill("fit", FITNESS);
+fill("fa", FIRSTAID);
+fill("mus", MUSIC);
+
+const ctcBox = document.getElementById("ctc");
+for (const q of CTC){
+  const lab = document.createElement("label");
+  lab.className = "chk"; lab.dataset.k = q.k; lab.tabIndex = -1;
+  lab.innerHTML = `<input type="checkbox"><span class="nm">${q.nm}<small>${q.cat}</small></span><span class="seq"></span>`;
+  lab.querySelector("input").addEventListener("change", e => {
+    if (e.target.checked){ if (!state.ctc.includes(q.k)) state.ctc.push(q.k); }
+    else state.ctc = state.ctc.filter(x => x !== q.k);
+    render();
+  });
+  ctcBox.appendChild(lab);
+}
+function syncCtc(){
+  for (const lab of ctcBox.children){
+    const i = state.ctc.indexOf(lab.dataset.k);
+    const on = i >= 0;
+    lab.querySelector("input").checked = on;
+    lab.classList.toggle("on", on);
+    lab.classList.toggle("over", on && i >= 6);
+    lab.querySelector(".seq").textContent = on ? i+1 : "";
+  }
+}
+
+const presetBox = document.getElementById("presets");
+for (const name in PRESETS){
+  const b = document.createElement("button");
+  b.type = "button"; b.textContent = name;
+  b.addEventListener("click", () => { Object.assign(state, PRESETS[name]); state.ctc = PRESETS[name].ctc.slice(); syncAll(); render(); });
+  presetBox.appendChild(b);
+}
+
+const BIND = {rank:"rank", appt:"appt", star:"star", mk:"mk", fit:"fit", fa:"fa", mus:"mus", hsrc:"hsrc"};
+for (const id in BIND){
+  document.getElementById(id).addEventListener("change", e => { state[BIND[id]] = e.target.value; render(); });
+}
+for (const [id,key] of [["tDims","dims"],["tEnv","env"],["tGhost","ghost"]]){
+  document.getElementById(id).addEventListener("change", e => { state[key] = e.target.checked; render(); });
+}
+for (const [id,key] of [["rcacD","rcacD"],["sleeveLen","sleeveLen"]]){
+  document.getElementById(id).addEventListener("input", e => {
+    const v = parseFloat(e.target.value);
+    if (!isNaN(v) && v > 0){ state[key] = v; render(); }
+  });
+}
+const FRONT_BIND = {
+  fName:"nametag", fRibbons:"ribbons", fDofe:"dofe", fNatCom:"nationalCommend",
+  fPartic:"participation", fMedals:"medals", fAnniv:"anniversary", fExped:"expedition",
+  fCadetCom:"cadetCommend", fNavy:"navyLeague", fPara:"parachutist",
+  fCommem:"commemorative", fPoppy:"poppy", fFlap:"flapH"
+};
+(function wireFront(){
+  const num = v => { const n = parseFloat(v); return isNaN(n) ? 0 : n; };
+  fillNum("fRibbons", 0, 9, n => n === 0 ? "None" : `${n} ribbon${n>1?"s":""}`);
+  fillNum("fPartic", 0, 4, n => n === 0 ? "None" : `${n} pin${n>1?"s":""}`);
+  fill("fDofe", DOFE, k => DOFE[k]);
+  fill("fNatCom", NATCOM, k => NATCOM[k]);
+  for (const id in FRONT_BIND){
+    const el2 = document.getElementById(id), key = FRONT_BIND[id];
+    el2.addEventListener(el2.type === "checkbox" ? "change" : "input", e => {
+      const t = e.target;
+      state.front[key] = t.type === "checkbox" ? t.checked
+        : (key === "ribbons" || key === "participation" || key === "flapH") ? num(t.value)
+        : t.value;
+      render();
+    });
+  }
+})();
+function fillNum(id, lo, hi, label){
+  const sel = document.getElementById(id);
+  sel.textContent = "";
+  for (let n = lo; n <= hi; n++){
+    const o = document.createElement("option");
+    o.value = n; o.textContent = label(n); sel.appendChild(o);
+  }
+}
+
+function syncAll(){
+  for (const id in FRONT_BIND){
+    const el2 = document.getElementById(id), v = state.front[FRONT_BIND[id]];
+    if (el2.type === "checkbox") el2.checked = !!v; else el2.value = v;
+  }
+  for (const id in BIND) document.getElementById(id).value = state[BIND[id]];
+  document.getElementById("tDims").checked = state.dims;
+  document.getElementById("tEnv").checked  = state.env;
+  document.getElementById("tGhost").checked = state.ghost;
+  document.getElementById("rcacD").value = state.rcacD;
+  document.getElementById("sleeveLen").value = state.sleeveLen;
+}
+
+syncAll();
+render();
+</script>

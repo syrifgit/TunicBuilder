@@ -112,6 +112,29 @@ measurement a person actually takes:
 
 not "9.71 cm from the cuff".
 
+## Publishing
+
+`python build_site.py` assembles `site/` - `index.html` (the layout tool) and
+`plate.html` (the identification sheet), plus a `.nojekyll` marker. Both are single
+self-contained files, so any static host serves the folder as-is. Verified working
+over HTTP in Chrome.
+
+**Settle the copyright question before pushing anywhere public.** Both pages carry
+Crown copyright badge artwork inlined. That is fine for internal corps use, which is
+what this was built for. A public host redistributes it, and **GitHub Pages on a free
+account serves from a public repository** - so that route publishes the artwork
+whether or not the repo itself looks private. Options, roughly:
+
+- keep it internal: a shared drive, a USB stick, or the private Claude artifact
+- private repo plus GitHub Pages, which needs a paid plan for private Pages
+- ask permission through the chain of command
+- publish a build with the artwork stripped, which leaves the geometry but no badges
+
+One behaviour differs off the artifact: `plate.html` stores its label corrections in
+the artifact database. Anywhere else that is unavailable, so it shows a banner and
+falls back to browser-local storage. The layout tool has no such dependency and
+behaves identically everywhere.
+
 ## Known gaps
 
 `rules/army_tunic_placement_rules_2.json` carries the full list in

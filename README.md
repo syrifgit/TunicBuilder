@@ -3,12 +3,10 @@
 Works out where every badge goes on a Royal Canadian Army Cadet tunic, and how far
 that is from something you can put a ruler on.
 
-Give it one cadet's insignia and it produces two things:
-
-1. **A check drawing** of both sleeves and the front, to scale, with dimensions.
-2. **A sewing guide** listing each badge with the measurement you actually take -
-   from the cuff, from the shoulder seam, from the pocket top, or as a gap from the
-   badge it hangs off.
+Give it one cadet's insignia and it draws both sleeves and the front to scale,
+dimensioned: each badge carries the measurement you actually take - from the cuff,
+from the shoulder seam, from the pocket top, or as a gap from the badge it hangs
+off. It prints on two landscape sheets, sleeves then pockets.
 
 Built for 242 RCACC (Fredericton) but the placement rules are national, so it should
 work for any army cadet corps.

@@ -104,8 +104,8 @@ details.group > .eyebrow{
 }
 details.group > .eyebrow::-webkit-details-marker{display:none}
 details.group > .eyebrow::before{
-  content:"\25B8"; font-size:9px; color:var(--ink-3); transition:transform .12s;
-  display:inline-block; width:9px;
+  content:"\25B8"; font-size:14px; line-height:1; color:var(--green);
+  transition:transform .12s; display:inline-block; width:11px;
 }
 details.group[open] > .eyebrow::before{transform:rotate(90deg)}
 details.group > .eyebrow:hover{color:var(--ink-2)}
@@ -205,49 +205,8 @@ body.paper .pageonly{
 .legend span{display:inline-flex; align-items:center; gap:6px}
 .swatch{width:16px; height:0; border-top-width:2px; border-top-style:solid; display:inline-block}
 
-/* ---------- panels ---------- */
-.panel{background:var(--sheet); border:1px solid var(--rule); border-radius:3px; box-shadow:var(--shadow)}
-.panel > header{
-  display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
-  padding:9px 13px; border-bottom:1px solid var(--rule-2);
-}
-.panel > header h2{font-size:12.5px}
-.panel > header .note{font-size:11.5px; color:var(--ink-3)}
-.tblwrap{overflow-x:auto}
-table{width:100%; border-collapse:collapse; font-size:12.5px}
-th{
-  text-align:left; font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:500;
-  text-transform:uppercase; letter-spacing:.1em; color:var(--ink-3);
-  padding:7px 13px; border-bottom:1px solid var(--rule-2); white-space:nowrap;
-}
-td{padding:6px 13px; border-bottom:1px solid var(--rule-2); vertical-align:top}
-tbody tr:last-child td{border-bottom:none}
-tbody tr:hover{background:var(--green-soft)}
-td.num{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; white-space:nowrap}
-td.slot{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3)}
-.sleevetag{
-  font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.08em;
-  text-transform:uppercase; padding:1px 5px; border-radius:2px;
-  background:var(--green-soft); color:var(--green); border:1px solid var(--rule);
-}
-
-/* findings */
-.finding{display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; padding:9px 13px; border-bottom:1px solid var(--rule-2)}
-.finding:last-child{border-bottom:none}
-.finding .tag{
-  font-family:"IBM Plex Mono",monospace; font-size:9px; letter-spacing:.08em; text-transform:uppercase;
-  padding:2px 6px; border-radius:2px; height:fit-content; white-space:nowrap;
-}
-.tag.crit{background:var(--crit-soft); color:var(--crit)}
-.tag.warn{background:var(--warn-soft); color:var(--warn)}
-.tag.info{background:var(--brass-soft); color:var(--brass)}
-.finding .msg{font-size:12.5px}
-.finding .msg .cite{display:block; color:var(--ink-3); font-size:11px; margin-top:2px}
-.clear{padding:11px 13px; font-size:12.5px; color:var(--ok)}
-
 footer.foot{padding:0 20px 34px; color:var(--ink-3); font-size:11.5px; max-width:78ch}
 footer.foot p{margin:.5em 0}
-code{font-family:"IBM Plex Mono",monospace; font-size:.92em; background:var(--rule-2); padding:1px 4px; border-radius:2px}
 
 
 /* ---------- paper: shared by the on-screen preview and real printing ---------- */
@@ -309,13 +268,9 @@ body.paper .viewport svg{
   /* a page each for the sleeves and the front, then the guide */
   #drawSleeves{ break-after:page; page-break-after:always }
   .sheetwrap{ break-after:page; page-break-after:always }
-  .panel{ break-inside:auto }
-  thead{ display:table-header-group }
-  tr, .finding{ break-inside:avoid; page-break-inside:avoid }
   a[href]::after{ content:"" }
   .legend{ font-size:10px }
   body{ font-size:11px }
-  td, th{ padding:3px 8px }
 }
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
@@ -415,27 +370,6 @@ body.paper .viewport svg{
       <span><i class="swatch" style="border-top-color:var(--crit); border-top-style:dashed"></i> collision</span>
     </div>
 
-    <section class="panel">
-      <header>
-        <h2>Sewing guide</h2>
-      </header>
-      <div class="tblwrap">
-        <table>
-          <thead><tr>
-            <th>Sleeve</th><th>Item</th><th>Datum</th><th>Measurement</th><th>Size w &times; h</th><th>Slot</th>
-          </tr></thead>
-          <tbody id="guide"></tbody>
-        </table>
-      </div>
-    </section>
-
-
-    <section class="panel">
-      <header>
-        <h2>Validator</h2>
-      </header>
-      <div id="findings"></div>
-    </section>
   </main>
 </div>
 
@@ -1562,46 +1496,6 @@ function paintPockets(svg, fr){
   svg.appendChild(g);
 }
 
-/* ============================================================
-   RENDER
-   ============================================================ */
-const FRONT_DATUM = {
-  pocket_top:"Pocket top edge", row_below:"Row below", above_suspended:"Ribbons / medals",
-  above_nametag:"Nametag", pocket_pin_band:"Between flap edge and pocket seam",
-  pin_above:"Pin above", pin_strip:"Pocket pin strip", pocket:"Pocket", flap:"Pocket flap"
-};
-function fmtFront(it){
-  if (it.rel){
-    return it.rel.gap < 0.005
-      ? `${it.edge} edge sits directly on ${it.rel.of}`
-      : `${it.edge} edge ${it.rel.gap.toFixed(2)} cm ${it.rel.dir} ${it.rel.of}`;
-  }
-  if (it.fdatum === "pocket_pin_band" || it.fdatum === "pin_strip")
-    return "centred between the flap's lower edge and the pocket's lower seam";
-  if (it.fdatum === "flap")   return "centred on the pocket flap";
-  if (it.fdatum === "pocket") return "centred on the pocket";
-  return `${it.edge} edge ${it.y.toFixed(2)} cm above the pocket top`;
-}
-function fmtMeasure(it){
-  if (it.face === "front") return fmtFront(it);
-  const d = dimOf(it);
-  if (d.kind === "rel"){
-    return d.cm < 0.005
-      ? `${it.edge} edge sits directly on ${d.of}`
-      : `${it.edge} edge ${d.cm.toFixed(2)} cm ${d.dir} ${d.of}`;
-  }
-  if (d.from === "shoulder"){
-    return d.cm < 0.005
-      ? `${it.edge} edge level with the shoulder seam`
-      : `${it.edge} edge ${d.cm.toFixed(2)} cm down from the shoulder seam`;
-  }
-  return `${it.edge} edge ${d.cm.toFixed(2)} cm up from the cuff bottom`;
-}
-function datumOf(it){
-  if (it.face === "front" && !it.rel) return FRONT_DATUM[it.fdatum] || it.fdatum;
-  if (it.rel) return it.rel.ofShort || it.rel.of;
-  return it.root === "shoulder" ? "Shoulder seam" : "Cuff bottom edge";
-}
 const DATUM_LABEL = {shoulder_seam:"Shoulder seam", cuff_bottom:"Cuff bottom edge",
   right_rcac_badge:"RCAC badge (bottom)", right_appointment:"Appointment badge (top)"};
 
@@ -1621,47 +1515,6 @@ function render(){
   paintUnified(document.getElementById("draw"), L, R, fr);
   paintSleeves(document.getElementById("drawSleeves"), L, R);
   paintPockets(document.getElementById("drawPockets"), fr);
-
-  /* --- sewing guide --- */
-  const tb = document.getElementById("guide");
-  tb.textContent = "";
-  const faceOrder = {left:0, right:1, "front right":2, "front left":3};
-  const key = i => i.face === "front" ? "front " + i.side : i.sleeve;
-  const rows = L.concat(R, fr.R, fr.L).filter(i => !i.terminated)
-    .sort((a,b) => faceOrder[key(a)] !== faceOrder[key(b)]
-      ? faceOrder[key(a)] - faceOrder[key(b)] : b.y - a.y);
-  for (const it of rows){
-    const tr = document.createElement("tr");
-    const cell = it.cell ? ` <span style="color:var(--ink-3)">(${it.seq}: ${it.cell})</span>` : "";
-    const flag = it.ghost ? ` <span style="color:var(--ink-3)">— not measured</span>`
-              : it.missingArt ? ` <span style="color:var(--warn)">— no artwork</span>`
-              : it.conf === "estimate" ? ` <span style="color:var(--warn)">— estimated size</span>` : "";
-    tr.innerHTML =
-      `<td><span class="sleevetag">${key(it)}</span></td>` +
-      `<td>${it.label}${cell}${flag}</td>` +
-      `<td>${datumOf(it)}</td>` +
-      `<td class="num">${fmtMeasure(it)}</td>` +
-      `<td class="num">${it.w.toFixed(2)} × ${it.h.toFixed(2)}</td>` +
-      `<td class="slot">${it.slot}</td>`;
-    tb.appendChild(tr);
-  }
-
-  /* --- findings --- */
-  const fx = document.getElementById("findings");
-  fx.textContent = "";
-  const order = {crit:0, warn:1, info:2};
-  warn.sort((a,b) => order[a.lvl]-order[b.lvl]);
-  if (!warn.length){
-    fx.innerHTML = `<div class="clear">No collisions, no clearance problems, nothing resting on an estimated dimension.</div>`;
-  } else {
-    for (const w of warn){
-      const d = document.createElement("div");
-      d.className = "finding";
-      d.innerHTML = `<span class="tag ${w.lvl}">${w.lvl}</span>` +
-        `<span class="msg">${w.msg}<span class="cite">${w.cite}</span></span>`;
-      fx.appendChild(d);
-    }
-  }
 
   view.refresh();
   syncPins();

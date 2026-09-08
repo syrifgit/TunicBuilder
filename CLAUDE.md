@@ -8,7 +8,7 @@ about how to *change* it without breaking it.
 
 A tool that works out where every badge goes on a Royal Canadian Army Cadet tunic and
 states each position as a measurement someone can take with a ruler. One cadet at a
-time, entered by hand. Output is a check drawing plus a sewing guide.
+time, entered by hand. Output is a dimensioned check drawing, printing on two sheets.
 
 `demo/tunic.template.html` is the tool. Everything else exists to feed it artwork or
 to justify a number in it.

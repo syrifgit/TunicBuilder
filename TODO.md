@@ -4,7 +4,7 @@ Ordered by what it unblocks, not by effort. Every geometric item is also recorde
 `rules/army_tunic_placement_rules_2.json` under `open_questions`, which is the
 authoritative list — this file is the working view of it.
 
-Status as of rules **v0.15-draft**: 22 slots, 25 open questions, 6 recorded conflicts.
+Status as of rules **v0.16-draft**: 22 slots, 27 open questions, 6 recorded conflicts.
 
 ---
 
@@ -23,10 +23,12 @@ Things the tool currently gets *wrong* or cannot answer, not merely gaps.
   gets it on the wrong side.
 - [ ] **Left-pocket stack geometry**, if the split goes ahead. 5D-1 gives the
   single-pin case only, and CDS + VCDS together is possible.
-- [x] ~~**Wire the medal precedence into the tool.**~~ Done. All 11 are named
-  checkboxes in precedence order, and both the medal bar and the undress ribbon rows
-  are built from the same selection — one award held is one ribbon, so the ribbon
-  count is no longer entered by hand. Still drawn as plain bars pending artwork.
+- [ ] **Cadet Service Medal bars are unsourced.** The tool offers None / 5-year /
+  6-year / 7-year and names the bar on the award without drawing it. Nothing to hand
+  gives the qualifying period for the medal or for each bar, whether a cadet wears
+  every bar earned or only the highest, where the ceiling is, or how a bar shows on an
+  undress ribbon. Labels and the 7-year ceiling follow Lt Beal; the "highest only"
+  reading follows the convention used everywhere else here, and is a guess.
 - [ ] **`Date Awarded` is placeholder data** in the workbook. It drives CTC grid fill
   order, so grid *order* is not sewing-safe even though grid *geometry* is.
 - [ ] **Confirm the precedence lists against CATO 13-16.** No longer blocking —
@@ -39,6 +41,15 @@ Things the tool currently gets *wrong* or cannot answer, not merely gaps.
   Cadet and JCR Dress Instructions for wearing medals and ribbons; every cadet figure
   here is cited from Chapter 5. Establish whether Chapter 7 is the JCR chapter or a
   renumbering that supersedes our citations.
+- [ ] **Confirm a transferring cadet keeps awards earned in another element.** Stated
+  for JCR at 10050 para 6.2. It is what makes the Sea and Air entries in the medal list
+  reachable on an army tunic, and the tool models it that way.
+- [x] ~~**Wire the medal precedence into the tool.**~~ Done. All 11 are named in
+  precedence order, and both the medal bar and the undress ribbon rows are built from
+  the same selection — one award held is one ribbon, so the ribbon count is no longer
+  entered by hand. The three service medals are one element choice rather than three
+  checkboxes, resolving back to seq 9 / 10 / 11. Still drawn as plain bars pending
+  artwork.
 
 ### Medal order of precedence — CJCR Gp O 10050 para 7.4
 
@@ -64,13 +75,14 @@ the army seven. Precedence 1 is worn inboard, nearest the centre of the chest.
 
 Everything here is a placeholder or an estimate the tool draws and flags.
 
-- [x] ~~**Breast pocket flap height.**~~ Measured at **6.0 cm**. Three independent
-  measurements now agree: a 15 cm pocket less a 6 cm flap leaves exactly the 9 cm of
-  the measured competition pin strip, so the strip fills the pin band with no
-  remainder. The 4.0 cm placeholder left 2 cm unaccounted for.
 - [ ] **Sgt chevron height.** Settles the standing disagreement: measured
   6.5 / 8.0 / 9.5 / 11.0 cm at 10 cm wide against the poster's implied
-  7.28 / 8.91 / 10.04 / 12.05. Measure Sgt and the other three follow.
+  7.41 / 8.98 / 10.13 / 12.02. Measure Sgt and the other three follow. The tool used
+  to render either for comparison; that switch is gone, so this is now a ruler
+  question only.
+- [ ] **MWO aspect.** Drawn 1.26 against 1.50 from the poster's bounding box, and
+  unresolved. Distinguished Marksman was the other half of that question and is
+  settled at 6.0 × 8.0 cm.
 - [ ] **NRT and Bisley Series pins.** RCAC National Rifle Team and LGen C.H. Belzile
   Trophy. Both non-standard: the artwork trims to aspect 2.47 and 1.42, so neither is
   a 1 in square. Drawn 2.54 cm wide with height from the artwork.
@@ -78,11 +90,14 @@ Everything here is a placeholder or an estimate the tool draws and flags.
   Bédard / Keddie / Le Guellec (biathlon). Confirmed non-standard; aspect 1.07 and
   about a third larger than the championship pins beside them.
 - [ ] **Duke of Edinburgh pin.** Oval, so it needs *both* dimensions. Annex D gives
-  none.
+  none. Drawn 2.0 × 1.6 cm.
 - [ ] **Expedition pin.** Circular. Poster draws it ~1.5× the championship pins in the
-  same block — a within-band comparison, so 1 in is probably low.
-- [ ] **Anniversary pin**, **medal width**, **commendation pin** (Annex D gives
-  2.0 × 0.5 cm, and 2.0 × 0.75 for Navy League — confirm against real pins).
+  same block — a within-band comparison, so the 2.54 cm drawn is probably low.
+- [ ] **Anniversary pin** (drawn 2.0 cm), **medal width** (drawn 3.5 cm; the 10 cm
+  court-mount length is regulation and confirmed), **commendation pin** (Annex D gives
+  2.0 × 0.5 cm, and 2.0 × 0.75 for Navy League — confirm against real pins),
+  **parachutist badge** (drawn 9.0 × 3.87 cm from poster aspect at a guessed width),
+  and the **service medal bar**, which has no dimensions at all.
 - [ ] **CWO rank.** Still an estimate at 7.62 × 10.16 cm, though the poster corroborates
   it to 2%.
 - [ ] **Smallest tunic in stores: sleeve length.** Only size 6436 (57 cm) is measured.
@@ -90,6 +105,14 @@ Everything here is a placeholder or an estimate the tool draws and flags.
   an overlap below. This is a real wearability question, not a drawing nicety.
 - [ ] **Corps name title**, ideally against a real title rather than derived. Currently
   12.21 × 3.85 cm, derived from the poster template and the measured 6.35 cm RCAC badge.
+- [x] ~~**Breast pocket flap height.**~~ Measured at **6.0 cm**. Three independent
+  measurements now agree: a 15 cm pocket less a 6 cm flap leaves exactly the 9 cm of
+  the measured competition pin strip, so the strip fills the pin band with no
+  remainder. The 4.0 cm placeholder left 2 cm unaccounted for.
+
+**Not a ruler question:** the maximum medal bar width is set by the wearer's physique —
+the bar must not run past the jacket arm seam — so it stays a per-cadet flag rather
+than a number the rules pack can carry.
 
 ## 3. Artwork still missing
 
@@ -136,14 +159,23 @@ The tool is right and `D - Qual Info` is wrong in each of these.
   placement rules, their own artwork, their own nametag colour (air cadet name tags
   are air force blue; army and sea are black). The coordinate model and the resolver
   should carry over unchanged — it is the rules pack and the art that are
-  element-specific.
-- [ ] **Bulk data entry.** Deliberately out of scope for the first release. The
-  resolver already takes a plain object, so wiring it to `D - Master Calc` is a
-  data-loading job, not a modelling one.
+  element-specific. The unit dropdown and the service-medal element selection are the
+  first two places that already anticipate it.
+- [ ] **A written sewing guide.** The tool produced one until it was removed as
+  screen clutter: a table of every badge sorted so that anything a later badge hangs
+  off was already placed. The drawing's callouts carry the same measurements, but
+  there is no longer a list to work down while sewing. If it comes back it should be a
+  third print page rather than an on-screen panel. `resolve()` still returns
+  everything it needs; `fmtMeasure()` and `datumOf()` were the formatters and are in
+  git history.
+- [ ] **Bulk data entry.** Deliberately out of scope for the first release. `state` is
+  a plain object that the resolvers read directly, so loading a cadet is assigning to
+  it — wiring this to `D - Master Calc` is a data-loading job, not a modelling one.
 - [ ] **Shirt layouts.** Only the jacket is modelled. The DofE pin is jacket-only and
   the poppy figure is drawn for the shirt.
 - [ ] **Canadian Honours System medals** (Queen's Jubilee and similar). A cadet may
-  hold one but the CO must seek wear instructions through the chain of command.
+  hold one but the CO must seek wear instructions through the chain of command. One
+  data point: 10050 para 7.3 wears these on the **left**, opposite the cadet awards.
 
 ## 6. Housekeeping
 
@@ -153,8 +185,9 @@ The tool is right and `D - Qual Info` is wrong in each of these.
 - [ ] **`docs/CLAUDE_1.md` names a real cadet surname** (line 49). Fine in a private
   repo, not for a public one. Rewording to "some cadets share a surname" keeps the
   point.
-- [ ] **`make_corps_title.py` has a hardcoded Linux font path.** Fine as-is since the
-  PNGs are generated, but retitling for another corps from Windows will fail.
+- [ ] **`make_corps_title.py` has a hardcoded Linux font path.** More pressing now
+  that the rail has a unit dropdown: adding a corps means generating a plate, and that
+  will fail from Windows.
 - [ ] **Sleeve print page: break line.** Badges live at 0–13 cm and 33–57 cm from the
   cuff with a deliberately empty 20 cm band between. A standard drafting break would
   render the sleeves roughly 40% larger on paper, at the cost of a discontinuous scale.

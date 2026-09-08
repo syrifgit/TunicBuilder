@@ -124,8 +124,8 @@ python build_all.py      # regenerates artwork, both pages, and smoke-tests them
 - **Git: commit locally, freely. Never push, never add a remote, never
   `gh repo create`** without being asked. There is deliberately no remote configured.
   Use the repo's configured identity, do not override it with `-c user.name=...`.
-- **Every geometric claim needs a citation.** A printed sewing guide has to be
-  defensible when someone asks why a badge is at 20 cm.
+- **Every geometric claim needs a citation.** A drawing someone sews from has to be
+  defensible when they ask why a badge is at 20 cm.
 
 ## Layout
 
@@ -172,7 +172,7 @@ workaround, and they are all in the pipeline.
 
 ## Where things stand
 
-Rules **v0.15-draft**: 22 slots, 25 open questions, 6 conflicts, sources CH3S1,
+Rules **v0.16-draft**: 22 slots, 27 open questions, 6 conflicts, sources CH3S1,
 ANNEX-H, CH5-A–D, CH5-S7, CH4-A, CJCRGPO-10050, and CATO 13-16 (still unsourced, no
 longer blocking — 10050 supplies the precedence lists it was wanted for).
 

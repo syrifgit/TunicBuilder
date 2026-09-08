@@ -4,13 +4,16 @@
 Run from the repo root. Needs ACRCCP750DA003.pdf and rcac_badges.zip present -
 see the README. Safe to re-run; every step overwrites its own output.
 """
+import json
 import os
+import re
 import shutil
 import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 NEEDED = ["rcac_badges.zip", "ACRCCP750DA003.pdf"]
+RULES = os.path.join(ROOT, "rules", "army_tunic_placement_rules_2.json")
 
 STEPS = [
     ("src/recut_music.py",        "recover music levels 2-4 from a merged crop"),
@@ -24,6 +27,34 @@ STEPS = [
     ("demo/build.py",             "build demo/tunic.html"),
     ("demo/build_plate_html.py",  "build demo/plate.html"),
 ]
+
+
+def check_doc_headers(width=0):
+    """TODO.md and CLAUDE.md each quote the rules pack's counts in a status line.
+    Those are written by hand and have gone stale three times, every time caught by
+    eye rather than by anything. Reports; does not fail the build."""
+    r = json.load(open(RULES, encoding="utf-8"))
+    want = (r["version"], len(r["slots"]), len(r["open_questions"]),
+            sum(len(s.get("conflicts", [])) for s in r["slots"]))
+    pat = re.compile(r"\*\*v?([\d.]+-draft)\*\*[:,]? (\d+) slots, (\d+) open questions?, "
+                     r"(\d+)(?: recorded)? conflicts?")
+    print(f"\n\033[1m{'doc headers':<{width}}\033[0m  TODO.md and CLAUDE.md vs the rules pack")
+    stale = 0
+    for name in ("TODO.md", "CLAUDE.md"):
+        m = pat.search(open(os.path.join(ROOT, name), encoding="utf-8").read())
+        if not m:
+            print(f"    {name}: no status line found")
+            stale += 1
+        elif (m.group(1), int(m.group(2)), int(m.group(3)), int(m.group(4))) != want:
+            print(f"    {name}: STALE - says {m.group(1)}, "
+                  f"{m.group(2)} slots, {m.group(3)} open questions, {m.group(4)} conflicts")
+            stale += 1
+        else:
+            print(f"    {name}: current")
+    if stale:
+        print(f"    rules pack is v{want[0]}: {want[1]} slots, {want[2]} open questions, "
+              f"{want[3]} conflicts")
+    return stale
 
 
 def main():
@@ -64,6 +95,8 @@ def main():
     else:
         print("\nnode not found, skipping the smoke test. The pages are built but "
               "have not been executed.")
+
+    check_doc_headers(width)
 
     print("\nDone. Open demo/tunic.html or demo/plate.html.")
     return 0

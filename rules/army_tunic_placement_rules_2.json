@@ -1,6 +1,6 @@
 {
   "$comment": "Placement rules for Royal Canadian Army Cadet tunic (jacket) insignia. Sleeves only. Front of tunic not yet in scope.",
-  "version": "0.13-draft",
+  "version": "0.14-draft",
   "scope": "army_cadet_sleeves_and_front",
   "sources": [
     {
@@ -67,6 +67,22 @@
       "id": "CATO-13-16",
       "title": "CATO 13-16 - order of precedence for cadet honours and awards",
       "status": "NOT SOURCED - blocks correct ordering"
+    },
+    {
+      "id": "CJCRGPO-10050",
+      "title": "CJCR Gp O 10050 - JCR National Honours and Awards",
+      "date_of_issue": "2021-03-19",
+      "date_of_verification": "2022-08-16",
+      "status": "SECONDARY. This order governs the Junior Canadian Ranger programme, not the Cadet programme, and states placement for the JCR sweatshirt rather than the cadet tunic. It is used here for ORDER, not for GEOMETRY: para 4.2 records that the CJCR Honours and Awards committee 'includes both JCR and Cadet Program personnel' and 'determines eligibility criteria and order of precedence', and the medal list at 7.4 spans all three cadet elements including the Sea, Army and Air Cadet Service Medals - so the precedence itself is CJCR-wide, not JCR-specific. Every cadet-facing geometric figure still comes from Chapter 5.",
+      "paragraphs_used": [
+        "5.1",
+        "6.2",
+        "7.1",
+        "7.2",
+        "7.3",
+        "7.4",
+        "7.5"
+      ]
     }
   ],
   "datums": {
@@ -580,10 +596,104 @@
         "One row if they fit. Past about five they overlap horizontally with the highest priority fully visible.",
         "Maximum mounting width is set by the wearer's physique, not a number: centred on the pocket, the bar must not run past the jacket arm seam. The renderer flags this rather than computing it.",
         "Length is 10 cm, suspender top to medal bottom edge (CH5-S7), so the medal finishes 9 cm down a 15 cm pocket.",
-        "Precedence order is NOT in Chapter 5. It is in CATO 13-16, unsourced."
+        "Precedence order is not in Chapter 5. CATO 13-16 is the cadet-programme authority and is still unsourced, but CJCRGPO-10050 7.4 now supplies an ordered CJCR-wide list. Adopted from 10050; confirm against CATO 13-16 when it is obtained.",
+        "PRECEDENCE (CJCRGPO-10050 7.4): the full CJCR list is 11 medals. Seven are available to an army cadet - seq 1, 2, 3, 5, 7, 8 and 10 - and the other four are Sea or Air awards. Keep the full list and sort by seq rather than storing the army seven, because a cadet who transferred in from another element retains an award earned there and it must slot into the right position.",
+        "Precedence 1 is worn INBOARD, nearest the centre of the chest, consistent with right_ribbons. 7.4 says only 'side by side'; the inboard-first convention comes from CH5-A 5A-1."
       ],
       "sleeve": null,
-      "length_cm": 10.0
+      "length_cm": 10.0,
+      "order_of_precedence": [
+        {
+          "seq": 1,
+          "medal": "Cadet Award for Bravery",
+          "elements": [
+            "sea",
+            "army",
+            "air"
+          ]
+        },
+        {
+          "seq": 2,
+          "medal": "Lord Strathcona Medal",
+          "elements": [
+            "sea",
+            "army",
+            "air"
+          ]
+        },
+        {
+          "seq": 3,
+          "medal": "Royal Canadian Legion Cadet Medal of Excellence",
+          "elements": [
+            "sea",
+            "army",
+            "air"
+          ]
+        },
+        {
+          "seq": 4,
+          "medal": "Navy League of Canada Medal of Excellence",
+          "elements": [
+            "sea"
+          ]
+        },
+        {
+          "seq": 5,
+          "medal": "The Major-General W.A. Howard Award",
+          "elements": [
+            "sea",
+            "army",
+            "air"
+          ]
+        },
+        {
+          "seq": 6,
+          "medal": "Air Force Association Medal",
+          "elements": [
+            "air"
+          ]
+        },
+        {
+          "seq": 7,
+          "medal": "Army, Navy and Air Force Veterans in Canada Cadet Medal of Merit",
+          "elements": [
+            "sea",
+            "army",
+            "air"
+          ]
+        },
+        {
+          "seq": 8,
+          "medal": "Order of St. George Medal",
+          "elements": [
+            "sea",
+            "army",
+            "air"
+          ]
+        },
+        {
+          "seq": 9,
+          "medal": "Sea Cadet Service Medal",
+          "elements": [
+            "sea"
+          ]
+        },
+        {
+          "seq": 10,
+          "medal": "Army Cadet Service Medal",
+          "elements": [
+            "army"
+          ]
+        },
+        {
+          "seq": 11,
+          "medal": "Air Cadet Service Medal",
+          "elements": [
+            "air"
+          ]
+        }
+      ],
+      "order_of_precedence_citation": "CJCRGPO-10050 7.4"
     },
     {
       "id": "front_right_anniversary_pin",
@@ -658,7 +768,8 @@
       "citation": "CH5-D 5D-2, 5D-3, 5D-4; CH5-B 5B-1.3",
       "notes": [
         "A single pin is centred between the flap's lower edge and the pocket's lower seam. Two or more are worn one above the other, 0.5 cm apart, in precedence order.",
-        "The DofE pin is worn on the JACKET ONLY; the cadet commendation pins may be worn on the jacket or the shirt."
+        "The DofE pin is worn on the JACKET ONLY; the cadet commendation pins may be worn on the jacket or the shirt.",
+        "CJCRGPO-10050 7.2 corroborates the conditional placement: 'If the JCR also has medals, commendations and Duke of Edinburgh pins are worn 0.5 cm below these.' Same 0.5 cm stack pitch as 5D."
       ],
       "sleeve": null,
       "conflicts": [
@@ -666,7 +777,14 @@
           "field": "which_pocket",
           "alternate_value": "National Commendations on the LEFT breast pocket",
           "source": "Figure 5D-1 text as supplied: 'A National Commendation Pin shall be worn centered on the left breast pocket, equidistant between the lower seam and the lower edge of the pocket flap.'",
-          "resolution": "ALL FIVE pins on the RIGHT pocket in one stack, per the Chapter 5 review: everything in the chapter is right breast, and 5B-1's single precedence list runs CDS > Command > Cadet > Navy League > DofE as one 0.5 cm stack. UNRESOLVED CONTRADICTION: the 5D-1 figure text says left. Two sources say one right-hand stack, one says national goes left. Confirm before printing a guide - getting it wrong puts a CDS Commendation on the wrong side."
+          "resolution": "SUPERSEDED PENDING A DECISION. Previously adopted as ALL FIVE pins on the RIGHT pocket in one stack, on the reasoning that everything in Chapter 5 is right breast and 5B-1 lists one precedence run. CJCRGPO-10050 7.5 now corroborates 5D-1: national commendations (CDS, VCDS) LEFT, cadet-level (Cadet, Navy League, DofE) RIGHT. The renderer still draws one right-hand stack. Do not print a guide for a cadet holding a national commendation until this is settled - it puts the pin on the wrong side.",
+          "corroboration": "CJCRGPO-10050 7.5 independently splits the stack the same way 5D-1 does: it marks the CDS and VCDS Commendations '(to be worn on the left side)' while 7.2 places commendation and DofE pins generally on the right side of the chest. That is a second, independent source for NATIONAL LEFT / CADET-LEVEL RIGHT. The balance of evidence has moved: two sources now say national goes left, against one reading of Chapter 5 that put everything in a single right-hand stack."
+        },
+        {
+          "field": "order_top_to_bottom[1]",
+          "alternate_value": "Vice Chief of the Defence Staff (VCDS) Commendation",
+          "source": "CJCRGPO-10050 7.5 ranks CDS > VCDS > Cadet > Navy League > DofE. But the same order's availability list at 5.1 offers the 'Comd CJCR Commendation' and never mentions a VCDS one - the order contradicts itself.",
+          "resolution": "Held as 'Command Commendation', which is what Chapter 5 and the CAF Dress Instructions call the second-tier commendation. Unresolved: 10050 ranks VCDS and offers Comd CJCR, and it is not established whether these are two names for the same slot or two separate awards."
         }
       ],
       "conditional_placement": "Normally centred between the pocket's lower seam and the lower edge of the flap. WHEN MEDALS ARE WORN it sits between the BOTTOM OF THE MEDALS and the pocket's lower seam instead."
@@ -759,7 +877,7 @@
       "Anniversary pin dimensions.",
       "Breast pocket flap height, which every pocket-mounted pin depends on.",
       "Shirt layouts. Only the jacket is modelled; the DofE pin is jacket-only and the poppy figure is drawn for the shirt.",
-      "Canadian Honours System medals (Queen's Jubilee and similar). A cadet may hold one, but the CO must seek wear instructions through the chain of command. Chapter 5 covers only National Cadet Honours and Awards."
+      "Canadian Honours System medals (Queen's Jubilee and similar). A cadet may hold one, but the CO must seek wear instructions through the chain of command. Chapter 5 covers only National Cadet Honours and Awards. One data point: CJCRGPO-10050 7.3 wears a Canadian Order, decoration or medal on the LEFT side of the chest, opposite the cadet awards - consistent with national practice, but stated for the JCR sweatshirt, so it is a hint and not an instruction for the tunic."
     ]
   },
   "global_limits": [
@@ -828,8 +946,8 @@
     "Breast pocket FLAP height is not measured and not in the instruction, but every pocket-mounted pin is centred between the flap's lower edge and the pocket's lower seam. Blocks exact pin placement.",
     "Annex B lists national and cadet commendations in one 0.5 cm stack while Annex D puts them on opposite pockets. Resolved in favour of Annex D as the more specific source - confirm with RCSU.",
     "National-winner award pins (Vamplew / Clement Tremblay, and Bedard / Keddie / Le Guellec) are confirmed non-standard in size and have never been measured. Drawn at 1 in.",
-    "CATO 13-16 is not sourced. It holds the precedence order for every medal and ribbon, so nothing on the right breast can be correctly ORDERED yet - only correctly placed.",
-    "Figure 5D-1 says National Commendations go on the LEFT pocket while the rest of Chapter 5 puts everything on the right in one stack. Adopted right; needs confirming.",
+    "CATO 13-16 is still not sourced. CJCRGPO-10050 7.4 now supplies an 11-medal CJCR-wide precedence list and 7.5 a 5-pin commendation list, so ordering is no longer blocked - but 10050 is a JCR order. Confirm the cadet list matches before a printed guide relies on it.",
+    "Figure 5D-1 puts National Commendations on the LEFT pocket; the renderer still draws one right-hand stack. CJCRGPO-10050 7.5 now corroborates 5D-1 (CDS and VCDS marked 'to be worn on the left side'). Two sources against one reading. DECISION NEEDED: flip the renderer to a split stack.",
     "Medal bar maximum width is physique-dependent (must not pass the jacket arm seam). Needs a per-cadet measurement or it stays a flag.",
     "Duke of Edinburgh pin is an oval with no dimensions given in Annex D.",
     "NRT and Bisley Series pin sizes (RCAC National Rifle Team, LGen C.H. Belzile Trophy) are unmeasured and non-standard - artwork trims to aspect 2.47 and 1.42, so neither is a 1 in square.",
@@ -838,7 +956,11 @@
     "Commendation and award insignia artwork (CDS, Command, Cadet, Navy League) is illustrated in Annex D but not extracted; the renderer draws plain bars at the right size.",
     "Sashes and lanyards are not modelled and no source has been identified for them.",
     "A full-tunic render is not attempted. The tool draws four flat panels, and the shoulder-to-pocket relationship is presentational rather than measured.",
-    "Sea and Air elements are out of scope. The coordinate model and resolver should carry over unchanged; the rules pack, the artwork and the nametag colour are element-specific (air cadet name tags are air force blue)."
+    "Sea and Air elements are out of scope. The coordinate model and resolver should carry over unchanged; the rules pack, the artwork and the nametag colour are element-specific (air cadet name tags are air force blue).",
+    "CJCRGPO-10050 contradicts itself on the second-tier commendation: 5.1 offers a 'Comd CJCR Commendation', 7.5 ranks a 'VCDS Commendation'. Same slot under two names, or two awards?",
+    "CJCRGPO-10050 4.4 directs the reader to Chapter 7 of the Cadet and JCR Dress Instructions for wearing medals and ribbons, but every cadet figure used here is from Chapter 5. Establish whether Chapter 7 is the JCR chapter or a renumbering that supersedes our Chapter 5 citations.",
+    "If national commendations move to the left pocket, the left pocket needs its own stack geometry. 5D-1 gives the single-pin case (centred between the lower seam and the flap's lower edge) but not the two-pin case, and CDS + VCDS is possible.",
+    "A cadet transferring between elements retains awards earned there (the principle is stated for JCR at CJCRGPO-10050 6.2). Confirm it holds for cadets, since it is what makes the Sea and Air entries in the 11-medal list reachable on an army tunic."
   ],
   "changelog": [
     {
@@ -888,6 +1010,10 @@
     {
       "version": "0.13-draft",
       "change": "Open questions extended with Lt Beal's review: NRT/Bisley pin sizes, the seventh medal (Order of St George) missing from QualMap, medal and commendation artwork, sashes and lanyards, a full-tunic render, and Sea/Air."
+    },
+    {
+      "version": "0.14-draft",
+      "change": "Added CJCR Gp O 10050 (JCR National Honours and Awards) as a secondary source. Medals now carry an 11-entry order of precedence from 7.4, seven of which an army cadet can hold. 7.5 corroborates Figure 5D-1's national-left / cadet-right commendation split, moving the right_commendation_stack conflict from unresolved to decision-needed. Recorded 10050's own internal contradiction between the Comd CJCR Commendation (5.1) and the VCDS Commendation (7.5)."
     }
   ],
   "orders_of_dress": {

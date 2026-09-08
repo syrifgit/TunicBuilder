@@ -22,7 +22,8 @@ conflict in the rules pack — the field, the alternative value, the source of e
 the reasoning for what was adopted — and to surface it in the validator. It is never to
 quietly pick one and move on.
 
-Five conflicts are recorded so far. The illustration lost every time:
+Six conflicts are recorded so far. Where an illustration argued with an instruction,
+the illustration lost every time:
 
 | Slot | Conflict | Adopted |
 |---|---|---|
@@ -31,9 +32,17 @@ Five conflicts are recorded so far. The illustration lost every time:
 | `right_ctc_grid` | Annex H text describes a 5-badge stagger | CH3S1 3.b.(9) → aligned 2×3 |
 | `front_right_expedition` | workbook says left pocket | CH5-B figure → right pocket |
 | `right_commendation_stack` | 5D-1 says national goes left | Ch5 → one right-hand stack |
+| `right_commendation_stack` | 10050 ranks a VCDS Commendation | Ch5 → "Command Commendation" |
 
-The last one is **unresolved** and would put a CDS Commendation on the wrong side if
-we have it backwards.
+**The commendation split needs a decision before anyone prints a guide.** The stack was
+adopted as one right-hand run against Figure 5D-1. CJCR Gp O 10050 para 7.5 now
+corroborates 5D-1 — CDS and VCDS marked "(to be worn on the left side)" — so two
+independent sources say national goes left and the renderer is drawing it right. That
+puts a CDS Commendation on the wrong side of a cadet. See `TODO.md` §1.
+
+Note that the two sources disagreeing here are a cadet instruction and a *JCR* order.
+10050 is used for **order, not geometry**: its precedence lists are CJCR-wide (para 4.2,
+and 7.4 spans all three elements), but every figure it gives is for the JCR sweatshirt.
 
 ## Three rules learned the hard way
 
@@ -163,8 +172,9 @@ workaround, and they are all in the pipeline.
 
 ## Where things stand
 
-Rules **v0.12-draft**: 22 slots, 15 open questions, 5 conflicts, sources CH3S1,
-ANNEX-H, CH5-A–D, CH5-S7, CH4-A, and CATO 13-16 (unsourced, blocking).
+Rules **v0.14-draft**: 22 slots, 26 open questions, 6 conflicts, sources CH3S1,
+ANNEX-H, CH5-A–D, CH5-S7, CH4-A, CJCRGPO-10050, and CATO 13-16 (still unsourced, no
+longer blocking — 10050 supplies the precedence lists it was wanted for).
 
 Sleeves are complete: every badge has artwork and a resolved position. The front is
 modelled and placed but several sizes are placeholders. `TODO.md` has the full list,

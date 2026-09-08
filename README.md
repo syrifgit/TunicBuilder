@@ -24,7 +24,7 @@ mistakes come from.
 Every geometric claim in `rules/army_tunic_placement_rules_2.json` carries a
 citation. Where the sources disagree, the file records the conflict, the alternative
 value, and the reasoning for what was adopted - rather than silently picking one.
-There are three such conflicts so far, and the illustration lost all three.
+There are six such conflicts so far.
 
 ## Quick start
 
@@ -177,5 +177,8 @@ Three of these were learned the hard way.
 - CJCR Dress Instructions, Chapter 3 Annex H - sleeve placement figures
 - CJCR Dress Instructions, Chapter 4 Annex A - poppy
 - CJCR Dress Instructions, Chapter 5 Annexes A-D - medals, ribbons, commendations
+- CJCR Gp O 10050, *JCR National Honours and Awards*, 2021-03-19 - order of
+  precedence for medals and commendation pins. A JCR order, so it is used for order
+  and not for geometry; the precedence itself is CJCR-wide.
 - A-CR-CCP-750/DA-003, *Symbols of the Royal Canadian Army Cadets*, March 2018 -
   artwork only. Still shows terminated programmes, so treat it as art, not currency.

@@ -4,7 +4,7 @@ Ordered by what it unblocks, not by effort. Every geometric item is also recorde
 `rules/army_tunic_placement_rules_2.json` under `open_questions`, which is the
 authoritative list — this file is the working view of it.
 
-Status as of rules **v0.12-draft**: 22 slots, 15 open questions, 5 recorded conflicts.
+Status as of rules **v0.14-draft**: 22 slots, 26 open questions, 6 recorded conflicts.
 
 ---
 
@@ -12,18 +12,52 @@ Status as of rules **v0.12-draft**: 22 slots, 15 open questions, 5 recorded conf
 
 Things the tool currently gets *wrong* or cannot answer, not merely gaps.
 
-- [ ] **Source CATO 13-16.** It holds the order of precedence for every medal and
-  undress ribbon. Without it the right breast can be correctly *placed* but not
-  correctly *ordered* — the numbering in the tool is your click order, not authority.
-  Raised as a `crit` in the validator whenever medals or ribbons are worn.
-- [ ] **Resolve the 5D-1 contradiction.** Figure 5D-1 says National Commendations go
-  on the **left** breast pocket; the rest of Chapter 5 puts everything on the right in
-  one stack, and 5B-1's precedence list runs CDS → Command → Cadet → Navy League →
-  DofE as a single 0.5 cm stack. Adopted **right**, logged as a conflict. Getting this
-  backwards puts a CDS Commendation on the wrong side of a cadet.
+- [ ] **Decide the commendation split, then flip the renderer.** Figure 5D-1 puts
+  National Commendations on the **left** pocket. That was adopted as *right* because
+  the rest of Chapter 5 is right-breast and 5B-1 lists CDS → Command → Cadet → Navy
+  League → DofE as one 0.5 cm stack. **CJCR Gp O 10050 para 7.5 now corroborates
+  5D-1**, marking CDS and VCDS "(to be worn on the left side)" while 7.2 puts
+  commendation and DofE pins generally on the right. Two independent sources for
+  national-left / cadet-right against one reading of Chapter 5. The renderer still
+  draws a single right-hand stack, so a cadet holding a CDS Commendation currently
+  gets it on the wrong side.
+- [ ] **Left-pocket stack geometry**, if the split goes ahead. 5D-1 gives the
+  single-pin case only, and CDS + VCDS together is possible.
+- [ ] **Wire the medal precedence into the tool.** CJCR Gp O 10050 para 7.4 supplies
+  the ordered list (see below); the tool still takes a medal *count*, so it draws the
+  right number in the right place with no identity and no order.
 - [ ] **`Date Awarded` is placeholder data** in the workbook. It drives CTC grid fill
   order, so grid *order* is not sewing-safe even though grid *geometry* is.
-- [ ] **Confirm medal precedence order** once CATO 13-16 is in hand.
+- [ ] **Confirm the precedence lists against CATO 13-16.** No longer blocking —
+  10050 fills the gap — but 10050 is a *JCR* order and CATO 13-16 is the
+  cadet-programme authority. Confirm before a printed guide relies on it.
+- [ ] **Resolve "Command" vs "VCDS" vs "Comd CJCR".** 10050 contradicts itself: its
+  availability list (5.1) offers a Comd CJCR Commendation, its precedence list (7.5)
+  ranks a VCDS Commendation. Held as "Command Commendation" per Chapter 5.
+- [ ] **Chapter 7 or Chapter 5?** 10050 para 4.4 sends the reader to *Chapter 7* of the
+  Cadet and JCR Dress Instructions for wearing medals and ribbons; every cadet figure
+  here is cited from Chapter 5. Establish whether Chapter 7 is the JCR chapter or a
+  renumbering that supersedes our citations.
+
+### Medal order of precedence — CJCR Gp O 10050 para 7.4
+
+The full CJCR list is 11. Seven are reachable by an army cadet; the rest are Sea or
+Air awards, which a cadet who transferred in retains. Sort by seq rather than storing
+the army seven. Precedence 1 is worn inboard, nearest the centre of the chest.
+
+| # | Medal | Army |
+|---|---|:--:|
+| 1 | Cadet Award for Bravery | ● |
+| 2 | Lord Strathcona Medal | ● |
+| 3 | Royal Canadian Legion Cadet Medal of Excellence | ● |
+| 4 | Navy League of Canada Medal of Excellence | |
+| 5 | The Major-General W.A. Howard Award | ● |
+| 6 | Air Force Association Medal | |
+| 7 | Army, Navy and Air Force Veterans in Canada Cadet Medal of Merit | ● |
+| 8 | Order of St. George Medal | ● |
+| 9 | Sea Cadet Service Medal | |
+| 10 | Army Cadet Service Medal | ● |
+| 11 | Air Cadet Service Medal | |
 
 ## 2. Measurements — one ruler each
 

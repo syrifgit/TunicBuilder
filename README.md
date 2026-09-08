@@ -54,6 +54,13 @@ should ever be committed to it. `.gitignore` is set up to keep it that way.
 The badge artwork is **Crown copyright**. Fine for internal corps use. If this ever
 becomes a public web tool that changes, and the artwork would have to come out.
 
+The PDF is only read by `recut_fitness.py` and `recut_pins.py`, which recover 16
+badges the extractor cannot see because they are photographs. Once `art/recut/` holds
+those crops the PDF can be deleted: `build_all.py` skips both steps and keeps the
+existing crops. If the crops go too it stops and says which badges are unrecoverable,
+rather than building pages quietly missing them. Everything else derives from
+`rcac_badges.zip`, which is needed on every build.
+
 ## Layout
 
 ```

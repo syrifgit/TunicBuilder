@@ -12,8 +12,25 @@ import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-NEEDED = ["rcac_badges.zip", "ACRCCP750DA003.pdf"]
+NEEDED = ["rcac_badges.zip"]
 RULES = os.path.join(ROOT, "rules", "army_tunic_placement_rules_2.json")
+
+# Two steps render regions straight out of the poster PDF, because the extractor only
+# sees vector objects and these are photographs. Their output is 16 PNGs in art/recut,
+# which are gitignored like the rest of the artwork - so if the PDF goes and those PNGs
+# go, these badges cannot be regenerated from anything in the repo.
+#
+# The PDF is a national publication and can be fetched again, so it does not have to
+# live here. Keep the artwork and these steps skip themselves; lose both and the build
+# stops rather than quietly producing pages missing sixteen badges.
+PDF = "ACRCCP750DA003.pdf"
+PDF_STEPS = {
+    "src/recut_fitness.py": ["fit_bronze", "fit_silver", "fit_gold", "fit_excellence"],
+    "src/recut_pins.py": ["comp_mk_zone", "comp_mk_prov", "comp_mk_nat", "comp_mk_winner",
+                          "comp_bi_zone", "comp_bi_prov", "comp_bi_nat", "comp_bi_winner",
+                          "pin_rifle_team", "pin_belzile",
+                          "exped_regional", "exped_national"],
+}
 
 STEPS = [
     ("src/recut_music.py",        "recover music levels 2-4 from a merged crop"),
@@ -66,8 +83,22 @@ def main():
             print("   ", f)
         return 1
 
+    have_pdf = os.path.exists(PDF)
     width = max(len(s) for s, _ in STEPS)
     for script, what in STEPS:
+        if script in PDF_STEPS and not have_pdf:
+            missing = [n for n in PDF_STEPS[script]
+                       if not os.path.exists(os.path.join(ROOT, "art", "recut", n + ".png"))]
+            if missing:
+                print(f"\n\033[1m{script:<{width}}\033[0m  {what}")
+                print(f"    {PDF} is gone and so is its output: "
+                      f"{', '.join(missing[:4])}{' ...' if len(missing) > 4 else ''}")
+                print(f"    {len(missing)} badge(s) cannot be regenerated. Restore the PDF "
+                      f"(a national publication) and re-run.")
+                return 1
+            print(f"\n\033[2m{script:<{width}}\033[0m  skipped, no PDF; "
+                  f"{len(PDF_STEPS[script])} existing crops kept")
+            continue
         print(f"\n\033[1m{script:<{width}}\033[0m  {what}")
         r = subprocess.run([sys.executable, os.path.basename(script)],
                            cwd=os.path.join(ROOT, os.path.dirname(script)),

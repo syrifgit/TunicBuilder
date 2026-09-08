@@ -287,7 +287,9 @@ footer.foot p{margin:.5em 0}
       <summary class="eyebrow">Medals and commendations <span class="count" id="awardCount"></span></summary>
       <div class="field"><label for="fOrder">Wearing</label><select id="fOrder"></select></div>
       <div class="toggles" id="medalPick"></div>
-      <div class="field" style="margin-top:6px"><label for="fSvc">Service medal</label><select id="fSvc"></select></div>
+      <div class="eyebrow" style="margin-top:8px">Army Cadet Medal of Merit</div>
+      <div class="toggles" id="acmmPick"></div>
+      <div class="field" style="margin-top:8px"><label for="fSvc">Service medal</label><select id="fSvc"></select></div>
       <div class="field"><label for="fSvcBar">Bar</label><select id="fSvcBar"></select></div>
       <div class="toggles" style="margin-top:6px" id="commendPick"></div>
       <div class="toggles" style="margin-top:6px">
@@ -342,6 +344,7 @@ footer.foot p{margin:.5em 0}
 
 <script>
 /*__ART_PACK__*/
+/*__MEDAL_ART__*/
 </script>
 
 <script>
@@ -504,6 +507,7 @@ const state = {
   front:{
     order:"ribbons", nametag:"Bloggins", anniversary:false,
     medals:{}, service:{element:"none", bar:0},
+    acmm:{r:false, h:false, p:false, w:false},
     commend:{cds:false, command:false, cadet:false, navy:false}, dofe:"none",
     parachutist:false, commemorative:false, poppy:false, expedition:"none",
     pins:{bisley:"none", mkComp:"none", biComp:"none"}
@@ -702,6 +706,9 @@ function validate(items, sleeve, warn){
       const A=real[a], B=real[b];
       if (A.slot==="right_ctc_grid" && B.slot==="right_ctc_grid") continue;  // grid cells touch by design
       if (A.slot==="left_proficiency_stack" && B.slot==="left_proficiency_stack") continue;
+      // Past four medals, Chapter 5 says they overlap with the senior fully visible.
+      // That is the regulation, not a collision, so it must not draw a clash box.
+      if (A.slot==="right_medals" && B.slot==="right_medals") continue;
       const ox = Math.min(A.x+A.w/2, B.x+B.w/2) - Math.max(A.x-A.w/2, B.x-B.w/2);
       const oy = Math.min(A.y+A.h,   B.y+B.h)   - Math.max(A.y,       B.y);
       const crossFamily = A.root && B.root && A.root !== B.root;
@@ -801,19 +808,38 @@ const ORDERS = {
 // elements; seven are available to an army cadet and the rest arrive with a cadet who
 // transferred in, so the whole list is carried and sorted by seq. Precedence 1 is worn
 // inboard, nearest the centre of the chest.
+// seq matches CATO 13-16 para 19, confirmed verbatim. Seq 6 (Air Force Association
+// Medal) is deliberately absent: no source describes its ribbon, so drawing one would
+// be invention. The gap in the numbering is the record of that.
+// Seq 8, the Order of St. George, is NOT in CATO 13-16 at all - it is placed here on
+// CJCR Gp O 10050 para 7.4 alone, and that remains an open question.
 const MEDALS = [
   {key:"bravery",     seq: 1, label:"Cadet Award for Bravery"},
   {key:"strathcona",  seq: 2, label:"Lord Strathcona Medal"},
   {key:"legion",      seq: 3, label:"Royal Canadian Legion Cadet Medal of Excellence"},
   {key:"navyleague",  seq: 4, label:"Navy League of Canada Medal of Excellence", element:"sea"},
-  {key:"howard",      seq: 5, label:"Major-General W.A. Howard Award"},
-  {key:"afa",         seq: 6, label:"Air Force Association Medal", element:"air"},
+  {key:"acmm",        seq: 5, label:"Army Cadet Medal of Merit", bars:true},
   {key:"anavets",     seq: 7, label:"Army, Navy and Air Force Veterans Cadet Medal of Merit"},
   {key:"stgeorge",    seq: 8, label:"Order of St. George Medal"},
   {key:"seaservice",  seq: 9, label:"Sea Cadet Service Medal",  element:"sea", service:"sea"},
   {key:"armyservice", seq:10, label:"Army Cadet Service Medal",                service:"army"},
   {key:"airservice",  seq:11, label:"Air Cadet Service Medal",  element:"air", service:"air"}
 ];
+
+// Army Cadet Medal of Merit award bars, junior to senior. Two rules, both from
+// Lt Beal: the medal is never worn bare, so at least one bar; and WALSH requires
+// PRESIDENT. That gives 11 wearable states and the artwork carries all 11.
+const ACMM_BARS = [
+  {key:"r", label:"Rodger"}, {key:"h", label:"Howard"},
+  {key:"p", label:"President"}, {key:"w", label:"Walsh"}
+];
+// Artwork suffix for a medal or ribbon. ACMM keys by its bars, the service medal by
+// total years served; everything else is a single state.
+function artSuffix(m, F){
+  if (m.bars) return "_" + ACMM_BARS.filter(b => F.acmm[b.key]).map(b => b.key).join("");
+  if (m.service === "army" && F.service.bar) return "_" + F.service.bar + "yr";
+  return "";
+}
 
 // The last three medals are the same award in three elements, so they are one choice
 // rather than three checkboxes: a cadet holds the one for the element they served in,
@@ -845,7 +871,10 @@ const COMMEND = [
   {key:"navy",    label:"Navy League Award of Commendation",
    desc:"silver plated bar, single anchor",            w:2.0, h:0.75}
 ];
-const DOFE_W = 2.0, DOFE_H = 1.6;   // oval; Annex D gives no dimensions
+// Oval. Annex D gives no dimensions, but the issued artwork does give the aspect -
+// 1.197 for all three levels - so only the absolute size is a guess. Drawing it 2.0 x
+// 1.6 made it aspect 1.250 and stretched the cypher by 4.4%.
+const DOFE_W = 2.0, DOFE_ASPECT = 1.197, DOFE_H = DOFE_W / DOFE_ASPECT;
 
 // Left-pocket pinned insignia. Every stream is Highest Only / Max Worn 1 in QualMap,
 // so each is a single choice. `w`/`h` default to the 1 in square; anything measured
@@ -935,11 +964,18 @@ function resolveFront(){
   let medalBottom = null;           // set only when medals are worn
 
   // One selection of awards held; the order of dress only chooses how they show.
+  const acmmBars = ACMM_BARS.filter(b => F.acmm[b.key]);
   const mHeld = MEDALS.filter(m => m.service ? F.service.element === m.service
-                                             : F.medals[m.key]);
+                                : m.bars    ? acmmBars.length
+                                            : F.medals[m.key]);
+  if (acmmBars.length && F.acmm.w && !F.acmm.p)
+    add("Army Cadet Medal of Merit: the Walsh bar cannot be worn without the President bar. No artwork exists for that combination and it is not a wearable state.",
+        "crit", "confirmed by Lt Beal");
   // a bar is named on the award, not drawn: nothing is sourced for the device itself
-  const mName = m => (m.service && F.service.bar)
-    ? `${m.label} (${F.service.bar}-year bar)` : m.label;
+  const mName = m =>
+      (m.service && F.service.bar) ? `${m.label} (${F.service.bar}-year bar)`
+    : (m.bars && acmmBars.length)  ? `${m.label} (${acmmBars.map(b => b.label).join(", ")})`
+    : m.label;
 
   if (order.medals && mHeld.length){
     const n = mHeld.length;
@@ -953,7 +989,8 @@ function resolveFront(){
       put(R,{ face:"front", side:"right", slot:"right_medals",
         label:mName(mHeld[i]), seq:i+1,
         x: barW/2 - MEDAL_W/2 - i*pitch,       // #1 inboard, toward the chest centre
-        y: medalBottom, w:MEDAL_W, h:MEDAL_LEN, art:null, medal:true,
+        y: medalBottom, w:MEDAL_W, h:MEDAL_LEN, medal:true,
+        art: "medal_" + mHeld[i].key + artSuffix(mHeld[i], F),
         fdatum:"pocket_top", edge:"suspension",
         cite:"CH5-A 5A-1; CH5-S7 — 10 cm suspender top to medal bottom edge" });
     }
@@ -973,7 +1010,8 @@ function resolveFront(){
     for (const c of rr.items){
       put(R,{ face:"front", side:"right", slot:"right_ribbons",
         label:`${mName(mHeld[c.seq-1])} — undress ribbon`, seq:c.seq, x:c.x, y:c.y,
-        w:RIBBON_W, h:RIBBON_H, art:null, ribbon:true,
+        w:RIBBON_W, h:RIBBON_H, ribbon:true,
+        art: "ribbon_" + mHeld[c.seq-1].key + artSuffix(mHeld[c.seq-1], F),
         fdatum: c.row === 0 ? "pocket_top" : "row_below",
         rel: c.row === 0 ? null : {of:"the row below", ofShort:"Row below", gap:0, dir:"above"},
         edge:"bottom",
@@ -1037,7 +1075,8 @@ function resolveFront(){
   const rp = [];
   for (const c of COMMEND){
     if (!F.commend[c.key]) continue;
-    rp.push({slot:"right_commendation_stack", label:c.label, w:c.w, h:c.h, art:null,
+    rp.push({slot:"right_commendation_stack", label:c.label, w:c.w, h:c.h,
+             art:"pin_" + c.key,
              cite:"CH5-D 5D-1, 5D-2 — " + c.desc});
     if (c.note) add(`${c.label}: ${c.note}`, "info", "CH5-D");
   }
@@ -1682,13 +1721,25 @@ const FRONT_BIND = {
 (function wireMedals(){
   const box = document.getElementById("medalPick");
   for (const m of MEDALS){
-    if (m.service) continue;                 // the service medal is the two selects below
+    if (m.service || m.bars) continue;       // both have their own controls below
     const lab = document.createElement("label");
     lab.className = "toggle";
     lab.innerHTML = `<input type="checkbox" id="md_${m.key}"><span>${m.label}</span>`;
     box.appendChild(lab);
     lab.querySelector("input").addEventListener("change", e => {
       state.front.medals[m.key] = e.target.checked; render();
+    });
+  }
+})();
+(function wireAcmm(){
+  const box = document.getElementById("acmmPick");
+  for (const b of ACMM_BARS){
+    const lab = document.createElement("label");
+    lab.className = "toggle";
+    lab.innerHTML = `<input type="checkbox" id="ab_${b.key}"><span>${b.label}</span>`;
+    box.appendChild(lab);
+    lab.querySelector("input").addEventListener("change", e => {
+      state.front.acmm[b.key] = e.target.checked; render();
     });
   }
 })();
@@ -1712,7 +1763,8 @@ const FRONT_BIND = {
 function syncCounts(){
   const F = state.front;
   const medals = MEDALS.filter(m => m.service ? F.service.element === m.service
-                                              : F.medals[m.key]).length;
+                                : m.bars    ? ACMM_BARS.some(b => F.acmm[b.key])
+                                            : F.medals[m.key]).length;
   const commend = COMMEND.filter(c => F.commend[c.key]).length
                 + (F.dofe && F.dofe !== "none" ? 1 : 0);
   const bits = [];
@@ -1746,7 +1798,10 @@ function syncAll(){
   for (const c of COMMEND)
     document.getElementById("cm_" + c.key).checked = !!state.front.commend[c.key];
   for (const m of MEDALS)
-    if (!m.service) document.getElementById("md_" + m.key).checked = !!state.front.medals[m.key];
+    if (!m.service && !m.bars)
+      document.getElementById("md_" + m.key).checked = !!state.front.medals[m.key];
+  for (const b of ACMM_BARS)
+    document.getElementById("ab_" + b.key).checked = !!state.front.acmm[b.key];
   syncService();
   for (const id in FRONT_BIND){
     const el2 = document.getElementById(id), v = state.front[FRONT_BIND[id]];

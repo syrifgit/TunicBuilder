@@ -178,9 +178,9 @@ workaround, and they are all in the pipeline.
 
 ## Where things stand
 
-Rules **v0.18-draft**: 22 slots, 21 open questions, 6 conflicts, sources CH3S1,
-ANNEX-H, CH5-A–D, CH5-S7, CH4-A, CJCRGPO-10050, and CATO 13-16 (still unsourced, no
-longer blocking — 10050 supplies the precedence lists it was wanted for).
+Rules **v0.19-draft**: 22 slots, 24 open questions, 6 conflicts, sources CH3S1,
+ANNEX-H, CH5-A–D, CH5-S7, CH4-A, CJCRGPO-10050 and CATO 13-16 (para 19 now sourced
+verbatim, confirming the precedence for every medal but the Order of St. George).
 
 Sleeves are complete: every badge has artwork and a resolved position. The front is
 modelled and placed but several sizes are placeholders. `TODO.md` has the full list,

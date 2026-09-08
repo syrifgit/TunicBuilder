@@ -4,7 +4,7 @@ Ordered by what it unblocks, not by effort. Every geometric item is also recorde
 `rules/army_tunic_placement_rules_2.json` under `open_questions`, which is the
 authoritative list — this file is the working view of it.
 
-Status as of rules **v0.18-draft**: 22 slots, 21 open questions, 6 recorded conflicts.
+Status as of rules **v0.19-draft**: 22 slots, 24 open questions, 6 recorded conflicts.
 
 ---
 
@@ -23,12 +23,12 @@ Things the tool currently gets *wrong* or cannot answer, not merely gaps.
   gets it on the wrong side.
 - [ ] **Left-pocket stack geometry**, if the split goes ahead. 5D-1 gives the
   single-pin case only, and CDS + VCDS together is possible.
-- [ ] **Cadet Service Medal bars are unsourced.** The tool offers None / 5-year /
-  6-year / 7-year and names the bar on the award without drawing it. Nothing to hand
-  gives the qualifying period for the medal or for each bar, whether a cadet wears
-  every bar earned or only the highest, where the ceiling is, or how a bar shows on an
-  undress ribbon. Labels and the 7-year ceiling follow Lt Beal; the "highest only"
-  reading follows the convention used everywhere else here, and is a guess.
+- [x] ~~**Cadet Service Medal bars are unsourced.**~~ The **army** scheme is sourced:
+  ACLC Policy 13.1 paras 5 and 12 — four years earns the medal, each further year adds
+  a gold bar and a ribbon leaf, **accumulating** rather than replacing. Drawn, not just
+  named. Still open: no published maximum (7 years is a local ceiling), and **Sea and
+  Air use different schemes** — Sea reportedly anchor devices rather than a stack, Air's
+  bars exist commercially but undescribed. Both draw base state only.
 - [ ] **`Date Awarded` is placeholder data** in the workbook. It drives CTC grid fill
   order, so grid *order* is not sewing-safe even though grid *geometry* is.
 - [ ] **Resolve "Command" vs "VCDS" vs "Comd CJCR".** 10050 contradicts itself: its
@@ -38,10 +38,12 @@ Things the tool currently gets *wrong* or cannot answer, not merely gaps.
   for JCR at 10050 para 6.2. It is what makes the Sea and Air entries in the medal list
   reachable on an army tunic, and the tool models it that way.
 
-Medal precedence is implemented: all 11 in order from CJCR Gp O 10050 para 7.4, the
-three service medals collapsed to one element choice resolving back to seq 9 / 10 / 11,
-and the undress ribbons built from the same selection. The full list lives in the rules
-pack under `right_medals.order_of_precedence`. Only the artwork is outstanding.
+Medals are done. **CATO 13-16 para 19 is now sourced verbatim** and confirms the order
+for every medal except the Order of St. George, which is absent from it — that one still
+rests on CJCR Gp O 10050 alone. Seq 5 is the **Army Cadet Medal of Merit** (four award
+bars, at least one worn, Walsh requires President — 11 states, all drawn). Seq 6, the
+**Air Force Association Medal, is omitted**: no source describes its ribbon, so the tool
+leaves a gap in the numbering rather than inventing one.
 
 ## 2. Measurements — one ruler each
 
@@ -53,8 +55,9 @@ Everything here is a placeholder or an estimate the tool draws and flags.
 - [ ] **National-winner award pins.** Vamplew & Clément Tremblay (marksmanship) and
   Bédard / Keddie / Le Guellec (biathlon). Confirmed non-standard; aspect 1.07 and
   about a third larger than the championship pins beside them.
-- [ ] **Duke of Edinburgh pin.** Oval, so it needs *both* dimensions. Annex D gives
-  none. Drawn 2.0 × 1.6 cm.
+- [ ] **Duke of Edinburgh pin — size only.** The *aspect* was never unknown: the issued
+  artwork is 1.197 for all three levels, so it is now drawn 2.0 × 1.671 rather than
+  2.0 × 1.6, which had been stretching it 4.4%. Annex D still gives no millimetres.
 - [ ] **Expedition pin.** Circular. Poster draws it ~1.5× the championship pins in the
   same block — a within-band comparison, so the 2.54 cm drawn is probably low.
 - [ ] **Anniversary pin** (drawn 2.0 cm), **medal width** (drawn 3.5 cm; the 10 cm
@@ -84,17 +87,20 @@ Everything here is a placeholder or an estimate the tool draws and flags.
 the bar must not run past the jacket arm seam — so it stays a per-cadet flag rather
 than a number the rules pack can carry.
 
-## 3. Artwork still missing
+## 3. Artwork
 
-- [ ] **Seven medals.** Army Cadet Service (plus its bar), Order of St George, ANAVETS,
-  Howard, Legion, Lord Strathcona, Bravery. On the poster but never extracted —
-  they are photographs, and `extract_badges.py` clusters vector objects only. Same
-  failure that hid the fitness block and the pins; `src/recut_pins.py` shows the fix.
-  The tool now names and orders all 11 and draws each as a plain bar, so artwork is
-  the only thing outstanding. The other four are Sea and Air and are not on this
-  poster at all.
-- [ ] **Commendation and award insignia.** CDS, Command, Cadet, Navy League. Annex D
-  illustrates all four; they are currently drawn as plain bars at the right size.
+- [x] ~~**Medals and ribbons.**~~ Authored as SVG in `Medals and Ribbons/` and wired in:
+  ribbons 35 × 10 mm, medals 35 × 100 mm, matching the tool's geometry exactly. Every
+  award draws as itself. Not extracted from the poster — it never carried them.
+- [x] ~~**Commendation and award insignia.**~~ CDS, Command, Cadet and Navy League now
+  draw as real insignia at the Chapter 5 sizes. The DofE slot already had artwork.
+- [ ] **Fidelity is mixed and worth knowing.** Strathcona, RCL Excellence, St. George
+  and the Army Cadet Service Medal are sampled from source images. **Bravery and ANAVETS
+  stripe widths are still eyeballed**, and every medallion obverse is stylised — the
+  central relief is not reproducible from the sources to hand. Per-item detail is in
+  `Medals and Ribbons/medal_art_manifest.json`.
+- [ ] **Air Force Association Medal has no artwork and no source.** Omitted rather than
+  guessed. Air-element award, so it reaches an army tunic only by transfer.
 
 ## 4. Workbook corrections
 

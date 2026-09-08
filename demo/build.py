@@ -39,6 +39,22 @@ def main():
         sys.exit("marker /*__ART_PACK__*/ missing from template")
     body = tpl.replace("/*__ART_PACK__*/", art)
 
+    # Medal, ribbon and commendation-pin artwork. Authored separately rather than
+    # extracted from the poster, which never carried them. Merged into BADGE_ART so
+    # the drawing code has one lookup; the key namespaces do not overlap.
+    medals = os.path.join(ROOT, "Medals and Ribbons", "medal_art_pack.js")
+    if "/*__MEDAL_ART__*/" not in tpl:
+        sys.exit("marker /*__MEDAL_ART__*/ missing from template")
+    if os.path.exists(medals):
+        pack = open(medals, encoding="utf-8").read()
+        body = body.replace("/*__MEDAL_ART__*/",
+                            pack + "\nObject.assign(BADGE_ART, MEDAL_ART);")
+    else:
+        # Not fatal: every medal then draws as a labelled "no art" box, which is what
+        # the tool did before the pack existed.
+        print("  medal_art_pack.js not found - medals will draw as placeholders")
+        body = body.replace("/*__MEDAL_ART__*/", "")
+
     for name, text in [("tunic.html", body),
                        ("tunic.local.html", SKELETON.replace("{content}", body))]:
         p = os.path.join(HERE, name)

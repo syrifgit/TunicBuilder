@@ -9,6 +9,9 @@ private/
 ACRCCP750DA003.pdf
 *.pdf
 rcac_badges.zip
+# Delivery archives. medals.zip is byte-identical to the extracted
+# "Medals and Ribbons/" folder, so tracking both stores it twice.
+medals.zip
 # Generated packs. Note `art/*` not `art/` - git cannot re-include anything
 # under an excluded DIRECTORY, so the directory itself must stay visible.
 art/*

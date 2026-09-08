@@ -24,22 +24,33 @@ citation. Where the sources disagree, the file records the conflict, the alterna
 value, and the reasoning for what was adopted - rather than silently picking one.
 There are six such conflicts so far.
 
-## Quick start
+## Just want to use it
+
+Open **`docs/index.html`**. Double-click it - there is nothing to install, build or
+serve. It is a complete self-contained page with every badge inlined, and it is
+committed, so a clone or a ZIP download runs straight away.
+
+`docs/plate.html` is the badge identification sheet, same deal.
+
+The only network request either page makes is the webfont; both work offline without
+it, just in a fallback face.
+
+## Want to change it
+
+The built pages are generated. Edit `demo/tunic.template.html`, never the built HTML,
+then rebuild:
 
 ```bash
 pip install -r requirements.txt
-
-# you supply these two - see "What you need to provide"
-#   ACRCCP750DA003.pdf     the national symbols poster
-#   rcac_badges.zip        output of src/extract_badges.py
-
 python build_all.py           # regenerate artwork + build the pages
-open demo/tunic.html          # the layout tool
-open demo/plate.html          # the badge identification sheet
+python build_site.py          # copy the built pages into docs/
 ```
 
-Both pages are single self-contained HTML files with the artwork inlined. No server,
-no build step at view time, no network calls except the webfont.
+`build_all.py` needs two files that are **not in the repo**, because they are the
+artwork as a library rather than as a tool - see *What you need to provide*. Without
+them it will not run, and you cannot rebuild the pages. Everything needed to *read*
+the geometry is here: `rules/army_tunic_placement_rules_2.json` is the source of truth
+and carries a citation for every number.
 
 ## What you need to provide
 

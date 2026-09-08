@@ -1,6 +1,6 @@
 {
   "$comment": "Placement rules for Royal Canadian Army Cadet tunic (jacket) insignia. Sleeves only. Front of tunic not yet in scope.",
-  "version": "0.12-draft",
+  "version": "0.13-draft",
   "scope": "army_cadet_sleeves_and_front",
   "sources": [
     {
@@ -831,7 +831,14 @@
     "CATO 13-16 is not sourced. It holds the precedence order for every medal and ribbon, so nothing on the right breast can be correctly ORDERED yet - only correctly placed.",
     "Figure 5D-1 says National Commendations go on the LEFT pocket while the rest of Chapter 5 puts everything on the right in one stack. Adopted right; needs confirming.",
     "Medal bar maximum width is physique-dependent (must not pass the jacket arm seam). Needs a per-cadet measurement or it stays a flag.",
-    "Duke of Edinburgh pin is an oval with no dimensions given in Annex D."
+    "Duke of Edinburgh pin is an oval with no dimensions given in Annex D.",
+    "NRT and Bisley Series pin sizes (RCAC National Rifle Team, LGen C.H. Belzile Trophy) are unmeasured and non-standard - artwork trims to aspect 2.47 and 1.42, so neither is a 1 in square.",
+    "Order of St George is on the poster but absent from D - Qual Info, which carries only six medals. Add it as a seventh.",
+    "Medal artwork: all seven medals are still unextracted. They are photographs, so extract_badges.py never saw them - same failure as the fitness block and the pins.",
+    "Commendation and award insignia artwork (CDS, Command, Cadet, Navy League) is illustrated in Annex D but not extracted; the renderer draws plain bars at the right size.",
+    "Sashes and lanyards are not modelled and no source has been identified for them.",
+    "A full-tunic render is not attempted. The tool draws four flat panels, and the shoulder-to-pocket relationship is presentational rather than measured.",
+    "Sea and Air elements are out of scope. The coordinate model and resolver should carry over unchanged; the rules pack, the artwork and the nametag colour are element-specific (air cadet name tags are air force blue)."
   ],
   "changelog": [
     {
@@ -877,6 +884,10 @@
     {
       "version": "0.12-draft",
       "change": "Shoulder title artwork swapped from the poster's Lord Westminster 2990 example to 242 Fredericton, title case. Same plate, same geometry."
+    },
+    {
+      "version": "0.13-draft",
+      "change": "Open questions extended with Lt Beal's review: NRT/Bisley pin sizes, the seventh medal (Order of St George) missing from QualMap, medal and commendation artwork, sashes and lanyards, a full-tunic render, and Sea/Air."
     }
   ],
   "orders_of_dress": {

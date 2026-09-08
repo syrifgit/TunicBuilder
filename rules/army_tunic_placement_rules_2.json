@@ -1,6 +1,6 @@
 {
   "$comment": "Placement rules for Royal Canadian Army Cadet tunic (jacket) insignia. Sleeves only. Front of tunic not yet in scope.",
-  "version": "0.15-draft",
+  "version": "0.16-draft",
   "scope": "army_cadet_sleeves_and_front",
   "sources": [
     {
@@ -960,7 +960,9 @@
     "CJCRGPO-10050 contradicts itself on the second-tier commendation: 5.1 offers a 'Comd CJCR Commendation', 7.5 ranks a 'VCDS Commendation'. Same slot under two names, or two awards?",
     "CJCRGPO-10050 4.4 directs the reader to Chapter 7 of the Cadet and JCR Dress Instructions for wearing medals and ribbons, but every cadet figure used here is from Chapter 5. Establish whether Chapter 7 is the JCR chapter or a renumbering that supersedes our Chapter 5 citations.",
     "If national commendations move to the left pocket, the left pocket needs its own stack geometry. 5D-1 gives the single-pin case (centred between the lower seam and the flap's lower edge) but not the two-pin case, and CDS + VCDS is possible.",
-    "A cadet transferring between elements retains awards earned there (the principle is stated for JCR at CJCRGPO-10050 6.2). Confirm it holds for cadets, since it is what makes the Sea and Air entries in the 11-medal list reachable on an army tunic."
+    "A cadet transferring between elements retains awards earned there (the principle is stated for JCR at CJCRGPO-10050 6.2). Confirm it holds for cadets, since it is what makes the Sea and Air entries in the 11-medal list reachable on an army tunic.",
+    "Cadet Service Medal bars are unsourced. The qualifying period for the medal and for each bar, whether a cadet wears every bar earned or only the highest, the bar's dimensions, and how a bar shows on an undress ribbon are all unestablished. The renderer names the bar on the award and draws nothing for it. Bar labels (5-year, 6-year, 7-year) follow Lt Beal; confirm the ceiling and the scheme against CATO 13-16.",
+    "The Sea, Army and Air Cadet Service Medals are modelled as one award in three elements, exclusive by the element the cadet served in, with a transfer carrying the earlier one. Confirm a cadet cannot hold two."
   ],
   "changelog": [
     {
@@ -1018,6 +1020,10 @@
     {
       "version": "0.15-draft",
       "change": "Breast pocket flap height measured at 6.0 cm (Lt Beal), replacing the 4.0 cm placeholder. This moves every pocket-mounted pin. It also closes a gap: the pin band is now exactly the 9 cm of the measured competition pin strip, since the pocket is 15 cm and 15 - 6 = 9. Open question closed."
+    },
+    {
+      "version": "0.16-draft",
+      "change": "Service medal modelled as one award in three elements plus a bar selection, rather than three separate medals; precedence still comes from seq 9/10/11. Bars are recorded and named but not drawn, and the whole bar scheme is logged as unsourced."
     }
   ],
   "orders_of_dress": {

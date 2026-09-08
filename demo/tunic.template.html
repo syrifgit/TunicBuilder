@@ -97,6 +97,25 @@ h1,h2,h3{margin:0; text-wrap:balance; font-weight:600; letter-spacing:-.01em}
 
 .group{display:flex; flex-direction:column; gap:8px}
 .group > .eyebrow{display:flex; align-items:baseline; gap:8px}
+/* Collapsible group. <details> so it works with no script and prints open. */
+details.group{gap:0}
+details.group > .eyebrow{
+  cursor:pointer; list-style:none; padding:3px 0; user-select:none;
+}
+details.group > .eyebrow::-webkit-details-marker{display:none}
+details.group > .eyebrow::before{
+  content:"\25B8"; font-size:9px; color:var(--ink-3); transition:transform .12s;
+  display:inline-block; width:9px;
+}
+details.group[open] > .eyebrow::before{transform:rotate(90deg)}
+details.group > .eyebrow:hover{color:var(--ink-2)}
+details.group > .eyebrow .count{
+  margin-left:auto; font-size:9.5px; letter-spacing:.02em; text-transform:none;
+  color:var(--ink-3);
+}
+details.group > :not(.eyebrow){margin-top:8px}
+details.group > :not(.eyebrow) ~ :not(.eyebrow){margin-top:0}
+@media print{ details.group > *{display:block} }
 .group > .eyebrow .slotid{
   color:var(--ink-3); text-transform:none; letter-spacing:.02em; font-size:9.5px; opacity:.8;
 }
@@ -329,13 +348,13 @@ body.paper .viewport svg{
       <div class="field"><label for="mus">Music</label><select id="mus"></select></div>
     </div>
 
-    <div class="group">
-      <div class="eyebrow">Summer training <span class="slotid" id="ctccount"></span></div>
+    <details class="group">
+      <summary class="eyebrow">Summer training <span class="count" id="ctccount"></span></summary>
       <div class="ctc" id="ctc"></div>
-    </div>
+    </details>
 
-    <div class="group">
-      <div class="eyebrow">Pins <span class="slotid" id="pinCount"></span></div>
+    <details class="group">
+      <summary class="eyebrow">Pins <span class="count" id="pinCount"></span></summary>
       <div id="pinPick" style="display:flex; flex-direction:column; gap:6px"></div>
       <div class="field" style="margin-top:6px"><label for="fExped">Expedition</label><select id="fExped"></select></div>
       <div class="field"><label for="fDofe">Duke of Edinburgh</label><select id="fDofe"></select></div>
@@ -344,17 +363,19 @@ body.paper .viewport svg{
         <label class="toggle"><input type="checkbox" id="fCommem"> Commemorative pin</label>
         <label class="toggle"><input type="checkbox" id="fPoppy"> Poppy</label>
       </div>
-    </div>
+    </details>
 
-    <div class="group">
-      <div class="eyebrow">Medals and commendations</div>
+    <details class="group">
+      <summary class="eyebrow">Medals and commendations <span class="count" id="awardCount"></span></summary>
       <div class="field"><label for="fOrder">Wearing</label><select id="fOrder"></select></div>
       <div class="toggles" id="medalPick"></div>
+      <div class="field" style="margin-top:6px"><label for="fSvc">Service medal</label><select id="fSvc"></select></div>
+      <div class="field"><label for="fSvcBar">Bar</label><select id="fSvcBar"></select></div>
       <div class="toggles" style="margin-top:6px" id="commendPick"></div>
       <div class="toggles" style="margin-top:6px">
         <label class="toggle"><input type="checkbox" id="fAnniv"> Anniversary pin</label>
       </div>
-    </div>
+    </details>
 
     <div class="group">
       <div class="eyebrow">Drawing</div>
@@ -585,7 +606,8 @@ const state = {
   sleeveLen:57.0,                          // size 6436, the only one measured
   front:{
     order:"ribbons", nametag:"Bloggins", anniversary:false,
-    medals:{}, commend:{cds:false, command:false, cadet:false, navy:false}, dofe:"none",
+    medals:{}, service:{element:"none", bar:0},
+    commend:{cds:false, command:false, cadet:false, navy:false}, dofe:"none",
     parachutist:false, commemorative:false, poppy:false, expedition:"none",
     pins:{bisley:"none", mkComp:"none", biComp:"none"}
   },
@@ -891,9 +913,26 @@ const MEDALS = [
   {key:"afa",         seq: 6, label:"Air Force Association Medal", element:"air"},
   {key:"anavets",     seq: 7, label:"Army, Navy and Air Force Veterans Cadet Medal of Merit"},
   {key:"stgeorge",    seq: 8, label:"Order of St. George Medal"},
-  {key:"seaservice",  seq: 9, label:"Sea Cadet Service Medal", element:"sea"},
-  {key:"armyservice", seq:10, label:"Army Cadet Service Medal"},
-  {key:"airservice",  seq:11, label:"Air Cadet Service Medal", element:"air"}
+  {key:"seaservice",  seq: 9, label:"Sea Cadet Service Medal",  element:"sea", service:"sea"},
+  {key:"armyservice", seq:10, label:"Army Cadet Service Medal",                service:"army"},
+  {key:"airservice",  seq:11, label:"Air Cadet Service Medal",  element:"air", service:"air"}
+];
+
+// The last three medals are the same award in three elements, so they are one choice
+// rather than three checkboxes: a cadet holds the one for the element they served in,
+// and a transfer carries the earlier one. Precedence still comes from `seq`.
+const SERVICE = {
+  none: {label:"None"},
+  army: {label:"Army"},
+  sea:  {label:"Sea"},
+  air:  {label:"Air"}
+};
+// UNSOURCED. Bars are worn for service beyond the medal's own qualifying period, and
+// the naming here follows Lt Beal. Whether a cadet wears every bar earned or only the
+// highest is not established, and neither is how a bar shows on the undress ribbon -
+// so a bar changes the label and nothing about the geometry. See the rules pack.
+const SERVICE_BARS = [
+  {v:0, nm:"None"}, {v:5, nm:"5-year bar"}, {v:6, nm:"6-year bar"}, {v:7, nm:"7-year bar"}
 ];
 
 // Commendation and award pins: ONE stack on the right pocket, 0.5 cm apart, in this
@@ -999,7 +1038,11 @@ function resolveFront(){
   let medalBottom = null;           // set only when medals are worn
 
   // One selection of awards held; the order of dress only chooses how they show.
-  const mHeld = MEDALS.filter(m => F.medals[m.key]);
+  const mHeld = MEDALS.filter(m => m.service ? F.service.element === m.service
+                                             : F.medals[m.key]);
+  // a bar is named on the award, not drawn: nothing is sourced for the device itself
+  const mName = m => (m.service && F.service.bar)
+    ? `${m.label} (${F.service.bar}-year bar)` : m.label;
 
   if (order.medals && mHeld.length){
     const n = mHeld.length;
@@ -1011,7 +1054,7 @@ function resolveFront(){
     medalBottom = MEDAL_BAR_H - MEDAL_LEN;
     for (let i = n - 1; i >= 0; i--){          // draw outboard first, #1 on top
       put(R,{ face:"front", side:"right", slot:"right_medals",
-        label:mHeld[i].label, seq:i+1,
+        label:mName(mHeld[i]), seq:i+1,
         x: barW/2 - MEDAL_W/2 - i*pitch,       // #1 inboard, toward the chest centre
         y: medalBottom, w:MEDAL_W, h:MEDAL_LEN, art:null, medal:true,
         fdatum:"pocket_top", edge:"suspension",
@@ -1026,13 +1069,13 @@ function resolveFront(){
     else if (barW > POCKET_W)
       add(`The medal bar is ${barW.toFixed(1)} cm wide against a ${POCKET_W} cm pocket. Centred on the pocket it must not run past the jacket arm seam — check it on the cadet.`,
           "warn", "CH5-A");
-    add(`Worn in order of precedence, ${mHeld[0].label} inboard. CATO 13-16 is the cadet-programme authority and is still unsourced, so this order comes from the JCR order, which the CJCR honours committee sets for both programmes.`,
+    add(`Worn in order of precedence, ${mName(mHeld[0])} inboard. CATO 13-16 is the cadet-programme authority and is still unsourced, so this order comes from the JCR order, which the CJCR honours committee sets for both programmes.`,
         "info", "CJCR Gp O 10050 para 7.4");
   } else if (mHeld.length){
     const rr = ribbonRows(mHeld.length);
     for (const c of rr.items){
       put(R,{ face:"front", side:"right", slot:"right_ribbons",
-        label:`${mHeld[c.seq-1].label} — undress ribbon`, seq:c.seq, x:c.x, y:c.y,
+        label:`${mName(mHeld[c.seq-1])} — undress ribbon`, seq:c.seq, x:c.x, y:c.y,
         w:RIBBON_W, h:RIBBON_H, art:null, ribbon:true,
         fdatum: c.row === 0 ? "pocket_top" : "row_below",
         rel: c.row === 0 ? null : {of:"the row below", ofShort:"Row below", gap:0, dir:"above"},
@@ -1043,9 +1086,13 @@ function resolveFront(){
     if (rr.rows > 1)
       add(`${mHeld.length} ribbons make ${rr.rows} rows. No gaps between ribbons or between rows; a partial row sits on top, centred on the row below. Precedence 1 is top row, innermost.`,
           "info", "CH5-C 5C-1.2");
-    add(`One undress ribbon per award held, worn in order of precedence with ${mHeld[0].label} top row, innermost. Order from the JCR order, which the CJCR honours committee sets for both programmes; CATO 13-16 is still unsourced.`,
+    add(`One undress ribbon per award held, worn in order of precedence with ${mName(mHeld[0])} top row, innermost. Order from the JCR order, which the CJCR honours committee sets for both programmes; CATO 13-16 is still unsourced.`,
         "info", "CJCR Gp O 10050 para 7.4");
   }
+
+  if (F.service.element !== "none" && F.service.bar)
+    add(`A ${F.service.bar}-year bar is recorded against the ${SERVICE[F.service.element].label} Cadet Service Medal. It is named in the guide but not drawn: nothing to hand states the bar's size, or how it shows on an undress ribbon.`,
+        "warn", "open question: service medal bars");
 
   // anniversary pin, 3 cm above the pocket top
   let annivBottom = null;
@@ -1560,6 +1607,7 @@ const DATUM_LABEL = {shoulder_seam:"Shoulder seam", cuff_bottom:"Cuff bottom edg
 
 function render(){
   SLEEVE_LEN = state.sleeveLen;
+  syncCounts();
   const {L,R,warn} = resolve();
   validate(L,"Left",warn);
   validate(R,"Right",warn);
@@ -1618,7 +1666,7 @@ function render(){
   view.refresh();
   syncPins();
   document.getElementById("ctccount").textContent =
-    `${state.ctc.length} selected · max 6 · click order = award order`;
+    state.ctc.length ? `${state.ctc.length} of 6` : "";
   syncCtc();
 }
 
@@ -1789,7 +1837,7 @@ function syncPins(){
     const o = PIN_OPT[v];
     if (o && o.worn !== false) n++;
   }
-  document.getElementById("pinCount").textContent = `${n} worn of max 3`;
+  document.getElementById("pinCount").textContent = n ? `${n} of 3` : "";
 }
 
 const BIND = {rank:"rank", appt:"appt", unit:"unit", star:"star", mk:"mk", fit:"fit", fa:"fa", mus:"mus"};
@@ -1828,6 +1876,7 @@ const FRONT_BIND = {
 (function wireMedals(){
   const box = document.getElementById("medalPick");
   for (const m of MEDALS){
+    if (m.service) continue;                 // the service medal is the two selects below
     const lab = document.createElement("label");
     lab.className = "toggle";
     lab.innerHTML = `<input type="checkbox" id="md_${m.key}"><span>${m.label}</span>`;
@@ -1837,6 +1886,42 @@ const FRONT_BIND = {
     });
   }
 })();
+(function wireService(){
+  fill("fSvc", SERVICE);
+  const bar = document.getElementById("fSvcBar");
+  for (const b of SERVICE_BARS){
+    const o = document.createElement("option");
+    o.value = b.v; o.textContent = b.nm; bar.appendChild(o);
+  }
+  document.getElementById("fSvc").addEventListener("change", e => {
+    state.front.service.element = e.target.value;
+    if (e.target.value === "none") state.front.service.bar = 0;
+    syncService(); render();
+  });
+  bar.addEventListener("change", e => {
+    state.front.service.bar = parseInt(e.target.value, 10) || 0; render();
+  });
+})();
+// A collapsed section is only usable if the summary says what is in it.
+function syncCounts(){
+  const F = state.front;
+  const medals = MEDALS.filter(m => m.service ? F.service.element === m.service
+                                              : F.medals[m.key]).length;
+  const commend = COMMEND.filter(c => F.commend[c.key]).length
+                + (F.dofe && F.dofe !== "none" ? 1 : 0);
+  const bits = [];
+  if (medals)  bits.push(`${medals} ${ORDERS[F.order].label.toLowerCase()}`);
+  if (commend) bits.push(`${commend} pin${commend > 1 ? "s" : ""}`);
+  if (F.anniversary) bits.push("anniversary");
+  document.getElementById("awardCount").textContent = bits.join(" · ");
+}
+function syncService(){
+  const sv = state.front.service;
+  document.getElementById("fSvc").value = sv.element;
+  const bar = document.getElementById("fSvcBar");
+  bar.value = sv.bar;
+  bar.disabled = sv.element === "none";     // no medal, no bar
+}
 // commendation checkboxes, built from COMMEND so order and sizes stay in one place
 (function wireCommend(){
   const box = document.getElementById("commendPick");
@@ -1855,7 +1940,8 @@ function syncAll(){
   for (const c of COMMEND)
     document.getElementById("cm_" + c.key).checked = !!state.front.commend[c.key];
   for (const m of MEDALS)
-    document.getElementById("md_" + m.key).checked = !!state.front.medals[m.key];
+    if (!m.service) document.getElementById("md_" + m.key).checked = !!state.front.medals[m.key];
+  syncService();
   for (const id in FRONT_BIND){
     const el2 = document.getElementById(id), v = state.front[FRONT_BIND[id]];
     if (el2.type === "checkbox") el2.checked = !!v; else el2.value = v;

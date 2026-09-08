@@ -376,7 +376,7 @@ body.paper .viewport svg{
         <label for="fFlap">Flap ht</label>
         <input type="number" id="fFlap" min="1" max="9" step="0.5" style="width:100%; padding:5px 8px; background:var(--paper); border:1px solid var(--rule); border-radius:3px">
       </div>
-      <p style="margin:0; font-size:11px; color:var(--ink-3); line-height:1.35">Flap height is unmeasured. Every pocket pin is centred between the flap edge and the pocket seam, so this moves them all.</p>
+      <p style="margin:0; font-size:11px; color:var(--ink-3); line-height:1.35">Flap measured at 6 cm. Every pocket pin is centred between the flap edge and the pocket seam, so this moves them all.</p>
     </div>
 
     <div class="group">
@@ -662,7 +662,7 @@ const state = {
     commend:{cds:false, command:false, cadet:true, navy:false}, dofe:"none",
     parachutist:false, commemorative:false, poppy:false, expedition:"regional",
     pins:{bisley:"none", mkComp:"comp_mk_prov", biComp:"none"},
-    flapH:4.0                              // UNMEASURED placeholder
+    flapH:6.0                              // measured
   },
   dims:true, env:false, hsrc:"measured"
 };
@@ -951,8 +951,11 @@ const EXPEDITION = {
   regional:  {label:"Regional", art:"exped_regional"},
   national:  {label:"National / International", art:"exped_national"}
 };
+// Measured. The pocket is 15 cm and the pin strip 9 cm, so a 6 cm flap leaves exactly
+// the strip between the flap's lower edge and the pocket's lower seam. Three
+// independent measurements that agree.
+const FLAP_H_DEFAULT = 6.0;
 // Unmeasured placeholders. Everything using one is flagged by the validator.
-const FLAP_H_DEFAULT = 4.0;
 const PARA_W = 9.0, PARA_H = 3.87;           // poster aspect 2.328 at a guessed width
 const ANNIV_D = 2.0;
 // Medals hang from the same line as the ribbon bar: the suspension top sits one
@@ -1241,8 +1244,11 @@ function resolveFront(){
   }
 
   if ([...R,...L].some(i => i.onPocket)){
-    add(`Every pocket-mounted pin is centred between the flap's lower edge and the pocket's lower seam, but the flap height has never been measured. Drawn at ${flapH.toFixed(1)} cm — change it in the rail to see the effect.`,
-        "warn", "open question: breast_pocket_flap_h");
+    add(`Every pocket-mounted pin is centred between the flap's lower edge and the pocket's lower seam. The flap measures ${FLAP_H_DEFAULT.toFixed(1)} cm, leaving a ${(POCKET_H - FLAP_H_DEFAULT).toFixed(1)} cm band — exactly the measured pin strip.`,
+        "info", "measured, 242 RCACC");
+  if (flapH !== FLAP_H_DEFAULT)
+    add(`Flap height overridden to ${flapH.toFixed(1)} cm against the measured ${FLAP_H_DEFAULT.toFixed(1)} cm. Every pocket pin has moved.`,
+        "warn", "rail override");
   }
   if ([...R,...L].some(i => i.conf === "placeholder"))
     add("Some front items are drawn at placeholder sizes: medals, anniversary and commendation pins, the DofE pin and the parachutist badge are all unmeasured. Positions follow the regulation; sizes do not.",

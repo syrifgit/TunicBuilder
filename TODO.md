@@ -4,7 +4,7 @@ Ordered by what it unblocks, not by effort. Every geometric item is also recorde
 `rules/army_tunic_placement_rules_2.json` under `open_questions`, which is the
 authoritative list — this file is the working view of it.
 
-Status as of rules **v0.14-draft**: 22 slots, 26 open questions, 6 recorded conflicts.
+Status as of rules **v0.15-draft**: 22 slots, 25 open questions, 6 recorded conflicts.
 
 ---
 
@@ -63,9 +63,10 @@ the army seven. Precedence 1 is worn inboard, nearest the centre of the chest.
 
 Everything here is a placeholder or an estimate the tool draws and flags.
 
-- [ ] **Breast pocket flap height.** Unmeasured, and *every* pocket-mounted pin is
-  centred between the flap's lower edge and the pocket's lower seam. Highest-value
-  single measurement on the list.
+- [x] ~~**Breast pocket flap height.**~~ Measured at **6.0 cm**. Three independent
+  measurements now agree: a 15 cm pocket less a 6 cm flap leaves exactly the 9 cm of
+  the measured competition pin strip, so the strip fills the pin band with no
+  remainder. The 4.0 cm placeholder left 2 cm unaccounted for.
 - [ ] **Sgt chevron height.** Settles the standing disagreement: measured
   6.5 / 8.0 / 9.5 / 11.0 cm at 10 cm wide against the poster's implied
   7.28 / 8.91 / 10.04 / 12.05. Measure Sgt and the other three follow.

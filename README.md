@@ -143,8 +143,6 @@ behaves identically everywhere.
 - **Chevron heights.** Measured 6.5 / 8.0 / 9.5 / 11.0 cm at 10 cm wide; the poster
   artwork implies 7.28 / 8.91 / 10.04 / 12.05. Unresolved. The tool has a toggle to
   render either.
-- **Breast pocket flap height** is unmeasured, and every pocket-mounted pin is
-  centred between the flap's lower edge and the pocket's lower seam.
 - **Medal, anniversary pin and commendation pin dimensions** are unmeasured, so the
   front places them by rule but sizes them by placeholder.
 - **Only tunic size 6436 is measured.** The taper profile is stretched

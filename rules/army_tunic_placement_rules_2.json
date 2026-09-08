@@ -1,6 +1,6 @@
 {
   "$comment": "Placement rules for Royal Canadian Army Cadet tunic (jacket) insignia. Sleeves only. Front of tunic not yet in scope.",
-  "version": "0.14-draft",
+  "version": "0.15-draft",
   "scope": "army_cadet_sleeves_and_front",
   "sources": [
     {
@@ -231,9 +231,10 @@
       },
       "note": "Only one tunic size measured. A renderer that warns on clearance must either carry a profile per size or state that it is checking against 6436.",
       "breast_pocket_flap_h": {
-        "h": null,
-        "confidence": "unknown",
-        "note": "Needed to place every pocket-mounted pin, since the regulation centres them between the flap's lower edge and the pocket's lower seam. Not measured."
+        "h": 6.0,
+        "confidence": "measured",
+        "source": "Local measurement, 242 RCACC (Lt Beal).",
+        "note": "Corroborated by two other measurements taken independently: the pocket is 15 cm top to bottom and the competition pin strip is 9 cm tall, and 15 - 6 = 9 exactly. The pin band between the flap's lower edge and the pocket's lower seam is therefore precisely the strip, which is what the strip was measured to fill. The previous 4.0 cm placeholder left 11 cm and could not account for the extra 2 cm."
       }
     },
     "name_tag": {
@@ -943,7 +944,6 @@
     "Annex H figure 3H-3 carries an incorrect dimension. Worth reporting up so it gets corrected at the national level.",
     "Corps name title dimensions (12.21 x 3.85 cm) are DERIVED from the poster's title-plus-badge template and the measured 6.35 cm badge diameter, not measured directly. Worth checking a real title with a ruler.",
     "MWO aspect still disagrees with the poster (1.26 drawn vs 1.50 from the recorded bounding box) and is unresolved. The Distinguished half of that question is CLOSED: remeasured at 6 x 8 cm, so the poster is the outlier, not the measurement.",
-    "Breast pocket FLAP height is not measured and not in the instruction, but every pocket-mounted pin is centred between the flap's lower edge and the pocket's lower seam. Blocks exact pin placement.",
     "Annex B lists national and cadet commendations in one 0.5 cm stack while Annex D puts them on opposite pockets. Resolved in favour of Annex D as the more specific source - confirm with RCSU.",
     "National-winner award pins (Vamplew / Clement Tremblay, and Bedard / Keddie / Le Guellec) are confirmed non-standard in size and have never been measured. Drawn at 1 in.",
     "CATO 13-16 is still not sourced. CJCRGPO-10050 7.4 now supplies an 11-medal CJCR-wide precedence list and 7.5 a 5-pin commendation list, so ordering is no longer blocked - but 10050 is a JCR order. Confirm the cadet list matches before a printed guide relies on it.",
@@ -1014,6 +1014,10 @@
     {
       "version": "0.14-draft",
       "change": "Added CJCR Gp O 10050 (JCR National Honours and Awards) as a secondary source. Medals now carry an 11-entry order of precedence from 7.4, seven of which an army cadet can hold. 7.5 corroborates Figure 5D-1's national-left / cadet-right commendation split, moving the right_commendation_stack conflict from unresolved to decision-needed. Recorded 10050's own internal contradiction between the Comd CJCR Commendation (5.1) and the VCDS Commendation (7.5)."
+    },
+    {
+      "version": "0.15-draft",
+      "change": "Breast pocket flap height measured at 6.0 cm (Lt Beal), replacing the 4.0 cm placeholder. This moves every pocket-mounted pin. It also closes a gap: the pin band is now exactly the 9 cm of the measured competition pin strip, since the pocket is 15 cm and 15 - 6 = 9. Open question closed."
     }
   ],
   "orders_of_dress": {

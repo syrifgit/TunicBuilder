@@ -146,10 +146,11 @@ src/      extract_badges.py   poster PDF -> badge artwork
 demo/     tunic.template.html   the tool
           plate.template.html   the identification sheet
           check.js              executes a built page against a stub DOM
-docs/     CLAUDE_1.md     the original brief. Partly superseded — see below.
+notes/    CLAUDE_1.md     the original brief. Partly superseded — see below.
+docs/     build_site.py output. Gitignored; GitHub Pages would serve it.
 ```
 
-`docs/CLAUDE_1.md` is the founding brief and still useful for background, but its
+`notes/CLAUDE_1.md` is the founding brief and still useful for background, but its
 *Settled decisions* list has been corrected in at least one place (ALP cadets wear the
 Gold Star; they were previously recorded as wearing none). Treat the rules pack as
 current and the brief as history.

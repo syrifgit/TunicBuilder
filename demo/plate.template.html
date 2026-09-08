@@ -408,7 +408,13 @@ apply();
 setConn("saving locally", "local");
 
 (async () => {
-  const ns = await claude.use("db");
+  // `claude` exists only inside the Artifact runtime. Anywhere else - a static host,
+  // a local file - the bare identifier throws a ReferenceError, this whole IIFE
+  // rejects, and the banner below never renders: the page silently keeps corrections
+  // in one browser while looking like it is sharing them.
+  const api = (typeof claude !== "undefined") ? claude
+            : (typeof window !== "undefined" ? window.claude : null);
+  const ns = api && api.use ? await api.use("db").catch(() => null) : null;
   if (!ns){
     document.getElementById("banner").innerHTML =
       `<div class="note warn">Shared saving isn't available in this view, so corrections are kept in this browser only.

@@ -70,7 +70,8 @@ src/      extract_badges.py   pull badge artwork out of the poster PDF
 demo/     tunic.template.html   the layout tool, source
           plate.template.html   the identification sheet, source
           build.py, build_plate_html.py   inline the artwork -> *.html
-docs/     CLAUDE_1.md     project brief and settled decisions
+notes/    CLAUDE_1.md     project brief and settled decisions
+docs/     build_site.py output: index.html + plate.html. Gitignored - see Publishing
 ```
 
 Edit a `.template.html`, run its build script, and the `.html` next to it is
@@ -112,10 +113,23 @@ not "9.71 cm from the cuff".
 
 ## Publishing
 
-`python build_site.py` assembles `site/` - `index.html` (the layout tool) and
+`python build_site.py` assembles `docs/` - `index.html` (the layout tool) and
 `plate.html` (the identification sheet), plus a `.nojekyll` marker. Both are single
-self-contained files, so any static host serves the folder as-is. Verified working
-over HTTP in Chrome.
+self-contained files, so any static host serves the folder as-is. Check it first with
+`python -m http.server -d docs 8000`; both pages are verified rendering over HTTP in
+headless Chrome.
+
+`docs/` rather than `site/` because GitHub Pages publishes only from a branch root or
+from `/docs`. The layout tool becomes the site root and the plate lands at
+`/plate.html`. To go live, in this order:
+
+1. settle the copyright question below
+2. drop the `docs/` lines from `.gitignore` and commit the built pages
+3. add a remote and push - neither is configured, deliberately
+4. repo *Settings > Pages > Source: main, folder /docs*
+
+Nothing else has to change. Step 2 is the one that matters: committing those files
+puts the artwork in the repo whether or not Pages is ever switched on.
 
 **Settle the copyright question before pushing anywhere public.** Both pages carry
 Crown copyright badge artwork inlined. That is fine for internal corps use, which is
@@ -130,7 +144,8 @@ whether or not the repo itself looks private. Options, roughly:
 
 One behaviour differs off the artifact: `plate.html` stores its label corrections in
 the artifact database. Anywhere else that is unavailable, so it shows a banner and
-falls back to browser-local storage. The layout tool has no such dependency and
+falls back to browser-local storage - corrections survive a reload but stay in that
+one browser, and cannot be read back. The layout tool has no such dependency and
 behaves identically everywhere.
 
 ## Known gaps

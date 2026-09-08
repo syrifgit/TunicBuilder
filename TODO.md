@@ -152,7 +152,7 @@ described from notes — go to wherever it now lives to act on them.
 - [ ] **Settle the copyright question** before publishing anywhere public. See
   *Publishing* in the README — GitHub Pages on a free account serves from a public
   repository, so that route redistributes Crown copyright artwork.
-- [x] ~~**`docs/CLAUDE_1.md` names a real cadet surname.**~~ Reworded; the point it was
+- [x] ~~**`notes/CLAUDE_1.md` names a real cadet surname.**~~ Reworded; the point it was
   making — never match on surname alone — survives without the name. No cadet name
   appears anywhere in the repo now.
 - [ ] **`make_corps_title.py` has a hardcoded Linux font path.** More pressing now

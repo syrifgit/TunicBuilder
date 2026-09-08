@@ -175,7 +175,7 @@ workaround, and they are all in the pipeline.
 
 ## Where things stand
 
-Rules **v0.17-draft**: 22 slots, 24 open questions, 6 conflicts, sources CH3S1,
+Rules **v0.18-draft**: 22 slots, 21 open questions, 6 conflicts, sources CH3S1,
 ANNEX-H, CH5-A–D, CH5-S7, CH4-A, CJCRGPO-10050, and CATO 13-16 (still unsourced, no
 longer blocking — 10050 supplies the precedence lists it was wanted for).
 

@@ -3,7 +3,11 @@
 extract_badges.py missed the whole PHYSICAL FITNESS block. The badges sit on the
 bottom row of the middle/right section, immediately left of the music circles.
 Render that strip at the same 600 dpi the original pipeline used, then segment on
-alpha (the poster background is unpainted, so alpha is a clean mask)."""
+alpha (the poster background is unpainted, so alpha is a clean mask).
+
+The four crops and their order - bronze, silver, gold, excellence - are
+confirmed correct by Lt Beal. Excellence was the one in doubt, since it is the
+last in the strip and a mis-segmentation would show up there first."""
 import _paths  # noqa: F401  - chdir to repo root, expose data/
 import pymupdf, io, os, sys
 from PIL import Image

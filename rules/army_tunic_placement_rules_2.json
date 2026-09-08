@@ -1,6 +1,6 @@
 {
   "$comment": "Placement rules for Royal Canadian Army Cadet tunic (jacket) insignia. Sleeves only. Front of tunic not yet in scope.",
-  "version": "0.17-draft",
+  "version": "0.18-draft",
   "scope": "army_cadet_sleeves_and_front",
   "sources": [
     {
@@ -353,7 +353,7 @@
           "field": "offset_cm",
           "alternate_value": 12,
           "source": "ANNEX-H figure 3H-3 bracket dimension",
-          "resolution": "20 cm adopted per CH3S1 3.b.(5). Annex H's 12 cm is geometrically impossible: the marksmanship assembly is anchored at 6 cm and the rifles carry it to roughly 13 cm, so a proficiency badge with its bottom edge at 12 cm would overlap it. Section 1 is the instruction and the annex is illustrative, so Section 1 governs. Confirmed against a photograph of a worn tunic."
+          "resolution": "20 cm adopted per CH3S1 3.b.(5). Annex H's 12 cm is geometrically impossible: the marksmanship assembly is anchored at 6 cm and the rifles carry it to roughly 13 cm, so a proficiency badge with its bottom edge at 12 cm would overlap it. Section 1 is the instruction and the annex is illustrative, so Section 1 governs. The resolution rests on that geometry and on Section 1 governing, both of which are checkable. An earlier note claimed corroboration from a photograph of a worn tunic; the photograph was never identified and the claim has been withdrawn rather than left as evidence nobody can produce."
         }
       ],
       "house_rules": [
@@ -474,7 +474,8 @@
         "Annex H illustrates only the band appointment. CH3S1 3.b.(8) is generic to any appointment insignia.",
         "'Chevron points' means the lowest points of the badge, so the badge builds UPWARD from 20 cm. Confirmed by Annex H 3H-4-3, which draws the drum major badge clearly above the CTC grid, not overlapping it.",
         "Terminology inconsistency in Annex H: the Sgt rule says chevron 'tips' 1 cm below the RCAC badge (apex, i.e. top edge), the appointment rule says chevron 'points' at 20 cm (leg ends, i.e. bottom edge). Same word family, opposite edge. Do not generalise one to the other.",
-        "Eligible appointment insignia list not yet sourced. See Annex E."
+        "Eligible appointment insignia list not yet sourced. See Annex E.",
+        "Drum Major and Pipe Major are the only appointments carrying insignia. Established from the poster's APPOINTMENT section and confirmed by Lt Beal; Annex E was never sourced and is no longer being waited on."
       ]
     },
     {
@@ -600,7 +601,8 @@
         "Length is 10 cm, suspender top to medal bottom edge (CH5-S7), so the medal finishes 9 cm down a 15 cm pocket.",
         "Precedence order is not in Chapter 5. CATO 13-16 is the cadet-programme authority and is still unsourced, but CJCRGPO-10050 7.4 now supplies an ordered CJCR-wide list. Adopted from 10050; confirm against CATO 13-16 when it is obtained.",
         "PRECEDENCE (CJCRGPO-10050 7.4): the full CJCR list is 11 medals. Seven are available to an army cadet - seq 1, 2, 3, 5, 7, 8 and 10 - and the other four are Sea or Air awards. Keep the full list and sort by seq rather than storing the army seven, because a cadet who transferred in from another element retains an award earned there and it must slot into the right position.",
-        "Precedence 1 is worn INBOARD, nearest the centre of the chest, consistent with right_ribbons. 7.4 says only 'side by side'; the inboard-first convention comes from CH5-A 5A-1."
+        "Precedence 1 is worn INBOARD, nearest the centre of the chest, consistent with right_ribbons. 7.4 says only 'side by side'; the inboard-first convention comes from CH5-A 5A-1.",
+        "Precedence adopted from CJCRGPO-10050 7.4 on Lt Beal's direction. CATO 13-16 was not consulted - the CJCR honours committee sets precedence for both programmes (10050 4.2) and the 7.4 list spans all three elements, so it is taken as the CJCR-wide order."
       ],
       "sleeve": null,
       "length_cm": 10.0,
@@ -939,13 +941,10 @@
   "open_questions": [
     "CWO rank dimensions still an estimate, though poster aspect 0.753 matches the 0.750 guess.",
     "Only tunic size 6436 measured. Clearance warnings need a profile per size, or a stated assumption.",
-    "Eligible appointment insignia confirmed as Drum Major and Pipe Major only, per A-CR-CCP-750/DA-003 APPOINTMENT section. Confirm against Annex E when sourced.",
-    "The 20 cm proficiency anchor was confirmed photographically. Record the source of that photograph so the conflict resolution is auditable.",
     "Annex H figure 3H-3 carries an incorrect dimension. Worth reporting up so it gets corrected at the national level.",
     "Corps name title dimensions (12.21 x 3.85 cm) are DERIVED from the poster's title-plus-badge template and the measured 6.35 cm badge diameter, not measured directly. Worth checking a real title with a ruler.",
     "Annex B lists national and cadet commendations in one 0.5 cm stack while Annex D puts them on opposite pockets. Resolved in favour of Annex D as the more specific source - confirm with RCSU.",
     "National-winner award pins (Vamplew / Clement Tremblay, and Bedard / Keddie / Le Guellec) are confirmed non-standard in size and have never been measured. Drawn at 1 in.",
-    "CATO 13-16 is still not sourced. CJCRGPO-10050 7.4 now supplies an 11-medal CJCR-wide precedence list and 7.5 a 5-pin commendation list, so ordering is no longer blocked - but 10050 is a JCR order. Confirm the cadet list matches before a printed guide relies on it.",
     "Figure 5D-1 puts National Commendations on the LEFT pocket; the renderer still draws one right-hand stack. CJCRGPO-10050 7.5 now corroborates 5D-1 (CDS and VCDS marked 'to be worn on the left side'). Two sources against one reading. DECISION NEEDED: flip the renderer to a split stack.",
     "Medal bar maximum width is physique-dependent (must not pass the jacket arm seam). Needs a per-cadet measurement or it stays a flag.",
     "Duke of Edinburgh pin is an oval with no dimensions given in Annex D.",
@@ -1026,6 +1025,10 @@
     {
       "version": "0.17-draft",
       "change": "Three questions closed on Lt Beal's authority. Chevron heights and the MWO aspect resolve to the hand measurements against the poster art, with the reasoning recorded on the constants rather than left open. Chapter 7 of the Dress Instructions is confirmed as the JCR chapter, so it does not supersede the Chapter 5 citations. Also: the Protected A workbook has been moved out of this directory."
+    },
+    {
+      "version": "0.18-draft",
+      "change": "Four questions closed on Lt Beal's direction. Medal and ribbon precedence adopted from 10050 7.4 without waiting on CATO 13-16. Appointment insignia confirmed as Drum Major and Pipe Major without waiting on Annex E. The fitness crops, Excellence included, confirmed correct. The claim that the 20 cm proficiency anchor was corroborated by a photograph is withdrawn: the photograph could not be identified, and the geometric argument stands without it."
     }
   ],
   "orders_of_dress": {

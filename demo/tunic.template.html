@@ -366,21 +366,6 @@ body.paper .viewport svg{
         <label for="sleeveLen">Sleeve len</label>
         <input type="number" id="sleeveLen" min="40" max="70" step="1" style="width:100%; padding:5px 8px; background:var(--paper); border:1px solid var(--rule); border-radius:3px">
       </div>
-      <div class="field">
-        <label for="rcacD">RCAC dia</label>
-        <input type="number" id="rcacD" min="3" max="9" step="0.25" style="width:100%; padding:5px 8px; background:var(--paper); border:1px solid var(--rule); border-radius:3px">
-      </div>
-      <div class="field">
-        <label for="fFlap">Flap ht</label>
-        <input type="number" id="fFlap" min="1" max="9" step="0.5" style="width:100%; padding:5px 8px; background:var(--paper); border:1px solid var(--rule); border-radius:3px">
-      </div>
-      <div class="field">
-        <label for="hsrc">Heights</label>
-        <select id="hsrc">
-          <option value="measured">Measured (local)</option>
-          <option value="poster">Poster-derived</option>
-        </select>
-      </div>
     </div>
   </aside>
 
@@ -465,13 +450,6 @@ function flatWidth(y){
     if (y>=y0 && y<=y1) return w0 + (y-y0)/(y1-y0)*(w1-w0);
   }
   return T[T.length-1][1];
-}
-
-// Poster-derived height = measured width / trimmed art aspect. Lets us A/B the
-// open questions about chevron + MWO + distinguished aspects without editing code.
-function posterH(artKey, w){
-  const a = BADGE_ART[artKey] && BADGE_ART[artKey].aspect;
-  return a ? w/a : null;
 }
 
 const RANKS = {
@@ -604,16 +582,14 @@ const state = {
   rank:"Cdt", appt:"none", unit:"fred242", star:"none", mk:"none",
   fit:"none", fa:"none", mus:"none",
   ctc:[],                                  // selection order == award order
-  rcacD:6.35,                              // MEASURED: 2.5 in. Rules pack v0.2-draft.
   sleeveLen:57.0,                          // size 6436, the only one measured
   front:{
     order:"ribbons", nametag:"Bloggins", anniversary:false,
     medals:{}, commend:{cds:false, command:false, cadet:false, navy:false}, dofe:"none",
     parachutist:false, commemorative:false, poppy:false, expedition:"none",
-    pins:{bisley:"none", mkComp:"none", biComp:"none"},
-    flapH:6.0                              // measured
+    pins:{bisley:"none", mkComp:"none", biComp:"none"}
   },
-  dims:true, env:false, hsrc:"measured"
+  dims:true, env:false
 };
 
 
@@ -623,19 +599,13 @@ const state = {
    is worn (phantom), so downstream anchors read one uniform shape.
    box: {x centre, y bottom, w, h}  -  x front-positive, y up from cuff bottom.
    ============================================================ */
-function H(item, artKey, measuredH){
-  if (state.hsrc !== "poster") return measuredH;
-  const p = posterH(artKey, item.w);
-  return p != null ? p : measuredH;
-}
-
 function resolve(){
   const L = [], R = [], warn = [];
   const push = (arr,o) => { arr.push(o); return o; };
   const add = (m,lvl,cite) => warn.push({lvl, msg:m, cite});
 
   /* ---- shared shoulder items, both sleeves ---- */
-  const D  = state.rcacD;
+  const D  = RCAC_MEASURED;
   const tw = TITLE_W_RATIO * D, th = TITLE_H_RATIO * D;
   for (const [arr,side] of [[L,"left"],[R,"right"]]){
     push(arr,{ slot:`${side}_corps_name`, label:"Corps name title (poster example art)",
@@ -659,25 +629,20 @@ function resolve(){
     add(`Only ${clear.toFixed(2)} cm of cloth between the corps name title and the RCAC badge at diameter ${D.toFixed(2)} cm. Tight for two sewn edges.`,
         "warn", "CH3S1 3.b.(2) + 3.b.(3)");
   }
-  if (Math.abs(D - RCAC_MEASURED) < 0.005){
-    add(`RCAC badge measured at 2.5 in (${RCAC_MEASURED.toFixed(2)} cm). That fixes the corps name title at ${tw.toFixed(2)} x ${th.toFixed(2)} cm through the poster's shared template, leaving ${clear.toFixed(2)} cm of cloth between them. The title is derived from the badge, not measured directly.`,
-        "info", "rules pack v0.2-draft");
-  } else {
-    add(`Diameter overridden to ${D.toFixed(2)} cm for what-if. The measured value is ${RCAC_MEASURED.toFixed(2)} cm (2.5 in); geometry caps it under ${RCAC_CEILING.toFixed(2)} cm.`,
-        "warn", "rules pack v0.2-draft");
-  }
+  add(`RCAC badge measured at 2.5 in (${RCAC_MEASURED.toFixed(2)} cm). That fixes the corps name title at ${tw.toFixed(2)} x ${th.toFixed(2)} cm through the poster's shared template, leaving ${clear.toFixed(2)} cm of cloth between them. The title is derived from the badge, not measured directly.`,
+      "info", "rules pack v0.2-draft");
 
   /* ---- LEFT: marksmanship, anchored bottom at 6 ---- */
   if (state.mk !== "none"){
     const m = MARKS[state.mk];
     if (m.two){
-      const nh = H({w:MK_NUM_W}, m.num, MK_NUM_H);
+      const nh = MK_NUM_H;
       push(L,{ slot:"left_marksmanship", label:`${m.label} — numeral`, sleeve:"left",
         x:0, y:6, w:MK_NUM_W, h:nh, art:m.num,
         datum:"cuff_bottom", root:"cuff", edge:"bottom", off:6,
         cite:"ANNEX-H 3H-3; CH3S1 3.b.(6)" });
       push(L,{ slot:"left_marksmanship", label:`${m.label} — crossed rifles`, sleeve:"left",
-        x:0, y:6 + nh + MK_GAP, w:MK_RIF_W, h:H({w:MK_RIF_W}, m.rifles, MK_RIF_H),
+        x:0, y:6 + nh + MK_GAP, w:MK_RIF_W, h:MK_RIF_H,
         art:m.rifles,
         datum:"cuff_bottom", root:"cuff", edge:"bottom", off:6 + nh + MK_GAP,
         rel:{of:"the numeral", ofShort:"Marksmanship numeral", gap:MK_GAP, dir:"above"},
@@ -686,7 +651,7 @@ function resolve(){
           "info", "CH3S1 3.b.(6); conflict logged in the rules pack");
     } else {
       push(L,{ slot:"left_marksmanship", label:m.label, sleeve:"left",
-        x:0, y:6, w:m.w, h:H({w:m.w},m.art,m.h), art:m.art,
+        x:0, y:6, w:m.w, h:m.h, art:m.art,
         datum:"cuff_bottom", root:"cuff", edge:"bottom", off:6,
         cite:"ANNEX-H 3H-3; CH3S1 3.b.(6) — single piece" });
     }
@@ -767,7 +732,7 @@ function resolve(){
     const a = APPTS[state.appt];
     const it = {w:a.w};
     apptBox = push(R,{ slot:"right_appointment", label:a.label, sleeve:"right",
-      x:0, y:20, w:a.w, h:H(it,a.art,a.h), art:a.art,
+      x:0, y:20, w:a.w, h:a.h, art:a.art,
       datum:"cuff_bottom", root:"cuff", edge:"bottom", off:20,
       cite:"CH3S1 3.b.(8); ANNEX-H 3H-4-3" });
   }
@@ -776,7 +741,7 @@ function resolve(){
   const rk = RANKS[state.rank];
   if (rk.cls !== "none"){
     const it = {w:rk.w};
-    const h = H(it, rk.art, rk.h);
+    const h = rk.h;
     if (JUNIOR.includes(state.rank)){
       // chevrons point down, so "tips" = bbox top, pinned 1 cm below the RCAC badge
       push(R,{ slot:"right_rank_junior", label:rk.label, sleeve:"right",
@@ -882,10 +847,10 @@ const COMP_PIN = 2.54;                       // 1 in square
 // nametag - not with the left-pocket competition pins. Levels 1 and 2 are recorded
 // but carry nothing, same as ALP.
 const EXPED_D = 2.54;                        // ESTIMATE, 1 in circle
+// Levels 1 and 2 carry no insignia, so they are not options here - the same rule as
+// ALP and Fitness "Participated": wear the highest level that carries something.
 const EXPEDITION = {
   none:      {label:"None"},
-  lvl1:      {label:"Level 1 (nothing worn)", worn:false},
-  lvl2:      {label:"Level 2 (nothing worn)", worn:false},
   regional:  {label:"Regional", art:"exped_regional"},
   national:  {label:"National / International", art:"exped_national"}
 };
@@ -999,7 +964,7 @@ function ribbonRows(n){
 
 function resolveFront(){
   const F = state.front, R = [], L = [], warn = [];
-  const flapH = F.flapH;
+  const flapH = FLAP_H_DEFAULT;
   const add = (m,lvl,cite) => warn.push({lvl, msg:m, cite});
   const put = (arr,o) => { arr.push(o); return o; };
 
@@ -1122,9 +1087,6 @@ function resolveFront(){
       fdatum:"above_nametag", edge:"bottom",
       rel:{of:"the nametag", ofShort:"Nametag", gap:0.5, dir:"above"},
       cite:"CH5-B expedition figure — over the RIGHT pocket, centred 0.5 cm over the nametag" });
-  } else if (ex.worn === false){
-    add(`Expedition ${ex.label.split(" (")[0]} is recorded but nothing is worn for it. Only Regional and National carry a pin.`,
-        "info", "D - Qual Info");
   }
 
   // commendation and award pins: one stack on this pocket, in precedence order
@@ -1162,9 +1124,6 @@ function resolveFront(){
   const held = PIN_STREAMS.map(st => F.pins[st.key])
     .filter(v => v && v !== "none").map(v => PIN_OPT[v]).filter(Boolean);
   const worn = held.filter(o => o.worn !== false);
-  if (held.length > worn.length)
-    add("Expedition Level 1 and Level 2 are recorded but nothing is worn for them — the workbook has no badge or pin against either. Same rule as ALP: wear the highest level that carries something.",
-        "info", "D - Qual Info; CH3S1 4.b");
   if (worn.length){
     const shown = worn.slice(0, 3);
     const gap = (PIN_STRIP_H - shown.length*COMP_PIN) / (shown.length + 1);
@@ -1207,9 +1166,6 @@ function resolveFront(){
   if ([...R,...L].some(i => i.onPocket)){
     add(`Every pocket-mounted pin is centred between the flap's lower edge and the pocket's lower seam. The flap measures ${FLAP_H_DEFAULT.toFixed(1)} cm, leaving a ${(POCKET_H - FLAP_H_DEFAULT).toFixed(1)} cm band — exactly the measured pin strip.`,
         "info", "measured, 242 RCACC");
-  if (flapH !== FLAP_H_DEFAULT)
-    add(`Flap height overridden to ${flapH.toFixed(1)} cm against the measured ${FLAP_H_DEFAULT.toFixed(1)} cm. Every pocket pin has moved.`,
-        "warn", "rail override");
   }
   if ([...R,...L].some(i => i.conf === "placeholder"))
     add("Some front items are drawn at placeholder sizes: medals, anniversary and commendation pins, the DofE pin and the parachutist badge are all unmeasured. Positions follow the regulation; sizes do not.",
@@ -1383,7 +1339,7 @@ function drawSleeve(g, items, side, cx, ybase, out){
 function drawPocket(g, items, side, cx, ptopY, out, topCm){
   const mirror = side === "right" ? 1 : -1;      // inboard-positive -> image x
   const IX = xcm => cx + mirror * xcm * SC;
-  const flapH = state.front.flapH;
+  const flapH = FLAP_H_DEFAULT;
   const halfP = POCKET_W/2*SC;
   const gx = cx + out*(halfP + 14);
   const lx = gx + out*30;
@@ -1836,14 +1792,14 @@ function syncPins(){
   document.getElementById("pinCount").textContent = `${n} worn of max 3`;
 }
 
-const BIND = {rank:"rank", appt:"appt", unit:"unit", star:"star", mk:"mk", fit:"fit", fa:"fa", mus:"mus", hsrc:"hsrc"};
+const BIND = {rank:"rank", appt:"appt", unit:"unit", star:"star", mk:"mk", fit:"fit", fa:"fa", mus:"mus"};
 for (const id in BIND){
   document.getElementById(id).addEventListener("change", e => { state[BIND[id]] = e.target.value; render(); });
 }
 for (const [id,key] of [["tDims","dims"],["tEnv","env"]]){
   document.getElementById(id).addEventListener("change", e => { state[key] = e.target.checked; render(); });
 }
-for (const [id,key] of [["rcacD","rcacD"],["sleeveLen","sleeveLen"]]){
+for (const [id,key] of [["sleeveLen","sleeveLen"]]){
   document.getElementById(id).addEventListener("input", e => {
     const v = parseFloat(e.target.value);
     if (!isNaN(v) && v > 0){ state[key] = v; render(); }
@@ -1852,10 +1808,9 @@ for (const [id,key] of [["rcacD","rcacD"],["sleeveLen","sleeveLen"]]){
 const FRONT_BIND = {
   fName:"nametag", fDofe:"dofe", fOrder:"order",
   fAnniv:"anniversary", fPara:"parachutist", fExped:"expedition",
-  fCommem:"commemorative", fPoppy:"poppy", fFlap:"flapH"
+  fCommem:"commemorative", fPoppy:"poppy"
 };
 (function wireFront(){
-  const num = v => { const n = parseFloat(v); return isNaN(n) ? 0 : n; };
   fill("unit", UNITS);
   fill("fDofe", DOFE, k => DOFE[k]);
   fill("fOrder", ORDERS, k => ORDERS[k].label);
@@ -1864,9 +1819,7 @@ const FRONT_BIND = {
     const el2 = document.getElementById(id), key = FRONT_BIND[id];
     el2.addEventListener(el2.type === "checkbox" ? "change" : "input", e => {
       const t = e.target;
-      state.front[key] = t.type === "checkbox" ? t.checked
-        : (key === "flapH") ? num(t.value)
-        : t.value;
+      state.front[key] = t.type === "checkbox" ? t.checked : t.value;
       render();
     });
   }
@@ -1910,7 +1863,6 @@ function syncAll(){
   for (const id in BIND) document.getElementById(id).value = state[BIND[id]];
   document.getElementById("tDims").checked = state.dims;
   document.getElementById("tEnv").checked  = state.env;
-  document.getElementById("rcacD").value = state.rcacD;
   document.getElementById("sleeveLen").value = state.sleeveLen;
 }
 

@@ -141,8 +141,8 @@ behaves identically everywhere.
 `open_questions`. The ones that would change output:
 
 - **Chevron heights.** Measured 6.5 / 8.0 / 9.5 / 11.0 cm at 10 cm wide; the poster
-  artwork implies 7.28 / 8.91 / 10.04 / 12.05. Unresolved. The tool has a toggle to
-  render either.
+  artwork implies 7.28 / 8.91 / 10.04 / 12.05. Unresolved; the tool draws the
+  measured heights. Measure a Sgt chevron and the other three follow.
 - **Medal, anniversary pin and commendation pin dimensions** are unmeasured, so the
   front places them by rule but sizes them by placeholder.
 - **Only tunic size 6436 is measured.** The taper profile is stretched

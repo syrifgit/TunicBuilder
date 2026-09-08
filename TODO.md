@@ -23,9 +23,10 @@ Things the tool currently gets *wrong* or cannot answer, not merely gaps.
   gets it on the wrong side.
 - [ ] **Left-pocket stack geometry**, if the split goes ahead. 5D-1 gives the
   single-pin case only, and CDS + VCDS together is possible.
-- [ ] **Wire the medal precedence into the tool.** CJCR Gp O 10050 para 7.4 supplies
-  the ordered list (see below); the tool still takes a medal *count*, so it draws the
-  right number in the right place with no identity and no order.
+- [x] ~~**Wire the medal precedence into the tool.**~~ Done. All 11 are named
+  checkboxes in precedence order, and both the medal bar and the undress ribbon rows
+  are built from the same selection — one award held is one ribbon, so the ribbon
+  count is no longer entered by hand. Still drawn as plain bars pending artwork.
 - [ ] **`Date Awarded` is placeholder data** in the workbook. It drives CTC grid fill
   order, so grid *order* is not sewing-safe even though grid *geometry* is.
 - [ ] **Confirm the precedence lists against CATO 13-16.** No longer blocking —
@@ -96,6 +97,9 @@ Everything here is a placeholder or an estimate the tool draws and flags.
   Howard, Legion, Lord Strathcona, Bravery. On the poster but never extracted —
   they are photographs, and `extract_badges.py` clusters vector objects only. Same
   failure that hid the fitness block and the pins; `src/recut_pins.py` shows the fix.
+  The tool now names and orders all 11 and draws each as a plain bar, so artwork is
+  the only thing outstanding. The other four are Sea and Air and are not on this
+  poster at all.
 - [ ] **Commendation and award insignia.** CDS, Command, Cadet, Navy League. Annex D
   illustrates all four; they are currently drawn as plain bars at the right size.
 - [ ] **Fitness Excellence** exists in the workbook and on the poster — check the

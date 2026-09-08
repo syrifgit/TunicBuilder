@@ -122,6 +122,7 @@ select:focus-visible,button:focus-visible,.chk:focus-within{outline:2px solid va
 .chk input{margin:0; accent-color:var(--green); cursor:pointer}
 .chk .nm{font-size:12.5px; line-height:1.25}
 .chk .nm small{display:block; color:var(--ink-3); font-size:10.5px}
+.chk .nm .sub{color:var(--ink-3)}
 .chk .seq{
   font-family:"IBM Plex Mono",monospace; font-size:10px; font-weight:600;
   width:17px; height:17px; display:grid; place-items:center; border-radius:50%;
@@ -132,12 +133,6 @@ select:focus-visible,button:focus-visible,.chk:focus-within{outline:2px solid va
 .chk.over .seq{background:var(--crit)}
 .chk.disabled{opacity:.42}
 
-.presets{display:flex; flex-wrap:wrap; gap:5px}
-.presets button, .btn{
-  padding:4px 9px; background:var(--paper); border:1px solid var(--rule);
-  border-radius:3px; cursor:pointer; font-size:11.5px; color:var(--ink-2);
-}
-.presets button:hover,.btn:hover{border-color:var(--green); color:var(--green)}
 
 .toggles{display:flex; flex-direction:column; gap:6px}
 .toggle{display:flex; align-items:center; gap:8px; cursor:pointer; font-size:12px; color:var(--ink-2)}
@@ -317,66 +312,48 @@ body.paper .viewport svg{
 <div class="shell">
   <aside class="rail">
     <div class="group">
-      <div class="eyebrow">Presets <span class="slotid">start from a worked example</span></div>
-      <div class="presets" id="presets"></div>
-    </div>
-
-    <div class="group">
-      <div class="eyebrow">Rank <span class="slotid">right_rank_*</span></div>
+      <div class="eyebrow">Cadet</div>
+      <div class="field"><label for="fName">Name</label>
+        <input type="text" id="fName" maxlength="16" placeholder="Surname" style="width:100%; padding:5px 8px; background:var(--paper); border:1px solid var(--rule); border-radius:3px"></div>
       <div class="field"><label for="rank">Rank</label><select id="rank"></select></div>
       <div class="field"><label for="appt">Appointment</label><select id="appt"></select></div>
+      <div class="field"><label for="unit">Unit</label><select id="unit"></select></div>
     </div>
 
     <div class="group">
-      <div class="eyebrow">Right sleeve <span class="slotid">right_star_level</span></div>
+      <div class="eyebrow">Sleeve badges</div>
       <div class="field"><label for="star">Star level</label><select id="star"></select></div>
-      <p style="margin:0; font-size:11px; color:var(--ink-3); line-height:1.35">Highest level that carries a badge. ALP has none of its own, so it shows Gold.</p>
-    </div>
-
-    <div class="group">
-      <div class="eyebrow">Left sleeve <span class="slotid">left_marksmanship / left_proficiency_stack</span></div>
-      <div class="field"><label for="mk">Marksman</label><select id="mk"></select></div>
+      <div class="field"><label for="mk">Marksmanship</label><select id="mk"></select></div>
       <div class="field"><label for="fit">Fitness</label><select id="fit"></select></div>
       <div class="field"><label for="fa">First aid</label><select id="fa"></select></div>
       <div class="field"><label for="mus">Music</label><select id="mus"></select></div>
     </div>
 
     <div class="group">
-      <div class="eyebrow">CTC / summer training <span class="slotid" id="ctccount"></span></div>
+      <div class="eyebrow">Summer training <span class="slotid" id="ctccount"></span></div>
       <div class="ctc" id="ctc"></div>
     </div>
 
     <div class="group">
-      <div class="eyebrow">Front &mdash; right breast <span class="slotid">front_right_*</span></div>
-      <div class="field"><label for="fName">Nametag</label>
-        <input type="text" id="fName" maxlength="16" placeholder="Surname" style="width:100%; padding:5px 8px; background:var(--paper); border:1px solid var(--rule); border-radius:3px"></div>
-      <div class="field"><label for="fOrder">Order</label><select id="fOrder"></select></div>
-      <div class="field"><label for="fRibbons" id="fRibbonsLbl">Ribbons</label><select id="fRibbons"></select></div>
-      <div class="field"><label for="fDofe">DofE pin</label><select id="fDofe"></select></div>
-      <div class="field"><label for="fExped">Expedition</label><select id="fExped"></select></div>
-      <p style="margin:0; font-size:11px; color:var(--ink-3); line-height:1.35">Worn above the nametag on this side, not with the pocket pins.</p>
-      <div class="toggles" style="margin-top:2px">
+      <div class="eyebrow">Medals</div>
+      <div class="field"><label for="fOrder">Wearing</label><select id="fOrder"></select></div>
+      <div class="toggles" id="medalPick"></div>
+      <div class="toggles" style="margin-top:4px">
         <label class="toggle"><input type="checkbox" id="fAnniv"> Anniversary pin</label>
       </div>
-      <div class="eyebrow" style="margin-top:4px">Commendations <span class="slotid">right_commendation_stack</span></div>
-      <div class="toggles" id="commendPick"></div>
     </div>
 
     <div class="group">
-      <div class="eyebrow">Front &mdash; left breast <span class="slotid">front_left_*</span></div>
-      <div class="eyebrow" style="margin-top:2px">Pocket pins <span class="slotid" id="pinCount"></span></div>
+      <div class="eyebrow">Pins <span class="slotid" id="pinCount"></span></div>
       <div id="pinPick" style="display:flex; flex-direction:column; gap:6px"></div>
-      <p style="margin:0; font-size:11px; color:var(--ink-3); line-height:1.35">One per stream, highest held. Three may be worn in total.</p>
-      <div class="toggles" style="margin-top:2px">
+      <div class="toggles" style="margin-top:6px" id="commendPick"></div>
+      <div class="field" style="margin-top:6px"><label for="fExped">Expedition</label><select id="fExped"></select></div>
+      <div class="field"><label for="fDofe">Duke of Edinburgh</label><select id="fDofe"></select></div>
+      <div class="toggles" style="margin-top:4px">
         <label class="toggle"><input type="checkbox" id="fPara"> Parachutist</label>
         <label class="toggle"><input type="checkbox" id="fCommem"> Commemorative pin</label>
-        <label class="toggle"><input type="checkbox" id="fPoppy"> Poppy (seasonal)</label>
+        <label class="toggle"><input type="checkbox" id="fPoppy"> Poppy</label>
       </div>
-      <div class="field" style="margin-top:2px">
-        <label for="fFlap">Flap ht</label>
-        <input type="number" id="fFlap" min="1" max="9" step="0.5" style="width:100%; padding:5px 8px; background:var(--paper); border:1px solid var(--rule); border-radius:3px">
-      </div>
-      <p style="margin:0; font-size:11px; color:var(--ink-3); line-height:1.35">Flap measured at 6 cm. Every pocket pin is centred between the flap edge and the pocket seam, so this moves them all.</p>
     </div>
 
     <div class="group">
@@ -390,8 +367,12 @@ body.paper .viewport svg{
         <input type="number" id="sleeveLen" min="40" max="70" step="1" style="width:100%; padding:5px 8px; background:var(--paper); border:1px solid var(--rule); border-radius:3px">
       </div>
       <div class="field">
-        <label for="rcacD" title="Measured at 2.5 in">RCAC dia</label>
+        <label for="rcacD">RCAC dia</label>
         <input type="number" id="rcacD" min="3" max="9" step="0.25" style="width:100%; padding:5px 8px; background:var(--paper); border:1px solid var(--rule); border-radius:3px">
+      </div>
+      <div class="field">
+        <label for="fFlap">Flap ht</label>
+        <input type="number" id="fFlap" min="1" max="9" step="0.5" style="width:100%; padding:5px 8px; background:var(--paper); border:1px solid var(--rule); border-radius:3px">
       </div>
       <div class="field">
         <label for="hsrc">Heights</label>
@@ -426,13 +407,11 @@ body.paper .viewport svg{
       <span>Laid out as you see the cadet: their right side on your left</span>
       <span><i class="swatch" style="border-top-color:var(--brass)"></i> datum &middot; every scale reads in cm</span>
       <span><i class="swatch" style="border-top-color:var(--crit); border-top-style:dashed"></i> collision</span>
-      <span>Sleeve height against pocket height is presentational &mdash; no measurement crosses between them</span>
     </div>
 
     <section class="panel">
       <header>
         <h2>Sewing guide</h2>
-        <span class="note">Each badge is stated the way the regulation states it. Only the badges the rules give a fixed anchor &mdash; corps title and RCAC badge from the shoulder seam; marksmanship, the star, the appointment badge, WO&ndash;CWO rank and the lowest proficiency badge from the cuff &mdash; carry an absolute figure. Everything else is a gap from the badge it hangs off, which is what you actually measure. Work down the list in order and each row is ready to sew.</span>
       </header>
       <div class="tblwrap">
         <table>
@@ -444,43 +423,10 @@ body.paper .viewport svg{
       </div>
     </section>
 
-    <section class="panel noprint">
-      <header>
-        <h2>Artwork coverage</h2>
-        <span class="note">What the poster gives us, and what it doesn&rsquo;t. Separate from the placement rules.</span>
-      </header>
-      <div>
-        <div class="finding"><span class="tag info">recovered</span><span class="msg">
-          <strong>Cadet Fitness Assessment</strong>, Bronze to Excellence &mdash; <code>extract_badges.py</code> skipped the whole PHYSICAL FITNESS block. Pulled off the source PDF by <code>recut_fitness.py</code>. All four measure 63.0 pt at aspect 0.998, the same circle family as first aid, which independently confirms the 3 cm circle for fitness.
-          <span class="cite">every sleeve badge now has artwork</span></span></div>
-        <div class="finding"><span class="tag warn">not extracted</span><span class="msg">
-          <strong>Seven medals, the National Rifle Team and Belzile Trophy pins, and the marksmanship, biathlon and expedition pin blocks</strong> &mdash; missed by the same coverage gap. All front-of-tunic, so none of them blocks the sleeves, and the source PDF is now on hand to recover them for that stage.
-          <span class="cite">badge_map.csv rows M01&ndash;M16</span></span></div>
-        <div class="finding"><span class="tag info">recovered</span><span class="msg">
-          <strong>Music levels 2, 3 and 4</strong> &mdash; were trapped in one bad crop (<code>unnamed_7</code>). Segmented back out by <code>recut_music.py</code>, so the family is now complete: Basic plus levels 1&ndash;5.
-          <span class="cite">art/recut/band0_col0&ndash;2.png</span></span></div>
-        <div class="finding"><span class="tag info">recovered</span><span class="msg">
-          <strong>Corps name title and RCAC badge</strong> &mdash; the poster draws them together, twice, as one pixel-identical template, and the extractor merged each pair into a single crop. Split by <code>recut_shoulder.py</code>, which gives exact proportions for two badges nobody has measured.
-          <span class="cite">manifest.csv items 15 and 17</span></span></div>
-        <div class="finding"><span class="tag info">out of scope</span><span class="msg">
-          <strong>Duke of Edinburgh&rsquo;s Award</strong>, Bronze / Silver / Gold &mdash; pinned insignia, so front of tunic rather than sleeve, and absent from QualMap either way.
-          <span class="cite">confirmed by Lt Beal</span></span></div>
-        <div class="finding"><span class="tag info">no qual row</span><span class="msg">
-          <strong>General Training, Army Cadet Voyage and Maple Leaf Exchange</strong> &mdash; three summer-training badges that belong in the CTC grid but have no row in <code>D - Qual Info</code>. Selectable here so the geometry can be tested; the workbook can&rsquo;t record them yet.
-          <span class="cite">21 CTC badges on the poster against 18 QualMap rows</span></span></div>
-        <div class="finding"><span class="tag info">out of scope</span><span class="msg">
-          <strong>&ldquo;Level 1&rdquo; to &ldquo;Level 4&rdquo;</strong> &mdash; National Star of Excellence levels 1&ndash;4. Terminated programme, so that slot stays vacant and nothing reflows into it.
-          <span class="cite">confirmed by Lt Beal &middot; CH3S1 3.b.(4)</span></span></div>
-        <div class="finding"><span class="tag info">miscaptioned</span><span class="msg">
-          <strong>Parachutist wings</strong> are captioned &ldquo;Canadian Armed Forces&rdquo;, and the <strong>Maple Leaf Exchange</strong> is captioned &ldquo;Maple Leaf&rdquo;. Caption text is a hint, never the identity &mdash; every slug is now confirmed against the poster layout in <code>labels.py</code>.
-          <span class="cite">badge_map.csv</span></span></div>
-      </div>
-    </section>
 
     <section class="panel">
       <header>
         <h2>Validator</h2>
-        <span class="note">Flags, never fixes. Sleeve clearance is checked against tunic size 6436, the only size measured. Anything resting on an unmeasured or estimated dimension is called out.</span>
       </header>
       <div id="findings"></div>
     </section>
@@ -488,13 +434,7 @@ body.paper .viewport svg{
 </div>
 
 <footer class="foot">
-  <p><strong>What this is.</strong> Enter one cadet&rsquo;s insignia and get their tunic layout: a check drawing of both sleeves and the front, plus a sewing guide giving every badge&rsquo;s position in centimetres from the datum it is actually measured from. Nothing is stored and nothing leaves this page.</p>
-  <p><strong>How to use it.</strong> Work down the rail setting rank, star level, marksmanship, proficiency badges and summer training, then the front. The drawing updates as you go. When it looks right, work down the sewing guide in order &mdash; it is sorted so that anything a later badge hangs off is already placed.</p>
-  <p><strong>Coordinate model.</strong> One axis per sleeve: <code>y</code> in cm upward from the cuff bottom edge, <code>x</code> front-positive from the sleeve centre. The shoulder seam is <code>y&nbsp;=&nbsp;sleeve&nbsp;length</code>, so nothing in the model ever measures downward. Front/rear is converted to image-left/right once, at draw time.</p>
-  <p><strong>Highest badged level wins.</strong> Where policy says only the highest in a category is worn, that means the highest that actually carries a badge. A level marked <code>not_worn</code> in the workbook is skipped and the next one down is worn &mdash; which is why an ALP cadet shows the Gold Star, and a cadet whose only fitness result is &ldquo;Participated&rdquo; shows nothing.</p>
-  <p><strong>Two datum families.</strong> The corps name title, the RCAC badge and the LCpl&ndash;Sgt chevrons are measured <em>down from the shoulder seam</em>; the chevrons hang off the RCAC badge, so they inherit it. Everything else &mdash; marksmanship, the proficiency stack, the star, the CTC grid, the appointment badge and WO&ndash;CWO rank &mdash; is measured <em>up from the cuff bottom</em>. The sewing guide always quotes a badge in its own family&rsquo;s terms. That matters because the distance between the two families is the sleeve length: change the tunic size and every shoulder-referenced badge moves relative to every cuff-referenced one. The taper profile was measured on size 6436 and is stretched proportionally for other lengths, which is an approximation &mdash; real grading is not linear.</p>
-  <p><strong>Artwork is stretched to the declared box.</strong> Switch <em>Heights</em> to <em>Poster-derived</em> and any badge that looks distorted under <em>Measured</em> is one where the local measurement and the poster art disagree. That distortion is the conflict, drawn rather than hidden.</p>
-  <p>Badge artwork is Crown copyright, from A-CR-CCP-750/DA-003. Internal corps use.</p>
+  <p>Badge artwork is Crown copyright, from A-CR-CCP-750/DA-003. Internal corps use. Nothing is stored and nothing leaves this page.</p>
 </footer>
 
 <script>
@@ -573,12 +513,14 @@ const STAR_W = 2.85, STAR_H = 2.71;
 // Rifles measured at 6.0 x 5.08 cm. The old 5.5 width was inferred from the poster
 // aspect and was 8% low. Same width as the Distinguished assembly. Pack v0.4-draft.
 const MK_NUM_W = 3.81, MK_NUM_H = 1.905, MK_RIF_W = 6.0, MK_RIF_H = 5.08, MK_GAP = 0.5;
+// `ui` is the dropdown label only. The level numeral is there because not every
+// cadet knows the names; the drawing and the sewing guide still use `label`.
 const MARKS = {
   none : {label:"None"},
-  mk_1 : {label:"Marksman",              two:true, num:"mk_1_num", rifles:"mk_1_rifles"},
-  mk_2 : {label:"First Class Marksman",  two:true, num:"mk_2_num", rifles:"mk_2_rifles"},
-  mk_3 : {label:"Expert Marksman",       two:true, num:"mk_3_num", rifles:"mk_3_rifles"},
-  mk_4 : {label:"Distinguished Marksman",w:6.0, h:8.000, art:"mk_4"}
+  mk_1 : {label:"Marksman",              ui:"(I) Marksman",               two:true, num:"mk_1_num", rifles:"mk_1_rifles"},
+  mk_2 : {label:"First Class Marksman",  ui:"(II) First Class Marksman",  two:true, num:"mk_2_num", rifles:"mk_2_rifles"},
+  mk_3 : {label:"Expert Marksman",       ui:"(III) Expert Marksman",      two:true, num:"mk_3_num", rifles:"mk_3_rifles"},
+  mk_4 : {label:"Distinguished Marksman",ui:"(IV) Distinguished Marksman",w:6.0, h:8.000, art:"mk_4"}
 };
 
 const CIRCLE = 3.0;
@@ -589,6 +531,13 @@ const CIRCLE = 3.0;
 // The badge is MEASURED at 2.5 in = 6.35 cm, which fixes the title at 12.21 x 3.85 cm
 // and leaves 1.80 cm of cloth between them. The title itself is still derived, not
 // measured. Rules pack v0.2-draft.
+// Shoulder titles currently packed. Add a plate to the kit, map it in
+// src/build_art.py, and add a line here.
+const UNITS = {
+  fred242:      {label:"242 Fredericton", art:"corps_title"},
+  fred242caps:  {label:"242 FREDERICTON", art:"corps_title_caps"},
+  blank:        {label:"Blank plate",     art:"corps_title_blank"}
+};
 const TITLE_W_RATIO = 1.923, TITLE_H_RATIO = 0.606;
 const RCAC_MEASURED = 6.35;
 const RCAC_CEILING = 12 / (1 + TITLE_H_RATIO);   // 7.47 cm: title meets badge
@@ -652,33 +601,21 @@ const GRID_FILL = [
    STATE
    ============================================================ */
 const state = {
-  rank:"Cpl", appt:"none", star:"Red", mk:"mk_2",
-  fit:"fit_3", fa:"fa_1", mus:"none",
-  ctc:["ctc_exped_1","ctc_dc_1"],          // selection order == award order
+  rank:"Cdt", appt:"none", unit:"fred242", star:"none", mk:"none",
+  fit:"none", fa:"none", mus:"none",
+  ctc:[],                                  // selection order == award order
   rcacD:6.35,                              // MEASURED: 2.5 in. Rules pack v0.2-draft.
   sleeveLen:57.0,                          // size 6436, the only one measured
   front:{
-    order:"C2", ribbons:3, nametag:"Beal", anniversary:false,
-    commend:{cds:false, command:false, cadet:true, navy:false}, dofe:"none",
-    parachutist:false, commemorative:false, poppy:false, expedition:"regional",
-    pins:{bisley:"none", mkComp:"comp_mk_prov", biComp:"none"},
+    order:"ribbons", nametag:"Bloggins", anniversary:false,
+    medals:{}, commend:{cds:false, command:false, cadet:false, navy:false}, dofe:"none",
+    parachutist:false, commemorative:false, poppy:false, expedition:"none",
+    pins:{bisley:"none", mkComp:"none", biComp:"none"},
     flapH:6.0                              // measured
   },
   dims:true, env:false, hsrc:"measured"
 };
 
-const PRESETS = {
-  "Worked example":    {rank:"Cpl", appt:"none", star:"Red", mk:"mk_2", fit:"fit_3", fa:"fa_1", mus:"none", ctc:["ctc_exped_1","ctc_dc_1"]},
-  "Full CTC grid (6)": {rank:"MCpl", appt:"none", star:"Gold", mk:"mk_3", fit:"fit_4", fa:"fa_2", mus:"none",
-                        ctc:["ctc_exped_1","ctc_dc_1","ctc_fit_1","ctc_mk_1","ctc_pb_1","ctc_staff"]},
-  "Three-high stack":  {rank:"Cpl", appt:"none", star:"Silver", mk:"mk_1", fit:"fit_4", fa:"fa_2", mus:"mus_3", ctc:["ctc_mb_1"]},
-  "Sgt + Drum Major":  {rank:"Sgt", appt:"drum_major", star:"Gold", mk:"mk_3", fit:"fit_4", fa:"fa_2", mus:"mus_5", ctc:["ctc_pb_1","ctc_pb_2"]},
-  "WO + Pipe Major":   {rank:"WO", appt:"pipe_major", star:"Gold", mk:"mk_4", fit:"fit_4", fa:"fa_2", mus:"mus_5", ctc:["ctc_pb_1","ctc_pb_2","ctc_pb_3","ctc_staff"]},
-  "CWO, no appt":      {rank:"CWO", appt:"none", star:"Gold", mk:"mk_4", fit:"fit_4", fa:"fa_2", mus:"mus_4", ctc:["ctc_staff","ctc_exped_3","ctc_dc_2"]},
-  "ALP cadet":         {rank:"MWO", appt:"none", star:"ALP", mk:"mk_3", fit:"fit_4", fa:"fa_2", mus:"none", ctc:["ctc_staff","ctc_fit_2","ctc_exped_3","ctc_mk_2"]},
-  "Bare Cdt":          {rank:"Cdt", appt:"none", star:"Green", mk:"none", fit:"none", fa:"none", mus:"none", ctc:[]},
-  "Stack, no marks":   {rank:"Cpl", appt:"none", star:"Red", mk:"none", fit:"fit_2", fa:"fa_1", mus:"none", ctc:[]}
-};
 
 /* ============================================================
    RESOLVER
@@ -702,7 +639,8 @@ function resolve(){
   const tw = TITLE_W_RATIO * D, th = TITLE_H_RATIO * D;
   for (const [arr,side] of [[L,"left"],[R,"right"]]){
     push(arr,{ slot:`${side}_corps_name`, label:"Corps name title (poster example art)",
-      sleeve:side, x:0, y:SLEEVE_LEN-th, w:tw, h:th, art:"corps_title", conf:"derived",
+      sleeve:side, x:0, y:SLEEVE_LEN-th, w:tw, h:th,
+      art:(UNITS[state.unit] || UNITS.fred242).art, conf:"derived",
       datum:"shoulder_seam", root:"shoulder", edge:"top", off:0,
       cite:"ANNEX-H 3H-3 / 3H-4-1; CH3S1 3.b.(2)" });
 
@@ -967,14 +905,31 @@ const MEDAL_W = 3.5, MEDAL_BAR_H = RIBBON_H, MEDAL_LEN = 10.0;
 
 const DOFE = {none:"None", bronze:"Bronze", silver:"Silver", gold:"Gold"};
 
-// Order of dress gates the whole right breast: medals with C1, undress ribbons with
-// C2 / C3 / C3B. Never both, and none of it is worn on outerwear.
+// Medals with C1, undress ribbons with C2 / C3 / C3B. Never both, and none of it is
+// worn on outerwear. The rail picks the presentation; the awards held are the same
+// either way, so one selection drives both.
 const ORDERS = {
-  C1:  {label:"C1 — Ceremonial", medals:true},
-  C2:  {label:"C2 — Service dress", medals:false},
-  C3:  {label:"C3 — Routine", medals:false},
-  C3B: {label:"C3B — Routine, shirt", medals:false}
+  ribbons: {label:"Ribbons", medals:false},
+  medals:  {label:"Medals",  medals:true}
 };
+
+// Order of precedence, CJCR Gp O 10050 para 7.4. Eleven medals across the three
+// elements; seven are available to an army cadet and the rest arrive with a cadet who
+// transferred in, so the whole list is carried and sorted by seq. Precedence 1 is worn
+// inboard, nearest the centre of the chest.
+const MEDALS = [
+  {key:"bravery",     seq: 1, label:"Cadet Award for Bravery"},
+  {key:"strathcona",  seq: 2, label:"Lord Strathcona Medal"},
+  {key:"legion",      seq: 3, label:"Royal Canadian Legion Cadet Medal of Excellence"},
+  {key:"navyleague",  seq: 4, label:"Navy League of Canada Medal of Excellence", element:"sea"},
+  {key:"howard",      seq: 5, label:"Major-General W.A. Howard Award"},
+  {key:"afa",         seq: 6, label:"Air Force Association Medal", element:"air"},
+  {key:"anavets",     seq: 7, label:"Army, Navy and Air Force Veterans Cadet Medal of Merit"},
+  {key:"stgeorge",    seq: 8, label:"Order of St. George Medal"},
+  {key:"seaservice",  seq: 9, label:"Sea Cadet Service Medal", element:"sea"},
+  {key:"armyservice", seq:10, label:"Army Cadet Service Medal"},
+  {key:"airservice",  seq:11, label:"Air Cadet Service Medal", element:"air"}
+];
 
 // Commendation and award pins: ONE stack on the right pocket, 0.5 cm apart, in this
 // order of precedence. Sizes are from Annex D. Only the DofE pin is undimensioned.
@@ -1014,6 +969,9 @@ const PIN_STREAMS = [
     {v:"comp_bi_nat",    nm:"National Championship"},
     {v:"comp_bi_winner", nm:"Bédard / Keddie / Le Guellec Awards", est:true}]},
 ];
+// PIN_STREAMS is precedence order, top to bottom on the pocket. The rail shows them
+// commonest first instead, which is not the same thing.
+const PIN_UI_ORDER = ["mkComp", "biComp", "bisley"];
 const PIN_OPT = {};
 for (const st of PIN_STREAMS) for (const o of st.opts) if (o.v !== "none") PIN_OPT[o.v] = {...o, stream: st};
 
@@ -1075,8 +1033,11 @@ function resolveFront(){
   let suspendedTop = null;          // top edge of whatever hangs above the pocket
   let medalBottom = null;           // set only when medals are worn
 
-  if (order.medals){
-    const n = Math.max(1, F.ribbons || 1);
+  // One selection of awards held; the order of dress only chooses how they show.
+  const mHeld = MEDALS.filter(m => F.medals[m.key]);
+
+  if (order.medals && mHeld.length){
+    const n = mHeld.length;
     // one row if they fit; past about four they overlap, highest priority fully
     // visible. The true limit is the wearer's arm seam and is not a policy number.
     const overlap = n > 4;
@@ -1085,7 +1046,7 @@ function resolveFront(){
     medalBottom = MEDAL_BAR_H - MEDAL_LEN;
     for (let i = n - 1; i >= 0; i--){          // draw outboard first, #1 on top
       put(R,{ face:"front", side:"right", slot:"right_medals",
-        label:`Medal ${i+1}`, seq:i+1,
+        label:mHeld[i].label, seq:i+1,
         x: barW/2 - MEDAL_W/2 - i*pitch,       // #1 inboard, toward the chest centre
         y: medalBottom, w:MEDAL_W, h:MEDAL_LEN, art:null, medal:true,
         fdatum:"pocket_top", edge:"suspension",
@@ -1100,13 +1061,13 @@ function resolveFront(){
     else if (barW > POCKET_W)
       add(`The medal bar is ${barW.toFixed(1)} cm wide against a ${POCKET_W} cm pocket. Centred on the pocket it must not run past the jacket arm seam — check it on the cadet.`,
           "warn", "CH5-A");
-    add("Medal precedence order is not in Chapter 5; it lives in CATO 13-16, which has not been sourced. The numbering here is your selection order, not authority.",
-        "crit", "CATO 13-16 not sourced");
-  } else if (F.ribbons > 0){
-    const rr = ribbonRows(F.ribbons);
+    add(`Worn in order of precedence, ${mHeld[0].label} inboard. CATO 13-16 is the cadet-programme authority and is still unsourced, so this order comes from the JCR order, which the CJCR honours committee sets for both programmes.`,
+        "info", "CJCR Gp O 10050 para 7.4");
+  } else if (mHeld.length){
+    const rr = ribbonRows(mHeld.length);
     for (const c of rr.items){
       put(R,{ face:"front", side:"right", slot:"right_ribbons",
-        label:`Undress ribbon ${c.seq}`, seq:c.seq, x:c.x, y:c.y,
+        label:`${mHeld[c.seq-1].label} — undress ribbon`, seq:c.seq, x:c.x, y:c.y,
         w:RIBBON_W, h:RIBBON_H, art:null, ribbon:true,
         fdatum: c.row === 0 ? "pocket_top" : "row_below",
         rel: c.row === 0 ? null : {of:"the row below", ofShort:"Row below", gap:0, dir:"above"},
@@ -1115,10 +1076,10 @@ function resolveFront(){
     }
     suspendedTop = rr.rows * RIBBON_H;
     if (rr.rows > 1)
-      add(`${F.ribbons} ribbons make ${rr.rows} rows. No gaps between ribbons or between rows; a partial row sits on top, centred on the row below. Precedence 1 is top row, innermost.`,
+      add(`${mHeld.length} ribbons make ${rr.rows} rows. No gaps between ribbons or between rows; a partial row sits on top, centred on the row below. Precedence 1 is top row, innermost.`,
           "info", "CH5-C 5C-1.2");
-    add("Ribbon precedence order is not in Chapter 5; it lives in CATO 13-16, which has not been sourced. The numbering here is your selection order, not authority.",
-        "crit", "CATO 13-16 not sourced");
+    add(`One undress ribbon per award held, worn in order of precedence with ${mHeld[0].label} top row, innermost. Order from the JCR order, which the CJCR honours committee sets for both programmes; CATO 13-16 is still unsourced.`,
+        "info", "CJCR Gp O 10050 para 7.4");
   }
 
   // anniversary pin, 3 cm above the pocket top
@@ -1821,7 +1782,7 @@ function fill(id, obj, keyer){
 fill("rank", RANKS, (k,v) => k === "Cdt" ? "Cadet (no insignia)" : `${k} – ${v.label}`);
 fill("appt", APPTS);
 fill("star", STARS);
-fill("mk", MARKS);
+fill("mk", MARKS, (k,v) => v.ui || v.label);
 fill("fit", FITNESS);
 fill("fa", FIRSTAID);
 fill("mus", MUSIC);
@@ -1830,7 +1791,8 @@ const ctcBox = document.getElementById("ctc");
 for (const q of CTC){
   const lab = document.createElement("label");
   lab.className = "chk"; lab.dataset.k = q.k; lab.tabIndex = -1;
-  lab.innerHTML = `<input type="checkbox"><span class="nm">${q.nm}<small>${q.cat}</small></span><span class="seq"></span>`;
+  const nm = q.cat === q.nm ? q.cat : `${q.cat} <span class="sub">(${q.nm})</span>`;
+  lab.innerHTML = `<input type="checkbox"><span class="nm">${nm}</span><span class="seq"></span>`;
   lab.querySelector("input").addEventListener("change", e => {
     if (e.target.checked){ if (!state.ctc.includes(q.k)) state.ctc.push(q.k); }
     else state.ctc = state.ctc.filter(x => x !== q.k);
@@ -1851,7 +1813,7 @@ function syncCtc(){
 
 // one dropdown per stream: each is Highest Only / Max Worn 1 in the workbook
 const pinBox = document.getElementById("pinPick");
-for (const st of PIN_STREAMS){
+for (const st of PIN_UI_ORDER.map(k => PIN_STREAMS.find(p => p.key === k))){
   const row = document.createElement("div");
   row.className = "field";
   row.innerHTML = `<label for="pin_${st.key}">${st.label}</label><select id="pin_${st.key}"></select>`;
@@ -1874,15 +1836,7 @@ function syncPins(){
   document.getElementById("pinCount").textContent = `${n} worn of max 3`;
 }
 
-const presetBox = document.getElementById("presets");
-for (const name in PRESETS){
-  const b = document.createElement("button");
-  b.type = "button"; b.textContent = name;
-  b.addEventListener("click", () => { Object.assign(state, PRESETS[name]); state.ctc = PRESETS[name].ctc.slice(); syncAll(); render(); });
-  presetBox.appendChild(b);
-}
-
-const BIND = {rank:"rank", appt:"appt", star:"star", mk:"mk", fit:"fit", fa:"fa", mus:"mus", hsrc:"hsrc"};
+const BIND = {rank:"rank", appt:"appt", unit:"unit", star:"star", mk:"mk", fit:"fit", fa:"fa", mus:"mus", hsrc:"hsrc"};
 for (const id in BIND){
   document.getElementById(id).addEventListener("change", e => { state[BIND[id]] = e.target.value; render(); });
 }
@@ -1896,14 +1850,13 @@ for (const [id,key] of [["rcacD","rcacD"],["sleeveLen","sleeveLen"]]){
   });
 }
 const FRONT_BIND = {
-  fName:"nametag", fRibbons:"ribbons", fDofe:"dofe", fOrder:"order",
+  fName:"nametag", fDofe:"dofe", fOrder:"order",
   fAnniv:"anniversary", fPara:"parachutist", fExped:"expedition",
   fCommem:"commemorative", fPoppy:"poppy", fFlap:"flapH"
 };
 (function wireFront(){
   const num = v => { const n = parseFloat(v); return isNaN(n) ? 0 : n; };
-  fillNum("fRibbons", 0, 9, n => n === 0 ? "None" : `${n}`);
-
+  fill("unit", UNITS);
   fill("fDofe", DOFE, k => DOFE[k]);
   fill("fOrder", ORDERS, k => ORDERS[k].label);
   fill("fExped", EXPEDITION, k => EXPEDITION[k].label);
@@ -1912,9 +1865,22 @@ const FRONT_BIND = {
     el2.addEventListener(el2.type === "checkbox" ? "change" : "input", e => {
       const t = e.target;
       state.front[key] = t.type === "checkbox" ? t.checked
-        : (key === "ribbons" || key === "participation" || key === "flapH") ? num(t.value)
+        : (key === "flapH") ? num(t.value)
         : t.value;
       render();
+    });
+  }
+})();
+// medal checkboxes, in precedence order, built from MEDALS
+(function wireMedals(){
+  const box = document.getElementById("medalPick");
+  for (const m of MEDALS){
+    const lab = document.createElement("label");
+    lab.className = "toggle";
+    lab.innerHTML = `<input type="checkbox" id="md_${m.key}"><span>${m.label}</span>`;
+    box.appendChild(lab);
+    lab.querySelector("input").addEventListener("change", e => {
+      state.front.medals[m.key] = e.target.checked; render();
     });
   }
 })();
@@ -1924,8 +1890,7 @@ const FRONT_BIND = {
   for (const c of COMMEND){
     const lab = document.createElement("label");
     lab.className = "toggle";
-    lab.innerHTML = `<input type="checkbox" id="cm_${c.key}">` +
-      `<span>${c.label} <span style="color:var(--ink-3)">${c.w} × ${c.h} cm</span></span>`;
+    lab.innerHTML = `<input type="checkbox" id="cm_${c.key}"><span>${c.label}</span>`;
     box.appendChild(lab);
     lab.querySelector("input").addEventListener("change", e => {
       state.front.commend[c.key] = e.target.checked; render();
@@ -1933,21 +1898,11 @@ const FRONT_BIND = {
   }
 })();
 
-function fillNum(id, lo, hi, label){
-  const sel = document.getElementById(id);
-  sel.textContent = "";
-  for (let n = lo; n <= hi; n++){
-    const o = document.createElement("option");
-    o.value = n; o.textContent = label(n); sel.appendChild(o);
-  }
-}
-
 function syncAll(){
   for (const c of COMMEND)
     document.getElementById("cm_" + c.key).checked = !!state.front.commend[c.key];
-  // the count above the pocket is medals under C1, ribbons otherwise
-  document.getElementById("fRibbonsLbl").textContent =
-    (ORDERS[state.front.order] || {}).medals ? "Medals" : "Ribbons";
+  for (const m of MEDALS)
+    document.getElementById("md_" + m.key).checked = !!state.front.medals[m.key];
   for (const id in FRONT_BIND){
     const el2 = document.getElementById(id), v = state.front[FRONT_BIND[id]];
     if (el2.type === "checkbox") el2.checked = !!v; else el2.value = v;

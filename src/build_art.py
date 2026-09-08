@@ -94,6 +94,8 @@ RECUT = {
     # aspect as the poster artwork it replaces. Swap the file to retitle for
     # another corps; recut_shoulder.py still produces the poster example.
     "art/Shoulder Title Kit/corps_title_fredericton_242_titlecase.png": "corps_title",
+    "art/Shoulder Title Kit/corps_title_fredericton_242.png": "corps_title_caps",
+    "art/Shoulder Title Kit/corps_title_blank_plate.png": "corps_title_blank",
     "art/recut/rcac_badge__da_vi_d_d_e_f_al_ar_de.png": "rcac_badge",
 }
 

@@ -19,7 +19,7 @@ Right now the sleeves are fully specified. The front of the tunic is not.
 
 | File | What it is |
 |---|---|
-| `242 Qualifications Data.xlsx` | The data source. Star-schema workbook, see below. |
+| `242 Qualifications Data.xlsx` | The data source. Star-schema workbook, see below. **Protected A, since moved out of this directory.** |
 | `army_tunic_placement_rules_2.json` | The placement rules pack. Every slot, anchor, offset, citation and conflict. Read this first. |
 | `extract_badges.py` | Pulls badge artwork out of the national symbols poster as SVG + PNG. Already run. |
 | `rcac_badges.zip` | 77 extracted badges. SVG (vector) and 600 dpi transparent PNG each, plus `manifest.csv`. |
@@ -46,8 +46,8 @@ Star schema. Sheet prefixes mean something: `I -` input, `D -` derived, `O -` ou
 strings - that sheet is for a human to eyeball, not a machine contract.
 
 The join key is `LastName|FirstName`. CIN exists as a column but is empty in the Fortress
-export, so names are load-bearing. Three cadets share the surname Al Assaf. Never match on
-surname alone.
+export, so names are load-bearing. Several cadets share a surname - three of them in one
+case. Never match on surname alone.
 
 ### The `Slot` column is what maps data to geometry
 

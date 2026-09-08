@@ -115,9 +115,12 @@ python build_all.py      # regenerates artwork, both pages, and smoke-tests them
 
 ## Constraints
 
-- **`242 Qualifications Data.xlsx` is Protected A.** Cadet names, ranks,
-  qualifications. It stays in this directory, never in a commit, never uploaded. No
-  tracked script reads it.
+- **No cadet data lives here, and none should arrive.** `242 Qualifications Data.xlsx`
+  is Protected A — cadet names, ranks, qualifications — and has been moved out of this
+  directory. Nothing tracked reads it and `.gitignore` still excludes `*.xlsx` so a
+  stray copy cannot be committed. The workbook notes in `TODO.md` §4 describe it from
+  memory; go to wherever it now lives to act on them. Synthesise test data, never
+  borrow real.
 - **Badge artwork is Crown copyright** (A-CR-CCP-750/DA-003). Fine for internal corps
   use. A public host redistributes it — and GitHub Pages on a free account serves from
   a public repository. See *Publishing* in the README.
@@ -172,7 +175,7 @@ workaround, and they are all in the pipeline.
 
 ## Where things stand
 
-Rules **v0.16-draft**: 22 slots, 27 open questions, 6 conflicts, sources CH3S1,
+Rules **v0.17-draft**: 22 slots, 24 open questions, 6 conflicts, sources CH3S1,
 ANNEX-H, CH5-A–D, CH5-S7, CH4-A, CJCRGPO-10050, and CATO 13-16 (still unsourced, no
 longer blocking — 10050 supplies the precedence lists it was wanted for).
 

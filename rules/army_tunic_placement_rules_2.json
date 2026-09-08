@@ -1,6 +1,6 @@
 {
   "$comment": "Placement rules for Royal Canadian Army Cadet tunic (jacket) insignia. Sleeves only. Front of tunic not yet in scope.",
-  "version": "0.16-draft",
+  "version": "0.17-draft",
   "scope": "army_cadet_sleeves_and_front",
   "sources": [
     {
@@ -73,7 +73,7 @@
       "title": "CJCR Gp O 10050 - JCR National Honours and Awards",
       "date_of_issue": "2021-03-19",
       "date_of_verification": "2022-08-16",
-      "status": "SECONDARY. This order governs the Junior Canadian Ranger programme, not the Cadet programme, and states placement for the JCR sweatshirt rather than the cadet tunic. It is used here for ORDER, not for GEOMETRY: para 4.2 records that the CJCR Honours and Awards committee 'includes both JCR and Cadet Program personnel' and 'determines eligibility criteria and order of precedence', and the medal list at 7.4 spans all three cadet elements including the Sea, Army and Air Cadet Service Medals - so the precedence itself is CJCR-wide, not JCR-specific. Every cadet-facing geometric figure still comes from Chapter 5.",
+      "status": "SECONDARY. This order governs the Junior Canadian Ranger programme, not the Cadet programme, and states placement for the JCR sweatshirt rather than the cadet tunic. It is used here for ORDER, not for GEOMETRY: para 4.2 records that the CJCR Honours and Awards committee 'includes both JCR and Cadet Program personnel' and 'determines eligibility criteria and order of precedence', and the medal list at 7.4 spans all three cadet elements including the Sea, Army and Air Cadet Service Medals - so the precedence itself is CJCR-wide, not JCR-specific. Every cadet-facing geometric figure still comes from Chapter 5. Para 4.4 points at Chapter 7 of the Cadet and JCR Dress Instructions; Lt Beal confirms Chapter 7 is the JCR-specific chapter, so it does not supersede the Chapter 5 citations used throughout this pack.",
       "paragraphs_used": [
         "5.1",
         "6.2",
@@ -133,7 +133,7 @@
         "MCpl": 9.5,
         "Sgt": 11.0
       },
-      "note": "Cdt wears no rank insignia. Heights step +1.5 cm per rank."
+      "note": "Cdt wears no rank insignia. Heights step +1.5 cm per rank. RESOLVED against the poster: poster aspects imply LCpl 7.41 / Cpl 8.98 / MCpl 10.13 / Sgt 12.02 cm at 10 cm wide. Lt Beal's hand measurement governs - the poster art carries an embroidered field the finished badge does not, and artwork identifies badges without dimensioning them."
     },
     "rank_wo": {
       "w": 5.08,
@@ -145,7 +145,8 @@
       "w": 7.62,
       "h": 5.08,
       "source_units": "3 x 2 in bounding box",
-      "confidence": "measured"
+      "confidence": "measured",
+      "note": "RESOLVED against the poster: the recorded bounding box gives aspect 1.50 against the 1.26 drawn. Lt Beal's hand measurement governs, on the same grounds as the chevrons."
     },
     "rank_cwo": {
       "w": 7.62,
@@ -936,14 +937,12 @@
     }
   ],
   "open_questions": [
-    "Chevron heights disagree with the poster art. Poster aspects imply LCpl 7.41 / Cpl 8.98 / MCpl 10.13 / Sgt 12.02 cm at 10 cm wide, against measured 6.5 / 8.0 / 9.5 / 11.0. Likely embroidered field vs merrowed edge. Remeasure Sgt first.",
     "CWO rank dimensions still an estimate, though poster aspect 0.753 matches the 0.750 guess.",
     "Only tunic size 6436 measured. Clearance warnings need a profile per size, or a stated assumption.",
     "Eligible appointment insignia confirmed as Drum Major and Pipe Major only, per A-CR-CCP-750/DA-003 APPOINTMENT section. Confirm against Annex E when sourced.",
     "The 20 cm proficiency anchor was confirmed photographically. Record the source of that photograph so the conflict resolution is auditable.",
     "Annex H figure 3H-3 carries an incorrect dimension. Worth reporting up so it gets corrected at the national level.",
     "Corps name title dimensions (12.21 x 3.85 cm) are DERIVED from the poster's title-plus-badge template and the measured 6.35 cm badge diameter, not measured directly. Worth checking a real title with a ruler.",
-    "MWO aspect still disagrees with the poster (1.26 drawn vs 1.50 from the recorded bounding box) and is unresolved. The Distinguished half of that question is CLOSED: remeasured at 6 x 8 cm, so the poster is the outlier, not the measurement.",
     "Annex B lists national and cadet commendations in one 0.5 cm stack while Annex D puts them on opposite pockets. Resolved in favour of Annex D as the more specific source - confirm with RCSU.",
     "National-winner award pins (Vamplew / Clement Tremblay, and Bedard / Keddie / Le Guellec) are confirmed non-standard in size and have never been measured. Drawn at 1 in.",
     "CATO 13-16 is still not sourced. CJCRGPO-10050 7.4 now supplies an 11-medal CJCR-wide precedence list and 7.5 a 5-pin commendation list, so ordering is no longer blocked - but 10050 is a JCR order. Confirm the cadet list matches before a printed guide relies on it.",
@@ -958,7 +957,6 @@
     "A full-tunic render is not attempted. The tool draws four flat panels, and the shoulder-to-pocket relationship is presentational rather than measured.",
     "Sea and Air elements are out of scope. The coordinate model and resolver should carry over unchanged; the rules pack, the artwork and the nametag colour are element-specific (air cadet name tags are air force blue).",
     "CJCRGPO-10050 contradicts itself on the second-tier commendation: 5.1 offers a 'Comd CJCR Commendation', 7.5 ranks a 'VCDS Commendation'. Same slot under two names, or two awards?",
-    "CJCRGPO-10050 4.4 directs the reader to Chapter 7 of the Cadet and JCR Dress Instructions for wearing medals and ribbons, but every cadet figure used here is from Chapter 5. Establish whether Chapter 7 is the JCR chapter or a renumbering that supersedes our Chapter 5 citations.",
     "If national commendations move to the left pocket, the left pocket needs its own stack geometry. 5D-1 gives the single-pin case (centred between the lower seam and the flap's lower edge) but not the two-pin case, and CDS + VCDS is possible.",
     "A cadet transferring between elements retains awards earned there (the principle is stated for JCR at CJCRGPO-10050 6.2). Confirm it holds for cadets, since it is what makes the Sea and Air entries in the 11-medal list reachable on an army tunic.",
     "Cadet Service Medal bars are unsourced. The qualifying period for the medal and for each bar, whether a cadet wears every bar earned or only the highest, the bar's dimensions, and how a bar shows on an undress ribbon are all unestablished. The renderer names the bar on the award and draws nothing for it. Bar labels (5-year, 6-year, 7-year) follow Lt Beal; confirm the ceiling and the scheme against CATO 13-16.",
@@ -1024,6 +1022,10 @@
     {
       "version": "0.16-draft",
       "change": "Service medal modelled as one award in three elements plus a bar selection, rather than three separate medals; precedence still comes from seq 9/10/11. Bars are recorded and named but not drawn, and the whole bar scheme is logged as unsourced."
+    },
+    {
+      "version": "0.17-draft",
+      "change": "Three questions closed on Lt Beal's authority. Chevron heights and the MWO aspect resolve to the hand measurements against the poster art, with the reasoning recorded on the constants rather than left open. Chapter 7 of the Dress Instructions is confirmed as the JCR chapter, so it does not supersede the Chapter 5 citations. Also: the Protected A workbook has been moved out of this directory."
     }
   ],
   "orders_of_dress": {

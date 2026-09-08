@@ -142,9 +142,6 @@ behaves identically everywhere.
   draws one right-hand stack. CJCR Gp O 10050 para 7.5 now corroborates 5D-1, so the
   balance of evidence has moved and the tool has not. This is the one open question
   that puts a badge on the wrong side of a cadet.
-- **Chevron heights.** Measured 6.5 / 8.0 / 9.5 / 11.0 cm at 10 cm wide; the poster
-  artwork implies 7.41 / 8.98 / 10.13 / 12.02. Unresolved; the tool draws the
-  measured heights. Measure a Sgt chevron and the other three follow.
 - **Cadet Service Medal bars** are offered and named but not drawn, and the whole
   scheme - qualifying periods, whether bars accumulate, the ceiling - is unsourced.
 - **Medal, anniversary pin and commendation pin dimensions** are unmeasured, so the

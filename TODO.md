@@ -4,7 +4,7 @@ Ordered by what it unblocks, not by effort. Every geometric item is also recorde
 `rules/army_tunic_placement_rules_2.json` under `open_questions`, which is the
 authoritative list — this file is the working view of it.
 
-Status as of rules **v0.16-draft**: 22 slots, 27 open questions, 6 recorded conflicts.
+Status as of rules **v0.17-draft**: 22 slots, 24 open questions, 6 recorded conflicts.
 
 ---
 
@@ -31,58 +31,22 @@ Things the tool currently gets *wrong* or cannot answer, not merely gaps.
   reading follows the convention used everywhere else here, and is a guess.
 - [ ] **`Date Awarded` is placeholder data** in the workbook. It drives CTC grid fill
   order, so grid *order* is not sewing-safe even though grid *geometry* is.
-- [ ] **Confirm the precedence lists against CATO 13-16.** No longer blocking —
-  10050 fills the gap — but 10050 is a *JCR* order and CATO 13-16 is the
-  cadet-programme authority. Confirm before a printed guide relies on it.
 - [ ] **Resolve "Command" vs "VCDS" vs "Comd CJCR".** 10050 contradicts itself: its
   availability list (5.1) offers a Comd CJCR Commendation, its precedence list (7.5)
   ranks a VCDS Commendation. Held as "Command Commendation" per Chapter 5.
-- [ ] **Chapter 7 or Chapter 5?** 10050 para 4.4 sends the reader to *Chapter 7* of the
-  Cadet and JCR Dress Instructions for wearing medals and ribbons; every cadet figure
-  here is cited from Chapter 5. Establish whether Chapter 7 is the JCR chapter or a
-  renumbering that supersedes our citations.
 - [ ] **Confirm a transferring cadet keeps awards earned in another element.** Stated
   for JCR at 10050 para 6.2. It is what makes the Sea and Air entries in the medal list
   reachable on an army tunic, and the tool models it that way.
-- [x] ~~**Wire the medal precedence into the tool.**~~ Done. All 11 are named in
-  precedence order, and both the medal bar and the undress ribbon rows are built from
-  the same selection — one award held is one ribbon, so the ribbon count is no longer
-  entered by hand. The three service medals are one element choice rather than three
-  checkboxes, resolving back to seq 9 / 10 / 11. Still drawn as plain bars pending
-  artwork.
 
-### Medal order of precedence — CJCR Gp O 10050 para 7.4
-
-The full CJCR list is 11. Seven are reachable by an army cadet; the rest are Sea or
-Air awards, which a cadet who transferred in retains. Sort by seq rather than storing
-the army seven. Precedence 1 is worn inboard, nearest the centre of the chest.
-
-| # | Medal | Army |
-|---|---|:--:|
-| 1 | Cadet Award for Bravery | ● |
-| 2 | Lord Strathcona Medal | ● |
-| 3 | Royal Canadian Legion Cadet Medal of Excellence | ● |
-| 4 | Navy League of Canada Medal of Excellence | |
-| 5 | The Major-General W.A. Howard Award | ● |
-| 6 | Air Force Association Medal | |
-| 7 | Army, Navy and Air Force Veterans in Canada Cadet Medal of Merit | ● |
-| 8 | Order of St. George Medal | ● |
-| 9 | Sea Cadet Service Medal | |
-| 10 | Army Cadet Service Medal | ● |
-| 11 | Air Cadet Service Medal | |
+Medal precedence is implemented: all 11 in order from CJCR Gp O 10050 para 7.4, the
+three service medals collapsed to one element choice resolving back to seq 9 / 10 / 11,
+and the undress ribbons built from the same selection. The full list lives in the rules
+pack under `right_medals.order_of_precedence`. Only the artwork is outstanding.
 
 ## 2. Measurements — one ruler each
 
 Everything here is a placeholder or an estimate the tool draws and flags.
 
-- [ ] **Sgt chevron height.** Settles the standing disagreement: measured
-  6.5 / 8.0 / 9.5 / 11.0 cm at 10 cm wide against the poster's implied
-  7.41 / 8.98 / 10.13 / 12.02. Measure Sgt and the other three follow. The tool used
-  to render either for comparison; that switch is gone, so this is now a ruler
-  question only.
-- [ ] **MWO aspect.** Drawn 1.26 against 1.50 from the poster's bounding box, and
-  unresolved. Distinguished Marksman was the other half of that question and is
-  settled at 6.0 × 8.0 cm.
 - [ ] **NRT and Bisley Series pins.** RCAC National Rifle Team and LGen C.H. Belzile
   Trophy. Both non-standard: the artwork trims to aspect 2.47 and 1.42, so neither is
   a 1 in square. Drawn 2.54 cm wide with height from the artwork.
@@ -109,6 +73,12 @@ Everything here is a placeholder or an estimate the tool draws and flags.
   measurements now agree: a 15 cm pocket less a 6 cm flap leaves exactly the 9 cm of
   the measured competition pin strip, so the strip fills the pin band with no
   remainder. The 4.0 cm placeholder left 2 cm unaccounted for.
+- [x] ~~**Chevron heights**~~ and ~~**MWO aspect**~~. Settled on the hand
+  measurements: chevrons 6.5 / 8.0 / 9.5 / 11.0 cm at 10 cm wide, MWO 7.62 × 5.08 cm.
+  The poster implied 7.41 / 8.98 / 10.13 / 12.02 and an MWO aspect of 1.50, and loses
+  on the standing rule that artwork identifies badges without dimensioning them — its
+  art carries an embroidered field the finished badge does not. Reasoning is recorded
+  on the constants in the rules pack, not just deleted.
 
 **Not a ruler question:** the maximum medal bar width is set by the wearer's physique —
 the bar must not run past the jacket arm seam — so it stays a per-cadet flag rather
@@ -125,12 +95,12 @@ than a number the rules pack can carry.
   poster at all.
 - [ ] **Commendation and award insignia.** CDS, Command, Cadet, Navy League. Annex D
   illustrates all four; they are currently drawn as plain bars at the right size.
-- [ ] **Fitness Excellence** exists in the workbook and on the poster — check the
-  recovered `fit_excellence.png` is the right badge and not a mis-crop.
 
 ## 4. Workbook corrections
 
-The tool is right and `D - Qual Info` is wrong in each of these.
+The tool is right and `D - Qual Info` is wrong in each of these. `242 Qualifications
+Data.xlsx` is Protected A and has been moved out of this directory, so these are
+described from notes — go to wherever it now lives to act on them.
 
 - [ ] **Expedition slot is wrong.** Four `Participation | Expedition` rows say
   `out_of_scope_left_pocket`, following the general CH3S1 4.b rule. The Chapter 5
@@ -182,9 +152,9 @@ The tool is right and `D - Qual Info` is wrong in each of these.
 - [ ] **Settle the copyright question** before publishing anywhere public. See
   *Publishing* in the README — GitHub Pages on a free account serves from a public
   repository, so that route redistributes Crown copyright artwork.
-- [ ] **`docs/CLAUDE_1.md` names a real cadet surname** (line 49). Fine in a private
-  repo, not for a public one. Rewording to "some cadets share a surname" keeps the
-  point.
+- [x] ~~**`docs/CLAUDE_1.md` names a real cadet surname.**~~ Reworded; the point it was
+  making — never match on surname alone — survives without the name. No cadet name
+  appears anywhere in the repo now.
 - [ ] **`make_corps_title.py` has a hardcoded Linux font path.** More pressing now
   that the rail has a unit dropdown: adding a corps means generating a plate, and that
   will fail from Windows.
@@ -193,7 +163,3 @@ The tool is right and `D - Qual Info` is wrong in each of these.
   render the sleeves roughly 40% larger on paper, at the cost of a discontinuous scale.
 - [ ] **Report Annex H 3H-3 upward.** Its 12 cm proficiency dimension is wrong and
   geometrically impossible. Worth correcting nationally.
-- [ ] **Record the source of the photograph** that confirmed the 20 cm proficiency
-  anchor, so the conflict resolution is auditable.
-- [ ] **Confirm appointment insignia against Annex E** — Drum Major and Pipe Major only,
-  currently established from the poster's APPOINTMENT section alone.

@@ -121,9 +121,11 @@ python build_all.py      # regenerates artwork, both pages, and smoke-tests them
   stray copy cannot be committed. The workbook notes in `TODO.md` §4 describe it from
   memory; go to wherever it now lives to act on them. Synthesise test data, never
   borrow real.
-- **Badge artwork is Crown copyright** (A-CR-CCP-750/DA-003). Fine for internal corps
-  use. A public host redistributes it — and GitHub Pages on a free account serves from
-  a public repository. See *Publishing* in the README.
+- **Badge artwork is Crown copyright** (A-CR-CCP-750/DA-003), and is **cleared for
+  publication as part of the tool**. `docs/` is tracked and both pages attribute it.
+  The clearance stops there: the poster PDF, `rcac_badges.zip` and `art/*` are the
+  artwork as a *library* rather than as a tool, and stay out of the repo. Do not
+  commit them, and do not add the raw crops to a page just to make them downloadable.
 - **Git: commit locally, freely. Never push, never add a remote, never
   `gh repo create`** without being asked. There is deliberately no remote configured.
   Use the repo's configured identity, do not override it with `-c user.name=...`.

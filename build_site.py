@@ -8,8 +8,8 @@ runtime dependency beyond the Google Fonts stylesheet.
 docs/ rather than site/ because GitHub Pages will only publish from a branch root or
 from /docs. Point Pages at main -> /docs and the layout tool is the site root.
 
-The built pages are gitignored by default, because publishing them is a decision
-rather than a build step - see the copyright note this prints.
+The built pages are tracked: the artwork they carry is cleared for publication as part
+of the tool. The poster PDF and the raw badge library are not, and stay ignored.
 """
 import os
 import shutil
@@ -44,21 +44,14 @@ def main():
 
     print(f"\ndocs/ ready, {total/1e6:.2f} MB total. Serve the folder as-is, or:")
     print("  python -m http.server -d docs 8000     # check it over HTTP first")
-    print("\nTo publish on GitHub Pages, in order:")
-    print("  1. settle the copyright question below")
-    print("  2. drop the docs/ lines from .gitignore and commit the built pages")
-    print("  3. add a remote and push - neither is set up, deliberately")
-    print("  4. repo Settings > Pages > Source: main, folder /docs")
+    print("\nTo publish on GitHub Pages:")
+    print("  1. commit these files - they are tracked")
+    print("  2. add a remote and push - neither is set up, ask first")
+    print("  3. repo Settings > Pages > Source: main, folder /docs")
     print("The layout tool lands at the site root; the plate at /plate.html.")
-
-    print("\n" + "!" * 72)
-    print("COPYRIGHT: both pages carry Crown copyright badge artwork inlined, from")
-    print("A-CR-CCP-750/DA-003. That is fine for internal corps use. Publishing to a")
-    print("PUBLIC host redistributes it. GitHub Pages on a free account serves from a")
-    print("public repository, so that route publishes the artwork - and committing")
-    print("these files puts it in the repo whether or not Pages is ever switched on.")
-    print("Settle this before either step. See README.")
-    print("!" * 72)
+    print("\nBoth pages carry Crown copyright artwork from A-CR-CCP-750/DA-003,")
+    print("cleared for publication as part of the tool, and both attribute it. The")
+    print("poster itself and the raw badge library are NOT cleared and stay ignored.")
     return 0
 
 

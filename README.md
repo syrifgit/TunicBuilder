@@ -128,26 +128,28 @@ headless Chrome.
 
 `docs/` rather than `site/` because GitHub Pages publishes only from a branch root or
 from `/docs`. The layout tool becomes the site root and the plate lands at
-`/plate.html`. To go live, in this order:
+`/plate.html`. To go live:
 
-1. settle the copyright question below
-2. drop the `docs/` lines from `.gitignore` and commit the built pages
-3. add a remote and push - neither is configured, deliberately
-4. repo *Settings > Pages > Source: main, folder /docs*
+1. commit `docs/` - it is tracked
+2. add a remote and push - neither is configured; ask before doing either
+3. repo *Settings > Pages > Source: main, folder /docs*
 
-Nothing else has to change. Step 2 is the one that matters: committing those files
-puts the artwork in the repo whether or not Pages is ever switched on.
+### Copyright
 
-**Settle the copyright question before pushing anywhere public.** Both pages carry
-Crown copyright badge artwork inlined. That is fine for internal corps use, which is
-what this was built for. A public host redistributes it, and **GitHub Pages on a free
-account serves from a public repository** - so that route publishes the artwork
-whether or not the repo itself looks private. Options, roughly:
+The badge artwork is Crown copyright, from A-CR-CCP-750/DA-003. **Publishing it as
+part of the tool is cleared** (Lt Beal, Sep 2026), and both pages carry an
+attribution naming the publication and stating that this is not an official one.
 
-- keep it internal: a shared drive, a USB stick, or the private Claude artifact
-- private repo plus GitHub Pages, which needs a paid plan for private Pages
-- ask permission through the chain of command
-- publish a build with the artwork stripped, which leaves the geometry but no badges
+That decision covers the artwork **as rendered in the tool**. It does not cover the
+poster itself or the raw badge library, so `ACRCCP750DA003.pdf`, `rcac_badges.zip`
+and `art/*` stay out of the repo. Someone wanting the badge files should go to the
+publication, not to this repo.
+
+Two things follow from publishing that did not matter internally. The tool becomes
+reachable by other corps, so the pages say plainly that some figures rest on local
+measurement and that open questions remain - see *Known gaps*. And GitHub Pages on a
+free account serves from a **public** repository, so pushing is what actually
+publishes; the repo being new and remote-less is the only thing holding it back.
 
 One behaviour differs off the artifact: `plate.html` stores its label corrections in
 the artifact database. Anywhere else that is unavailable, so it shows a banner and

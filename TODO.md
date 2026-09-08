@@ -149,9 +149,10 @@ described from notes — go to wherever it now lives to act on them.
 
 ## 6. Housekeeping
 
-- [ ] **Settle the copyright question** before publishing anywhere public. See
-  *Publishing* in the README — GitHub Pages on a free account serves from a public
-  repository, so that route redistributes Crown copyright artwork.
+- [x] ~~**Settle the copyright question.**~~ Cleared: the badge artwork may be
+  published as part of the tool. `docs/` is tracked and both pages attribute the
+  artwork. The clearance covers the artwork *as rendered in the tool* only — the
+  poster and the raw badge library stay out of the repo.
 - [x] ~~**`notes/CLAUDE_1.md` names a real cadet surname.**~~ Reworded; the point it was
   making — never match on surname alone — survives without the name. No cadet name
   appears anywhere in the repo now.

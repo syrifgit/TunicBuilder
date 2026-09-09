@@ -539,7 +539,11 @@ const CTC_AIR = [
   {k:"air_avtech_am",cat:"Advanced Aviation Technology", nm:"Aircraft Maintenance"},
   {k:"air_avtech_ao",cat:"Advanced Aviation Technology", nm:"Airport Operations"},
   {k:"air_glider",   cat:"Glider Pilot",  nm:"Scholarship"},
-  {k:"air_power",    cat:"Power Pilot",   nm:"Scholarship"}
+  // No Power Pilot CTC badge exists: that scholarship yields wings only, and the
+  // Glider CTC badge is worn once a cadet upgrades to Power wings. Confirmed by the
+  // dress instruction and by its absence from the air poster.
+  {k:"air_oshkosh",  cat:"Oshkosh Trip",  nm:"Oshkosh Trip"},
+  {k:"air_exchange", cat:"International Air Cadet Exchange", nm:"Exchange"}
 ];
 
 // Participation insignia. Sea wears Staff Cadet low on the LEFT and the rest low on
@@ -552,10 +556,10 @@ const PART_SEA = [
   {k:"sea_cg",       nm:"Coast Guard Deployment"},
   {k:"sea_tall",     nm:"Tall Ship Deployment"}
 ];
-const PART_AIR = [
-  {k:"air_staff",    nm:"Staff Cadet"},
-  {k:"air_exchange", nm:"International Exchange"}
-];
+// Air wears staff and exchange insignia in with the CTC block rather than as a
+// separate group, so both are summer-training rows above and this list is empty.
+// Staff Cadet is tri-service and was carried here a second time by mistake.
+const PART_AIR = [];
 
 // Grid fill patterns. Army is a 2x3; Air is the same order plus a seventh above the
 // fourth. Both are {row, col} with col 0 centre, +1 front, -1 rear.
@@ -727,6 +731,14 @@ const EL = () => ELEMENTS[state.element] || ELEMENTS.army;
 // Rank has three placements depending on rank level and whether an appointment is
 // worn, but they are one thing as far as WHICH ARM is concerned. Slot ids stay
 // per-placement so they match the rules pack; the family is what gets assigned.
+// A tri-service course is one row but three different badges: Army's Drill and
+// Ceremonial badge is not Air's. An element-prefixed art key wins where the pack has
+// one, so ctc_dc_1 draws air_ctc_dc_1 for an Air cadet and ctc_dc_1 for an Army one.
+// Air-only keys already carry their prefix and fall through unchanged.
+function ctcArt(k){
+  const p = state.element + "_ctc_" + k.replace(/^ctc_/, "");
+  return BADGE_ART[p] ? p : k;
+}
 const SLOT_FAMILY = {
   rank_junior:"rank", rank_senior_no_appointment:"rank", rank_senior_with_appointment:"rank"
 };
@@ -903,7 +915,7 @@ function resolve(){
       if (show) bottomDrawn = true;
       put("ctc_grid", { label:`${q.cat} – ${q.nm}`,
         x: cell.col * CIRCLE, y: gridBottom + cell.row * CIRCLE, w:CIRCLE, h:CIRCLE,
-        art:q.k, cell:cell.nm, seq:i+1, rel, dimShow: show,
+        art:ctcArt(q.k), cell:cell.nm, seq:i+1, rel, dimShow: show,
         datum:"cuff_bottom", root:"cuff", edge:"bottom", off: gridBottom + cell.row*CIRCLE,
         cite:"CH3S1 3.b.(9); ANNEX-H 3H-4-2 / 3H-4-3" });
     });

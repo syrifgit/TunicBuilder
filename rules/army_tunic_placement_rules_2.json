@@ -1,6 +1,6 @@
 {
   "$comment": "Placement rules for Royal Canadian Army Cadet tunic (jacket) insignia. Sleeves only. Front of tunic not yet in scope.",
-  "version": "0.22-draft",
+  "version": "0.23-draft",
   "scope": "army_cadet_sleeves_and_front",
   "sources": [
     {
@@ -990,7 +990,13 @@
     "Maximum badge count for the Air left-arm block: the earlier note said seven, with a seventh above the fourth. Para 3 says six, twice. Six adopted as the sourced figure; the seven-badge rule may belong to a different instruction or an earlier edition.",
     "Sea's corps badge is worn on the RIGHT BREAST, centred 3 cm above the pocket, moving to 4.5 cm with a second row of ribbons and 5.5 cm with a third. Not drawn yet, and it interacts with the ribbon rows the tool already lays out, so it should be straightforward to add.",
     "Air's Glider / Power Pilot sewn wings are worn centred 0.5 cm above the LEFT breast pocket, highest level only. Not drawn yet. The Glider Pilot CTC badge is never worn with Glider Pilot Wings, and Power supersedes Glider if both are held - a mutual exclusion nothing enforces yet.",
-    "Sea's proficiency arrangement is unspecified. Para 3 gives the sleeve, the anchor and the maximum of six but not the layout, so the renderer chains them vertically the way the army stack does. Air's IS specified (the 1-2-3 / 4-5-6 fill) and is not yet applied to proficiency either."
+    "Sea's proficiency arrangement is unspecified. Para 3 gives the sleeve, the anchor and the maximum of six but not the layout, so the renderer chains them vertically the way the army stack does. Air's IS specified (the 1-2-3 / 4-5-6 fill) and is not yet applied to proficiency either.",
+    "AIR: Marksmanship Classification IS an Air proficiency badge - Marksman, First Class, Expert, Distinguished - worn in the six-badge cuff block rather than in Army's dedicated 6 cm slot. The tool had Air marked as wearing no marksmanship badge at all. Found in the air poster inventory, not in any instruction we hold. Needs an air_prof_marks_* family once the artwork lands.",
+    "AIR: proficiency is five families on the poster - Physical Fitness (4), First Aid (2), Music (6, a Basic Qualification plus levels 1-5), Marksmanship Classification (4) and Glider Pilot Familiarization (2). That is 18 badges for a block that holds six, so the highest-per-family rule presumably applies the way it does for Army. Not stated anywhere we have. Note Air Music is SIX where Army is five, so the two cannot share artwork.",
+    "AIR: the poster calls the training level badges 'Proficiency Levels', which is the tool's word for the six cuff insignia. Same word, different badges. Kept as training_level here.",
+    "AIR: the Air Force Association Medal appears in full colour on the air poster, which settles the question that had it omitted from the tool as unsourced. Slot 6 can be unhidden once medal_afa / ribbon_afa are added to the medal pack.",
+    "AIR: the Air Cadet Service Medal disc renders BRONZE on the air poster where Blatherwick describes 'a round gold coloured medal', and the artwork was built gold. A photograph against a text description; unresolved.",
+    "AIR: the squadron shoulder insignia is a half-round dome with the element name arched over the top, squadron number large in the centre and squadron name below - a different shape from Army's scrolled corps title, and it needs two text fields rather than one. The existing corps-title generator cannot produce it."
   ],
   "changelog": [
     {
@@ -1076,6 +1082,10 @@
     {
       "version": "0.22-draft",
       "change": "Sea and Air placement sourced from Sewn Insignia para 3, replacing the guesses. Sea: rank left arm at two heights, CTC upper right (max 2), proficiency lower right (max 6), and a combined max-four Staff/Deployment/Exchange/appointment group on the left arm above the cuff - which resolves the three-way collision previously flagged. Air: squadron insignia 2 cm below the seam, rank both arms with WO2/WO1 low, training level left arm and NOT worn by WO2/WO1, appointment on the right sleeve. Two contradictions inside the air text logged and drawn as written. Army output verified byte-identical."
+    },
+    {
+      "version": "0.23-draft",
+      "change": "Air poster inventory folded in. Removed air_power: the Power Pilot Scholarship yields wings only and has no CTC badge, confirmed by the dress instruction and by its absence from the poster. Added air_oshkosh and air_exchange, and dropped the duplicate air_staff, since Staff Cadet is a tri-service row. Summer training is 24 badges for Air, 13 of them tri-service courses that share a row with Army but not a badge - handled by an element-prefixed art key. Six findings from the inventory logged, including that Air wears marksmanship after all."
     }
   ],
   "orders_of_dress": {

@@ -1,6 +1,6 @@
 {
   "$comment": "Placement rules for Royal Canadian Army Cadet tunic (jacket) insignia. Sleeves only. Front of tunic not yet in scope.",
-  "version": "0.19-draft",
+  "version": "0.20-draft",
   "scope": "army_cadet_sleeves_and_front",
   "sources": [
     {
@@ -322,28 +322,34 @@
   },
   "slots": [
     {
-      "id": "left_corps_name",
-      "sleeve": "left",
+      "id": "corps_name",
+      "sleeve": "both",
       "anchor": "shoulder_seam",
       "offset_cm": 0,
       "anchor_edge": "top_of_badge",
       "align": "centre",
       "condition": "always",
-      "citation": "ANNEX-H 3H-3; CH3S1 3.b.(2)"
+      "citation": "ANNEX-H 3H-3; CH3S1 3.b.(2)",
+      "notes": [
+        "Was two slots, left_ and right_, with identical geometry. One slot worn on both sleeves; which sleeves is the element's business, not the slot's."
+      ]
     },
     {
-      "id": "left_rcac_badge",
-      "sleeve": "left",
+      "id": "element_badge",
+      "sleeve": "both",
       "anchor": "shoulder_seam",
       "offset_cm": 12,
       "anchor_edge": "bottom_of_badge",
       "align": "centre",
       "condition": "always",
-      "citation": "ANNEX-H 3H-3; CH3S1 3.b.(3)"
+      "citation": "ANNEX-H 3H-3; CH3S1 3.b.(3)",
+      "notes": [
+        "Was two slots, left_ and right_, with identical geometry. One slot worn on both sleeves; which sleeves is the element's business, not the slot's."
+      ]
     },
     {
-      "id": "left_proficiency_stack",
-      "sleeve": "left",
+      "id": "proficiency_stack",
+      "sleeve": "per_element",
       "type": "stack",
       "anchor": "cuff_bottom",
       "offset_cm": 20,
@@ -378,8 +384,8 @@
       ]
     },
     {
-      "id": "left_marksmanship",
-      "sleeve": "left",
+      "id": "marksmanship",
+      "sleeve": "per_element",
       "type": "assembly",
       "anchor": "cuff_bottom",
       "offset_cm": 6,
@@ -423,28 +429,8 @@
       ]
     },
     {
-      "id": "right_corps_name",
-      "sleeve": "right",
-      "anchor": "shoulder_seam",
-      "offset_cm": 0,
-      "anchor_edge": "top_of_badge",
-      "align": "centre",
-      "condition": "always",
-      "citation": "ANNEX-H 3H-4-1; CH3S1 3.b.(2)"
-    },
-    {
-      "id": "right_rcac_badge",
-      "sleeve": "right",
-      "anchor": "shoulder_seam",
-      "offset_cm": 12,
-      "anchor_edge": "bottom_of_badge",
-      "align": "centre",
-      "condition": "always",
-      "citation": "ANNEX-H 3H-4-1; CH3S1 3.b.(3)"
-    },
-    {
-      "id": "right_rank_junior",
-      "sleeve": "right",
+      "id": "rank_junior",
+      "sleeve": "per_element",
       "anchor": "right_rcac_badge",
       "offset_cm": 1,
       "anchor_edge": "chevron_tips_below_anchor",
@@ -453,8 +439,8 @@
       "citation": "ANNEX-H 3H-4-1; CH3S1 3.b.(7)(i)"
     },
     {
-      "id": "right_rank_senior_no_appointment",
-      "sleeve": "right",
+      "id": "rank_senior_no_appointment",
+      "sleeve": "per_element",
       "anchor": "cuff_bottom",
       "offset_cm": 20,
       "anchor_edge": "bottom_of_badge",
@@ -463,8 +449,8 @@
       "citation": "ANNEX-H 3H-4-2; CH3S1 3.b.(7)(ii)"
     },
     {
-      "id": "right_rank_senior_with_appointment",
-      "sleeve": "right",
+      "id": "rank_senior_with_appointment",
+      "sleeve": "per_element",
       "anchor": "right_appointment",
       "offset_cm": 1,
       "anchor_edge": "bottom_of_badge_1cm_above_appointment_top",
@@ -473,8 +459,8 @@
       "citation": "ANNEX-H 3H-4-3; CH3S1 3.b.(7)(ii)"
     },
     {
-      "id": "right_appointment",
-      "sleeve": "right",
+      "id": "appointment",
+      "sleeve": "per_element",
       "anchor": "cuff_bottom",
       "offset_cm": 20,
       "anchor_edge": "bottom_of_badge",
@@ -491,8 +477,8 @@
       ]
     },
     {
-      "id": "right_ctc_grid",
-      "sleeve": "right",
+      "id": "ctc_grid",
+      "sleeve": "per_element",
       "type": "grid",
       "anchor": "right_star_level",
       "offset_cm": 1,
@@ -552,8 +538,8 @@
       ]
     },
     {
-      "id": "right_star_level",
-      "sleeve": "right",
+      "id": "star_level",
+      "sleeve": "per_element",
       "anchor": "cuff_bottom",
       "offset_cm": 6,
       "anchor_edge": "bottom_of_badge",
@@ -1056,6 +1042,10 @@
     {
       "version": "0.19-draft",
       "change": "Medal, ribbon and commendation-pin artwork wired in; every award now draws as itself rather than a plain bar. CATO 13-16 para 19 sourced verbatim, confirming the precedence for all but the Order of St. George. Seq 5 is the Army Cadet Medal of Merit with four award bars and two wearability rules; seq 6, the Air Force Association Medal, is omitted as unsourced. Uniform 3.5 cm ribbon width recorded as a local decision. DofE sized from the artwork's own aspect."
+    },
+    {
+      "version": "0.20-draft",
+      "change": "Sleeve slot ids renamed from positional to semantic (left_marksmanship -> marksmanship, right_rank_junior -> rank_junior) and the two duplicated pairs merged (corps_name, element_badge). Which arm a slot is worn on now belongs to the element rather than to the slot's name, which is the prerequisite for Sea (rank left) and Air (rank both arms). Army geometry is unchanged and the rendered output was verified byte-identical."
     }
   ],
   "orders_of_dress": {
@@ -1077,5 +1067,6 @@
       "ribbons": true
     },
     "outerwear": "None of Chapter 5 is worn on outerwear."
-  }
+  },
+  "$slot_ids": "Sleeve slot ids are SEMANTIC, not positional. Which arm a slot lands on is set per element in the tool's ELEMENTS table, because that is what differs: Army wears rank on the right arm, Sea on the left, Air on both. A slot named right_rank could not express that. Breast slots keep their side, which is anatomical rather than element-varying."
 }

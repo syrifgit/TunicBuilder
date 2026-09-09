@@ -1,11 +1,17 @@
 # Making the tool tri-element
 
-Draft plan. Nothing here is built yet.
+**The framework is built. Sea and Air are stubs waiting on source material.**
 
-The short version: the geometry engine already works for any element. The blocker is
-that **slot names encode which sleeve they're on**, and that assumption is baked into
-the rules pack, the resolver and the validator. Fix that first and the rest is data
-entry.
+The blocker was that slot names encoded which sleeve they were on, baked into the rules
+pack, the resolver and the validator. That is fixed: slot ids are semantic and an
+`ELEMENTS` table assigns them to arms. Army output was verified byte-identical through
+the whole refactor.
+
+What is left is entirely data: the placement instruction, sizes and artwork for Sea and
+Air. No more surgery.
+
+The rest of this file is the reasoning, kept because the next person will want to know
+why it is shaped this way.
 
 ---
 
@@ -22,9 +28,9 @@ Worth knowing before scoping, because it's more than you'd expect.
 - **The renderer doesn't care.** `drawSleeve(g, items, side, ...)` takes whatever boxes
   it's given. It never asks what element they are.
 
-## What blocks it
+## What the blockers were
 
-### 1. Slot ids are positional, not semantic
+### 1. Slot ids were positional, not semantic
 
 This is the real problem. **Twelve of the 22 rules-pack slots are sleeve slots named
 for a side**, and eight of those twelve are one logical slot written twice:
@@ -71,29 +77,24 @@ for (const [arr,side] of [[L,"left"],[R,"right"]]) { ... }
 
 so the pattern exists. It just needs to be general rather than hardcoded for those two.
 
-### 3. Page weight forces a real decision
+### 3. Page weight is not actually a problem
 
-Army alone is 6.79 MB, of which 4.5 MB is badge artwork and 2.16 MB is medals. Medals
-are shared across elements. Badges aren't.
+I assumed it was and was wrong, so here are the numbers. Measured in headless Chrome
+including full render, off local disk:
 
-Three elements inlined in one page is roughly 16 to 20 MB. That's too big.
+| Page | Load |
+|---|---|
+| 6.79 MB, today | 1.03 s |
+| 15.85 MB, synthetic | 1.63 s |
 
-**Two options:**
+Sub-linear and not painful. GitHub Pages caps at 100 MB per file, so 20 MB is not close.
+**Put all three elements in one page.** A real in-page dropdown beats navigating between
+sibling pages.
 
-| | One page, art fetched per element | Three pages, one per element |
-|---|---|---|
-| Dropdown | true in-page switch | navigates to the sibling page |
-| Page size | ~2.5 MB + fetch | ~7 MB each, same as today |
-| Self-contained | no, needs a server | yes, still double-click |
-| `docs/` total | ~9 MB | ~20 MB |
-
-**Recommend three pages.** It keeps the "download it and double-click" property we just
-fixed the README for, keeps each page the same size as today, and GitHub Pages doesn't
-care about 20 MB. The element control becomes a selector that navigates, with the rest
-of the form state carried in the URL hash so switching doesn't lose your cadet.
-
-One template, one ruleset, three builds. `build.py` already writes two outputs from one
-template, so this is the same trick with a third axis.
+The cost that *is* real is git, not the browser. Base64 PNG compresses to 74% and cannot
+be stored as a delta, so every committed rebuild of `docs/index.html` is roughly 5 MB of
+permanent history. Hence the standing rule: `docs/` is a release, run `build_site.py` and
+commit when you mean to publish, not on every rebuild.
 
 ---
 
@@ -193,7 +194,8 @@ Keys stay flat and namespaced by element where they differ (`rank_army_Cpl`,
 `rank_sea_PO2`). Flat keys with a merge is what the tool already does with
 `Object.assign(BADGE_ART, MEDAL_ART)`, so no lookup changes.
 
-`build.py` splices shared plus one element pack per output page.
+`build.py` splices the shared pack plus all three element packs into the one page,
+since page weight turned out not to matter. It already merges two packs this way.
 
 ## UI
 
@@ -211,19 +213,31 @@ collapsible and mostly element-neutral.
 
 ## Order of work
 
-1. **Rename slots to semantic ids.** Rules pack, resolver, validator. Army output must
-   be byte-identical. This is the whole enabler and it stands alone.
-2. **Add the element table** with army only, and drive the current behaviour from it.
-   Still byte-identical. Now there's a place to put element two.
-3. **Multi-sleeve slots**, so `both` works. Test with army by temporarily putting rank
+1. ~~**Rename slots to semantic ids.**~~ **Done.** Rules pack, resolver, validator.
+   Verified byte-identical: same md5 on all three SVGs, with every slot exercised.
+2. ~~**Add the element table.**~~ **Done.** `ELEMENTS` holds cloth, nametag colour and
+   the slot-to-sleeve map. Army drives current behaviour through it, still identical.
+3. ~~**Multi-sleeve slots.**~~ **Done.** `put()` emits one box per assigned sleeve.
+   Tested: army draws 18 sleeve images, sea 18 with rank moved left, air 19 with rank
    on both arms.
-4. **Three-page build** and the element selector. Still army-only content in all three,
-   but the plumbing is done.
-5. **Add sea**, once you have sources. Then air. Each is now data entry plus artwork,
-   not surgery.
+4. ~~**Element selector.**~~ **Done.** Dropdown at the top of the rail, cloth colour
+   follows it, and an unmodelled element raises a `crit` saying so.
+5. **Add sea**, once you have sources. Then air. Data entry plus artwork, not surgery.
 
-Steps 1 to 4 are all doable now, with no source material, and each has a test. Step 5 is
-the part gated on documents.
+Steps 1 to 4 are complete and needed no source material. Step 5 is the part gated on
+documents.
+
+## What is stubbed and what that means
+
+`ELEMENTS.sea` and `ELEMENTS.air` exist and carry only what you stated: rank on the left
+arm for sea, both arms for air, and a tunic colour. Everything else is deliberately still
+the army ruleset, and the tool says so rather than pretending:
+
+> Sea cadets are not modelled yet. The sleeve assignment is in place, but every badge,
+> size and placement below is still the ARMY ruleset, and the artwork is army artwork.
+
+The two cloth colours are unsourced placeholders. They look right and they are not cited,
+which is why `cite` is `null` on both stubs.
 
 ## What to source
 

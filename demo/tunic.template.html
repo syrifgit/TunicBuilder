@@ -250,6 +250,7 @@ footer.foot p{margin:.5em 0}
   <aside class="rail">
     <div class="group">
       <div class="eyebrow">Cadet</div>
+      <div class="field"><label for="element">Element</label><select id="element"></select></div>
       <div class="field"><label for="fName">Name</label>
         <input type="text" id="fName" maxlength="16" placeholder="Surname" style="width:100%; padding:5px 8px; background:var(--paper); border:1px solid var(--rule); border-radius:3px"></div>
       <div class="field"><label for="rank">Rank</label><select id="rank"></select></div>
@@ -439,6 +440,65 @@ const UNITS = {
 };
 const TITLE_W_RATIO = 1.923, TITLE_H_RATIO = 0.606;
 const RCAC_MEASURED = 6.35;
+
+/* ============================================================
+   ELEMENTS
+   Everything that differs between Army, Sea and Air lives here. Slot ids are
+   SEMANTIC ("rank", not "right_rank"), and `sleeves` is what puts each one on an
+   arm - because that is exactly what differs: Sea wears rank on the left arm, Air
+   on both. Anything keyed to a side in the resolver could not express that.
+   Sea and Air are stubs. They carry the shape so the plumbing can be built and
+   tested, and nothing else - no invented placements, no guessed sizes.
+   ============================================================ */
+const ELEMENTS = {
+  army: {
+    label:"Army", ready:true,
+    cloth:{fill:"#123D2C", edge:"#0A2A1E"},          // rifle green
+    nametag:"black",
+    sleeves:{
+      corps_name:"both", element_badge:"both",
+      marksmanship:"left", proficiency_stack:"left",
+      star_level:"right", ctc_grid:"right", appointment:"right", rank:"right"
+    },
+    cite:"CH3S1 3.b; ANNEX-H"
+  },
+  sea: {
+    label:"Sea", ready:false,
+    cloth:{fill:"#1A1A1A", edge:"#000000"},          // black. UNSOURCED
+    nametag:"black",
+    sleeves:{
+      corps_name:"both", element_badge:"both",
+      marksmanship:"left", proficiency_stack:"left",
+      star_level:"right", ctc_grid:"right", appointment:"right",
+      rank:"left"                                     // stated by Lt Beal
+    },
+    cite:null
+  },
+  air: {
+    label:"Air", ready:false,
+    cloth:{fill:"#3A4A5C", edge:"#22303C"},          // air force blue. UNSOURCED
+    nametag:"air force blue",
+    sleeves:{
+      corps_name:"both", element_badge:"both",
+      marksmanship:"left", proficiency_stack:"left",
+      star_level:"right", ctc_grid:"right", appointment:"right",
+      rank:"both"                                     // stated by Lt Beal
+    },
+    cite:null
+  }
+};
+const EL = () => ELEMENTS[state.element] || ELEMENTS.army;
+// Rank has three placements depending on rank level and whether an appointment is
+// worn, but they are one thing as far as WHICH ARM is concerned. Slot ids stay
+// per-placement so they match the rules pack; the family is what gets assigned.
+const SLOT_FAMILY = {
+  rank_junior:"rank", rank_senior_no_appointment:"rank", rank_senior_with_appointment:"rank"
+};
+// Which sleeve or sleeves a slot lands on. The only place a slot meets a side.
+function sleevesFor(slot){
+  const v = EL().sleeves[SLOT_FAMILY[slot] || slot];
+  return v === "both" ? ["left", "right"] : [v || "right"];
+}
 const RCAC_CEILING = 12 / (1 + TITLE_H_RATIO);   // 7.47 cm: title meets badge
 // Cadet Fitness Assessment. extract_badges.py skipped the whole PHYSICAL FITNESS
 // block; recut_fitness.py pulls it off the source PDF. All four measure 63.0 pt at
@@ -500,6 +560,7 @@ const GRID_FILL = [
    STATE
    ============================================================ */
 const state = {
+  element:"army",
   rank:"Cdt", appt:"none", unit:"fred242", star:"none", mk:"none",
   fit:"none", fa:"none", mus:"none",
   ctc:[],                                  // selection order == award order
@@ -526,22 +587,33 @@ function resolve(){
   const L = [], R = [], warn = [];
   const push = (arr,o) => { arr.push(o); return o; };
   const add = (m,lvl,cite) => warn.push({lvl, msg:m, cite});
+  // put(slot, box) -> one box per sleeve the element assigns that slot to. Returns
+  // the last one placed, which is all any caller needs since it only reads geometry.
+  const put = (slot, box) => {
+    let last = null;
+    for (const side of sleevesFor(slot))
+      last = push(side === "left" ? L : R, {...box, slot, sleeve:side});
+    return last;
+  };
+
+  if (!EL().ready){
+    add(`${EL().label} cadets are not modelled yet. The sleeve assignment is in place — rank goes ${JSON.stringify(EL().sleeves.rank)} — but every badge, size and placement below is still the ARMY ruleset, and the artwork is army artwork. Nothing here is wearable for a ${EL().label} cadet.`,
+        "crit", "no source instruction for this element");
+  }
 
   /* ---- shared shoulder items, both sleeves ---- */
   const D  = RCAC_MEASURED;
   const tw = TITLE_W_RATIO * D, th = TITLE_H_RATIO * D;
-  for (const [arr,side] of [[L,"left"],[R,"right"]]){
-    push(arr,{ slot:`${side}_corps_name`, label:"Corps name title (poster example art)",
-      sleeve:side, x:0, y:SLEEVE_LEN-th, w:tw, h:th,
-      art:(UNITS[state.unit] || UNITS.fred242).art, conf:"derived",
-      datum:"shoulder_seam", root:"shoulder", edge:"top", off:0,
-      cite:"ANNEX-H 3H-3 / 3H-4-1; CH3S1 3.b.(2)" });
+  put("corps_name", { label:"Corps name title (poster example art)",
+    x:0, y:SLEEVE_LEN-th, w:tw, h:th,
+    art:(UNITS[state.unit] || UNITS.fred242).art, conf:"derived",
+    datum:"shoulder_seam", root:"shoulder", edge:"top", off:0,
+    cite:"ANNEX-H 3H-3 / 3H-4-1; CH3S1 3.b.(2)" });
 
-    push(arr,{ slot:`${side}_rcac_badge`, label:"RCAC badge", sleeve:side,
-      x:0, y:SLEEVE_LEN-12, w:D, h:D, art:"rcac_badge", conf:"derived",
-      datum:"shoulder_seam", root:"shoulder", edge:"bottom", off:12,
-      cite:"ANNEX-H 3H-3 / 3H-4-1; CH3S1 3.b.(3)" });
-  }
+  put("element_badge", { label:"RCAC badge",
+    x:0, y:SLEEVE_LEN-12, w:D, h:D, art:"rcac_badge", conf:"derived",
+    datum:"shoulder_seam", root:"shoulder", edge:"bottom", off:12,
+    cite:"ANNEX-H 3H-3 / 3H-4-1; CH3S1 3.b.(3)" });
   const rcacBottom = SLEEVE_LEN - 12;   // y = 45, independent of D
 
   const clear = 12 - (1 + TITLE_H_RATIO) * D;
@@ -560,11 +632,11 @@ function resolve(){
     const m = MARKS[state.mk];
     if (m.two){
       const nh = MK_NUM_H;
-      push(L,{ slot:"left_marksmanship", label:`${m.label} — numeral`, sleeve:"left",
+      put("marksmanship", { label:`${m.label} — numeral`,
         x:0, y:6, w:MK_NUM_W, h:nh, art:m.num,
         datum:"cuff_bottom", root:"cuff", edge:"bottom", off:6,
         cite:"ANNEX-H 3H-3; CH3S1 3.b.(6)" });
-      push(L,{ slot:"left_marksmanship", label:`${m.label} — crossed rifles`, sleeve:"left",
+      put("marksmanship", { label:`${m.label} — crossed rifles`,
         x:0, y:6 + nh + MK_GAP, w:MK_RIF_W, h:MK_RIF_H,
         art:m.rifles,
         datum:"cuff_bottom", root:"cuff", edge:"bottom", off:6 + nh + MK_GAP,
@@ -573,7 +645,7 @@ function resolve(){
       add(`Two physically separate badges: the numeral tab, then ${MK_GAP.toFixed(2)} cm of cloth, then the crossed rifles. The gap is stated in the regulation. The poster draws it wider (roughly 0.73 to 0.86 cm) but carries no dimensions — same as Annex H’s 12 cm and its five-badge stagger, the instruction governs.`,
           "info", "CH3S1 3.b.(6); conflict logged in the rules pack");
     } else {
-      push(L,{ slot:"left_marksmanship", label:m.label, sleeve:"left",
+      put("marksmanship", { label:m.label,
         x:0, y:6, w:m.w, h:m.h, art:m.art,
         datum:"cuff_bottom", root:"cuff", edge:"bottom", off:6,
         cite:"ANNEX-H 3H-3; CH3S1 3.b.(6) — single piece" });
@@ -589,7 +661,7 @@ function resolve(){
   let sy = 20, prevLabel = null;
   for (const s of stack){
     const label = `${s.cat} – ${s.d.label}`;
-    push(L,{ slot:"left_proficiency_stack", label, sleeve:"left",
+    put("proficiency_stack", { label,
       x:0, y:sy, w:CIRCLE, h:CIRCLE, art:s.d.art, missingArt:!!s.d.missingArt,
       datum:"cuff_bottom", root:"cuff", edge:"bottom", off:sy,
       // only the lowest badge takes the 20 cm anchor; the rest chain off it
@@ -599,20 +671,20 @@ function resolve(){
   }
   if (stack.length && state.mk === "none"){
     add("Empty band from 0 to 20 cm on the left sleeve. Correct, not a layout error — the stack holds at 20 cm whether or not marksmanship is worn. Do not close the gap.",
-        "info", "rules JSON left_proficiency_stack.notes[0]");
+        "info", "rules JSON proficiency_stack.notes[0]");
   }
 
   /* ---- RIGHT: star level. ALP resolves to a phantom so the grid still anchors ---- */
   const st = STARS[state.star];
   const starWorn = state.star !== "none" && !!st.art;
-  const starBox = { slot:"right_star_level", label: starWorn ? st.label : "Star position (no training level yet)",
-    sleeve:"right", x:0, y:6, w:STAR_W, h:STAR_H, art:st.art || null,
+  const starBox = { label: starWorn ? st.label : "Star position (no training level yet)",
+    x:0, y:6, w:STAR_W, h:STAR_H, art:st.art || null,
     ghost:!starWorn, datum:"cuff_bottom", root:"cuff", edge:"bottom", off:6,
     cite:"ANNEX-H 3H-4-1; CH3S1 3.b.(10)" };
-  if (state.star !== "none") push(R, starBox);
+  if (state.star !== "none") put("star_level", starBox);
   if (st.viaALP){
     add("ALP has no star insignia of its own yet, so the cadet keeps the Gold Star — the highest level they hold that carries a badge. The slot is never vacant, and nothing special happens to the CTC grid above it.",
-        "info", "rules pack v0.3-draft, right_star_level.house_rules[0]");
+        "info", "rules pack v0.3-draft, star_level.house_rules[0]");
   }
 
   /* ---- RIGHT: CTC grid, bottom edge 1 cm above the star's top ---- */
@@ -630,7 +702,7 @@ function resolve(){
         : {of:"the row below", ofShort:"CTC grid, bottom row", gap:0, dir:"above"};
       const show = cell.row === 0 && !bottomDrawn;
       if (show) bottomDrawn = true;
-      push(R,{ slot:"right_ctc_grid", label:`${q.cat} – ${q.nm}`, sleeve:"right",
+      put("ctc_grid", { label:`${q.cat} – ${q.nm}`,
         x: cell.col * CIRCLE, y: gridBottom + cell.row * CIRCLE, w:CIRCLE, h:CIRCLE,
         art:q.k, cell:cell.nm, seq:i+1, rel, dimShow: show,
         datum:"cuff_bottom", root:"cuff", edge:"bottom", off: gridBottom + cell.row*CIRCLE,
@@ -654,7 +726,7 @@ function resolve(){
   if (state.appt !== "none"){
     const a = APPTS[state.appt];
     const it = {w:a.w};
-    apptBox = push(R,{ slot:"right_appointment", label:a.label, sleeve:"right",
+    apptBox = put("appointment", { label:a.label,
       x:0, y:20, w:a.w, h:a.h, art:a.art,
       datum:"cuff_bottom", root:"cuff", edge:"bottom", off:20,
       cite:"CH3S1 3.b.(8); ANNEX-H 3H-4-3" });
@@ -667,9 +739,9 @@ function resolve(){
     const h = rk.h;
     if (JUNIOR.includes(state.rank)){
       // chevrons point down, so "tips" = bbox top, pinned 1 cm below the RCAC badge
-      push(R,{ slot:"right_rank_junior", label:rk.label, sleeve:"right",
+      put("rank_junior", { label:rk.label,
         x:0, y:rcacBottom - 1 - h, w:rk.w, h, art:rk.art, conf:rk.conf,
-        datum:"right_rcac_badge", root:"shoulder", edge:"top", off:1, dir:"below",
+        datum:"element_badge", root:"shoulder", edge:"top", off:1, dir:"below",
         rel:{of:"the RCAC badge", ofShort:"RCAC badge", gap:1, dir:"below"},
         cite:"ANNEX-H 3H-4-1; CH3S1 3.b.(7)(i)" });
       if (state.appt !== "none"){
@@ -678,9 +750,10 @@ function resolve(){
       }
     } else {
       const y = apptBox ? apptBox.y + apptBox.h + 1 : 20;
-      push(R,{ slot: apptBox ? "right_rank_senior_with_appointment" : "right_rank_senior_no_appointment",
-        label:rk.label, sleeve:"right", x:0, y, w:rk.w, h, art:rk.art, conf:rk.conf,
-        datum: apptBox ? "right_appointment" : "cuff_bottom", root:"cuff", edge:"bottom", off: apptBox ? 1 : 20,
+      put(apptBox ? "rank_senior_with_appointment" : "rank_senior_no_appointment", {
+        label:rk.label,
+        x:0, y, w:rk.w, h, art:rk.art, conf:rk.conf,
+        datum: apptBox ? "appointment" : "cuff_bottom", root:"cuff", edge:"bottom", off: apptBox ? 1 : 20,
         dir: apptBox ? "above" : null,
         rel: apptBox ? {of:`the ${apptBox.label} badge`, ofShort:"Appointment badge", gap:1, dir:"above"} : null,
         cite: apptBox ? "ANNEX-H 3H-4-3; CH3S1 3.b.(7)(ii)" : "ANNEX-H 3H-4-2; CH3S1 3.b.(7)(ii)" });
@@ -704,8 +777,8 @@ function validate(items, sleeve, warn){
   for (let a=0;a<real.length;a++){
     for (let b=a+1;b<real.length;b++){
       const A=real[a], B=real[b];
-      if (A.slot==="right_ctc_grid" && B.slot==="right_ctc_grid") continue;  // grid cells touch by design
-      if (A.slot==="left_proficiency_stack" && B.slot==="left_proficiency_stack") continue;
+      if (A.slot==="ctc_grid" && B.slot==="ctc_grid") continue;  // grid cells touch by design
+      if (A.slot==="proficiency_stack" && B.slot==="proficiency_stack") continue;
       // Past four medals, Chapter 5 says they overlap with the senior fully visible.
       // That is the regulation, not a collision, so it must not draw a clash box.
       if (A.slot==="right_medals" && B.slot==="right_medals") continue;
@@ -1504,6 +1577,12 @@ const DATUM_LABEL = {shoulder_seam:"Shoulder seam", cuff_bottom:"Cuff bottom edg
 function render(){
   SLEEVE_LEN = state.sleeveLen;
   syncCounts();
+  // Element drives the cloth. Set on the root so both the screen and print
+  // palettes inherit it, rather than duplicating the colour per media block.
+  const el = EL();
+  document.documentElement.style.setProperty("--cloth", el.cloth.fill);
+  document.documentElement.style.setProperty("--cloth-edge", el.cloth.edge);
+  document.documentElement.dataset.element = state.element;
   const {L,R,warn} = resolve();
   validate(L,"Left",warn);
   validate(R,"Right",warn);
@@ -1685,7 +1764,7 @@ function syncPins(){
   document.getElementById("pinCount").textContent = n ? `${n} of 3` : "";
 }
 
-const BIND = {rank:"rank", appt:"appt", unit:"unit", star:"star", mk:"mk", fit:"fit", fa:"fa", mus:"mus"};
+const BIND = {element:"element", rank:"rank", appt:"appt", unit:"unit", star:"star", mk:"mk", fit:"fit", fa:"fa", mus:"mus"};
 for (const id in BIND){
   document.getElementById(id).addEventListener("change", e => { state[BIND[id]] = e.target.value; render(); });
 }
@@ -1704,6 +1783,7 @@ const FRONT_BIND = {
   fCommem:"commemorative", fPoppy:"poppy"
 };
 (function wireFront(){
+  fill("element", ELEMENTS, (k,v) => v.ready ? v.label : `${v.label} (not modelled)`);
   fill("unit", UNITS);
   fill("fDofe", DOFE, k => DOFE[k]);
   fill("fOrder", ORDERS, k => ORDERS[k].label);

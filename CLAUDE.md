@@ -27,9 +27,9 @@ the illustration lost every time:
 
 | Slot | Conflict | Adopted |
 |---|---|---|
-| `left_proficiency_stack` | Annex H says 12 cm | CH3S1 3.b.(5) → 20 cm |
-| `left_marksmanship` | poster draws ~0.73–0.86 cm | CH3S1 3.b.(6) → 0.5 cm |
-| `right_ctc_grid` | Annex H text describes a 5-badge stagger | CH3S1 3.b.(9) → aligned 2×3 |
+| `proficiency_stack` | Annex H says 12 cm | CH3S1 3.b.(5) → 20 cm |
+| `marksmanship` | poster draws ~0.73–0.86 cm | CH3S1 3.b.(6) → 0.5 cm |
+| `ctc_grid` | Annex H text describes a 5-badge stagger | CH3S1 3.b.(9) → aligned 2×3 |
 | `front_right_expedition` | workbook says left pocket | CH5-B figure → right pocket |
 | `right_commendation_stack` | 5D-1 says national goes left | Ch5 → one right-hand stack |
 | `right_commendation_stack` | 10050 ranks a VCDS Commendation | Ch5 → "Command Commendation" |
@@ -106,6 +106,15 @@ python build_all.py      # regenerates artwork, both pages, and smoke-tests them
 - **Delete one-time scripts once applied.** Their effect lives in the template or the
   rules pack; leaving them around invites someone to run one twice. 27 have been
   deleted this way.
+- **Sleeve slot ids are semantic, never positional.** `marksmanship`, not
+  `left_marksmanship`. Which arm a slot lands on is the element's business and lives in
+  `ELEMENTS[...].sleeves`, because that is exactly what differs between elements: Army
+  wears rank right, Sea left, Air both. `put(slot, box)` in `resolve()` is the only
+  place a slot meets a side. Breast slots keep their side, which is anatomical.
+- **`docs/` is a release, not a build step.** `build_all.py` writes `demo/` and does
+  not touch `docs/`; only `build_site.py` does. Run it and commit when you want to
+  publish, not on every rebuild. The pages are ~7 MB of base64 that compresses to 74%
+  and cannot be delta'd, so every committed rebuild is ~5 MB of permanent history.
 - **Two build outputs per page.** `tunic.html` is artifact-shaped — page content with no
   doctype, html, head or body, because the Artifact tool supplies that skeleton.
   `tunic.local.html` is a complete document for local work. A fragment is not a
@@ -178,7 +187,7 @@ workaround, and they are all in the pipeline.
 
 ## Where things stand
 
-Rules **v0.19-draft**: 22 slots, 24 open questions, 6 conflicts, sources CH3S1,
+Rules **v0.20-draft**: 20 slots, 24 open questions, 6 conflicts, sources CH3S1,
 ANNEX-H, CH5-A–D, CH5-S7, CH4-A, CJCRGPO-10050 and CATO 13-16 (para 19 now sourced
 verbatim, confirming the precedence for every medal but the Order of St. George).
 

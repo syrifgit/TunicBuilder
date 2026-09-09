@@ -43,8 +43,12 @@ then rebuild:
 ```bash
 pip install -r requirements.txt
 python build_all.py           # regenerate artwork + build the pages
-python build_site.py          # copy the built pages into docs/
 ```
+
+`docs/` is a **release**, not part of the build. `build_all.py` never touches it; run
+`python build_site.py` and commit when you actually want to publish. Each built page is
+about 7 MB of base64, which compresses to 74% and cannot be stored as a delta, so
+committing one on every rebuild adds roughly 5 MB of permanent history each time.
 
 `build_all.py` needs two files that are **not in the repo**, because they are the
 artwork as a library rather than as a tool - see *What you need to provide*. Without
@@ -89,7 +93,7 @@ demo/     tunic.template.html   the layout tool, source
           plate.template.html   the identification sheet, source
           build.py, build_plate_html.py   inline the artwork -> *.html
 notes/    CLAUDE_1.md     project brief and settled decisions
-docs/     build_site.py output: index.html + plate.html. Gitignored - see Publishing
+docs/     build_site.py output: index.html + plate.html. Tracked; a release, not a build
 ```
 
 Edit a `.template.html`, run its build script, and the `.html` next to it is

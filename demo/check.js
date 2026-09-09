@@ -22,7 +22,11 @@ function stubElement(tag) {
   const el = {
     tagName: tag,
     children: [],
-    style: {},
+    // CSSStyleDeclaration is an object with methods, not a bare bag. A page that
+    // sets a custom property is doing something ordinary and must not fail here.
+    style: {setProperty(k, v){ this[k] = v; },
+            getPropertyValue(k){ return this[k] ?? ""; },
+            removeProperty(k){ const v = this[k]; delete this[k]; return v ?? ""; }},
     dataset: {},
     _attrs: {},
     textContent: "",

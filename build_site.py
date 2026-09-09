@@ -18,7 +18,12 @@ import sys
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.join(ROOT, "docs")
 PAGES = [("demo/tunic.local.html", "index.html", "the layout tool"),
-         ("demo/plate.local.html", "plate.html", "the badge identification sheet")]
+         ("demo/plate.local.html", "plate.html", "the badge identification sheet"),
+         # The artwork the two pages load. Kept out of the HTML on purpose: the pages
+         # change often and are small, these change almost never and are large, so a
+         # normal commit no longer rewrites megabytes of base64.
+         ("demo/tunic_art.js", "tunic_art.js", "artwork for the layout tool"),
+         ("demo/plate_art.js", "plate_art.js", "artwork for the identification sheet")]
 
 # GitHub Pages runs Jekyll by default, which skips files and folders starting with
 # an underscore. Nothing here does, but the marker costs nothing and removes a

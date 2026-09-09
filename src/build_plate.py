@@ -46,7 +46,9 @@ def pack(im):
     sc = MAXPX / max(im.width, im.height)
     if sc < 1:
         im = im.resize((max(1, round(im.width*sc)), max(1, round(im.height*sc))), Image.LANCZOS)
-    buf = io.BytesIO(); im.save(buf, "PNG", optimize=True)
+    # WebP q90, not PNG - see the note in build_art.py. Every entry here is WebP,
+    # so the mime lives in the page rather than per entry.
+    buf = io.BytesIO(); im.save(buf, "WEBP", quality=90, method=4)
     return base64.b64encode(buf.getvalue()).decode(), trim
 
 rows = list(csv.DictReader(open("data/manifest.csv", encoding="utf-8")))

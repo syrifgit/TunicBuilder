@@ -38,6 +38,7 @@ STEPS = [
     ("src/recut_marksmanship.py", "split rifles from numeral"),
     ("src/recut_fitness.py",      "pull fitness badges off the source PDF"),
     ("src/recut_pins.py",         "pull competition and expedition pins off the PDF"),
+    ("src/repack_medals.py",      "medal pack PNG -> WebP"),
     ("src/build_art.py",          "pack artwork for the layout tool"),
     ("src/build_plate.py",        "pack artwork for the identification sheet"),
     ("src/build_badge_map.py",    "labels.py -> data/badge_map.csv"),

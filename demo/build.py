@@ -42,24 +42,42 @@ def main():
     # Medal, ribbon and commendation-pin artwork. Authored separately rather than
     # extracted from the poster, which never carried them. Merged into BADGE_ART so
     # the drawing code has one lookup; the key namespaces do not overlap.
-    medals = os.path.join(ROOT, "Medals and Ribbons", "medal_art_pack.js")
+    medals = os.path.join(ROOT, "art", "medal_pack.js")   # WebP, see repack_medals.py
     if "/*__MEDAL_ART__*/" not in tpl:
         sys.exit("marker /*__MEDAL_ART__*/ missing from template")
-    if os.path.exists(medals):
+    have_medals = os.path.exists(medals)
+    pack = ""
+    if have_medals:
         pack = open(medals, encoding="utf-8").read()
         body = body.replace("/*__MEDAL_ART__*/",
                             pack + "\nObject.assign(BADGE_ART, MEDAL_ART);")
     else:
         # Not fatal: every medal then draws as a labelled "no art" box, which is what
         # the tool did before the pack existed.
-        print("  medal_art_pack.js not found - medals will draw as placeholders")
+        print("  art/medal_pack.js not found - medals will draw as placeholders")
         body = body.replace("/*__MEDAL_ART__*/", "")
 
-    for name, text in [("tunic.html", body),
-                       ("tunic.local.html", SKELETON.replace("{content}", body))]:
+    # The LOCAL build keeps the artwork in a sibling file instead of inlining it.
+    # Committing the inlined page meant every template edit rewrote megabytes of
+    # base64, which git cannot delta and which looks a lot like dumping binaries.
+    # Split out, the page is small and changes often; the artwork is large and
+    # almost never changes. file:// loads a sibling classic script fine, so
+    # double-clicking the page still works as long as the folder stays together.
+    ART_FILE = "tunic_art.js"
+    block = "<script>\n/*__ART_PACK__*/\n/*__MEDAL_ART__*/\n</script>"
+    if block not in tpl:
+        sys.exit("the art <script> block is not where build.py expects it")
+    external = tpl.replace(block, f'<script src="{ART_FILE}"></script>')
+    packs = art + "\n" + (pack + "\nObject.assign(BADGE_ART, MEDAL_ART);\n" if have_medals else "")
+    open(os.path.join(HERE, ART_FILE), "w", encoding="utf-8").write(packs)
+
+    for name, text in [("tunic.html", body),                                   # artifact
+                       ("tunic.local.html", SKELETON.replace("{content}", external))]:
         p = os.path.join(HERE, name)
         open(p, "w", encoding="utf-8").write(text)
         print(f"{p}  {len(text)/1e6:.2f} MB")
+    print(f"{os.path.join(HERE, ART_FILE)}  {len(packs)/1e6:.2f} MB  (artwork, "
+          f"loaded by tunic.local.html)")
 
 
 if __name__ == "__main__":

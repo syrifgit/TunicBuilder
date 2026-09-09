@@ -27,10 +27,14 @@ There are six such conflicts so far.
 ## Just want to use it
 
 Open **`docs/index.html`**. Double-click it - there is nothing to install, build or
-serve. It is a complete self-contained page with every badge inlined, and it is
-committed, so a clone or a ZIP download runs straight away.
+serve. It is committed, so a clone or a ZIP download runs straight away.
 
 `docs/plate.html` is the badge identification sheet, same deal.
+
+Each page loads its artwork from a sibling file (`tunic_art.js`, `plate_art.js`), so
+**keep the folder together** - the page alone will draw empty boxes. That split is
+deliberate: the pages are small and change often, the artwork is large and almost
+never changes, so a normal commit no longer rewrites megabytes of base64.
 
 The only network request either page makes is the webfont; both work offline without
 it, just in a fallback face.

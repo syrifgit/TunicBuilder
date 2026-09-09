@@ -1554,7 +1554,7 @@ function drawSleeve(g, items, side, cx, ybase, out){
 
     if (art && !it.ghost){
       g.appendChild(el("image",{x,y,width:w,height:h, preserveAspectRatio:"none",
-        href:"data:image/png;base64,"+art.d}));
+        href:"data:"+(art.m||"image/png")+";base64,"+art.d}));
     } else {
       g.appendChild(el("rect",{x,y,width:w,height:h, rx: Math.abs(it.w-it.h)<1e-6 ? w/2 : 2,
         fill: it.ghost ? "none" : "var(--brass-soft)",
@@ -1626,7 +1626,7 @@ function drawPocket(g, items, side, cx, ptopY, out, topCm){
 
     if (art){
       g.appendChild(el("image",{x,y,width:w,height:h, preserveAspectRatio:"none",
-        href:"data:image/png;base64,"+art.d}));
+        href:"data:"+(art.m||"image/png")+";base64,"+art.d}));
     } else if (it.nametag){
       g.appendChild(el("rect",{x,y,width:w,height:h, rx:1, fill:"#14181A",
         stroke:"var(--ink-3)", "stroke-width":.6}));

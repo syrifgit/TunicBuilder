@@ -115,6 +115,16 @@ python build_all.py      # regenerates artwork, both pages, and smoke-tests them
   not touch `docs/`; only `build_site.py` does. Run it and commit when you want to
   publish, not on every rebuild. The pages are ~7 MB of base64 that compresses to 74%
   and cannot be delta'd, so every committed rebuild is ~5 MB of permanent history.
+- **The artwork is WebP, not PNG, and lives outside the local pages.** The badges are
+  photographic scans that PNG stored at about 2.3 bytes per pixel; WebP q90 is a third
+  of the size and visually identical at the size the tool draws. Entries carry
+  `"m":"image/webp"` and the drawing code reads `art.m || "image/png"`, so a pack can
+  mix formats. `tunic.local.html` and `docs/index.html` load `tunic_art.js` as a
+  sibling script rather than inlining it - `file://` loads sibling classic scripts
+  fine, so double-clicking still works, but the folder has to stay together.
+  Together those two changes took the published page from 6.8 MB to 0.11 MB plus a
+  2.26 MB artwork file that hardly ever changes. That matters: committing a rewritten
+  multi-megabyte blob on every edit is what got the GitHub account flagged.
 - **Two build outputs per page.** `tunic.html` is artifact-shaped — page content with no
   doctype, html, head or body, because the Artifact tool supplies that skeleton.
   `tunic.local.html` is a complete document for local work. A fragment is not a

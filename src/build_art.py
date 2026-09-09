@@ -99,6 +99,17 @@ RECUT = {
     "art/recut/rcac_badge__da_vi_d_d_e_f_al_ar_de.png": "rcac_badge",
 }
 
+def encode(im, aspect):
+    """WebP q90, not PNG. These are photographic badge scans, which PNG stores at
+    about 2.3 bytes per pixel - the whole pack was 6.3 MB of base64 for images no
+    wider than 413 px. WebP q90 is a third of that and visually identical at the
+    sizes the tool draws. `m` is the data-URI mime; entries without it are PNG."""
+    buf = io.BytesIO()
+    im.save(buf, "WEBP", quality=90, method=4)
+    return {"d": base64.b64encode(buf.getvalue()).decode(),
+            "aspect": aspect, "m": "image/webp"}
+
+
 z = zipfile.ZipFile(ZIP)
 art, report = {}, []
 for slug, key in WANTED.items():
@@ -115,10 +126,7 @@ for slug, key in WANTED.items():
     if scale < 1:
         im = im.resize((max(1, round(im.width * scale)),
                         max(1, round(im.height * scale))), Image.LANCZOS)
-    buf = io.BytesIO()
-    im.save(buf, "PNG", optimize=True)
-    art[key] = {"d": base64.b64encode(buf.getvalue()).decode(),
-                "aspect": round(trim_aspect, 4)}
+    art[key] = encode(im, round(trim_aspect, 4))
     report.append((key, slug, "ok", round(raw_aspect, 3), round(trim_aspect, 3)))
 
 for path, key in RECUT.items():
@@ -130,8 +138,7 @@ for path, key in RECUT.items():
     scale = MAXPX / max(im.width, im.height)
     if scale < 1:
         im = im.resize((max(1, round(im.width*scale)), max(1, round(im.height*scale))), Image.LANCZOS)
-    buf = io.BytesIO(); im.save(buf, "PNG", optimize=True)
-    art[key] = {"d": base64.b64encode(buf.getvalue()).decode(), "aspect": round(trim_aspect, 4)}
+    art[key] = encode(im, round(trim_aspect, 4))
     report.append((key, os.path.basename(path), "ok", round(trim_aspect,3), round(trim_aspect,3)))
 
 os.makedirs("art", exist_ok=True)

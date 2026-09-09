@@ -649,7 +649,7 @@ const FILL_FOUR = [
    ============================================================ */
 const ELEMENTS = {
   army: {
-    label:"Army", ready:true,
+    label:"Army", art:true,
     cloth:{fill:"#123D2C", edge:"#0A2A1E"},          // rifle green
     nametag:"black",
     slots:{element_badge:true, marksmanship:true, appointment:true},
@@ -663,7 +663,7 @@ const ELEMENTS = {
     cite:"CH3S1 3.b; ANNEX-H"
   },
   sea: {
-    label:"Sea", ready:false,
+    label:"Sea", art:false,
     cloth:{fill:"#1A1A1A", edge:"#000000"},          // black. UNSOURCED
     nametag:"black",
     // Sea has no RCAC badge and no equivalent. The army shoulder title splits in two:
@@ -694,7 +694,7 @@ const ELEMENTS = {
     cite:"Sewn Insignia para 3, Sea Cadets"
   },
   air: {
-    label:"Air", ready:false,
+    label:"Air", art:false,
     cloth:{fill:"#3A4A5C", edge:"#22303C"},          // air force blue. UNSOURCED
     nametag:"air force blue",
     // No RCAC badge, no star. CTC and participation share one right-sleeve block.
@@ -779,9 +779,9 @@ function resolve(){
     return last;
   };
 
-  if (!EL().ready){
-    add(`${EL().label} cadets are not modelled yet. The sleeve assignment is in place — rank goes ${JSON.stringify(EL().sleeves.rank)} — but every badge, size and placement below is still the ARMY ruleset, and the artwork is army artwork. Nothing here is wearable for a ${EL().label} cadet.`,
-        "crit", "no source instruction for this element");
+  if (!EL().art){
+    add(`${EL().label} placement is sourced, but there is no ${EL().label} artwork: rank, training level and proficiency badges all draw ARMY pictures. Positions are right, images are wrong — do not use this to identify a badge.`,
+        "warn", EL().cite || "Sewn Insignia para 3");
   }
 
   /* ---- shared shoulder items, both sleeves ---- */
@@ -2017,7 +2017,7 @@ const FRONT_BIND = {
   fCommem:"commemorative", fPoppy:"poppy"
 };
 (function wireFront(){
-  fill("element", ELEMENTS, (k,v) => v.ready ? v.label : `${v.label} (not modelled)`);
+  fill("element", ELEMENTS, (k,v) => v.art ? v.label : `${v.label} (army artwork)`);
   fill("unit", UNITS);
   fill("fDofe", DOFE, k => DOFE[k]);
   fill("fOrder", ORDERS, k => ORDERS[k].label);

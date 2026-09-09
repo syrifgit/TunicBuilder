@@ -1,6 +1,6 @@
 {
   "$comment": "Placement rules for Royal Canadian Army Cadet tunic (jacket) insignia. Sleeves only. Front of tunic not yet in scope.",
-  "version": "0.20-draft",
+  "version": "0.21-draft",
   "scope": "army_cadet_sleeves_and_front",
   "sources": [
     {
@@ -968,7 +968,14 @@
     "The Sea, Army and Air Cadet Service Medals are modelled as one award in three elements, exclusive by the element the cadet served in, with a transfer carrying the earlier one. Confirm a cadet cannot hold two.",
     "Order of St. George is absent from CATO 13-16 para 19 entirely. Its seq 8 position rests on CJCR Gp O 10050 para 7.4 alone, which is a JCR order. Every other medal in the list is now confirmed against CATO; this one is not, and a cadet holding it could be wearing it in the wrong place in the group.",
     "Air Force Association Medal (CATO 13-16 para 19.f) has no sourced ribbon description, so it is omitted from the tool rather than drawn. It is an air-element award and reaches an army tunic only by transfer, so the practical cost is low. Revisit if CATO 52-08 or an Air Cadet League dress instruction turns up.",
-    "Medal and ribbon artwork fidelity is mixed and recorded per item in the artwork manifest. Lord Strathcona, RCL Excellence, Order of St. George and the Army Cadet Service Medal are sampled from source images; Bravery and ANAVETS stripe widths are still eyeballed; every medallion obverse is stylised because the central relief is not reproducible from the sources to hand."
+    "Medal and ribbon artwork fidelity is mixed and recorded per item in the artwork manifest. Lord Strathcona, RCL Excellence, Order of St. George and the Army Cadet Service Medal are sampled from source images; Bravery and ANAVETS stripe widths are still eyeballed; every medallion obverse is stylised because the central relief is not reproducible from the sources to hand.",
+    "SEA COLLISION, real and unresolved. Three things are described as low on the left sleeve above the cuff: the appointment insignia (2x2 grid), the proficiency insignia (2x2 grid plus a fifth centred above), and the Staff Cadet participation badge. They cannot all be flush above the cuff. The renderer draws the guess and the validator flags the overlap rather than nudging anything.",
+    "Sea and Air geometry is entirely GUESSED from the army model. Elbow is taken as mid-sleeve (28 cm on a 57 cm sleeve) to read 'mid-way between the elbow and the shoulder seam' as 42.5 cm and 'mid-way between the elbow and the bottom of the cuff' as 14 cm. Nothing is measured and nothing is cited.",
+    "Sea and Air artwork does not exist. Both elements draw ARMY artwork for rank, training level and proficiency badges, so a sea Petty Officer renders as an army chevron. Correct structure, wrong picture.",
+    "Sea's corps title slot is modelled (a rectangular title directly below the shoulder title, which is common to all sea cadets) but has no dimensions and no artwork.",
+    "Air's CTC fill order IS sourced - first badge centred above the cuff, second to the front, third to the rear, second row above in the same order, seventh above the fourth, maximum seven. Where that block starts above the cuff is not, and neither is where the training level badge goes; it is drawn on the left sleeve to keep it clear of the CTC block.",
+    "Air pilot wings (Glider / Power) are not modelled. They are worn centred directly above the left breast pocket, horizontally, and the Glider Pilot CTC badge is never worn with Glider Pilot Wings - a mutual exclusion the tool does not yet enforce. Power Pilot supersedes Glider if both are held.",
+    "Element-specific participation insignia are modelled as data but not yet drawn: Sea's Regatta series and Air's Effective Speaking series (the equivalents of the army National Rifle Team), plus the deployment and exchange badges. Sea wears Staff Cadet on the lower LEFT sleeve and everything else lower right; Air wears all of them in with the CTC block."
   ],
   "changelog": [
     {
@@ -1046,6 +1053,10 @@
     {
       "version": "0.20-draft",
       "change": "Sleeve slot ids renamed from positional to semantic (left_marksmanship -> marksmanship, right_rank_junior -> rank_junior) and the two duplicated pairs merged (corps_name, element_badge). Which arm a slot is worn on now belongs to the element rather than to the slot's name, which is the prerequisite for Sea (rank left) and Air (rank both arms). Army geometry is unchanged and the rendered output was verified byte-identical."
+    },
+    {
+      "version": "0.21-draft",
+      "change": "Sea and Air populated with the structure Lt Beal supplied: rank names and the junior/senior split, training levels (same system as the army star, different terminology and artwork, and a level 5 badge both elements carry), sea appointments and proficiencies, element-specific summer training, and participation insignia. Summer training rows are now tagged tri-service or army-only. star_level renamed training_level since it is not army-specific. Slot PRESENCE is per element: neither Sea nor Air wears an RCAC badge or a marksmanship badge, and Sea splits the shoulder title into a common title plus a corps title. All Sea and Air geometry is guessed and flagged; army output verified byte-identical."
     }
   ],
   "orders_of_dress": {

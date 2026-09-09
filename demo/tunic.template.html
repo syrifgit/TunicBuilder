@@ -261,7 +261,7 @@ footer.foot p{margin:.5em 0}
     <div class="group">
       <div class="eyebrow">Sleeve badges</div>
       <div class="field"><label for="star">Star level</label><select id="star"></select></div>
-      <div class="field"><label for="mk">Marksmanship</label><select id="mk"></select></div>
+      <div class="field" id="mkField"><label for="mk">Marksmanship</label><select id="mk"></select></div>
       <div class="field"><label for="fit">Fitness</label><select id="fit"></select></div>
       <div class="field"><label for="fa">First aid</label><select id="fa"></select></div>
       <div class="field"><label for="mus">Music</label><select id="mus"></select></div>
@@ -442,63 +442,134 @@ const TITLE_W_RATIO = 1.923, TITLE_H_RATIO = 0.606;
 const RCAC_MEASURED = 6.35;
 
 /* ============================================================
-   ELEMENTS
-   Everything that differs between Army, Sea and Air lives here. Slot ids are
-   SEMANTIC ("rank", not "right_rank"), and `sleeves` is what puts each one on an
-   arm - because that is exactly what differs: Sea wears rank on the left arm, Air
-   on both. Anything keyed to a side in the resolver could not express that.
-   Sea and Air are stubs. They carry the shape so the plumbing can be built and
-   tested, and nothing else - no invented placements, no guessed sizes.
+   SEA AND AIR TABLES
+   Names and structure are from Lt Beal. EVERY dimension and position below is a
+   guess scaled off the army model, marked conf:"guess", and expected to change.
+   Artwork is army artwork throughout: there is no sea or air pack yet, so a sea
+   Petty Officer draws an army chevron. The validator says so.
    ============================================================ */
-const ELEMENTS = {
-  army: {
-    label:"Army", ready:true,
-    cloth:{fill:"#123D2C", edge:"#0A2A1E"},          // rifle green
-    nametag:"black",
-    sleeves:{
-      corps_name:"both", element_badge:"both",
-      marksmanship:"left", proficiency_stack:"left",
-      star_level:"right", ctc_grid:"right", appointment:"right", rank:"right"
-    },
-    cite:"CH3S1 3.b; ANNEX-H"
-  },
-  sea: {
-    label:"Sea", ready:false,
-    cloth:{fill:"#1A1A1A", edge:"#000000"},          // black. UNSOURCED
-    nametag:"black",
-    sleeves:{
-      corps_name:"both", element_badge:"both",
-      marksmanship:"left", proficiency_stack:"left",
-      star_level:"right", ctc_grid:"right", appointment:"right",
-      rank:"left"                                     // stated by Lt Beal
-    },
-    cite:null
-  },
-  air: {
-    label:"Air", ready:false,
-    cloth:{fill:"#3A4A5C", edge:"#22303C"},          // air force blue. UNSOURCED
-    nametag:"air force blue",
-    sleeves:{
-      corps_name:"both", element_badge:"both",
-      marksmanship:"left", proficiency_stack:"left",
-      star_level:"right", ctc_grid:"right", appointment:"right",
-      rank:"both"                                     // stated by Lt Beal
-    },
-    cite:null
-  }
+
+// Sea. Junior rank sits high on the left sleeve, senior rank low on it.
+const RANKS_SEA = {
+  OC  : {label:"Ordinary Cadet",                    cls:"none"},
+  AC  : {label:"Able Cadet",                        cls:"chevron", w:10.00, h: 6.50, art:"rank_LCpl"},
+  LC  : {label:"Leading Cadet",                     cls:"chevron", w:10.00, h: 8.00, art:"rank_Cpl"},
+  MC  : {label:"Master Cadet",                      cls:"chevron", w:10.00, h: 9.50, art:"rank_MCpl"},
+  PO2 : {label:"Petty Officer Cadet 2nd Class",     cls:"chevron", w:10.00, h:11.00, art:"rank_Sgt"},
+  PO1 : {label:"Petty Officer Cadet 1st Class",     cls:"crown",   w: 5.08, h: 5.08, art:"rank_WO"},
+  CPO2: {label:"Chief Petty Officer Cadet 2nd Class",cls:"crown",  w: 7.62, h: 5.08, art:"rank_MWO"},
+  CPO1: {label:"Chief Petty Officer Cadet 1st Class",cls:"crown",  w: 7.62, h:10.16, art:"rank_CWO"}
 };
-const EL = () => ELEMENTS[state.element] || ELEMENTS.army;
-// Rank has three placements depending on rank level and whether an appointment is
-// worn, but they are one thing as far as WHICH ARM is concerned. Slot ids stay
-// per-placement so they match the rules pack; the family is what gets assigned.
-const SLOT_FAMILY = {
-  rank_junior:"rank", rank_senior_no_appointment:"rank", rank_senior_with_appointment:"rank"
+const JUNIOR_SEA = ["AC","LC","MC","PO2"];        // high on the left sleeve
+const SENIOR_SEA = ["PO1","CPO2","CPO1"];         // low on the left sleeve
+
+const RANKS_AIR = {
+  Cdt : {label:"Cadet",                        cls:"none"},
+  LAC : {label:"Leading Air Cadet",            cls:"chevron", w:10.00, h: 6.50, art:"rank_LCpl"},
+  Cpl : {label:"Corporal",                     cls:"chevron", w:10.00, h: 8.00, art:"rank_Cpl"},
+  FCpl: {label:"Flight Corporal",              cls:"chevron", w:10.00, h: 9.50, art:"rank_MCpl"},
+  Sgt : {label:"Sergeant",                     cls:"chevron", w:10.00, h:11.00, art:"rank_Sgt"},
+  FSgt: {label:"Flight Sergeant",              cls:"crown",   w: 5.08, h: 5.08, art:"rank_WO"},
+  WO2 : {label:"Warrant Officer Second Class", cls:"crown",   w: 7.62, h: 5.08, art:"rank_MWO"},
+  WO1 : {label:"Warrant Officer First Class",  cls:"crown",   w: 7.62, h:10.16, art:"rank_CWO"}
 };
-// Which sleeve or sleeves a slot lands on. The only place a slot meets a side.
-function sleevesFor(slot){
-  const v = EL().sleeves[SLOT_FAMILY[slot] || slot];
-  return v === "both" ? ["left", "right"] : [v || "right"];
-}
+const JUNIOR_AIR = ["LAC","Cpl","FCpl","Sgt"];
+const SENIOR_AIR = ["FSgt","WO2","WO1"];
+
+// Training levels. Same system as the army star, different terminology and artwork, and BOTH carry a
+// badge at level 5 - so the army's "wear the highest level that carries a badge"
+// fallback has nothing to fall back to here.
+const LEVELS_SEA = {
+  none:{label:"None"},
+  p1:{label:"Phase 1", art:"star_green"},  p2:{label:"Phase 2", art:"star_red"},
+  p3:{label:"Phase 3", art:"star_silver"}, p4:{label:"Phase 4", art:"star_gold"},
+  p5:{label:"Phase 5", art:"star_gold"}
+};
+const LEVELS_AIR = {
+  none:{label:"None"},
+  l1:{label:"Level 1", art:"star_green"},  l2:{label:"Level 2", art:"star_red"},
+  l3:{label:"Level 3", art:"star_silver"}, l4:{label:"Level 4", art:"star_gold"},
+  l5:{label:"Level 5", art:"star_gold"}
+};
+
+// Sea appointments. More than army's two, worn as a grid low on the left sleeve.
+const APPTS_SEA = {
+  none:{label:"None"},
+  stores    :{label:"Stores",        w:3.0, h:3.0, art:null},
+  regulating:{label:"Regulating",    w:3.0, h:3.0, art:null},
+  training  :{label:"Training",      w:3.0, h:3.0, art:null},
+  writer    :{label:"Ship's Writer", w:3.0, h:3.0, art:null},
+  bugler    :{label:"Bugler",        w:3.0, h:3.0, art:null},
+  drum_major:{label:"Drum Major",    w:3.0, h:3.0, art:"appt_drum_major"},
+  pipe_major:{label:"Pipe Major",    w:3.0, h:3.0, art:"appt_pipe_major"}
+};
+
+// Sea proficiencies, on top of the tri-service fitness / first aid / music.
+const PROF_SEA = {
+  cansail:{cat:"CANSail", opts:{
+    none:{label:"None"}, l1:{label:"Level 1"}, l2:{label:"Level 2"}, l3:{label:"Level 3"},
+    l4:{label:"Level 4"}, l5:{label:"Level 5"}, l6:{label:"Level 6"},
+    inst:{label:"Instructor (7)"}}},
+  scop:{cat:"SCOP", opts:{
+    none:{label:"None"}, power:{label:"Power Boat Operator"},
+    safety:{label:"Safety Boat Operator"}, cox:{label:"Sea Boat Coxswain"}}},
+  comms:{cat:"Communicator", opts:{
+    none:{label:"None"}, l1:{label:"Level 1"}, l2:{label:"Level 2"}, l3:{label:"Level 3"}}}
+};
+
+// Element-specific summer training, added to the tri-service rows.
+const CTC_SEA = [
+  {k:"sea_seaman",   cat:"Basic Seamanship",     nm:"Basic Seamanship"},
+  {k:"sea_boat_op",  cat:"Ship's Boat Operator", nm:"Ship's Boat Operator"},
+  {k:"sea_bosun",    cat:"Boatswain's Mate",     nm:"Boatswain's Mate"},
+  {k:"sea_shipwright",cat:"Shipwright",          nm:"Shipwright"},
+  {k:"sea_sail_1",   cat:"Sail",                 nm:"Basic"},
+  {k:"sea_sail_2",   cat:"Sail",                 nm:"Intermediate"},
+  {k:"sea_sail_3",   cat:"Sail",                 nm:"Senior"},
+  {k:"sea_sail_4",   cat:"Sail",                 nm:"Advanced"}
+];
+const CTC_AIR = [
+  {k:"air_surv_1",   cat:"Survival",   nm:"Basic"},
+  {k:"air_surv_2",   cat:"Survival",   nm:"Instructor"},
+  {k:"air_avn_1",    cat:"Aviation",   nm:"Basic"},
+  {k:"air_avn_2",    cat:"Aviation",   nm:"Advanced"},
+  {k:"air_aero_1",   cat:"Aviation Technology and Aerospace", nm:"Basic"},
+  {k:"air_aero_2",   cat:"Aerospace",  nm:"Advanced"},
+  {k:"air_avtech_am",cat:"Advanced Aviation Technology", nm:"Aircraft Maintenance"},
+  {k:"air_avtech_ao",cat:"Advanced Aviation Technology", nm:"Airport Operations"},
+  {k:"air_glider",   cat:"Glider Pilot",  nm:"Scholarship"},
+  {k:"air_power",    cat:"Power Pilot",   nm:"Scholarship"}
+];
+
+// Participation insignia. Sea wears Staff Cadet low on the LEFT and the rest low on
+// the RIGHT; Air wears all of them in with the CTC badges on the right.
+const PART_SEA = [
+  {k:"sea_staff",    nm:"Staff Cadet", sleeve:"left"},
+  {k:"sea_exchange", nm:"International Exchange"},
+  {k:"sea_deploy",   nm:"Seamanship Deployment"},
+  {k:"sea_rcn",      nm:"Royal Canadian Navy Deployment"},
+  {k:"sea_cg",       nm:"Coast Guard Deployment"},
+  {k:"sea_tall",     nm:"Tall Ship Deployment"}
+];
+const PART_AIR = [
+  {k:"air_staff",    nm:"Staff Cadet"},
+  {k:"air_exchange", nm:"International Exchange"}
+];
+
+// Grid fill patterns. Army is a 2x3; Air is the same order plus a seventh above the
+// fourth. Both are {row, col} with col 0 centre, +1 front, -1 rear.
+const FILL_AIR = [
+  {row:0,col:0,nm:"bottom-centre"},{row:0,col:1,nm:"bottom-front"},{row:0,col:-1,nm:"bottom-rear"},
+  {row:1,col:0,nm:"middle-centre"},{row:1,col:1,nm:"middle-front"},{row:1,col:-1,nm:"middle-rear"},
+  {row:2,col:0,nm:"top-centre"}
+];
+// Sea's grid: four in a 2x2, the fifth centred above them.
+const FILL_SEA_2x2 = [
+  {row:0,col:-0.5,nm:"bottom-rear"},{row:0,col:0.5,nm:"bottom-front"},
+  {row:1,col:-0.5,nm:"top-rear"},  {row:1,col:0.5,nm:"top-front"},
+  {row:2,col:0,nm:"above"}
+];
+
 const RCAC_CEILING = 12 / (1 + TITLE_H_RATIO);   // 7.47 cm: title meets badge
 // Cadet Fitness Assessment. extract_badges.py skipped the whole PHYSICAL FITNESS
 // block; recut_fitness.py pulls it off the source PDF. All four measure 63.0 pt at
@@ -526,35 +597,126 @@ const MUSIC = {
 };
 
 // CTC / summer training, straight off D - Qual Info where Slot = right_ctc_grid
+// `el` is which elements run the course. Tri-service per Lt Beal: General Training,
+// band, drill, sports and fitness, and Air Rifle Marksmanship Instructor. The
+// expedition and marksmanship series, Maple Leaf and Army Cadet Voyage are army only.
+const TRI = ["army","sea","air"];
 const CTC = [
-  {k:"ctc_exped_1", cat:"Expedition",        nm:"Team Member"},
-  {k:"ctc_exped_2", cat:"Expedition",        nm:"Team Leader"},
-  {k:"ctc_exped_3", cat:"Expedition",        nm:"Leadership and Challenge"},
-  {k:"ctc_dc_1",    cat:"Drill and Ceremonial", nm:"Basic"},
-  {k:"ctc_dc_2",    cat:"Drill and Ceremonial", nm:"Instructor"},
-  {k:"ctc_fit_1",   cat:"Fitness and Sports", nm:"Basic"},
-  {k:"ctc_fit_2",   cat:"Fitness and Sports", nm:"Instructor"},
-  {k:"ctc_mk_1",    cat:"Marksmanship",       nm:"Basic"},
-  {k:"ctc_mk_2",    cat:"Marksmanship",       nm:"Fullbore Phase 1"},
-  {k:"ctc_mk_3",    cat:"Marksmanship",       nm:"Fullbore Phase 2"},
-  {k:"ctc_arm_2",   cat:"Air Rifle Marksmanship", nm:"Instructor"},
-  {k:"ctc_pb_1",    cat:"Pipe Band",          nm:"Basic"},
-  {k:"ctc_pb_2",    cat:"Pipe Band",          nm:"Intermediate"},
-  {k:"ctc_pb_3",    cat:"Pipe Band",          nm:"Advanced"},
-  {k:"ctc_mb_1",    cat:"Military Band",      nm:"Basic"},
-  {k:"ctc_mb_2",    cat:"Military Band",      nm:"Intermediate"},
-  {k:"ctc_mb_3",    cat:"Military Band",      nm:"Advanced"},
-  {k:"ctc_staff",   cat:"Staff Cadet",        nm:"Staff Cadet"},
+  {el:["army"], k:"ctc_exped_1", cat:"Expedition",        nm:"Team Member"},
+  {el:["army"], k:"ctc_exped_2", cat:"Expedition",        nm:"Team Leader"},
+  {el:["army"], k:"ctc_exped_3", cat:"Expedition",        nm:"Leadership and Challenge"},
+  {el:TRI, k:"ctc_dc_1",    cat:"Drill and Ceremonial", nm:"Basic"},
+  {el:TRI, k:"ctc_dc_2",    cat:"Drill and Ceremonial", nm:"Instructor"},
+  {el:TRI, k:"ctc_fit_1",   cat:"Fitness and Sports", nm:"Basic"},
+  {el:TRI, k:"ctc_fit_2",   cat:"Fitness and Sports", nm:"Instructor"},
+  {el:["army"], k:"ctc_mk_1",    cat:"Marksmanship",       nm:"Basic"},
+  {el:["army"], k:"ctc_mk_2",    cat:"Marksmanship",       nm:"Fullbore Phase 1"},
+  {el:["army"], k:"ctc_mk_3",    cat:"Marksmanship",       nm:"Fullbore Phase 2"},
+  {el:TRI, k:"ctc_arm_2",   cat:"Air Rifle Marksmanship", nm:"Instructor"},
+  {el:TRI, k:"ctc_pb_1",    cat:"Pipe Band",          nm:"Basic"},
+  {el:TRI, k:"ctc_pb_2",    cat:"Pipe Band",          nm:"Intermediate"},
+  {el:TRI, k:"ctc_pb_3",    cat:"Pipe Band",          nm:"Advanced"},
+  {el:TRI, k:"ctc_mb_1",    cat:"Military Band",      nm:"Basic"},
+  {el:TRI, k:"ctc_mb_2",    cat:"Military Band",      nm:"Intermediate"},
+  {el:TRI, k:"ctc_mb_3",    cat:"Military Band",      nm:"Advanced"},
+  {el:TRI, k:"ctc_staff",   cat:"Staff Cadet",        nm:"Staff Cadet"},
   // On the poster in the summer-training rows, but with no row in D - Qual Info.
   // Carried so the grid geometry can be exercised; flagged when worn.
-  {k:"ctc_gen",     cat:"General Training",   nm:"General Training",   noQual:true},
-  {k:"ctc_voyage",  cat:"Army Cadet Voyage",  nm:"Army Cadet Voyage",  noQual:true},
-  {k:"ctc_exchange",cat:"Maple Leaf Exchange",nm:"Maple Leaf Exchange",noQual:true}
+  {el:TRI, k:"ctc_gen",     cat:"General Training",   nm:"General Training",   noQual:true},
+  {el:["army"], k:"ctc_voyage",  cat:"Army Cadet Voyage",  nm:"Army Cadet Voyage",  noQual:true},
+  {el:["army"], k:"ctc_exchange",cat:"Maple Leaf Exchange",nm:"Maple Leaf Exchange",noQual:true}
 ];
+// One list per element: the tri-service rows plus that element's own courses.
+function ctcFor(el){
+  return CTC.filter(c => (c.el || TRI).includes(el)).concat((ELEMENTS[el] || {}).ctcExtra || []);
+}
 const GRID_FILL = [
   {row:0,col:0,nm:"bottom-centre"},{row:0,col:1,nm:"bottom-front"},{row:0,col:-1,nm:"bottom-rear"},
   {row:1,col:0,nm:"top-centre"},   {row:1,col:1,nm:"top-front"},   {row:1,col:-1,nm:"top-rear"}
 ];
+
+/* ============================================================
+   ELEMENTS
+   Everything that differs between Army, Sea and Air lives here. Slot ids are
+   SEMANTIC ("rank", not "right_rank"), and `sleeves` is what puts each one on an
+   arm - because that is exactly what differs: Sea wears rank on the left arm, Air
+   on both. Anything keyed to a side in the resolver could not express that.
+   Sea and Air are stubs. They carry the shape so the plumbing can be built and
+   tested, and nothing else - no invented placements, no guessed sizes.
+   ============================================================ */
+const ELEMENTS = {
+  army: {
+    label:"Army", ready:true,
+    cloth:{fill:"#123D2C", edge:"#0A2A1E"},          // rifle green
+    nametag:"black",
+    slots:{element_badge:true, marksmanship:true, appointment:true},
+    sleeves:{
+      corps_name:"both", element_badge:"both",
+      marksmanship:"left", proficiency_stack:"left",
+      training_level:"right", ctc_grid:"right", appointment:"right", rank:"right"
+    },
+    ranks:RANKS, junior:JUNIOR, senior:SENIOR, levels:STARS, appts:APPTS,
+    fill:GRID_FILL,
+    cite:"CH3S1 3.b; ANNEX-H"
+  },
+  sea: {
+    label:"Sea", ready:false,
+    cloth:{fill:"#1A1A1A", edge:"#000000"},          // black. UNSOURCED
+    nametag:"black",
+    // Sea has no RCAC badge and no equivalent. The army shoulder title splits in two:
+    // a common sea-cadet title, with a rectangular corps title directly below it.
+    slots:{element_badge:false, corps_title:true, marksmanship:false},
+    sleeves:{
+      corps_name:"both", corps_title:"both",
+      proficiency_stack:"left", appointment:"left", rank:"left",
+      training_level:"right", ctc_grid:"right", participation:"right"
+    },
+    ranks:RANKS_SEA, junior:JUNIOR_SEA, senior:SENIOR_SEA,
+    levels:LEVELS_SEA, appts:APPTS_SEA, profsExtra:PROF_SEA,
+    ctcExtra:CTC_SEA, participation:PART_SEA, fill:FILL_SEA_2x2,
+    // GUESSES, all of them. Elbow taken as mid-sleeve, 28 cm on a 57 cm sleeve.
+    geom:{
+      rankJuniorY:42.5,      // "mid-way between the elbow and upper shoulder seam"
+      rankSeniorY:14.0,      // "mid-way between the elbow and the bottom of the cuff"
+      ctcY:42.5,             // "mid-way between the elbow and the upper shoulder seam"
+      gridY:5.0,             // flush above the cuff
+      partY:5.0,
+      levelY:20.0            // clear of participation below, CTC above. GUESS
+    },
+    cite:null
+  },
+  air: {
+    label:"Air", ready:false,
+    cloth:{fill:"#3A4A5C", edge:"#22303C"},          // air force blue. UNSOURCED
+    nametag:"air force blue",
+    // No RCAC badge, no star. CTC and participation share one right-sleeve block.
+    slots:{element_badge:false, marksmanship:false, appointment:false},
+    sleeves:{
+      corps_name:"both", proficiency_stack:"left", training_level:"left",
+      rank:"both", ctc_grid:"right", participation:"right"
+    },
+    ranks:RANKS_AIR, junior:JUNIOR_AIR, senior:SENIOR_AIR,
+    levels:LEVELS_AIR, ctcExtra:CTC_AIR, participation:PART_AIR, fill:FILL_AIR,
+    // GUESSES. The fill order is not a guess: it is quoted in the air instruction.
+    geom:{ rankJuniorY:42.5, rankSeniorY:42.5, ctcY:5.0, gridY:5.0, levelY:20.0 },
+    cite:"fill order quoted by Lt Beal from the air dress instruction"
+  }
+};
+const EL = () => ELEMENTS[state.element] || ELEMENTS.army;
+// Rank has three placements depending on rank level and whether an appointment is
+// worn, but they are one thing as far as WHICH ARM is concerned. Slot ids stay
+// per-placement so they match the rules pack; the family is what gets assigned.
+const SLOT_FAMILY = {
+  rank_junior:"rank", rank_senior_no_appointment:"rank", rank_senior_with_appointment:"rank"
+};
+// Does this element wear this slot at all? Sea and Air have no RCAC badge and no
+// marksmanship badge; Air has no appointment insignia in this model.
+const has = slot => (EL().slots || {})[slot] !== false;
+// Which sleeve or sleeves a slot lands on. The only place a slot meets a side.
+function sleevesFor(slot){
+  const v = EL().sleeves[SLOT_FAMILY[slot] || slot];
+  return v === "both" ? ["left", "right"] : [v || "right"];
+}
 
 /* ============================================================
    STATE
@@ -610,10 +772,14 @@ function resolve(){
     datum:"shoulder_seam", root:"shoulder", edge:"top", off:0,
     cite:"ANNEX-H 3H-3 / 3H-4-1; CH3S1 3.b.(2)" });
 
-  put("element_badge", { label:"RCAC badge",
+  if (has("element_badge")) put("element_badge", { label:"RCAC badge",
     x:0, y:SLEEVE_LEN-12, w:D, h:D, art:"rcac_badge", conf:"derived",
     datum:"shoulder_seam", root:"shoulder", edge:"bottom", off:12,
     cite:"ANNEX-H 3H-3 / 3H-4-1; CH3S1 3.b.(3)" });
+  // Per-element anchors. Army's are the regulation values; Sea's and Air's are
+  // guesses scaled off them and every one of them is flagged below.
+  const G = EL().geom || {};
+  const guess = state.element !== "army";
   const rcacBottom = SLEEVE_LEN - 12;   // y = 45, independent of D
 
   const clear = 12 - (1 + TITLE_H_RATIO) * D;
@@ -629,7 +795,7 @@ function resolve(){
 
   /* ---- LEFT: marksmanship, anchored bottom at 6 ---- */
   if (state.mk !== "none"){
-    const m = MARKS[state.mk];
+    const m = has("marksmanship") ? MARKS[state.mk] : MARKS.none;
     if (m.two){
       const nh = MK_NUM_H;
       put("marksmanship", { label:`${m.label} — numeral`,
@@ -658,7 +824,7 @@ function resolve(){
   if (state.fa  !== "none") stack.push({cat:"First Aid", d:FIRSTAID[state.fa]});
   if (state.mus !== "none") stack.push({cat:"Music", d:MUSIC[state.mus]});
 
-  let sy = 20, prevLabel = null;
+  let sy = G.gridY ?? 20, prevLabel = null;
   for (const s of stack){
     const label = `${s.cat} – ${s.d.label}`;
     put("proficiency_stack", { label,
@@ -675,27 +841,30 @@ function resolve(){
   }
 
   /* ---- RIGHT: star level. ALP resolves to a phantom so the grid still anchors ---- */
-  const st = STARS[state.star];
+  const st = (EL().levels || STARS)[state.star] || {label:"None"};
   const starWorn = state.star !== "none" && !!st.art;
   const starBox = { label: starWorn ? st.label : "Star position (no training level yet)",
-    x:0, y:6, w:STAR_W, h:STAR_H, art:st.art || null,
-    ghost:!starWorn, datum:"cuff_bottom", root:"cuff", edge:"bottom", off:6,
+    x:0, y:G.levelY ?? 6, w:STAR_W, h:STAR_H, art:st.art || null, conf: guess ? "guess" : null,
+    ghost:!starWorn, datum:"cuff_bottom", root:"cuff", edge:"bottom", off:G.levelY ?? 6,
     cite:"ANNEX-H 3H-4-1; CH3S1 3.b.(10)" };
-  if (state.star !== "none") put("star_level", starBox);
+  if (state.star !== "none") put("training_level", starBox);
   if (st.viaALP){
     add("ALP has no star insignia of its own yet, so the cadet keeps the Gold Star — the highest level they hold that carries a badge. The slot is never vacant, and nothing special happens to the CTC grid above it.",
-        "info", "rules pack v0.3-draft, star_level.house_rules[0]");
+        "info", "rules pack v0.3-draft, training_level.house_rules[0]");
   }
 
   /* ---- RIGHT: CTC grid, bottom edge 1 cm above the star's top ---- */
-  const picks = state.ctc.slice(0,6);
+  const CTC_EL = ctcFor(state.element);
+  const picks = state.ctc.slice(0, EL().fill.length);
   if (picks.length){
-    const gridBottom = 6 + STAR_H + 1;                       // 9.71
+    // Army hangs the grid 1 cm off the training level star. Sea and Air anchor it
+    // somewhere else entirely, so they take a flat guess instead.
+    const gridBottom = G.ctcY ?? (6 + STAR_H + 1);           // army 9.71
     const starRef = starWorn ? "the training level star" : "the star position";
     let bottomDrawn = false;
     picks.forEach((k,i) => {
       const cell = GRID_FILL[i];
-      const q = CTC.find(c => c.k === k);
+      const q = CTC_EL.find(c => c.k === k);
       // bottom row hangs 1 cm off the star; top row sits straight on the bottom row
       const rel = cell.row === 0
         ? {of:starRef, ofShort:"Training level star", gap:1, dir:"above"}
@@ -708,14 +877,15 @@ function resolve(){
         datum:"cuff_bottom", root:"cuff", edge:"bottom", off: gridBottom + cell.row*CIRCLE,
         cite:"CH3S1 3.b.(9); ANNEX-H 3H-4-2 / 3H-4-3" });
     });
-    const orphans = picks.map(k => CTC.find(c => c.k === k)).filter(q => q && q.noQual);
+    const orphans = picks.map(k => CTC_EL.find(c => c.k === k)).filter(q => q && q.noQual);
     if (orphans.length){
       add(`${orphans.map(q => q.cat).join(", ")} — on the poster in the summer-training rows, but with no row in D - Qual Info. Geometry is fine; the workbook can't record the award yet.`,
           "warn", "A-CR-CCP-750/DA-003 vs D - Qual Info");
     }
-    if (state.ctc.length > 6){
-      add(`${state.ctc.length} CTC qualifications selected. Maximum worn is six — the last ${state.ctc.length-6} are dropped.`,
-          "crit", "CH3S1 3.b.(9)");
+    const cap = EL().fill.length;
+    if (state.ctc.length > cap){
+      add(`${state.ctc.length} CTC qualifications selected. Maximum worn is ${cap} — the last ${state.ctc.length-cap} are dropped.`,
+          "crit", state.element === "army" ? "CH3S1 3.b.(9)" : "element instruction, unsourced");
     }
     add("Grid fill order here follows your click order. In production it sequences on Date Awarded ascending, which is still placeholder data in the workbook.",
         "warn", "open question 4");
@@ -723,24 +893,27 @@ function resolve(){
 
   /* ---- RIGHT: appointment, bottom apex at 20 ---- */
   let apptBox = null;
-  if (state.appt !== "none"){
-    const a = APPTS[state.appt];
+  if (state.appt !== "none" && has("appointment")){
+    const a = (EL().appts || APPTS)[state.appt];
+    if (!a || a.label === "None") return {L, R, warn};
     const it = {w:a.w};
     apptBox = put("appointment", { label:a.label,
-      x:0, y:20, w:a.w, h:a.h, art:a.art,
+      x:0, y: G.gridY ?? 20, w:a.w, h:a.h, art:a.art, conf: guess ? "guess" : null,
       datum:"cuff_bottom", root:"cuff", edge:"bottom", off:20,
       cite:"CH3S1 3.b.(8); ANNEX-H 3H-4-3" });
   }
 
   /* ---- RIGHT: rank ---- */
-  const rk = RANKS[state.rank];
+  const rk = (EL().ranks || RANKS)[state.rank];
+  if (!rk) return {L, R, warn};                 // rank not in this element's table
   if (rk.cls !== "none"){
     const it = {w:rk.w};
     const h = rk.h;
-    if (JUNIOR.includes(state.rank)){
+    if ((EL().junior || JUNIOR).includes(state.rank)){
       // chevrons point down, so "tips" = bbox top, pinned 1 cm below the RCAC badge
       put("rank_junior", { label:rk.label,
-        x:0, y:rcacBottom - 1 - h, w:rk.w, h, art:rk.art, conf:rk.conf,
+        x:0, y: G.rankJuniorY ?? (rcacBottom - 1 - h), w:rk.w, h, art:rk.art,
+        conf: guess ? "guess" : rk.conf,
         datum:"element_badge", root:"shoulder", edge:"top", off:1, dir:"below",
         rel:{of:"the RCAC badge", ofShort:"RCAC badge", gap:1, dir:"below"},
         cite:"ANNEX-H 3H-4-1; CH3S1 3.b.(7)(i)" });
@@ -749,10 +922,10 @@ function resolve(){
             "info", "CH3S1 3.b.(7)(i) vs 3.b.(8)");
       }
     } else {
-      const y = apptBox ? apptBox.y + apptBox.h + 1 : 20;
+      const y = G.rankSeniorY ?? (apptBox ? apptBox.y + apptBox.h + 1 : 20);
       put(apptBox ? "rank_senior_with_appointment" : "rank_senior_no_appointment", {
         label:rk.label,
-        x:0, y, w:rk.w, h, art:rk.art, conf:rk.conf,
+        x:0, y, w:rk.w, h, art:rk.art, conf: guess ? "guess" : rk.conf,
         datum: apptBox ? "appointment" : "cuff_bottom", root:"cuff", edge:"bottom", off: apptBox ? 1 : 20,
         dir: apptBox ? "above" : null,
         rel: apptBox ? {of:`the ${apptBox.label} badge`, ofShort:"Appointment badge", gap:1, dir:"above"} : null,
@@ -1707,16 +1880,40 @@ function fill(id, obj, keyer){
     s.appendChild(o);
   }
 }
-fill("rank", RANKS, (k,v) => k === "Cdt" ? "Cadet (no insignia)" : `${k} – ${v.label}`);
-fill("appt", APPTS);
-fill("star", STARS);
+// Rank, appointment and training level all change with the element, so they are
+// rebuilt on every element change rather than filled once.
+function fillElementLists(){
+  const e = EL();
+  const rk = e.ranks || RANKS;
+  fill("rank", rk, (k,v) => v.cls === "none" ? `${v.label} (no insignia)` : `${k} – ${v.label}`);
+  if (!(state.rank in rk)) state.rank = Object.keys(rk)[0];
+  document.getElementById("rank").value = state.rank;
+
+  const ap = e.appts || APPTS;
+  fill("appt", ap);
+  if (!(state.appt in ap)) state.appt = "none";
+  document.getElementById("appt").value = state.appt;
+
+  const lv = e.levels || STARS;
+  fill("star", lv);
+  if (!(state.star in lv)) state.star = "none";
+  document.getElementById("star").value = state.star;
+
+  // marksmanship is army only
+  document.getElementById("mkField").hidden = !has("marksmanship");
+  buildCtc();
+}
 fill("mk", MARKS, (k,v) => v.ui || v.label);
 fill("fit", FITNESS);
 fill("fa", FIRSTAID);
 fill("mus", MUSIC);
 
 const ctcBox = document.getElementById("ctc");
-for (const q of CTC){
+// Rebuilt on every element change: the course list is not the same for all three.
+function buildCtc(){
+ctcBox.textContent = "";
+state.ctc = state.ctc.filter(k => ctcFor(state.element).some(c => c.k === k));
+for (const q of ctcFor(state.element)){
   const lab = document.createElement("label");
   lab.className = "chk"; lab.dataset.k = q.k; lab.tabIndex = -1;
   const nm = q.cat === q.nm ? q.cat : `${q.cat} <span class="sub">(${q.nm})</span>`;
@@ -1727,6 +1924,7 @@ for (const q of CTC){
     render();
   });
   ctcBox.appendChild(lab);
+}
 }
 function syncCtc(){
   for (const lab of ctcBox.children){
@@ -1766,7 +1964,13 @@ function syncPins(){
 
 const BIND = {element:"element", rank:"rank", appt:"appt", unit:"unit", star:"star", mk:"mk", fit:"fit", fa:"fa", mus:"mus"};
 for (const id in BIND){
-  document.getElementById(id).addEventListener("change", e => { state[BIND[id]] = e.target.value; render(); });
+  document.getElementById(id).addEventListener("change", e => {
+    state[BIND[id]] = e.target.value;
+    // element changes the rank names, the training levels, the appointments and the
+    // course list all at once, so the lists are rebuilt before drawing.
+    if (id === "element"){ fillElementLists(); syncAll(); }
+    render();
+  });
 }
 for (const [id,key] of [["tDims","dims"],["tEnv","env"]]){
   document.getElementById(id).addEventListener("change", e => { state[key] = e.target.checked; render(); });
@@ -1893,6 +2097,7 @@ function syncAll(){
   document.getElementById("sleeveLen").value = state.sleeveLen;
 }
 
+fillElementLists();
 syncAll();
 render();
 </script>

@@ -4,7 +4,7 @@ Ordered by what it unblocks, not by effort. Every geometric item is also recorde
 `rules/army_tunic_placement_rules_2.json` under `open_questions`, which is the
 authoritative list — this file is the working view of it.
 
-Status as of rules **v0.21-draft**: 20 slots, 31 open questions, 6 recorded conflicts.
+Status as of rules **v0.22-draft**: 20 slots, 37 open questions, 6 recorded conflicts.
 
 ---
 

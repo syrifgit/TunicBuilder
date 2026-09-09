@@ -474,7 +474,8 @@ const RANKS_AIR = {
   WO1 : {label:"Warrant Officer First Class",  cls:"crown",   w: 7.62, h:10.16, art:"rank_CWO"}
 };
 const JUNIOR_AIR = ["LAC","Cpl","FCpl","Sgt"];
-const SENIOR_AIR = ["FSgt","WO2","WO1"];
+// Only WO2 and WO1 move low. FSgt still sits mid-way between elbow and seam.
+const SENIOR_AIR = ["WO2","WO1"];
 
 // Training levels. Same system as the army star, different terminology and artwork, and BOTH carry a
 // badge at level 5 - so the army's "wear the highest level that carries a badge"
@@ -558,17 +559,6 @@ const PART_AIR = [
 
 // Grid fill patterns. Army is a 2x3; Air is the same order plus a seventh above the
 // fourth. Both are {row, col} with col 0 centre, +1 front, -1 rear.
-const FILL_AIR = [
-  {row:0,col:0,nm:"bottom-centre"},{row:0,col:1,nm:"bottom-front"},{row:0,col:-1,nm:"bottom-rear"},
-  {row:1,col:0,nm:"middle-centre"},{row:1,col:1,nm:"middle-front"},{row:1,col:-1,nm:"middle-rear"},
-  {row:2,col:0,nm:"top-centre"}
-];
-// Sea's grid: four in a 2x2, the fifth centred above them.
-const FILL_SEA_2x2 = [
-  {row:0,col:-0.5,nm:"bottom-rear"},{row:0,col:0.5,nm:"bottom-front"},
-  {row:1,col:-0.5,nm:"top-rear"},  {row:1,col:0.5,nm:"top-front"},
-  {row:2,col:0,nm:"above"}
-];
 
 const RCAC_CEILING = 12 / (1 + TITLE_H_RATIO);   // 7.47 cm: title meets badge
 // Cadet Fitness Assessment. extract_badges.py skipped the whole PHYSICAL FITNESS
@@ -635,6 +625,19 @@ const GRID_FILL = [
   {row:1,col:0,nm:"top-centre"},   {row:1,col:1,nm:"top-front"},   {row:1,col:-1,nm:"top-rear"}
 ];
 
+// SOURCED, air instruction: first centred above the cuff, second to the front, third
+// to the rear, then a second row above in the same order. Six maximum. That is the
+// army 2x3 exactly, which is why GRID_FILL is reused rather than copied.
+const FILL_SIX = GRID_FILL;
+// Sea wears at most two CTC badges, side by side, in award order.
+const FILL_TWO = [{row:0,col:0.5,nm:"front"},{row:0,col:-0.5,nm:"rear"}];
+// Sea's left arm carries up to four staff / deployment / exchange / appointment
+// insignia above the cuff. The instruction gives the count, not the arrangement.
+const FILL_FOUR = [
+  {row:0,col:0.5,nm:"bottom-front"},{row:0,col:-0.5,nm:"bottom-rear"},
+  {row:1,col:0.5,nm:"top-front"},  {row:1,col:-0.5,nm:"top-rear"}
+];
+
 /* ============================================================
    ELEMENTS
    Everything that differs between Army, Sea and Air lives here. Slot ids are
@@ -656,7 +659,7 @@ const ELEMENTS = {
       training_level:"right", ctc_grid:"right", appointment:"right", rank:"right"
     },
     ranks:RANKS, junior:JUNIOR, senior:SENIOR, levels:STARS, appts:APPTS,
-    fill:GRID_FILL,
+    fillCtc:GRID_FILL, caps:{ctc:6},
     cite:"CH3S1 3.b; ANNEX-H"
   },
   sea: {
@@ -665,41 +668,59 @@ const ELEMENTS = {
     nametag:"black",
     // Sea has no RCAC badge and no equivalent. The army shoulder title splits in two:
     // a common sea-cadet title, with a rectangular corps title directly below it.
-    slots:{element_badge:false, corps_title:true, marksmanship:false},
+    // Sea's corps badge is on the RIGHT BREAST, not the sleeve, which is why there is
+    // no sleeve equivalent of the RCAC badge. Not drawn yet - see open questions.
+    slots:{element_badge:false, corps_title:true, marksmanship:false, training_level:false},
     sleeves:{
       corps_name:"both", corps_title:"both",
-      proficiency_stack:"left", appointment:"left", rank:"left",
-      training_level:"right", ctc_grid:"right", participation:"right"
+      rank:"left", appointment:"left", participation:"left",
+      ctc_grid:"right", proficiency_stack:"right"
     },
     ranks:RANKS_SEA, junior:JUNIOR_SEA, senior:SENIOR_SEA,
     levels:LEVELS_SEA, appts:APPTS_SEA, profsExtra:PROF_SEA,
-    ctcExtra:CTC_SEA, participation:PART_SEA, fill:FILL_SEA_2x2,
+    ctcExtra:CTC_SEA, participation:PART_SEA,
     // GUESSES, all of them. Elbow taken as mid-sleeve, 28 cm on a 57 cm sleeve.
+    // SOURCED except where noted. Elbow is still an assumption: taken as mid-sleeve,
+    // 28 cm on a 57 cm sleeve, which is what turns "mid-way" into a number.
     geom:{
-      rankJuniorY:42.5,      // "mid-way between the elbow and upper shoulder seam"
-      rankSeniorY:14.0,      // "mid-way between the elbow and the bottom of the cuff"
-      ctcY:42.5,             // "mid-way between the elbow and the upper shoulder seam"
-      gridY:5.0,             // flush above the cuff
-      partY:5.0,
-      levelY:20.0            // clear of participation below, CTC above. GUESS
+      rankJuniorY:42.5,      // mid-way between the elbow and the shoulder seam
+      rankSeniorY:14.0,      // mid-way between the bottom of the cuff and the elbow
+      ctcY:42.5,             // mid-way between the elbow and the upper shoulder seam
+      gridY:5.0,             // directly above the upper seam of the cuff
+      partY:5.0
     },
-    cite:null
+    caps:{ctc:2, proficiency:6, leftGroup:4},
+    fillCtc:FILL_TWO, fillProf:FILL_SIX, fillPart:FILL_FOUR,
+    cite:"Sewn Insignia para 3, Sea Cadets"
   },
   air: {
     label:"Air", ready:false,
     cloth:{fill:"#3A4A5C", edge:"#22303C"},          // air force blue. UNSOURCED
     nametag:"air force blue",
     // No RCAC badge, no star. CTC and participation share one right-sleeve block.
-    slots:{element_badge:false, marksmanship:false, appointment:false},
+    // Air DOES wear appointment insignia, on the right sleeve. The squadron shoulder
+    // insignia hangs 2 cm below the seam rather than flush, unlike Army and Sea.
+    slots:{element_badge:false, marksmanship:false},
     sleeves:{
-      corps_name:"both", proficiency_stack:"left", training_level:"left",
-      rank:"both", ctc_grid:"right", participation:"right"
+      corps_name:"both", rank:"both",
+      proficiency_stack:"left", training_level:"left", ctc_grid:"left",
+      participation:"left", appointment:"right"
     },
     ranks:RANKS_AIR, junior:JUNIOR_AIR, senior:SENIOR_AIR,
-    levels:LEVELS_AIR, ctcExtra:CTC_AIR, participation:PART_AIR, fill:FILL_AIR,
+    levels:LEVELS_AIR, ctcExtra:CTC_AIR, participation:PART_AIR,
     // GUESSES. The fill order is not a guess: it is quoted in the air instruction.
-    geom:{ rankJuniorY:42.5, rankSeniorY:42.5, ctcY:5.0, gridY:5.0, levelY:20.0 },
-    cite:"fill order quoted by Lt Beal from the air dress instruction"
+    // "9 cm above the top of the cuff" is measured from the cuff's UPPER seam, so on a
+    // 5 cm cuff that is y = 14. The shoulder insignia drop is 2 cm below the seam.
+    geom:{
+      rankJuniorY:42.5,      // mid-way between the elbow and the upper shoulder seam
+      rankSeniorY:14.0,      // WO2 / WO1: bottom 9 cm above the top of the cuff
+      levelY:14.0,           // same line, left arm, and not worn at all by WO2 / WO1
+      ctcY:5.0, gridY:5.0,   // immediately above the top of the cuff
+      shoulderDrop:2.0
+    },
+    caps:{ctc:6, proficiency:6},
+    fillCtc:FILL_SIX, fillProf:FILL_SIX,
+    cite:"Sewn Insignia para 3, Air Cadets"
   }
 };
 const EL = () => ELEMENTS[state.element] || ELEMENTS.army;
@@ -766,8 +787,9 @@ function resolve(){
   /* ---- shared shoulder items, both sleeves ---- */
   const D  = RCAC_MEASURED;
   const tw = TITLE_W_RATIO * D, th = TITLE_H_RATIO * D;
-  put("corps_name", { label:"Corps name title (poster example art)",
-    x:0, y:SLEEVE_LEN-th, w:tw, h:th,
+  const drop = (EL().geom || {}).shoulderDrop || 0;
+  put("corps_name", { label: drop ? "Squadron shoulder insignia" : "Corps name title (poster example art)",
+    x:0, y:SLEEVE_LEN-th-drop, w:tw, h:th,
     art:(UNITS[state.unit] || UNITS.fred242).art, conf:"derived",
     datum:"shoulder_seam", root:"shoulder", edge:"top", off:0,
     cite:"ANNEX-H 3H-3 / 3H-4-1; CH3S1 3.b.(2)" });
@@ -847,7 +869,13 @@ function resolve(){
     x:0, y:G.levelY ?? 6, w:STAR_W, h:STAR_H, art:st.art || null, conf: guess ? "guess" : null,
     ghost:!starWorn, datum:"cuff_bottom", root:"cuff", edge:"bottom", off:G.levelY ?? 6,
     cite:"ANNEX-H 3H-4-1; CH3S1 3.b.(10)" };
-  if (state.star !== "none") put("training_level", starBox);
+  // Air: "No training level qualification insignia is worn for WO2 and WO1" - which
+  // is also what stops it colliding with their rank, since both sit 9 cm above the cuff.
+  const levelBlocked = state.element === "air" && (EL().senior || []).includes(state.rank);
+  if (levelBlocked && state.star !== "none")
+    add(`${(EL().ranks || RANKS)[state.rank].label} wears no training level insignia. The badge is dropped, not moved.`,
+        "info", "Sewn Insignia para 3, Air Cadets");
+  if (state.star !== "none" && !levelBlocked && has("training_level")) put("training_level", starBox);
   if (st.viaALP){
     add("ALP has no star insignia of its own yet, so the cadet keeps the Gold Star — the highest level they hold that carries a badge. The slot is never vacant, and nothing special happens to the CTC grid above it.",
         "info", "rules pack v0.3-draft, training_level.house_rules[0]");
@@ -855,7 +883,9 @@ function resolve(){
 
   /* ---- RIGHT: CTC grid, bottom edge 1 cm above the star's top ---- */
   const CTC_EL = ctcFor(state.element);
-  const picks = state.ctc.slice(0, EL().fill.length);
+  const fillCtc = EL().fillCtc || EL().fill;
+  const capCtc  = (EL().caps || {}).ctc ?? fillCtc.length;
+  const picks = state.ctc.slice(0, capCtc);
   if (picks.length){
     // Army hangs the grid 1 cm off the training level star. Sea and Air anchor it
     // somewhere else entirely, so they take a flat guess instead.
@@ -863,7 +893,7 @@ function resolve(){
     const starRef = starWorn ? "the training level star" : "the star position";
     let bottomDrawn = false;
     picks.forEach((k,i) => {
-      const cell = GRID_FILL[i];
+      const cell = fillCtc[i];
       const q = CTC_EL.find(c => c.k === k);
       // bottom row hangs 1 cm off the star; top row sits straight on the bottom row
       const rel = cell.row === 0
@@ -882,7 +912,7 @@ function resolve(){
       add(`${orphans.map(q => q.cat).join(", ")} — on the poster in the summer-training rows, but with no row in D - Qual Info. Geometry is fine; the workbook can't record the award yet.`,
           "warn", "A-CR-CCP-750/DA-003 vs D - Qual Info");
     }
-    const cap = EL().fill.length;
+    const cap = capCtc;
     if (state.ctc.length > cap){
       add(`${state.ctc.length} CTC qualifications selected. Maximum worn is ${cap} — the last ${state.ctc.length-cap} are dropped.`,
           "crit", state.element === "army" ? "CH3S1 3.b.(9)" : "element instruction, unsourced");

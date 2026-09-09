@@ -1,6 +1,6 @@
 {
   "$comment": "Placement rules for Royal Canadian Army Cadet tunic (jacket) insignia. Sleeves only. Front of tunic not yet in scope.",
-  "version": "0.21-draft",
+  "version": "0.22-draft",
   "scope": "army_cadet_sleeves_and_front",
   "sources": [
     {
@@ -94,6 +94,15 @@
         "7.3",
         "7.4",
         "7.5"
+      ]
+    },
+    {
+      "id": "SEWN-3",
+      "title": "Cadet Dress Instructions - para 3, Sewn Insignia (Sea and Air)",
+      "status": "SOURCED. Supplied verbatim by Lt Beal. This is the first real placement source for Sea and Air and it replaced most of the guesses made from the army model.",
+      "paragraphs_used": [
+        "3 Sea Cadets a-g",
+        "3 Air Cadets a-g"
       ]
     }
   ],
@@ -969,13 +978,19 @@
     "Order of St. George is absent from CATO 13-16 para 19 entirely. Its seq 8 position rests on CJCR Gp O 10050 para 7.4 alone, which is a JCR order. Every other medal in the list is now confirmed against CATO; this one is not, and a cadet holding it could be wearing it in the wrong place in the group.",
     "Air Force Association Medal (CATO 13-16 para 19.f) has no sourced ribbon description, so it is omitted from the tool rather than drawn. It is an air-element award and reaches an army tunic only by transfer, so the practical cost is low. Revisit if CATO 52-08 or an Air Cadet League dress instruction turns up.",
     "Medal and ribbon artwork fidelity is mixed and recorded per item in the artwork manifest. Lord Strathcona, RCL Excellence, Order of St. George and the Army Cadet Service Medal are sampled from source images; Bravery and ANAVETS stripe widths are still eyeballed; every medallion obverse is stylised because the central relief is not reproducible from the sources to hand.",
-    "SEA COLLISION, real and unresolved. Three things are described as low on the left sleeve above the cuff: the appointment insignia (2x2 grid), the proficiency insignia (2x2 grid plus a fifth centred above), and the Staff Cadet participation badge. They cannot all be flush above the cuff. The renderer draws the guess and the validator flags the overlap rather than nudging anything.",
-    "Sea and Air geometry is entirely GUESSED from the army model. Elbow is taken as mid-sleeve (28 cm on a 57 cm sleeve) to read 'mid-way between the elbow and the shoulder seam' as 42.5 cm and 'mid-way between the elbow and the bottom of the cuff' as 14 cm. Nothing is measured and nothing is cited.",
+    "RESOLVED by Sewn Insignia para 3. Sea does not stack three things above the left cuff: proficiency insignia (up to six) go on the LOWER RIGHT sleeve, and the left arm above the cuff carries up to four Staff / Deployment / Exchange / appointment insignia combined, of which only one may be an appointment. The renderer now draws zero clashes for Sea.",
+    "Sea and Air geometry is now SOURCED from Sewn Insignia para 3, with one assumption left: the elbow. 'Mid-way between the elbow and the shoulder seam' needs an elbow position, taken as mid-sleeve, 28 cm on a 57 cm sleeve, giving 42.5 cm. Measure a real sleeve to settle it. Air's '9 cm above the top of the cuff' needs no assumption: the cuff is 5 cm, so y = 14.",
     "Sea and Air artwork does not exist. Both elements draw ARMY artwork for rank, training level and proficiency badges, so a sea Petty Officer renders as an army chevron. Correct structure, wrong picture.",
     "Sea's corps title slot is modelled (a rectangular title directly below the shoulder title, which is common to all sea cadets) but has no dimensions and no artwork.",
     "Air's CTC fill order IS sourced - first badge centred above the cuff, second to the front, third to the rear, second row above in the same order, seventh above the fourth, maximum seven. Where that block starts above the cuff is not, and neither is where the training level badge goes; it is drawn on the left sleeve to keep it clear of the CTC block.",
     "Air pilot wings (Glider / Power) are not modelled. They are worn centred directly above the left breast pocket, horizontally, and the Glider Pilot CTC badge is never worn with Glider Pilot Wings - a mutual exclusion the tool does not yet enforce. Power Pilot supersedes Glider if both are held.",
-    "Element-specific participation insignia are modelled as data but not yet drawn: Sea's Regatta series and Air's Effective Speaking series (the equivalents of the army National Rifle Team), plus the deployment and exchange badges. Sea wears Staff Cadet on the lower LEFT sleeve and everything else lower right; Air wears all of them in with the CTC block."
+    "Element-specific participation insignia are modelled as data but not yet drawn: Sea's Regatta series and Air's Effective Speaking series (the equivalents of the army National Rifle Team), plus the deployment and exchange badges. Sea wears Staff Cadet on the lower LEFT sleeve and everything else lower right; Air wears all of them in with the CTC block.",
+    "AIR CONTRADICTION, unresolved and drawn as written. Para 3 puts BOTH the six proficiency insignia AND the six CTC / Staff / Deployment / Exchange insignia on the LEFT arm, both 'immediately above the top of the cuff', both in the same fill order. They cannot both be there. The identical wording looks like a copy-paste, and Sea's equivalent splits them (proficiency right, the combined group left), so the CTC block probably belongs on the right. Drawn as written so the validator shows the problem rather than hiding a guess: it raises clash boxes on the air left sleeve.",
+    "AIR CONTRADICTION in the appointment clause. Para 3 gives two positions and attaches BOTH to 'WO2 and WO1': bottom 9 cm above the cuff, or mid-way between elbow and shoulder seam. One of them is presumably meant for every other rank. Adopted the 9 cm position for WO2/WO1 and mid-way for the rest, matching how the rank clause immediately above it is structured.",
+    "Maximum badge count for the Air left-arm block: the earlier note said seven, with a seventh above the fourth. Para 3 says six, twice. Six adopted as the sourced figure; the seven-badge rule may belong to a different instruction or an earlier edition.",
+    "Sea's corps badge is worn on the RIGHT BREAST, centred 3 cm above the pocket, moving to 4.5 cm with a second row of ribbons and 5.5 cm with a third. Not drawn yet, and it interacts with the ribbon rows the tool already lays out, so it should be straightforward to add.",
+    "Air's Glider / Power Pilot sewn wings are worn centred 0.5 cm above the LEFT breast pocket, highest level only. Not drawn yet. The Glider Pilot CTC badge is never worn with Glider Pilot Wings, and Power supersedes Glider if both are held - a mutual exclusion nothing enforces yet.",
+    "Sea's proficiency arrangement is unspecified. Para 3 gives the sleeve, the anchor and the maximum of six but not the layout, so the renderer chains them vertically the way the army stack does. Air's IS specified (the 1-2-3 / 4-5-6 fill) and is not yet applied to proficiency either."
   ],
   "changelog": [
     {
@@ -1057,6 +1072,10 @@
     {
       "version": "0.21-draft",
       "change": "Sea and Air populated with the structure Lt Beal supplied: rank names and the junior/senior split, training levels (same system as the army star, different terminology and artwork, and a level 5 badge both elements carry), sea appointments and proficiencies, element-specific summer training, and participation insignia. Summer training rows are now tagged tri-service or army-only. star_level renamed training_level since it is not army-specific. Slot PRESENCE is per element: neither Sea nor Air wears an RCAC badge or a marksmanship badge, and Sea splits the shoulder title into a common title plus a corps title. All Sea and Air geometry is guessed and flagged; army output verified byte-identical."
+    },
+    {
+      "version": "0.22-draft",
+      "change": "Sea and Air placement sourced from Sewn Insignia para 3, replacing the guesses. Sea: rank left arm at two heights, CTC upper right (max 2), proficiency lower right (max 6), and a combined max-four Staff/Deployment/Exchange/appointment group on the left arm above the cuff - which resolves the three-way collision previously flagged. Air: squadron insignia 2 cm below the seam, rank both arms with WO2/WO1 low, training level left arm and NOT worn by WO2/WO1, appointment on the right sleeve. Two contradictions inside the air text logged and drawn as written. Army output verified byte-identical."
     }
   ],
   "orders_of_dress": {

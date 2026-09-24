@@ -30,11 +30,11 @@ PAGES = [("demo/tunic.local.html", "index.html", "the layout tool"),
 # whole class of surprise.
 NOJEKYLL = ""
 
-# The publication clearance on record covers A-CR-CCP-750/DA-003, the army poster.
-# Air artwork comes from a different publication, A-CR-CCP-850/DA-003, and nobody has
-# said yet that the clearance extends to it. Until someone does, a release that would
-# carry it stops here. Set this once it is confirmed.
-AIR_ART_CLEARED = False
+# The publication clearance on record named A-CR-CCP-750/DA-003, the army poster. Air
+# artwork comes from its sibling, A-CR-CCP-850/DA-003. Lt Beal, 2026-09-24: "they are
+# basically the same poster", and the tool is for individual use for now. So it ships.
+# Set this back to False if that changes; a release carrying Air art then stops here.
+AIR_ART_CLEARED = True
 
 
 def main():

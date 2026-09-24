@@ -4,7 +4,7 @@ Ordered by what it unblocks, not by effort. Every geometric item is also recorde
 `rules/army_tunic_placement_rules_2.json` under `open_questions`, which is the
 authoritative list — this file is the working view of it.
 
-Status as of rules **v0.25-draft**: 20 slots, 43 open questions, 6 recorded conflicts.
+Status as of rules **v0.26-draft**: 21 slots, 43 open questions, 8 recorded conflicts.
 
 ---
 
@@ -37,11 +37,13 @@ Things the tool currently gets *wrong* or cannot answer, not merely gaps.
 - [ ] **Confirm a transferring cadet keeps awards earned in another element.** Stated
   for JCR at 10050 para 6.2. It is what makes the Sea and Air entries in the medal list
   reachable on an army tunic, and the tool models it that way.
-- [ ] **Air rank height: which edge is "mid-way"?** The renderer puts the badge's
-  bottom edge mid-way between the elbow and the shoulder seam. With the measured sizes,
-  that runs every Air chevron rank into the squadron insignia at 57 cm: Cpl by 0.96 cm,
-  FCpl and Sgt by 2.86, FSgt by 4.77. Centred on the mid-point, all of them clear. The
-  text doesn't say which, so it's drawn as written and the validator shows the clash.
+- [x] ~~**Air rank height: which edge is "mid-way"?**~~ The top edge, per Figures 3H-5 /
+  3H-6. Every Air rank now clears the squadron insignia by 7.3 cm. The same figures
+  settled the CTC arm (right), the appointment (whichever right-sleeve anchor the rank
+  leaves free) and the six-badge blocks.
+- [ ] **Check Figure 3D-6 for the wing gap.** Para 3 says pilot wings sit 0.5 cm above
+  the left pocket; the 3D-6 note says "directly above". Drawn at 0.5 cm and logged as a
+  conflict. If the drawing shows them touching the pocket, it's a one-line change.
 
 Medals are done. **CATO 13-16 para 19 is now sourced verbatim** and confirms the order
 for every medal except the Order of St. George, which is absent from it — that one still
@@ -72,11 +74,14 @@ Everything here is a placeholder or an estimate the tool draws and flags.
   and the **service medal bar**, which has no dimensions at all.
 - [ ] **CWO rank.** Still an estimate at 7.62 × 10.16 cm, though the poster corroborates
   it to 2%.
-- [ ] **Air: the unmeasured badges.** Leading Air Cadet height (width is 80 mm; drawn
-  1.64 cm tall from the artwork), **WO2 and WO1** (army crown widths, artwork heights),
-  **Drum Major and Pipe Major** (drawn in the army 10 × 11 cm box), and the **pilot
-  wings** and **Effective Speaking pins**, which aren't drawn yet. The rest of Air is
-  measured.
+- [ ] **Air: the unmeasured badges.** **WO2 and WO1** (army crown widths, artwork
+  heights), **Drum Major and Pipe Major** (drawn in the army 10 × 11 cm box), the
+  **pilot wings** (9 cm wide, a guess) and the **Effective Speaking pins** (2.54 cm
+  wide, like Bisley). The rest of Air is measured, LAC included at 8 × 2 cm, and Air
+  uses the army tunic's measurements.
+- [ ] **The elbow.** Air and Sea both place ranks "mid-way between the elbow and the
+  shoulder seam", and the elbow is still assumed at mid-sleeve (28 cm on 57). One
+  measurement on any tunic settles it for both.
 - [ ] **Smallest tunic in stores: sleeve length.** Only size 6436 (57 cm) is measured.
   A Sgt who is also Drum Major has 2.00 cm of clearance at 57 cm, 0.00 cm at 55 cm and
   an overlap below. This is a real wearability question, not a drawing nicety.
@@ -120,15 +125,17 @@ than a number the rules pack can carry.
 - [x] ~~**Air badge artwork.**~~ 63 badges from `air badges/air_art_pack.js`, wired in
   at hand-measured sizes. Still to do:
   - [ ] **Effective Speaking re-cut.** The three crops are fully opaque with white
-    corners, so they'd draw as white squares. Not drawn yet, so not urgent.
-  - [ ] **Families with art but no control:** Air marksmanship (`air_mk_1`–`4`), glider
-    familiarization (`air_glider_fam_1` / `_2`) and Music Basic (`air_mus_basic`).
-    Each needs a place in the Air cuff block, which no instruction to hand gives.
-  - [ ] **Pilot wings and Effective Speaking** aren't modelled at all yet. The poster
-    draws Effective Speaking as metal pins, which argues for the pocket rather than
-    the CTC block where the rules pack put it.
-  - [ ] **Publication.** `build_site.py` won't ship Air artwork until someone confirms
-    the A-CR-CCP-750/DA-003 clearance covers A-CR-CCP-850/DA-003 as well.
+    corners, and now that the pins are drawn the corners show on the pocket. Requested
+    in `AIR_ARTWORK_FOLLOWUP.md`.
+  - [x] ~~**Families with art but no control.**~~ Air marksmanship, glider
+    familiarization and Music Basic are in the cuff block, one per family, in the order
+    the dropdowns are set.
+  - [x] ~~**Pilot wings and Effective Speaking.**~~ Wings on the left breast with the
+    Glider CTC exclusion; Effective Speaking tops the Air pin strip.
+  - [x] ~~**Publication.**~~ Lt Beal: same poster family, individual tool for now.
+    `AIR_ART_CLEARED` is set in `build_site.py`.
+  - [ ] **Silver and gold wire wings.** Authorized on the jacket in lieu of the issued
+    ones (3D-6). No artwork for them, so the tool draws the issued nylon wings only.
 
 ## 4. Workbook corrections
 
@@ -145,6 +152,8 @@ described from notes — go to wherever it now lives to act on them.
 - [ ] **Typo:** "Army, Navy, and Air Force Veterans in **Canda** Cadet Medal of Merit".
 - [ ] **No rows for three CTC badges** that exist on the poster: General Training,
   Army Cadet Voyage, Maple Leaf Exchange. 21 CTC badges against 18 rows.
+- [ ] **No QualMap level for Music Basic.** It's worn until Level 1 replaces it (Lt
+  Beal), and the tool now offers it for every element.
 - [ ] **`RankMap` has no geometry columns.** Needs badge class
   (`none` / `chevron` / `crown`), width, height. The tool hardcodes this and is
   effectively the working spec.

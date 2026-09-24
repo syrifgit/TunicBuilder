@@ -1,6 +1,6 @@
 {
   "$comment": "Placement rules for Royal Canadian Army Cadet tunic (jacket) insignia. Sleeves only. Front of tunic not yet in scope.",
-  "version": "0.24-draft",
+  "version": "0.25-draft",
   "scope": "army_cadet_sleeves_and_front",
   "sources": [
     {
@@ -327,6 +327,78 @@
       "confidence": "regulation",
       "source_units": "10 cm, top of the medal bar suspender to the bottom edge of the medal",
       "note": "Court mounting is optional and at no cost to the public, with no minimum number of medals. The ribbons and medals mount on a panel whose size follows the number worn; the panel's lower edge runs in line with the CENTRE of the medals, and each ribbon runs from that lower edge up the front of the panel and back down to the medal. Panel geometry is recorded but not modelled."
+    },
+    "air_rank_chevron": {
+      "confidence": "measured",
+      "w": 10.5,
+      "heights": {
+        "Cpl": 8.255,
+        "FCpl": 10.16,
+        "Sgt": 10.16,
+        "FSgt": 12.065
+      },
+      "source_units": "10.5 cm wide; 3.25 / 4 / 4 / 4.75 in tall",
+      "source": "Hand-measured off issued badges, supplied with the air artwork request. Per key in air badges/air_art_manifest.json (measured_mm).",
+      "note": "RESOLVED against the poster the same way as the army chevrons. A-CR-CCP-850/DA-003 implies 9.22 / 11.02 / 10.88 / 12.59 cm at 10.5 cm wide: 0.5 to 1.0 cm taller than the ruler, with the biggest excess on the shortest badge. The army poster did exactly the same (0.6 to 1.0 cm, rank_chevron), so it is the art's embroidered field and not a bad measurement, and Corporal's -10.4% needs no re-measure. The measurement governs and the art is stretched to it."
+    },
+    "air_rank_lac": {
+      "w": 8.0,
+      "h": 1.64,
+      "confidence": "w measured, h ESTIMATE",
+      "source": "Hand-measured off issued badges, supplied with the air artwork request. Per key in air badges/air_art_manifest.json (measured_mm).",
+      "note": "Leading Air Cadet, the propeller. Width measured at 80 mm; height not measured, so it comes from the artwork aspect (4.878). Air artwork runs 4-10% off the ruler on the other ranks, so treat the height as a guess."
+    },
+    "air_rank_warrant": {
+      "confidence": "ESTIMATE - unmeasured",
+      "WO2": {
+        "w": 7.62,
+        "h": 6.7
+      },
+      "WO1": {
+        "w": 7.62,
+        "h": 10.04
+      },
+      "note": "Neither is measured. Widths are the army MWO / CWO figures, heights come from the Air artwork aspect (1.1375 and 0.7587) so the picture is not distorted. Measure both."
+    },
+    "air_training_level": {
+      "w": 3.81,
+      "h": 3.0,
+      "source_units": "1.5 in x 30 mm",
+      "confidence": "measured",
+      "source": "Hand-measured off issued badges, supplied with the air artwork request. Per key in air badges/air_art_manifest.json (measured_mm).",
+      "note": "The poster's 'Proficiency Levels', all five the same size. Poster aspect 1.17 against 1.27 measured; the measurement governs."
+    },
+    "air_octagon_badge": {
+      "w": 3.066,
+      "h": 3.066,
+      "confidence": "measured",
+      "applies_to": [
+        "CTC qualification",
+        "Fitness proficiency",
+        "First aid proficiency",
+        "Music proficiency",
+        "Marksmanship classification",
+        "Glider pilot familiarization"
+      ],
+      "source": "Hand-measured off issued badges, supplied with the air artwork request. Per key in air badges/air_art_manifest.json (measured_mm).",
+      "note": "Every Air CTC and proficiency badge is the same octagon. Poster aspect 0.997-1.003 against 1.000 measured, the one Air family where the artwork and the ruler agree. Army's 3.0 cm circle_badge does not apply."
+    },
+    "air_squadron_insignia": {
+      "w": 10.795,
+      "h": 5.2,
+      "source_units": "4.25 in x 52 mm",
+      "confidence": "measured",
+      "source": "Hand-measured off issued badges, supplied with the air artwork request. Per key in air badges/air_art_manifest.json (measured_mm).",
+      "note": "Half-round dome, hung 2 cm below the shoulder seam. Poster aspect 2.253 against 2.076 measured; the measurement governs."
+    },
+    "air_unmeasured": {
+      "confidence": "unknown",
+      "items": [
+        "Drum Major and Pipe Major appointment insignia",
+        "Power and Glider Pilot Wings",
+        "Effective Speaking pins"
+      ],
+      "note": "No measurement to hand, and poster proportions are not reliable for them. The appointments draw in the army 10 x 11 cm box as a guess (the Air art is within 1% of that shape). Wings and Effective Speaking are not drawn yet."
     }
   },
   "slots": [
@@ -976,27 +1048,27 @@
     "Cadet Service Medal bars: the ARMY scheme is now sourced. ACLC Policy 13.1 paras 5 and 12 - four years earns the medal, each further year adds a gold bar on the medal and a gold maple leaf on the undress ribbon, accumulating rather than replacing. The tool offers 4/5/6/7 years. Still open: no published maximum (7 is a practical ceiling for a cadet who joins at 12, a LOCAL DECISION), and the SEA and AIR service medals use different schemes - Sea reportedly uses anchor devices rather than an accumulating stack, Air's bars exist commercially but no source describes them. Both are drawn base state only.",
     "The Sea, Army and Air Cadet Service Medals are modelled as one award in three elements, exclusive by the element the cadet served in, with a transfer carrying the earlier one. Confirm a cadet cannot hold two.",
     "Order of St. George is absent from CATO 13-16 para 19 entirely. Its seq 8 position rests on CJCR Gp O 10050 para 7.4 alone, which is a JCR order. Every other medal in the list is now confirmed against CATO; this one is not, and a cadet holding it could be wearing it in the wrong place in the group.",
-    "Air Force Association Medal (CATO 13-16 para 19.f) has no sourced ribbon description, so it is omitted from the tool rather than drawn. It is an air-element award and reaches an army tunic only by transfer, so the practical cost is low. Revisit if CATO 52-08 or an Air Cadet League dress instruction turns up.",
+    "RESOLVED in 0.25. Air Force Association Medal (CATO 13-16 para 19.f): no text source describes its ribbon, but A-CR-CCP-850/DA-003 shows it in full colour. The medal pack now carries medal_afa / ribbon_afa, colour sampled off that image and geometry estimated at the standard 35 mm, and seq 6 is drawn. It is an air-element award and reaches an army tunic only by transfer.",
     "Medal and ribbon artwork fidelity is mixed and recorded per item in the artwork manifest. Lord Strathcona, RCL Excellence, Order of St. George and the Army Cadet Service Medal are sampled from source images; Bravery and ANAVETS stripe widths are still eyeballed; every medallion obverse is stylised because the central relief is not reproducible from the sources to hand.",
     "RESOLVED by Sewn Insignia para 3. Sea does not stack three things above the left cuff: proficiency insignia (up to six) go on the LOWER RIGHT sleeve, and the left arm above the cuff carries up to four Staff / Deployment / Exchange / appointment insignia combined, of which only one may be an appointment. The renderer now draws zero clashes for Sea.",
-    "Sea and Air geometry is now SOURCED from Sewn Insignia para 3, with one assumption left: the elbow. 'Mid-way between the elbow and the shoulder seam' needs an elbow position, taken as mid-sleeve, 28 cm on a 57 cm sleeve, giving 42.5 cm. Measure a real sleeve to settle it. Air's '9 cm above the top of the cuff' needs no assumption: the cuff is 5 cm, so y = 14.",
-    "Sea and Air artwork does not exist. Both elements draw ARMY artwork for rank, training level and proficiency badges, so a sea Petty Officer renders as an army chevron. Correct structure, wrong picture.",
+    "Sea and Air geometry is now SOURCED from Sewn Insignia para 3, with one assumption left: the elbow. 'Mid-way between the elbow and the shoulder seam' needs an elbow position, taken as mid-sleeve, 28 cm on a 57 cm sleeve, giving 42.5 cm. Measure a real sleeve to settle it. Air's '9 cm above the top of the cuff' needs no assumption: the cuff is 5 cm, so y = 14. AIR, found in 0.25: with measured rank sizes, the bottom-edge reading the renderer uses for 'mid-way' puts every Air chevron rank into the squadron insignia at 57 cm - Cpl by 0.96 cm, FCpl and Sgt by 2.86, FSgt by 4.77. Centred on the mid-point instead, all of them clear it. The text does not say which edge 'mid-way' means, so the bottom-edge reading stays and the validator shows the clash.",
+    "Sea artwork does not exist: Sea draws ARMY artwork for rank, training level and proficiency badges, so a sea Petty Officer renders as an army chevron. Correct structure, wrong picture. Air is RESOLVED in 0.25: air_art_pack.js (63 badges from A-CR-CCP-850/DA-003) is wired in, and shared rows find their Air picture by the air_ prefix.",
     "Sea's corps title slot is modelled (a rectangular title directly below the shoulder title, which is common to all sea cadets) but has no dimensions and no artwork.",
     "Air's CTC fill order IS sourced - first badge centred above the cuff, second to the front, third to the rear, second row above in the same order, seventh above the fourth, maximum seven. Where that block starts above the cuff is not, and neither is where the training level badge goes; it is drawn on the left sleeve to keep it clear of the CTC block.",
     "Air pilot wings (Glider / Power) are not modelled. They are worn centred directly above the left breast pocket, horizontally, and the Glider Pilot CTC badge is never worn with Glider Pilot Wings - a mutual exclusion the tool does not yet enforce. Power Pilot supersedes Glider if both are held.",
-    "Element-specific participation insignia are modelled as data but not yet drawn: Sea's Regatta series and Air's Effective Speaking series (the equivalents of the army National Rifle Team), plus the deployment and exchange badges. Sea wears Staff Cadet on the lower LEFT sleeve and everything else lower right; Air wears all of them in with the CTC block. AIR POSTER DISAGREES on Effective Speaking: it draws Zone, Provincial and National as photographs of metal pins, the same bronze / silver / gold squares as the championship pins, and the army National Rifle Team it is equated with is also a pin (pin_rifle_team). So Effective Speaking probably belongs on the pocket with the championship pins, not in the sewn CTC block. Unresolved: the poster identifies what the badge is, not where it goes.",
+    "Element-specific participation insignia are modelled as data but not yet drawn: Sea's Regatta series and Air's Effective Speaking series (the equivalents of the army National Rifle Team), plus the deployment and exchange badges. Sea wears Staff Cadet on the lower LEFT sleeve and everything else lower right; Air wears all of them in with the CTC block. AIR POSTER DISAGREES on Effective Speaking: it draws Zone, Provincial and National as photographs of metal pins, the same bronze / silver / gold squares as the championship pins, and the army National Rifle Team it is equated with is also a pin (pin_rifle_team). So Effective Speaking probably belongs on the pocket with the championship pins, not in the sewn CTC block. Unresolved: the poster identifies what the badge is, not where it goes. The Effective Speaking artwork is in the air pack (air_es_zone / _prov / _nat) but arrived fully opaque with white corners, so it would draw as a white square; a re-cut is requested.",
     "AIR CONTRADICTION, unresolved and drawn as written. Para 3 puts BOTH the six proficiency insignia AND the six CTC / Staff / Deployment / Exchange insignia on the LEFT arm, both 'immediately above the top of the cuff', both in the same fill order. They cannot both be there. The identical wording looks like a copy-paste, and Sea's equivalent splits them (proficiency right, the combined group left), so the CTC block probably belongs on the right. Drawn as written so the validator shows the problem rather than hiding a guess: it raises clash boxes on the air left sleeve.",
     "AIR CONTRADICTION in the appointment clause. Para 3 gives two positions and attaches BOTH to 'WO2 and WO1': bottom 9 cm above the cuff, or mid-way between elbow and shoulder seam. One of them is presumably meant for every other rank. Adopted the 9 cm position for WO2/WO1 and mid-way for the rest, matching how the rank clause immediately above it is structured.",
     "Maximum badge count for the Air left-arm block: the earlier note said seven, with a seventh above the fourth. Para 3 says six, twice. Six adopted as the sourced figure; the seven-badge rule may belong to a different instruction or an earlier edition.",
     "Sea's corps badge is worn on the RIGHT BREAST, centred 3 cm above the pocket, moving to 4.5 cm with a second row of ribbons and 5.5 cm with a third. Not drawn yet, and it interacts with the ribbon rows the tool already lays out, so it should be straightforward to add.",
-    "Air's Glider / Power Pilot sewn wings are worn centred 0.5 cm above the LEFT breast pocket, highest level only. Not drawn yet. The Glider Pilot CTC badge is never worn with Glider Pilot Wings, and Power supersedes Glider if both are held - a mutual exclusion nothing enforces yet.",
+    "Air's Glider / Power Pilot sewn wings are worn centred 0.5 cm above the LEFT breast pocket, highest level only. Not drawn yet. The Glider Pilot CTC badge is never worn with Glider Pilot Wings, and Power supersedes Glider if both are held - a mutual exclusion nothing enforces yet. Artwork is in the air pack (air_wings_power / air_wings_glider); size unmeasured.",
     "Sea's proficiency arrangement is unspecified. Para 3 gives the sleeve, the anchor and the maximum of six but not the layout, so the renderer chains them vertically the way the army stack does. Air's IS specified (the 1-2-3 / 4-5-6 fill) and is not yet applied to proficiency either.",
-    "AIR: Marksmanship Classification IS an Air proficiency badge - Marksman, First Class, Expert, Distinguished - worn in the six-badge cuff block rather than in Army's dedicated 6 cm slot. The tool had Air marked as wearing no marksmanship badge at all. Found in the air poster inventory, not in any instruction we hold. Needs an air_mk_1 to air_mk_4 family once the artwork lands, keyed air_ + the army MARKS key rather than the air_prof_marks_* first proposed. Each Air badge is ONE piece, rifles and numeral inside a single octagon, so Army's two-piece numeral-and-rifles assembly and its 0.5 cm internal gap do not carry over.",
-    "AIR: proficiency is five families on the poster - Physical Fitness (4), First Aid (2), Music (6, a Basic Qualification plus levels 1-5), Marksmanship Classification (4) and Glider Pilot Familiarization (2). That is 18 badges for a block that holds six, so the highest-per-family rule presumably applies the way it does for Army. Not stated anywhere we have. CORRECTED in 0.24: this note used to say Air Music is six badges where Army is five, so the two cannot share artwork. Wrong. The army poster also carries Basic plus Levels 1-5, and mus_basic is in the army pack; the tool's Music dropdown just leaves Basic out because QualMap has no level for it. The counts match in every shared family. Air still cannot reuse the army artwork, because the artwork itself differs: navy octagons with pale-blue devices against Army's green circles with gold.",
+    "AIR: Marksmanship Classification IS an Air proficiency badge - Marksman, First Class, Expert, Distinguished - worn in the six-badge cuff block rather than in Army's dedicated 6 cm slot. The tool had Air marked as wearing no marksmanship badge at all. Found in the air poster inventory, not in any instruction we hold. The artwork is in the air pack as air_mk_1 to air_mk_4, keyed air_ + the army MARKS key rather than the air_prof_marks_* first proposed. Each Air badge is ONE piece, rifles and numeral inside a single octagon, so Army's two-piece numeral-and-rifles assembly and its 0.5 cm internal gap do not carry over. Still not drawn in 0.25: nothing to hand says where it sits among the other cuff badges.",
+    "AIR: proficiency is five families on the poster - Physical Fitness (4), First Aid (2), Music (6, a Basic Qualification plus levels 1-5), Marksmanship Classification (4) and Glider Pilot Familiarization (2). That is 18 badges for a block that holds six, so the highest-per-family rule presumably applies the way it does for Army. Not stated anywhere we have. CORRECTED in 0.24: this note used to say Air Music is six badges where Army is five, so the two cannot share artwork. Wrong. The army poster also carries Basic plus Levels 1-5, and mus_basic is in the army pack; the tool's Music dropdown just leaves Basic out because QualMap has no level for it. The counts match in every shared family. Air still cannot reuse the army artwork, because the artwork itself differs: navy octagons with pale-blue devices against Army's green circles with gold. In 0.25 fitness, first aid and music draw Air art. Marksmanship, glider familiarization and Music Basic have art but no control or slot yet.",
     "AIR: the poster calls the training level badges 'Proficiency Levels', which is the tool's word for the six cuff insignia. Same word, different badges. Kept as training_level here.",
-    "AIR: the Air Force Association Medal appears in full colour on the air poster, which settles the question that had it omitted from the tool as unsourced. Slot 6 can be unhidden once medal_afa / ribbon_afa are added to the medal pack.",
-    "AIR: the Air Cadet Service Medal disc renders BRONZE on the air poster where Blatherwick describes 'a round gold coloured medal', and the artwork was built gold. A photograph against a text description; unresolved.",
-    "AIR: the squadron shoulder insignia is a half-round dome with the element name arched over the top, squadron number large in the centre and squadron name below - a different shape from Army's scrolled corps title, and it needs two text fields rather than one. The existing corps-title generator cannot produce it."
+    "RESOLVED in 0.25: medal_afa / ribbon_afa are in the medal pack and seq 6 is drawn. AIR: the Air Force Association Medal appears in full colour on the air poster, which settles the question that had it omitted from the tool as unsourced. Slot 6 can be unhidden once medal_afa / ribbon_afa are added to the medal pack.",
+    "RESOLVED in 0.25: bronze adopted. AIR: the Air Cadet Service Medal disc renders BRONZE on the air poster where Blatherwick describes 'a round gold coloured medal', and the artwork was built gold. A photograph against a text description. The artwork session sampled the poster's disc at mean #9E7B60, hue 26 degrees (a brown; gold sits near 44), and took the issuing authority's own 2018 artwork over Blatherwick, whose wording reads like the Army medal's description carried across. Recorded in the medal manifest. The tracked Medals and Ribbons/medal_specs.py still says gold and still lists afa as unsourced, so regenerating the pack from it would silently undo both until the updated copy arrives.",
+    "AIR: the squadron shoulder insignia is a half-round dome with the element name arched over the top, squadron number large in the centre and squadron name below - a different shape from Army's scrolled corps title, and it needs two text fields rather than one. The existing corps-title generator cannot produce it. In 0.25 the two poster samples draw as the Air unit choices (89 Pacific, 96 Alouette), sized from the 4.25 in x 52 mm measurement."
   ],
   "changelog": [
     {
@@ -1090,6 +1162,10 @@
     {
       "version": "0.24-draft",
       "change": "Air artwork keys settled on one rule, air_ + the key the tool already uses for that badge's row, so shared rows resolve by prefix with no mapping table: proficiency is air_fit_* / air_fa_* / air_mus_* / air_mk_*, appointments air_appt_drum_major / air_appt_pipe_major. Corrected open question 38, which said Air Music is six badges against Army's five; both are six. Recorded Air marksmanship as one piece per badge. Flagged Effective Speaking as pins on the air poster, against the note that puts it in the sewn CTC block. The eight championship pins on the air poster are the army pack's own (seven byte-identical images, the eighth the same photograph cropped tighter), so none are requested."
+    },
+    {
+      "version": "0.25-draft",
+      "change": "Air artwork wired in. air_art_pack.js (63 badges, A-CR-CCP-850/DA-003) merges into the page like the medals: ranks, training levels and the squadron insignia carry air_ keys, and shared rows (CTC, fitness, first aid, music, appointments) find Air art through one element-prefix lookup. Air sizes come from hand measurements where they exist - chevrons 10.5 cm wide at 8.255 / 10.16 / 10.16 / 12.065 cm, training level 3.81 x 3.0, every octagon 3.066, squadron insignia 10.795 x 5.2 - with LAC's height and both Warrant Officers estimated from the artwork. Fixed the Flight Sergeant drawing at 14 cm with the Warrant Officers: it was missing from the mid-way list. Medal pack updated: the Air Force Association Medal is drawn at seq 6 and the Air Cadet Service Medal disc is bronze. Army and Sea output verified unchanged."
     }
   ],
   "orders_of_dress": {

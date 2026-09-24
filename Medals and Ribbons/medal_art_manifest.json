@@ -109,6 +109,32 @@
     "true_ribbon_width_mm": 38,
     "width_note": "Issued ribbon is 38 mm. Rendered at 35 mm: LOCAL DECISION so ribbon rows stay aligned."
   },
+  "ribbon_afa": {
+    "w_mm": 35.0,
+    "h_mm": 10.0,
+    "aspect": 3.5,
+    "png": "png/ribbon_afa.png",
+    "svg": "svg/ribbon_afa.svg",
+    "name": "Air Force Association Medal (Air Cadets)",
+    "authority": "CATO 13-16 para 19.f / para 12.a",
+    "precedence": 6,
+    "fidelity": "MEASURED colour / ESTIMATED geometry",
+    "source": "Sampled off the full-colour medal image on A-CR-CCP-850/DA-003 (Symbols of the Royal Canadian Air Cadets, 2018), rendered at 9x and scanlined: navy / pale teal / navy / dark maroon centre / navy / teal / navy, centre stripe 41% of the width. No text source describes this ribbon - Blatherwick ch40 carries the award terms but no DESCRIPTION or RIBBON section - so stripe PROPORTIONS come from the image and the 35 mm width is assumed. Gold disc, plain straight bar suspender with a maple leaf lug, crown and laurels above an RCAF eagle, ASSOCIATION around the lower edge. Upper legend not legible at poster resolution.",
+    "true_ribbon_width_mm": 35
+  },
+  "medal_afa": {
+    "w_mm": 35.0,
+    "h_mm": 100.0,
+    "aspect": 0.35,
+    "png": "png/medal_afa.png",
+    "svg": "svg/medal_afa.svg",
+    "name": "Air Force Association Medal (Air Cadets)",
+    "authority": "CATO 13-16 para 19.f / para 12.a",
+    "precedence": 6,
+    "fidelity": "MEASURED colour / ESTIMATED geometry",
+    "source": "Sampled off the full-colour medal image on A-CR-CCP-850/DA-003 (Symbols of the Royal Canadian Air Cadets, 2018), rendered at 9x and scanlined: navy / pale teal / navy / dark maroon centre / navy / teal / navy, centre stripe 41% of the width. No text source describes this ribbon - Blatherwick ch40 carries the award terms but no DESCRIPTION or RIBBON section - so stripe PROPORTIONS come from the image and the 35 mm width is assumed. Gold disc, plain straight bar suspender with a maple leaf lug, crown and laurels above an RCAF eagle, ASSOCIATION around the lower edge. Upper legend not legible at poster resolution.",
+    "true_ribbon_width_mm": 35
+  },
   "ribbon_anavets": {
     "w_mm": 35.0,
     "h_mm": 10.0,
@@ -225,7 +251,7 @@
     "authority": "CATO 13-16 para 12.b (Air Cadet League of Canada documents)",
     "precedence": 11,
     "fidelity": "MEASURED geometry / ESTIMATED colour",
-    "source": "Blatherwick ch40 gives all five stripe widths in mm: 10 mm royal blue borders for the Air Cadet League's Royal title, 7 mm light blue centre for the Air Force, two 4 mm gold stripes for the four years of service. Gold 35 mm medal with the RCAirC crest, SERVICE - CADETS above, CANADA below. Hues not published; the central device is a maple leaf standing in for the RCAirC crest.",
+    "source": "Blatherwick ch40 gives all five stripe widths in mm: 10 mm royal blue borders for the Air Cadet League's Royal title, 7 mm light blue centre for the Air Force, two 4 mm gold stripes for the four years of service. Gold 35 mm medal with the RCAirC crest, SERVICE - CADETS above, CANADA below. Hues not published; the central device is a maple leaf standing in for the RCAirC crest. DISC METAL CHANGED gold -> bronze: Blatherwick says \"a round gold coloured medal\", but A-CR-CCP-850/DA-003 shows a bronze disc, sampled at 9x as mean #9E7B60 (hue 26deg, brown) where gold would sit near hue 44deg. Adopted the poster because it is the issuing authority's own current colour artwork and Blatherwick is a third-party text compendium. Revert by setting metal back to \"gold\". The ribbon description in Blatherwick is confirmed by the same image.",
     "true_ribbon_width_mm": 35
   },
   "medal_airservice": {
@@ -238,7 +264,7 @@
     "authority": "CATO 13-16 para 12.b (Air Cadet League of Canada documents)",
     "precedence": 11,
     "fidelity": "MEASURED geometry / ESTIMATED colour",
-    "source": "Blatherwick ch40 gives all five stripe widths in mm: 10 mm royal blue borders for the Air Cadet League's Royal title, 7 mm light blue centre for the Air Force, two 4 mm gold stripes for the four years of service. Gold 35 mm medal with the RCAirC crest, SERVICE - CADETS above, CANADA below. Hues not published; the central device is a maple leaf standing in for the RCAirC crest.",
+    "source": "Blatherwick ch40 gives all five stripe widths in mm: 10 mm royal blue borders for the Air Cadet League's Royal title, 7 mm light blue centre for the Air Force, two 4 mm gold stripes for the four years of service. Gold 35 mm medal with the RCAirC crest, SERVICE - CADETS above, CANADA below. Hues not published; the central device is a maple leaf standing in for the RCAirC crest. DISC METAL CHANGED gold -> bronze: Blatherwick says \"a round gold coloured medal\", but A-CR-CCP-850/DA-003 shows a bronze disc, sampled at 9x as mean #9E7B60 (hue 26deg, brown) where gold would sit near hue 44deg. Adopted the poster because it is the issuing authority's own current colour artwork and Blatherwick is a third-party text compendium. Revert by setting metal back to \"gold\". The ribbon description in Blatherwick is confirmed by the same image.",
     "true_ribbon_width_mm": 35
   },
   "ribbon_armyservice_5yr": {
@@ -677,12 +703,5 @@
     "fidelity": "MEASURED geometry / ESTIMATED device",
     "source": "Silver plated, 2 cm by 0.75 cm. The order reads \"a bar with a single anchor leaf\" [sic] - quirk preserved; read as an anchor, which is what Navy League insignia carries."
   },
-  "_unsourced": {
-    "afa": {
-      "name": "Air Force Association Medal",
-      "precedence": 6,
-      "authority": "CATO 13-16 para 12.a / CATO 52-08",
-      "reason": "Blatherwick ch40 carries the terms of the award but its entry stops after the selection criteria - there is no DESCRIPTION or RIBBON section. No other description found. Drawing one would be invention, so nothing was produced."
-    }
-  }
+  "_unsourced": {}
 }

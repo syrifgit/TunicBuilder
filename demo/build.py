@@ -57,6 +57,22 @@ def main():
         print("  art/medal_pack.js not found - medals will draw as placeholders")
         body = body.replace("/*__MEDAL_ART__*/", "")
 
+    # Air badge artwork, extracted from A-CR-CCP-850/DA-003 in another session and
+    # delivered as WebP already, so it is read straight from the delivery folder. Same
+    # merge as the medals; every key carries an air_ prefix, so nothing collides.
+    # Optional: without it the page says Air has no artwork, which is then true.
+    air = os.path.join(ROOT, "air badges", "air_art_pack.js")
+    if "/*__AIR_ART__*/" not in tpl:
+        sys.exit("marker /*__AIR_ART__*/ missing from template")
+    have_air = os.path.exists(air)
+    air_pack = ""
+    if have_air:
+        air_pack = (open(air, encoding="utf-8").read()
+                    + "\nObject.assign(BADGE_ART, AIR_ART);")
+    else:
+        print("  air badges/air_art_pack.js not found - Air will draw without artwork")
+    body = body.replace("/*__AIR_ART__*/", air_pack)
+
     # The LOCAL build keeps the artwork in a sibling file instead of inlining it.
     # Committing the inlined page meant every template edit rewrote megabytes of
     # base64, which git cannot delta and which looks a lot like dumping binaries.
@@ -64,11 +80,12 @@ def main():
     # almost never changes. file:// loads a sibling classic script fine, so
     # double-clicking the page still works as long as the folder stays together.
     ART_FILE = "tunic_art.js"
-    block = "<script>\n/*__ART_PACK__*/\n/*__MEDAL_ART__*/\n</script>"
+    block = "<script>\n/*__ART_PACK__*/\n/*__MEDAL_ART__*/\n/*__AIR_ART__*/\n</script>"
     if block not in tpl:
         sys.exit("the art <script> block is not where build.py expects it")
     external = tpl.replace(block, f'<script src="{ART_FILE}"></script>')
-    packs = art + "\n" + (pack + "\nObject.assign(BADGE_ART, MEDAL_ART);\n" if have_medals else "")
+    packs = (art + "\n" + (pack + "\nObject.assign(BADGE_ART, MEDAL_ART);\n" if have_medals else "")
+             + (air_pack + "\n" if have_air else ""))
     open(os.path.join(HERE, ART_FILE), "w", encoding="utf-8").write(packs)
 
     for name, text in [("tunic.html", body),                                   # artifact

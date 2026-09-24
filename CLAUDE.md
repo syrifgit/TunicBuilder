@@ -50,7 +50,10 @@ and 7.4 spans all three elements), but every figure it gives is for the JCR swea
    used to infer a marksmanship rifle width of 5.5 cm. The real badge is 6.0 cm — 8%
    out. The poster is not drawn to a single scale either: 13 to 24 points per cm
    depending on which family you measure. Within one band the comparison is fair;
-   across bands it is not.
+   across bands it is not. **That includes shape.** On both posters the chevron art is
+   0.5 to 1.0 cm taller than the real badge (an embroidered field the badge doesn't
+   have), and on the air poster the levels and squadron title are 8% off too. Only
+   the octagons match. Size from the ruler and stretch the art to it.
 2. **Poster captions are a hint, not an identity.** The extractor reads whatever text
    sits under a badge, which produced "Canadian Armed Forces" for the parachutist wings
    and "Maple Leaf" for the Maple Leaf Exchange. `data/labels.py` is authoritative and
@@ -145,6 +148,11 @@ python build_all.py      # regenerates artwork, both pages, and smoke-tests them
   The clearance stops there: the poster PDF, `rcac_badges.zip` and `art/*` are the
   artwork as a *library* rather than as a tool, and stay out of the repo. Do not
   commit them, and do not add the raw crops to a page just to make them downloadable.
+- **Air artwork is a different publication** (A-CR-CCP-850/DA-003), and the clearance
+  above names the army poster only. `demo/` pages draw it; `build_site.py` refuses to
+  publish it until `AIR_ART_CLEARED` is set, which is for Lt Beal to confirm, not a
+  session to assume. The pack in `air badges/` is library artwork and is gitignored;
+  only its notes, manifest and extraction script are tracked.
 - **Git: commit locally, freely. Never push, never add a remote, never
   `gh repo create`** without being asked. There is deliberately no remote configured.
   Use the repo's configured identity, do not override it with `-c user.name=...`.
@@ -169,6 +177,9 @@ demo/     tunic.template.html   the tool
           check.js              executes a built page against a stub DOM
 notes/    CLAUDE_1.md     the original brief. Partly superseded — see below.
 docs/     build_site.py output. Gitignored; GitHub Pages would serve it.
+air badges/         Air artwork delivery: air_art_pack.js (ignored), manifest with the
+                    hand measurements per key, NOTES.md, extract.py
+Medals and Ribbons/ medal artwork delivery, authored rather than extracted; tracked
 ```
 
 `notes/CLAUDE_1.md` is the founding brief and still useful for background, but its
@@ -197,10 +208,14 @@ workaround, and they are all in the pipeline.
 
 ## Where things stand
 
-Rules **v0.24-draft**: 20 slots, 43 open questions, 6 conflicts, sources CH3S1,
+Rules **v0.25-draft**: 20 slots, 43 open questions, 6 conflicts, sources CH3S1,
 ANNEX-H, CH5-A–D, CH5-S7, CH4-A, CJCRGPO-10050 and CATO 13-16 (para 19 now sourced
 verbatim, confirming the precedence for every medal but the Order of St. George).
 
 Sleeves are complete: every badge has artwork and a resolved position. The front is
 modelled and placed but several sizes are placeholders. `TODO.md` has the full list,
 ordered by what it unblocks.
+
+Air draws its own artwork at hand-measured sizes. Shared rows find it through
+`elArt()`, which tries `<element>_<army key>` before the army key, so adding another
+element's pack needs no lookup table. Sea still draws army artwork.

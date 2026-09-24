@@ -1,0 +1,1467 @@
+{
+  "air_squadron_title_en": {
+    "px": [
+      410,
+      182
+    ],
+    "aspect": 2.2527,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      100.8,
+      647.0,
+      385.9,
+      776.2
+    ],
+    "art": "vector",
+    "bytes": 19296,
+    "fidelity": "measured",
+    "measured_mm": [
+      107.95,
+      52.0
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 2.076,
+    "aspect_delta_pct": 8.5
+  },
+  "air_squadron_title_fr": {
+    "px": [
+      410,
+      182
+    ],
+    "aspect": 2.2527,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      100.8,
+      838.6,
+      385.9,
+      967.7
+    ],
+    "art": "vector",
+    "bytes": 20878,
+    "fidelity": "measured",
+    "measured_mm": [
+      107.95,
+      52.0
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 2.076,
+    "aspect_delta_pct": 8.5
+  },
+  "air_rank_LAC": {
+    "px": [
+      400,
+      82
+    ],
+    "aspect": 4.878,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      77.3,
+      1184.2,
+      223.2,
+      1217.8
+    ],
+    "art": "vector",
+    "bytes": 7682,
+    "fidelity": "measured",
+    "measured_mm": [
+      80.0,
+      null
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)"
+  },
+  "air_rank_Cpl": {
+    "px": [
+      401,
+      352
+    ],
+    "aspect": 1.1392,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      244.3,
+      1136.2,
+      402.2,
+      1275.4
+    ],
+    "art": "vector",
+    "bytes": 15254,
+    "fidelity": "measured",
+    "measured_mm": [
+      105.0,
+      82.55
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.272,
+    "aspect_delta_pct": -10.4
+  },
+  "air_rank_FCpl": {
+    "px": [
+      384,
+      403
+    ],
+    "aspect": 0.9529,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      417.6,
+      1110.7,
+      575.0,
+      1275.8
+    ],
+    "art": "vector",
+    "bytes": 20942,
+    "fidelity": "measured",
+    "measured_mm": [
+      105.0,
+      101.6
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0335,
+    "aspect_delta_pct": -7.8
+  },
+  "air_rank_Sgt": {
+    "px": [
+      389,
+      403
+    ],
+    "aspect": 0.9653,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      590.4,
+      1112.6,
+      747.8,
+      1275.4
+    ],
+    "art": "vector",
+    "bytes": 18144,
+    "fidelity": "measured",
+    "measured_mm": [
+      105.0,
+      101.6
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0335,
+    "aspect_delta_pct": -6.6
+  },
+  "air_rank_FSgt": {
+    "px": [
+      337,
+      404
+    ],
+    "aspect": 0.8342,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      763.2,
+      1086.7,
+      921.1,
+      1275.4
+    ],
+    "art": "vector",
+    "bytes": 21482,
+    "fidelity": "measured",
+    "measured_mm": [
+      105.0,
+      120.65
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 0.8703,
+    "aspect_delta_pct": -4.1
+  },
+  "air_rank_WO2": {
+    "px": [
+      397,
+      349
+    ],
+    "aspect": 1.1375,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      953.3,
+      1130.4,
+      1076.6,
+      1239.8
+    ],
+    "art": "vector",
+    "bytes": 29126,
+    "fidelity": "measured",
+    "measured_mm": null,
+    "note": "no physical measurement supplied; size from poster proportions is NOT reliable"
+  },
+  "air_rank_WO1": {
+    "px": [
+      305,
+      402
+    ],
+    "aspect": 0.7587,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      1124.6,
+      1095.4,
+      1251.8,
+      1261.9
+    ],
+    "art": "vector",
+    "bytes": 32444,
+    "fidelity": "measured",
+    "measured_mm": null,
+    "note": "no physical measurement supplied; size from poster proportions is NOT reliable"
+  },
+  "air_appt_drum_major": {
+    "px": [
+      362,
+      403
+    ],
+    "aspect": 0.8983,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      1316.6,
+      1091.0,
+      1467.8,
+      1258.6
+    ],
+    "art": "vector",
+    "bytes": 18612,
+    "fidelity": "measured",
+    "measured_mm": null,
+    "note": "no physical measurement supplied; size from poster proportions is NOT reliable"
+  },
+  "air_appt_pipe_major": {
+    "px": [
+      362,
+      402
+    ],
+    "aspect": 0.9005,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      1500.0,
+      1091.0,
+      1651.2,
+      1258.6
+    ],
+    "art": "vector",
+    "bytes": 21576,
+    "fidelity": "measured",
+    "measured_mm": null,
+    "note": "no physical measurement supplied; size from poster proportions is NOT reliable"
+  },
+  "air_level_1": {
+    "px": [
+      385,
+      329
+    ],
+    "aspect": 1.1702,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      79.7,
+      1429.9,
+      159.4,
+      1499.0
+    ],
+    "art": "vector",
+    "bytes": 9098,
+    "fidelity": "measured",
+    "measured_mm": [
+      38.1,
+      30.0
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.27,
+    "aspect_delta_pct": -7.9
+  },
+  "air_level_2": {
+    "px": [
+      383,
+      327
+    ],
+    "aspect": 1.1713,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      208.8,
+      1429.9,
+      289.0,
+      1499.0
+    ],
+    "art": "vector",
+    "bytes": 9304,
+    "fidelity": "measured",
+    "measured_mm": [
+      38.1,
+      30.0
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.27,
+    "aspect_delta_pct": -7.8
+  },
+  "air_level_3": {
+    "px": [
+      386,
+      329
+    ],
+    "aspect": 1.1733,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      338.4,
+      1429.9,
+      418.1,
+      1499.0
+    ],
+    "art": "vector",
+    "bytes": 9394,
+    "fidelity": "measured",
+    "measured_mm": [
+      38.1,
+      30.0
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.27,
+    "aspect_delta_pct": -7.6
+  },
+  "air_level_4": {
+    "px": [
+      383,
+      327
+    ],
+    "aspect": 1.1713,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      467.5,
+      1429.9,
+      547.7,
+      1499.0
+    ],
+    "art": "vector",
+    "bytes": 9800,
+    "fidelity": "measured",
+    "measured_mm": [
+      38.1,
+      30.0
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.27,
+    "aspect_delta_pct": -7.8
+  },
+  "air_level_5": {
+    "px": [
+      385,
+      329
+    ],
+    "aspect": 1.1702,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      597.1,
+      1429.9,
+      676.8,
+      1499.0
+    ],
+    "art": "vector",
+    "bytes": 9596,
+    "fidelity": "measured",
+    "measured_mm": [
+      38.1,
+      30.0
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.27,
+    "aspect_delta_pct": -7.9
+  },
+  "air_wings_power": {
+    "px": [
+      407,
+      204
+    ],
+    "aspect": 1.9951,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      747.8,
+      1409.3,
+      964.8,
+      1520.2
+    ],
+    "art": "vector",
+    "bytes": 16586,
+    "fidelity": "measured",
+    "measured_mm": null,
+    "note": "no physical measurement supplied; size from poster proportions is NOT reliable"
+  },
+  "air_wings_glider": {
+    "px": [
+      408,
+      201
+    ],
+    "aspect": 2.0299,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      992.6,
+      1407.4,
+      1218.2,
+      1521.1
+    ],
+    "art": "vector",
+    "bytes": 15796,
+    "fidelity": "measured",
+    "measured_mm": null,
+    "note": "no physical measurement supplied; size from poster proportions is NOT reliable"
+  },
+  "air_ctc_gen": {
+    "px": [
+      376,
+      376
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      109.9,
+      1645.0,
+      176.2,
+      1711.2
+    ],
+    "art": "vector",
+    "bytes": 6530,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_ctc_arm_2": {
+    "px": [
+      377,
+      377
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      277.9,
+      1644.5,
+      345.6,
+      1712.2
+    ],
+    "art": "vector",
+    "bytes": 17590,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_aero_1": {
+    "px": [
+      376,
+      376
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      454.1,
+      1645.0,
+      520.3,
+      1711.2
+    ],
+    "art": "vector",
+    "bytes": 13612,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_aero_2": {
+    "px": [
+      377,
+      377
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      574.1,
+      1645.0,
+      641.8,
+      1712.6
+    ],
+    "art": "vector",
+    "bytes": 18398,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_avtech_am": {
+    "px": [
+      377,
+      377
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      694.6,
+      1645.0,
+      762.2,
+      1712.6
+    ],
+    "art": "vector",
+    "bytes": 18254,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_avtech_ao": {
+    "px": [
+      377,
+      377
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      815.5,
+      1645.0,
+      882.7,
+      1712.6
+    ],
+    "art": "vector",
+    "bytes": 19196,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_avn_1": {
+    "px": [
+      377,
+      377
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      973.0,
+      1645.0,
+      1040.6,
+      1712.6
+    ],
+    "art": "vector",
+    "bytes": 8052,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_avn_2": {
+    "px": [
+      377,
+      377
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      1071.8,
+      1645.0,
+      1139.5,
+      1712.6
+    ],
+    "art": "vector",
+    "bytes": 18642,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_glider": {
+    "px": [
+      377,
+      377
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      1171.2,
+      1645.0,
+      1238.4,
+      1712.6
+    ],
+    "art": "vector",
+    "bytes": 18508,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_ctc_pb_1": {
+    "px": [
+      376,
+      376
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      1331.0,
+      1645.0,
+      1397.3,
+      1711.2
+    ],
+    "art": "vector",
+    "bytes": 15020,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_ctc_pb_2": {
+    "px": [
+      377,
+      377
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      1449.6,
+      1645.0,
+      1517.3,
+      1712.6
+    ],
+    "art": "vector",
+    "bytes": 16810,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_ctc_pb_3": {
+    "px": [
+      376,
+      377
+    ],
+    "aspect": 0.9973,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      1566.7,
+      1645.0,
+      1634.4,
+      1712.6
+    ],
+    "art": "vector",
+    "bytes": 21986,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": -0.3
+  },
+  "air_ctc_staff": {
+    "px": [
+      376,
+      376
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      72.5,
+      1828.3,
+      138.2,
+      1894.1
+    ],
+    "art": "vector",
+    "bytes": 19256,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_oshkosh": {
+    "px": [
+      376,
+      376
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      183.8,
+      1828.3,
+      249.6,
+      1894.1
+    ],
+    "art": "vector",
+    "bytes": 12722,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_exchange": {
+    "px": [
+      376,
+      376
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      295.2,
+      1828.3,
+      361.0,
+      1894.1
+    ],
+    "art": "vector",
+    "bytes": 20266,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_ctc_fit_1": {
+    "px": [
+      376,
+      376
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      456.0,
+      1825.9,
+      521.3,
+      1891.7
+    ],
+    "art": "vector",
+    "bytes": 8386,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_ctc_fit_2": {
+    "px": [
+      377,
+      376
+    ],
+    "aspect": 1.0027,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      581.8,
+      1825.9,
+      649.0,
+      1893.1
+    ],
+    "art": "vector",
+    "bytes": 18678,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.3
+  },
+  "air_surv_1": {
+    "px": [
+      375,
+      376
+    ],
+    "aspect": 0.9973,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      745.4,
+      1825.9,
+      811.2,
+      1891.7
+    ],
+    "art": "vector",
+    "bytes": 10462,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": -0.3
+  },
+  "air_surv_2": {
+    "px": [
+      376,
+      376
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      841.9,
+      1825.9,
+      909.1,
+      1893.1
+    ],
+    "art": "vector",
+    "bytes": 19618,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_ctc_dc_1": {
+    "px": [
+      376,
+      376
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      1016.6,
+      1825.9,
+      1083.8,
+      1893.1
+    ],
+    "art": "vector",
+    "bytes": 11556,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_ctc_dc_2": {
+    "px": [
+      376,
+      376
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      1141.0,
+      1825.9,
+      1207.7,
+      1893.1
+    ],
+    "art": "vector",
+    "bytes": 19878,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_ctc_mb_1": {
+    "px": [
+      376,
+      376
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      1333.4,
+      1825.9,
+      1399.2,
+      1891.7
+    ],
+    "art": "vector",
+    "bytes": 12288,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_ctc_mb_2": {
+    "px": [
+      377,
+      376
+    ],
+    "aspect": 1.0027,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      1452.0,
+      1825.9,
+      1518.7,
+      1893.1
+    ],
+    "art": "vector",
+    "bytes": 15824,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.3
+  },
+  "air_ctc_mb_3": {
+    "px": [
+      376,
+      376
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      1569.1,
+      1825.9,
+      1635.8,
+      1893.1
+    ],
+    "art": "vector",
+    "bytes": 20596,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_fa_1": {
+    "px": [
+      375,
+      375
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      749.3,
+      2065.9,
+      817.4,
+      2134.6
+    ],
+    "art": "vector",
+    "bytes": 8574,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_fa_2": {
+    "px": [
+      375,
+      375
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      831.4,
+      2065.9,
+      899.5,
+      2134.6
+    ],
+    "art": "vector",
+    "bytes": 8628,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_glider_fam_1": {
+    "px": [
+      376,
+      375
+    ],
+    "aspect": 1.0027,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      992.2,
+      2065.9,
+      1060.8,
+      2134.6
+    ],
+    "art": "vector",
+    "bytes": 9110,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.3
+  },
+  "air_glider_fam_2": {
+    "px": [
+      375,
+      375
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      1122.2,
+      2065.9,
+      1190.4,
+      2134.6
+    ],
+    "art": "vector",
+    "bytes": 8992,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_mk_1": {
+    "px": [
+      375,
+      375
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      1302.7,
+      2065.9,
+      1370.9,
+      2134.6
+    ],
+    "art": "vector",
+    "bytes": 11252,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_mk_2": {
+    "px": [
+      375,
+      375
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      1385.8,
+      2065.9,
+      1453.9,
+      2134.6
+    ],
+    "art": "vector",
+    "bytes": 11284,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_mk_3": {
+    "px": [
+      375,
+      375
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      1475.0,
+      2065.9,
+      1543.2,
+      2134.6
+    ],
+    "art": "vector",
+    "bytes": 11478,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_mk_4": {
+    "px": [
+      376,
+      375
+    ],
+    "aspect": 1.0027,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      1568.2,
+      2065.9,
+      1636.3,
+      2134.6
+    ],
+    "art": "vector",
+    "bytes": 11626,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.3
+  },
+  "air_fit_2": {
+    "px": [
+      378,
+      378
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      745.9,
+      2306.9,
+      814.1,
+      2375.0
+    ],
+    "art": "vector",
+    "bytes": 11938,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_fit_3": {
+    "px": [
+      375,
+      375
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      826.6,
+      2306.9,
+      895.2,
+      2375.0
+    ],
+    "art": "vector",
+    "bytes": 11564,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_fit_4": {
+    "px": [
+      378,
+      378
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      908.6,
+      2306.9,
+      976.8,
+      2375.0
+    ],
+    "art": "vector",
+    "bytes": 11834,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_fit_5": {
+    "px": [
+      378,
+      378
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      988.8,
+      2306.9,
+      1057.0,
+      2375.0
+    ],
+    "art": "vector",
+    "bytes": 12440,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_mus_basic": {
+    "px": [
+      377,
+      377
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      1127.5,
+      2304.0,
+      1195.7,
+      2372.2
+    ],
+    "art": "vector",
+    "bytes": 9000,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_mus_1": {
+    "px": [
+      377,
+      377
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      1221.6,
+      2304.0,
+      1289.8,
+      2372.2
+    ],
+    "art": "vector",
+    "bytes": 8976,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_mus_2": {
+    "px": [
+      377,
+      377
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      1316.2,
+      2304.0,
+      1384.3,
+      2372.2
+    ],
+    "art": "vector",
+    "bytes": 8946,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_mus_3": {
+    "px": [
+      378,
+      377
+    ],
+    "aspect": 1.0027,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      1410.7,
+      2304.0,
+      1478.9,
+      2372.2
+    ],
+    "art": "vector",
+    "bytes": 9438,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.3
+  },
+  "air_mus_4": {
+    "px": [
+      377,
+      377
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      1504.8,
+      2304.0,
+      1573.0,
+      2372.2
+    ],
+    "art": "vector",
+    "bytes": 9768,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_mus_5": {
+    "px": [
+      377,
+      377
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      1599.4,
+      2304.0,
+      1667.5,
+      2372.2
+    ],
+    "art": "vector",
+    "bytes": 9618,
+    "fidelity": "measured",
+    "measured_mm": [
+      30.66,
+      30.66
+    ],
+    "measured_by": "ruler, physical badge (user-supplied)",
+    "measured_aspect": 1.0,
+    "aspect_delta_pct": 0.0
+  },
+  "air_es_zone": {
+    "px": [
+      266,
+      259
+    ],
+    "aspect": 1.027,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      196.3,
+      2340.0,
+      248.2,
+      2390.4
+    ],
+    "art": "raster",
+    "bytes": 8902,
+    "fidelity": "measured",
+    "measured_mm": null,
+    "note": "no physical measurement supplied; size from poster proportions is NOT reliable"
+  },
+  "air_es_prov": {
+    "px": [
+      259,
+      259
+    ],
+    "aspect": 1.0,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      334.6,
+      2340.0,
+      385.4,
+      2390.9
+    ],
+    "art": "raster",
+    "bytes": 7848,
+    "fidelity": "measured",
+    "measured_mm": null,
+    "note": "no physical measurement supplied; size from poster proportions is NOT reliable"
+  },
+  "air_es_nat": {
+    "px": [
+      257,
+      261
+    ],
+    "aspect": 0.9847,
+    "source": "A-CR-CCP-850/DA-003 p1",
+    "region_pt": [
+      480.0,
+      2340.0,
+      529.4,
+      2390.4
+    ],
+    "art": "raster",
+    "bytes": 7422,
+    "fidelity": "measured",
+    "measured_mm": null,
+    "note": "no physical measurement supplied; size from poster proportions is NOT reliable"
+  }
+}

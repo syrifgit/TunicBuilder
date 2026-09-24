@@ -4,7 +4,7 @@ Ordered by what it unblocks, not by effort. Every geometric item is also recorde
 `rules/army_tunic_placement_rules_2.json` under `open_questions`, which is the
 authoritative list — this file is the working view of it.
 
-Status as of rules **v0.24-draft**: 20 slots, 43 open questions, 6 recorded conflicts.
+Status as of rules **v0.25-draft**: 20 slots, 43 open questions, 6 recorded conflicts.
 
 ---
 
@@ -37,13 +37,18 @@ Things the tool currently gets *wrong* or cannot answer, not merely gaps.
 - [ ] **Confirm a transferring cadet keeps awards earned in another element.** Stated
   for JCR at 10050 para 6.2. It is what makes the Sea and Air entries in the medal list
   reachable on an army tunic, and the tool models it that way.
+- [ ] **Air rank height: which edge is "mid-way"?** The renderer puts the badge's
+  bottom edge mid-way between the elbow and the shoulder seam. With the measured sizes,
+  that runs every Air chevron rank into the squadron insignia at 57 cm: Cpl by 0.96 cm,
+  FCpl and Sgt by 2.86, FSgt by 4.77. Centred on the mid-point, all of them clear. The
+  text doesn't say which, so it's drawn as written and the validator shows the clash.
 
 Medals are done. **CATO 13-16 para 19 is now sourced verbatim** and confirms the order
 for every medal except the Order of St. George, which is absent from it — that one still
 rests on CJCR Gp O 10050 alone. Seq 5 is the **Army Cadet Medal of Merit** (four award
 bars, at least one worn, Walsh requires President — 11 states, all drawn). Seq 6, the
-**Air Force Association Medal, is still omitted**, leaving a gap in the numbering. The air
-poster now shows it in full colour, so it is sourced; the artwork is requested (§3).
+**Air Force Association Medal**, is drawn now too: no text describes its ribbon, but the
+air poster shows it in full colour, so its colour is measured and its geometry estimated.
 
 ## 2. Measurements — one ruler each
 
@@ -67,6 +72,11 @@ Everything here is a placeholder or an estimate the tool draws and flags.
   and the **service medal bar**, which has no dimensions at all.
 - [ ] **CWO rank.** Still an estimate at 7.62 × 10.16 cm, though the poster corroborates
   it to 2%.
+- [ ] **Air: the unmeasured badges.** Leading Air Cadet height (width is 80 mm; drawn
+  1.64 cm tall from the artwork), **WO2 and WO1** (army crown widths, artwork heights),
+  **Drum Major and Pipe Major** (drawn in the army 10 × 11 cm box), and the **pilot
+  wings** and **Effective Speaking pins**, which aren't drawn yet. The rest of Air is
+  measured.
 - [ ] **Smallest tunic in stores: sleeve length.** Only size 6436 (57 cm) is measured.
   A Sgt who is also Drum Major has 2.00 cm of clearance at 57 cm, 0.00 cm at 55 cm and
   an overlap below. This is a real wearability question, not a drawing nicety.
@@ -99,15 +109,26 @@ than a number the rules pack can carry.
   stripe widths are still eyeballed**, and every medallion obverse is stylised — the
   central relief is not reproducible from the sources to hand. Per-item detail is in
   `Medals and Ribbons/medal_art_manifest.json`.
-- [ ] **Air Force Association Medal has no artwork yet.** Sourced at last: the air poster
-  (A-CR-CCP-850/DA-003) shows ribbon and disc in full colour. Requested from the medal
-  pack as `medal_afa` / `ribbon_afa`; unhide seq 6 when it lands. Air-element award, so
-  it reaches an army tunic only by transfer.
-- [ ] **Air badge artwork.** Keys and scope settled in `AIR_ARTWORK_DECISIONS.md`: 63
-  badges, `air_` + the key the tool already uses for each row. When `air_art_pack.js`
-  lands: merge it into `BADGE_ART` in `demo/build.py`, point `RANKS_AIR` and
-  `LEVELS_AIR` at their `air_` keys, and give proficiency and appointments the
-  prefix lookup `ctcArt()` already does for the CTC grid.
+- [x] ~~**Air Force Association Medal has no artwork.**~~ `medal_afa` / `ribbon_afa`
+  arrived with the air delivery and seq 6 is drawn. Air Cadet Service Medal disc
+  changed to **bronze**, off the poster's photograph over Blatherwick's "gold".
+- [ ] **Get the updated `medal_specs.py` and `make_medals.py`.** The medal pack and
+  manifest in `Medals and Ribbons/` were regenerated from them, but they weren't in the
+  delivery. The tracked copies still list `afa` as unsourced and the Air service disc
+  as gold, so regenerating from them would silently undo both. Don't regenerate until
+  they arrive.
+- [x] ~~**Air badge artwork.**~~ 63 badges from `air badges/air_art_pack.js`, wired in
+  at hand-measured sizes. Still to do:
+  - [ ] **Effective Speaking re-cut.** The three crops are fully opaque with white
+    corners, so they'd draw as white squares. Not drawn yet, so not urgent.
+  - [ ] **Families with art but no control:** Air marksmanship (`air_mk_1`–`4`), glider
+    familiarization (`air_glider_fam_1` / `_2`) and Music Basic (`air_mus_basic`).
+    Each needs a place in the Air cuff block, which no instruction to hand gives.
+  - [ ] **Pilot wings and Effective Speaking** aren't modelled at all yet. The poster
+    draws Effective Speaking as metal pins, which argues for the pocket rather than
+    the CTC block where the rules pack put it.
+  - [ ] **Publication.** `build_site.py` won't ship Air artwork until someone confirms
+    the A-CR-CCP-750/DA-003 clearance covers A-CR-CCP-850/DA-003 as well.
 
 ## 4. Workbook corrections
 

@@ -30,8 +30,22 @@ PAGES = [("demo/tunic.local.html", "index.html", "the layout tool"),
 # whole class of surprise.
 NOJEKYLL = ""
 
+# The publication clearance on record covers A-CR-CCP-750/DA-003, the army poster.
+# Air artwork comes from a different publication, A-CR-CCP-850/DA-003, and nobody has
+# said yet that the clearance extends to it. Until someone does, a release that would
+# carry it stops here. Set this once it is confirmed.
+AIR_ART_CLEARED = False
+
 
 def main():
+    art = os.path.join(ROOT, "demo", "tunic_art.js")
+    has_air = os.path.exists(art) and "AIR_ART" in open(art, encoding="utf-8").read()
+    if has_air and not AIR_ART_CLEARED:
+        print("demo/tunic_art.js carries Air artwork from A-CR-CCP-850/DA-003, and the")
+        print("clearance on record covers A-CR-CCP-750/DA-003 only. Confirm it extends")
+        print("to the Air poster, set AIR_ART_CLEARED in build_site.py, and re-run.")
+        return 1
+
     os.makedirs(SITE, exist_ok=True)
     open(os.path.join(SITE, ".nojekyll"), "w").write(NOJEKYLL)
 
@@ -57,6 +71,8 @@ def main():
     print("\nBoth pages carry Crown copyright artwork from A-CR-CCP-750/DA-003,")
     print("cleared for publication as part of the tool, and both attribute it. The")
     print("poster itself and the raw badge library are NOT cleared and stay ignored.")
+    if has_air:
+        print("The layout tool also carries Air artwork from A-CR-CCP-850/DA-003.")
     return 0
 
 

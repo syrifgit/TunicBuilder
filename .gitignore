@@ -12,6 +12,15 @@ rcac_badges.zip
 # Delivery archives. medals.zip is byte-identical to the extracted
 # "Medals and Ribbons/" folder, so tracking both stores it twice.
 medals.zip
+# Air artwork delivery. The pack and preview sheets are extracted from
+# A-CR-CCP-850/DA-003, so they stay out like art/*. The notes, manifest and
+# extraction script carry no artwork and are tracked as the citation. The medal
+# files in the folder are a copy of what went into "Medals and Ribbons/".
+air badges.zip
+air badges/*
+!air badges/NOTES.md
+!air badges/air_art_manifest.json
+!air badges/extract.py
 # Generated packs. Note `art/*` not `art/` - git cannot re-include anything
 # under an excluded DIRECTORY, so the directory itself must stay visible.
 art/*

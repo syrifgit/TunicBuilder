@@ -472,8 +472,10 @@ const SENIOR_SEA = ["PO1","CPO2","CPO1"];         // low on the left sleeve
 // chevrons 10.5 cm wide and 3.25 / 4 / 4 / 4.75 in tall. The poster art runs 4-10%
 // taller than that, the same fixed embroidered border the army chevrons showed, so it
 // is stretched to the measured box exactly as the army art is. LAC is 8 x 2 cm at the
-// tallest part; the art is 18% flatter than that. WO2 and WO1 are not measured at
-// all: army crown widths, artwork heights, flagged as estimates.
+// tallest part; the art is 18% flatter than that. WO2 and WO1 take the army MWO and
+// CWO sizes (Lt Beal). MWO is measured; CWO is still an estimate, so WO1 inherits
+// its flag. The WO2 art is 1.14:1 in a 1.5:1 box, much as the army MWO poster art
+// (1.26) lost to its measured 3 x 2 in.
 const RANKS_AIR = {
   Cdt : {label:"Cadet",                        cls:"none"},
   LAC : {label:"Leading Air Cadet",            cls:"chevron", w: 8.00, h: 2.00,  art:"air_rank_LAC"},
@@ -481,8 +483,8 @@ const RANKS_AIR = {
   FCpl: {label:"Flight Corporal",              cls:"chevron", w:10.50, h:10.16,  art:"air_rank_FCpl"},
   Sgt : {label:"Sergeant",                     cls:"chevron", w:10.50, h:10.16,  art:"air_rank_Sgt"},
   FSgt: {label:"Flight Sergeant",              cls:"chevron", w:10.50, h:12.065, art:"air_rank_FSgt"},
-  WO2 : {label:"Warrant Officer Second Class", cls:"crown",   w: 7.62, h: 6.70,  art:"air_rank_WO2", conf:"estimate"},
-  WO1 : {label:"Warrant Officer First Class",  cls:"crown",   w: 7.62, h:10.04,  art:"air_rank_WO1", conf:"estimate"}
+  WO2 : {label:"Warrant Officer Second Class", cls:"crown",   w: 7.62, h: 5.08,  art:"air_rank_WO2"},
+  WO1 : {label:"Warrant Officer First Class",  cls:"crown",   w: 7.62, h:10.16,  art:"air_rank_WO1", conf:"estimate"}
 };
 // FSgt belongs here: "junior" is the mid-way placement, and only WO2 and WO1 move low.
 // It was missing, so a Flight Sergeant drew at 14 cm with the Warrant Officers.
@@ -526,23 +528,23 @@ const GLIDER_FAM = {
 };
 
 // Air pilot wings, issued nylon. Highest only: Power replaces Glider (Figure 3D-6).
-// Unmeasured, so drawn at the parachutist badge's guessed width, height from the art.
+// Drawn at the army parachutist badge's size (Lt Beal), PARA_W x PARA_H below, which
+// is itself unmeasured.
 const WINGS = {
   none:  {label:"None"},
   glider:{label:"Glider Pilot Wings", art:"air_wings_glider"},
   power: {label:"Power Pilot Wings",  art:"air_wings_power"}
 };
-const WINGS_W = 9.0;
 
 // Effective Speaking is a competition pin series, Air's equivalent of Army's Bisley
 // Series and Sea's Regatta, and it takes the same top-of-precedence place in the pin
-// strip (Lt Beal). Unmeasured, so drawn like the Bisley pins: 2.54 cm wide, height
-// from the artwork.
+// strip. Same size as the marksmanship and biathlon championship pins, the measured
+// 1 in square (Lt Beal).
 const PIN_ES = {key:"es", label:"Effective Speaking", slot:"Effective Speaking Series", opts:[
   {v:"none",        nm:"None"},
-  {v:"air_es_zone", nm:"Zone Championship",       est:true},
-  {v:"air_es_prov", nm:"Provincial Championship", est:true},
-  {v:"air_es_nat",  nm:"National Championship",   est:true}]};
+  {v:"air_es_zone", nm:"Zone Championship"},
+  {v:"air_es_prov", nm:"Provincial Championship"},
+  {v:"air_es_nat",  nm:"National Championship"}]};
 
 // Sea appointments. More than army's two, worn as a grid low on the left sleeve.
 const APPTS_SEA = {
@@ -1537,16 +1539,16 @@ function resolveFront(){
       cite:"CH3S1 3.b.(1) — 0.5 cm above the left breast pocket" });
   }
   // Air pilot wings: issued nylon, centred above the left pocket, highest only. Para 3
-  // gives 0.5 cm; Figure 3D-6's note says only "directly above". Size unmeasured.
+  // gives 0.5 cm; Figure 3D-6's note says only "directly above". Same size as the army
+  // parachutist badge (Lt Beal), which is itself a placeholder.
   const wg = EL().wings && EL().wings[F.wings];
   if (wg && wg.art){
-    const art = BADGE_ART[wg.art];
     put(L,{ face:"front", side:"left", slot:"front_left_pilot_wings",
-      label:wg.label, x:0, y:0.5, w:WINGS_W, h: art ? WINGS_W / art.aspect : WINGS_W / 2,
+      label:wg.label, x:0, y:0.5, w:PARA_W, h:PARA_H,
       art:wg.art, conf:"placeholder", fdatum:"pocket_top", edge:"bottom",
       cite:"SEWN-3 para 3 Air (a); CH3 Annex D 3D-6" });
-    add(`${wg.label} have never been measured. Drawn ${WINGS_W.toFixed(1)} cm wide, the parachutist badge's guessed width, with the height from the artwork.`,
-        "warn", "rules pack: air_unmeasured");
+    add(`${wg.label} are drawn at the parachutist badge's size, ${PARA_W.toFixed(2)} × ${PARA_H.toFixed(2)} cm, and that size is itself unmeasured.`,
+        "warn", "rules pack: front_left_pilot_wings");
     if (F.wings === "glider" && state.ctc.includes("air_glider"))
       add("The Glider Pilot Scholarship CTC badge is never worn with Glider Pilot Wings. It goes on with the other CTC badges only once Power Pilot Wings replace them.",
           "crit", "CH3 Annex D 3D-6");
@@ -1577,10 +1579,7 @@ function resolveFront(){
     if (shown.length > 1)
       add(`Order of precedence, top to bottom: ${pinStreams()[0].slot}, then Canadian Cadet Movement Marksmanship Series, then Canadian Cadet Movement Biathlon Series.`,
           "info", "confirmed by Lt Beal");
-    if (shown.some(o => o.stream === PIN_ES))
-      add("Effective Speaking pins have never been measured. Drawn 2.54 cm wide with the height from the artwork, like the Bisley pins.",
-          "warn", "rules pack: air_unmeasured");
-    if (shown.some(o => o.est && o.stream !== PIN_ES))
+    if (shown.some(o => o.est))
       add("Only the championship pins (zone, provincial, national) are confirmed 1 in square. The award, expedition and rifle team pins have never been measured — they are drawn 2.54 cm wide with the height taken from the artwork, so the shape is right but the scale is a guess.",
           "warn", "rules pack: national_winner_award, expedition_pin");
   }

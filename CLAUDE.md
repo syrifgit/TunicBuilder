@@ -216,7 +216,7 @@ workaround, and they are all in the pipeline.
 
 ## Where things stand
 
-Rules **v0.26-draft**: 21 slots, 43 open questions, 8 conflicts, sources CH3S1,
+Rules **v0.27-draft**: 21 slots, 43 open questions, 8 conflicts, sources CH3S1,
 ANNEX-H, CH3-ANNEX-D, CH5-A–D, CH5-S7, CH4-A, SEWN-3, CJCRGPO-10050 and CATO 13-16
 (para 19 now sourced verbatim, confirming the precedence for every medal but the
 Order of St. George).

@@ -4,7 +4,7 @@ Ordered by what it unblocks, not by effort. Every geometric item is also recorde
 `rules/army_tunic_placement_rules_2.json` under `open_questions`, which is the
 authoritative list — this file is the working view of it.
 
-Status as of rules **v0.26-draft**: 21 slots, 43 open questions, 8 recorded conflicts.
+Status as of rules **v0.27-draft**: 21 slots, 43 open questions, 8 recorded conflicts.
 
 ---
 
@@ -74,11 +74,12 @@ Everything here is a placeholder or an estimate the tool draws and flags.
   and the **service medal bar**, which has no dimensions at all.
 - [ ] **CWO rank.** Still an estimate at 7.62 × 10.16 cm, though the poster corroborates
   it to 2%.
-- [ ] **Air: the unmeasured badges.** **WO2 and WO1** (army crown widths, artwork
-  heights), **Drum Major and Pipe Major** (drawn in the army 10 × 11 cm box), the
-  **pilot wings** (9 cm wide, a guess) and the **Effective Speaking pins** (2.54 cm
-  wide, like Bisley). The rest of Air is measured, LAC included at 8 × 2 cm, and Air
-  uses the army tunic's measurements.
+- [x] ~~**Air: the unmeasured badges.**~~ Settled by adopting army sizes (Lt Beal): WO2
+  = MWO 7.62 × 5.08, WO1 = CWO 7.62 × 10.16, wings = parachutist 9.0 × 3.87, and
+  Effective Speaking = the championship pins' 1 in square. WO1 and the wings inherit
+  the CWO and parachutist items above, so measuring those settles both elements.
+  The Air Drum Major and Pipe Major still sit in the army 10 × 11 cm box on no
+  recorded decision, though the Air art fits it to within 1%.
 - [ ] **The elbow.** Air and Sea both place ranks "mid-way between the elbow and the
   shoulder seam", and the elbow is still assumed at mid-sleeve (28 cm on 57). One
   measurement on any tunic settles it for both.

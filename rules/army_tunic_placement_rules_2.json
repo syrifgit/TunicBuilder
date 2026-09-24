@@ -1,6 +1,6 @@
 {
   "$comment": "Placement rules for Royal Canadian Army Cadet tunic (jacket) insignia. Sleeves only. Front of tunic not yet in scope.",
-  "version": "0.26-draft",
+  "version": "0.27-draft",
   "scope": "army_cadet_sleeves_and_front",
   "sources": [
     {
@@ -223,7 +223,7 @@
       "h": 2.54,
       "source_units": "1 in square",
       "confidence": "measured",
-      "note": "Applies to the CHAMPIONSHIP pins only (zone, provincial, national) in both the marksmanship and biathlon streams. Poster artwork trims to aspect 1.00-1.03, consistent with a square."
+      "note": "Applies to the CHAMPIONSHIP pins only (zone, provincial, national) in both the marksmanship and biathlon streams. Poster artwork trims to aspect 1.00-1.03, consistent with a square. Air's Effective Speaking pins take the same size (Lt Beal, 2026-09-24)."
     },
     "medal_ribbon": {
       "w": 3.5,
@@ -367,16 +367,19 @@
       "note": "Leading Air Cadet, the propeller. The artwork trims to aspect 4.878 against 4.0 measured, 18% flatter than the badge; the measurement governs and the art is stretched to it."
     },
     "air_rank_warrant": {
-      "confidence": "ESTIMATE - unmeasured",
+      "confidence": "adopted from the army",
       "WO2": {
         "w": 7.62,
-        "h": 6.7
+        "h": 5.08,
+        "same_as": "rank_mwo, measured"
       },
       "WO1": {
         "w": 7.62,
-        "h": 10.04
+        "h": 10.16,
+        "same_as": "rank_cwo, still an ESTIMATE"
       },
-      "note": "Neither is measured. Widths are the army MWO / CWO figures, heights come from the Air artwork aspect (1.1375 and 0.7587) so the picture is not distorted. Measure both."
+      "source": "Lt Beal, 2026-09-24: use the army MWO and CWO sizes.",
+      "note": "WO1 inherits the CWO estimate, so the renderer keeps flagging it. The Air WO2 art trims to 1.14:1 in a 1.5:1 box, much as the army MWO poster art (1.26) lost to its measured 3 x 2 in; the WO1 art (0.76) sits within 1% of its box."
     },
     "air_training_level": {
       "w": 3.81,
@@ -410,13 +413,11 @@
       "note": "Half-round dome, hung 2 cm below the shoulder seam. Poster aspect 2.253 against 2.076 measured; the measurement governs."
     },
     "air_unmeasured": {
-      "confidence": "unknown",
+      "confidence": "adopted from the army",
       "items": [
-        "Drum Major and Pipe Major appointment insignia",
-        "Power and Glider Pilot Wings",
-        "Effective Speaking pins"
+        "Drum Major and Pipe Major appointment insignia"
       ],
-      "note": "No measurement to hand, and poster proportions are not reliable for them. The appointments draw in the army 10 x 11 cm box as a guess (the Air art is within 1% of that shape). Wings and Effective Speaking are not drawn yet."
+      "note": "Drawn in the army 10 x 11 cm appointment box; the Air art is within 1% of that shape. The wings now take the parachutist badge's size and Effective Speaking the championship pins' 1 in square (Lt Beal, 2026-09-24), so this is the last Air size without a decision behind it."
     },
     "air_garment": {
       "same_as": "garment (army size 6436)",
@@ -1047,7 +1048,7 @@
       "notes": [
         "The Glider Pilot Scholarship CTC badge is never worn with Glider Pilot Wings; it joins the other CTC badges once Power Pilot Wings replace them (3D-6). The renderer raises the combination as a crit.",
         "Silver and gold wire-thread wings may be bought and worn on the jacket in lieu of the issued ones (3D-6). Not drawn: no artwork.",
-        "Size unmeasured; drawn at the parachutist badge's guessed 9 cm width with the height from the artwork."
+        "Same size as the army parachutist badge, 9.0 x 3.87 cm (Lt Beal, 2026-09-24), which is itself a placeholder. The Air wing art trims to about 2.0:1 against the box's 2.33:1."
       ]
     },
     {
@@ -1080,7 +1081,7 @@
             "Canadian Cadet Movement Biathlon Series"
           ],
           "citation": "Lt Beal, 2026-09-24",
-          "note": "Effective Speaking is Air's competition pin series, in the top-of-precedence place Army gives the Bisley Series and Sea its Regatta series. Unmeasured; drawn 2.54 cm wide with the height from the artwork."
+          "note": "Effective Speaking is Air's competition pin series, in the top-of-precedence place Army gives the Bisley Series and Sea its Regatta series. Same 1 in square as the championship pins (Lt Beal, 2026-09-24)."
         }
       }
     },
@@ -1340,6 +1341,10 @@
     {
       "version": "0.26-draft",
       "change": "Air placement settled from Figures 3H-5 / 3H-6, CH3 Annex D 3D-6 and Lt Beal's answers, and written into per-slot elements.air blocks. CTC block moved to the right arm (conflict recorded: para 3 says left, a typo). Four rank anchors: LAC to FSgt with the top edge on the elbow-shoulder mid-point, WO2 and WO1 with the bottom 9 cm above the cuff, and the appointment takes whichever right-sleeve anchor is free. Proficiency is the 2x3 block from the cuff in award order, one badge per family, adding marksmanship, glider familiarization and Music Basic. Pilot wings modelled on the left breast with the 3D-6 Glider exclusion (conflict recorded: 0.5 cm against 'directly above'). Effective Speaking tops the Air pin strip. LAC measured 8 x 2 cm; Air adopts the army tunic's measurements. Fixed an unsized marksmanship box drawn for any element without the slot. Army output unchanged; Sea loses only an army-only RCAC note."
+    },
+    {
+      "version": "0.27-draft",
+      "change": "Sizes for the last unmeasured Air badges, per Lt Beal: WO2 and WO1 take the army MWO (7.62 x 5.08, measured) and CWO (7.62 x 10.16, still an estimate) sizes, the pilot wings the army parachutist badge's 9.0 x 3.87, and the Effective Speaking pins the championship pins' 1 in square. Only the Air appointments are left on an adopted army size with no decision recorded."
     }
   ],
   "orders_of_dress": {

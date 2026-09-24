@@ -4,7 +4,7 @@ Ordered by what it unblocks, not by effort. Every geometric item is also recorde
 `rules/army_tunic_placement_rules_2.json` under `open_questions`, which is the
 authoritative list — this file is the working view of it.
 
-Status as of rules **v0.29-draft**: 21 slots, 47 open questions, 10 recorded conflicts.
+Status as of rules **v0.30-draft**: 21 slots, 48 open questions, 10 recorded conflicts.
 
 ---
 
@@ -134,6 +134,13 @@ than a number the rules pack can carry.
   - the **AFA ribbon in ANAVETS colours**, blue / white / blue / red centre (Lt Beal)
   - `src/maple_leaf_path.txt`, so the medals can be regenerated here
   - an **Air squadron title generator**, so any squadron can be drawn
+- [ ] **Court-mounted medals.** Every medal is drawn swing-mounted, its ribbon ending at
+  the suspender, at the 10 cm court-mount length, and the front note calls that "Court
+  mounted". The request is written: 27 `medal_<key>_court` twins on the same 35 × 100 mm
+  canvas, the ribbon carried down behind the disc to its centre line. Send it with or
+  after the follow-up, and the tool gets a swing / court choice once the art lands.
+  First check whether Chapter 5 gives swing-mounted medals their own length, since the
+  10 cm comes from the court-mounting section.
 - [x] ~~**Get the updated `medal_specs.py` and `make_medals.py`.**~~ Arrived with the
   air follow-up. Only `medal_specs.py` changed, and the manifest regenerates from it
   identically.
@@ -185,12 +192,11 @@ described from notes — go to wherever it now lives to act on them.
 - [ ] **Full tunic render.** Currently four flat panels (two sleeves, two breast
   pockets). A whole-garment view would show how the pieces relate and make the
   shoulder-to-pocket relationship real rather than presentational.
-- [ ] **Sea and Air elements.** Most of the above repeats for each: their own
-  placement rules, their own artwork, their own nametag colour (air cadet name tags
-  are air force blue; army and sea are black). The coordinate model and the resolver
-  should carry over unchanged — it is the rules pack and the art that are
-  element-specific. The unit dropdown and the service-medal element selection are the
-  first two places that already anticipate it.
+- [ ] **Sea artwork and the Sea corps badge.** Air is done: placement sourced from para
+  3 and its figures, and its own artwork at measured sizes. Sea is placed from para 3
+  but still draws army artwork, and its corps badge, worn on the right breast, isn't
+  drawn. The coordinate model and the resolver carried over unchanged, as expected:
+  it's the rules pack and the art that are element-specific.
 - [ ] **A written sewing guide.** The tool produced one until it was removed as
   screen clutter: a table of every badge sorted so that anything a later badge hangs
   off was already placed. The drawing's callouts carry the same measurements, but

@@ -168,7 +168,9 @@ python build_all.py      # regenerates artwork, both pages, and smoke-tests them
   extraction script are tracked.
 - **Git: commit locally, freely. Never push, never add a remote, never
   `gh repo create`** without being asked. There is deliberately no remote configured.
-  Use the repo's configured identity, do not override it with `-c user.name=...`.
+  The public repo is `syrifgit/TunicBuilder` on GitHub; when asked to push, push to its
+  URL rather than adding a remote. Use the repo's configured identity, do not override
+  it with `-c user.name=...`.
 - **Every geometric claim needs a citation.** A drawing someone sews from has to be
   defensible when they ask why a badge is at 20 cm.
 
@@ -189,7 +191,7 @@ demo/     tunic.template.html   the tool
           plate.template.html   the identification sheet
           check.js              executes a built page against a stub DOM
 notes/    CLAUDE_1.md     the original brief. Partly superseded — see below.
-docs/     build_site.py output. Gitignored; GitHub Pages would serve it.
+docs/     build_site.py output. Tracked; a release, not a build step.
 air badges/         Air artwork delivery, revision 2: air_art_pack.js (ignored), manifest
                     with the hand measurements per key, NOTES.md, extract.py, segment.py
 Medals and Ribbons/ medal artwork delivery, authored rather than extracted; tracked
@@ -221,7 +223,7 @@ workaround, and they are all in the pipeline.
 
 ## Where things stand
 
-Rules **v0.29-draft**: 21 slots, 47 open questions, 10 conflicts, sources CH3S1,
+Rules **v0.30-draft**: 21 slots, 48 open questions, 10 conflicts, sources CH3S1,
 ANNEX-H, CH3-ANNEX-D, CH5-A–D, CH5-S7, CH4-A, SEWN-3, CJCRGPO-10050 and CATO 13-16
 (para 19 now sourced verbatim, confirming the precedence for every medal but the
 Order of St. George).

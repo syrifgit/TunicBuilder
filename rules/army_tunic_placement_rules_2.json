@@ -1,6 +1,6 @@
 {
   "$comment": "Placement rules for Royal Canadian Army Cadet tunic (jacket) insignia. Sleeves only. Front of tunic not yet in scope.",
-  "version": "0.29-draft",
+  "version": "0.30-draft",
   "scope": "army_cadet_sleeves_and_front",
   "sources": [
     {
@@ -837,7 +837,7 @@
       "condition": "C1 only",
       "citation": "CH5-A 5A-1; CH5-S7",
       "notes": [
-        "One row if they fit. Past about five they overlap horizontally with the highest priority fully visible.",
+        "One row if they fit. From five medals the renderer overlaps them horizontally, highest priority fully visible. Five is a drawing choice, not a rule: the real limit is the wearer's arm seam (next note).",
         "Maximum mounting width is set by the wearer's physique, not a number: centred on the pocket, the bar must not run past the jacket arm seam. The renderer flags this rather than computing it.",
         "Length is 10 cm, suspender top to medal bottom edge (CH5-S7), so the medal finishes 9 cm down a 15 cm pocket.",
         "Precedence order is not in Chapter 5. CATO 13-16 is the cadet-programme authority and is still unsourced, but CJCRGPO-10050 7.4 now supplies an ordered CJCR-wide list. Adopted from 10050; confirm against CATO 13-16 when it is obtained.",
@@ -899,8 +899,7 @@
           "elements": [
             "air"
           ],
-          "available": false,
-          "note": "NOT RENDERED. No source describes this medal's ribbon: Blatherwick carries the terms of the award and the selection criteria and stops, with no description or ribbon section, and nothing else was found. Drawing one would be invention, so the slot is omitted from the tool rather than filled with a placeholder. The seq gap is the record."
+          "note": "Drawn since 0.25. No text source describes the ribbon: Blatherwick gives the terms of the award and stops. A-CR-CCP-850/DA-003 shows the medal in full colour, so the stripe pattern and proportions are sampled off that image and the width is the standard 35 mm. Lt Beal, 2026-09-24: it looks like the same colour palette as the ANAVETS medal. The sampled colours don't match that palette, and the same poster printed the Air Cadet Service Medal's gold as brown, so AIR_ARTWORK_FOLLOWUP_2.md asks for the ribbon in the ANAVETS colours. Until it lands the tool draws the sampled ones."
         },
         {
           "seq": 7,
@@ -1294,7 +1293,7 @@
     "Cadet Service Medal bars: the ARMY scheme is now sourced. ACLC Policy 13.1 paras 5 and 12 - four years earns the medal, each further year adds a gold bar on the medal and a gold maple leaf on the undress ribbon, accumulating rather than replacing. The tool offers 4/5/6/7 years. Still open: no published maximum (7 is a practical ceiling for a cadet who joins at 12, a LOCAL DECISION), and the SEA and AIR service medals use different schemes - Sea reportedly uses anchor devices rather than an accumulating stack, Air's bars exist commercially but no source describes them. Both are drawn base state only. AIR, per Lt Beal, 2026-09-24: the same accumulating system as Army, with its own devices: each further year adds a gold bar with a bird, wings spread, on the medal, and a rosette rather than a maple leaf on the undress ribbon. No artwork yet; the renderer draws Air bars as soon as medal_airservice_Nyr / ribbon_airservice_Nyr exist.",
     "The Sea, Army and Air Cadet Service Medals are modelled as one award in three elements, exclusive by the element the cadet served in, with a transfer carrying the earlier one. Confirm a cadet cannot hold two.",
     "Order of St. George is absent from CATO 13-16 para 19 entirely. Its seq 8 position rests on CJCR Gp O 10050 para 7.4 alone, which is a JCR order. Every other medal in the list is now confirmed against CATO; this one is not, and a cadet holding it could be wearing it in the wrong place in the group.",
-    "RESOLVED in 0.25. Air Force Association Medal (CATO 13-16 para 19.f): no text source describes its ribbon, but A-CR-CCP-850/DA-003 shows it in full colour. The medal pack now carries medal_afa / ribbon_afa, colour sampled off that image and geometry estimated at the standard 35 mm, and seq 6 is drawn. It is an air-element award and reaches an army tunic only by transfer.",
+    "RESOLVED in 0.25. Air Force Association Medal (CATO 13-16 para 19.f): no text source describes its ribbon, but A-CR-CCP-850/DA-003 shows it in full colour. The medal pack now carries medal_afa / ribbon_afa, colour sampled off that image and geometry estimated at the standard 35 mm, and seq 6 is drawn. It is an air-element award and reaches an army tunic only by transfer. In 0.29 Lt Beal gave the ribbon the ANAVETS colour palette; the recolour is requested (right_medals, seq 6).",
     "Medal and ribbon artwork fidelity is mixed and recorded per item in the artwork manifest. Lord Strathcona, RCL Excellence, Order of St. George and the Army Cadet Service Medal are sampled from source images; Bravery and ANAVETS stripe widths are still eyeballed; every medallion obverse is stylised because the central relief is not reproducible from the sources to hand.",
     "RESOLVED by Sewn Insignia para 3. Sea does not stack three things above the left cuff: proficiency insignia (up to six) go on the LOWER RIGHT sleeve, and the left arm above the cuff carries up to four Staff / Deployment / Exchange / appointment insignia combined, of which only one may be an appointment. The renderer now draws zero clashes for Sea.",
     "Sea and Air geometry is SOURCED from Sewn Insignia para 3, with one assumption left: the elbow. 'Mid-way between the elbow and the shoulder seam' needs an elbow position, taken as mid-sleeve, 28 cm on a 57 cm sleeve, giving 42.5 cm. Measure a real sleeve to settle it. Air uses the army tunic's measurements (Lt Beal), so its '9 cm above the top of the cuff' is y = 14 on the 5 cm cuff. AIR RESOLVED in 0.26: which edge sits mid-way. Figures 3H-5 / 3H-6 put the TOP edge on the mid-point (Lt Beal). The bottom-edge reading drawn in 0.25 ran every chevron rank into the squadron insignia; top-edge clears it by 7.3 cm. Sea's edge is still unknown and still drawn bottom-edge.",
@@ -1318,7 +1317,8 @@
     "CTC supersession is unclear for every element (Lt Beal, 2026-09-24). CH3S1 3.b.(9) and the Figure 3D-3 note say 'advanced qualification supersedes basic qualification' for Army; Air's texts (Figure 3D-5, para 3 (g)) and Sea's don't. Which badges count as advanced and basic, and whether it applies outside Army, is open. The renderer does not apply it: every badge selected is drawn.",
     "Precedence between the commendation pins and the competition pins is unclear for every element (Lt Beal, 2026-09-24). Air follows Army for now: commendation pins in one right-pocket stack, competition pins in the left-pocket strip.",
     "AIR proficiency block: when a cadet moves up within a family (Music Basic to Level 1, Bronze to Silver), does the new badge keep the old one's position or take the next free one? The renderer keeps the position. The block also holds six against five known families; the sixth is unknown.",
-    "CTC cap: once more badges are held than may be worn (six), which come off? The renderer drops the most recently awarded. Unsourced for every element."
+    "CTC cap: once more badges are held than may be worn (six), which come off? The renderer drops the most recently awarded. Unsourced for every element.",
+    "Medal mounting, swing or court. Every medal is drawn swing-mounted, its ribbon ending at the suspender, at the 10 cm court-mount length (measured_constants_cm.medal_court_mount), and the front note calls that 'Court mounted'. The 10 cm comes from CH5-S7, the court-mounting section, so whether a swing-mounted medal hangs to the same length is unsourced. Court-mount artwork, with the ribbon carried down behind the disc to the medal centre line, doesn't exist yet: make_medals.py's court option only adds a pin bar, and its PANEL_BOTTOM constant is unused. A request for medal_<key>_court twins on the same 35 x 100 mm canvas is written; the renderer will offer swing or court once they exist."
   ],
   "changelog": [
     {
@@ -1432,6 +1432,10 @@
     {
       "version": "0.29-draft",
       "change": "Lt Beal's answers to the Air officer questions. Front layout confirmed the same as Army (confirmed_shared on the front slots). Appointment reading, the cuff-block families and the Effective Speaking pin placement confirmed. Pilot wings moved onto the pocket edge: 3D-6 separates the sewn wings from the shirt pin, and para 3's 0.5 cm is the pin's gap. Figures 3D-3 and 3D-5 added; two conflicts recorded where they disagree with the newer section text (Army sequence basis, Air maximum of seven), and 3D-5 corroborates the Air CTC block on the right arm. Air Cadet Service Medal disc is gold, reverting 0.25's bronze. Air service bars described (bird bar, rosettes). New open questions: supersession, commendation versus competition pin precedence, Air level-ups within a family, and which CTC badges come off past the cap."
+    },
+    {
+      "version": "0.30-draft",
+      "change": "Cleanup before publishing. right_medals: the overlap note said 'past about five' against the renderer's five or more; corrected, and marked as a drawing choice rather than a rule. Seq 6, the Air Force Association Medal, still carried 'available: false' and 'NOT RENDERED' from before 0.25; brought up to date, and Lt Beal's ANAVETS palette recorded, which had lived only in the artwork follow-up. New open question: medals are drawn swing-mounted at the court-mount length and labelled court mounted, and court-mount artwork doesn't exist yet."
     }
   ],
   "orders_of_dress": {

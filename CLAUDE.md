@@ -22,20 +22,23 @@ conflict in the rules pack — the field, the alternative value, the source of e
 the reasoning for what was adopted — and to surface it in the validator. It is never to
 quietly pick one and move on.
 
-Eight conflicts are recorded so far. Where an illustration argued with an instruction,
-the illustration lost every time but once, and that once the instruction couldn't be
-followed as written:
+Ten conflicts are recorded so far. Where an illustration argued with an instruction, the
+illustration lost every time except twice on Air, and both times the instruction was
+plainly wrong. Where two editions of the text disagree, the newer governs; Lt Beal dates
+the section text newer than the Annex D figure notes.
 
 | Slot | Conflict | Adopted |
 |---|---|---|
 | `proficiency_stack` | Annex H says 12 cm | CH3S1 3.b.(5) → 20 cm |
 | `marksmanship` | poster draws ~0.73–0.86 cm | CH3S1 3.b.(6) → 0.5 cm |
 | `ctc_grid` | Annex H text describes a 5-badge stagger | CH3S1 3.b.(9) → aligned 2×3 |
-| `ctc_grid` (Air) | para 3 (g) says left arm, on top of the proficiency block | Figure 3H-6 → right arm |
+| `ctc_grid` | 3D-3 note says order of precedence | CH3S1 3.b.(9), newer → order awarded |
+| `ctc_grid` (Air) | para 3 (g) says left arm, on top of the proficiency block | 3H-6 and 3D-5 → right arm |
+| `ctc_grid` (Air) | 3D-5 note says seven, the seventh over the fourth | para 3 (g), newer → six |
 | `front_right_expedition` | workbook says left pocket | CH5-B figure → right pocket |
 | `right_commendation_stack` | 5D-1 says national goes left | Ch5 → one right-hand stack |
 | `right_commendation_stack` | 10050 ranks a VCDS Commendation | Ch5 → "Command Commendation" |
-| `front_left_pilot_wings` | 3D-6 note says "directly above" | para 3 (a) → 0.5 cm |
+| `front_left_pilot_wings` | para 3 (a) says 0.5 cm above the pocket | 3D-6 note → on the pocket edge |
 
 **The commendation split needs a decision before anyone prints a guide.** The stack was
 adopted as one right-hand run against Figure 5D-1. CJCR Gp O 10050 para 7.5 now
@@ -62,9 +65,11 @@ and 7.4 spans all three elements), but every figure it gives is for the JCR swea
    and "Maple Leaf" for the Maple Leaf Exchange. `data/labels.py` is authoritative and
    was confirmed visually, badge by badge.
 3. **Where the instruction and the illustration disagree, the instruction governs.**
-   The exception is an instruction that contradicts itself. Air para 3 puts the CTC and
-   proficiency blocks on the same cloth, so Figure 3H-6 decides the arm, and para 3
-   still governs everything else about the block.
+   The exception is an instruction that's plainly wrong. Air para 3 puts the CTC and
+   proficiency blocks on the same cloth, so Figures 3H-6 and 3D-5 decide the arm. It
+   also gives the sewn wings the shirt pin's 0.5 cm gap, so the 3D-6 note, which lists
+   the two separately, decides that. Para 3 still governs everything else. Between two
+   editions of the text, the newer wins: the section text over the Annex D figure notes.
 
 ## The coordinate model
 
@@ -216,7 +221,7 @@ workaround, and they are all in the pipeline.
 
 ## Where things stand
 
-Rules **v0.28-draft**: 21 slots, 43 open questions, 8 conflicts, sources CH3S1,
+Rules **v0.29-draft**: 21 slots, 47 open questions, 10 conflicts, sources CH3S1,
 ANNEX-H, CH3-ANNEX-D, CH5-A–D, CH5-S7, CH4-A, SEWN-3, CJCRGPO-10050 and CATO 13-16
 (para 19 now sourced verbatim, confirming the precedence for every medal but the
 Order of St. George).
@@ -229,7 +234,8 @@ Air draws its own artwork at hand-measured sizes. Shared rows find it through
 `elArt()`, which tries `<element>_<army key>` before the army key, so adding another
 element's pack needs no lookup table. Sea still draws army artwork.
 
-Air placement is fully sourced: para 3 (`SEWN-3`), Figures 3H-5 / 3H-6 and 3D-6, written
-into `elements.air` blocks on the slots. The one assumption left is the elbow, taken as
+Air placement is fully sourced: para 3 (`SEWN-3`), Figures 3H-5 / 3H-6, 3D-5 and 3D-6,
+written into `elements.air` blocks on the slots, and the front layout is confirmed the
+same as Army's (`confirmed_shared`). The one assumption left is the elbow, taken as
 mid-sleeve. Air has four rank anchors (upper and lower, each arm), and the appointment
 takes whichever right-sleeve one the rank leaves free rather than pushing anything.

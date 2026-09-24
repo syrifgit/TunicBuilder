@@ -1,6 +1,6 @@
 {
   "$comment": "Placement rules for Royal Canadian Army Cadet tunic (jacket) insignia. Sleeves only. Front of tunic not yet in scope.",
-  "version": "0.28-draft",
+  "version": "0.29-draft",
   "scope": "army_cadet_sleeves_and_front",
   "sources": [
     {
@@ -27,12 +27,19 @@
     {
       "id": "CH3-ANNEX-D",
       "title": "CJCR Gp Dress Instructions, Chapter 3 Annex D",
-      "status": "Figure 3D-6 note supplied verbatim by Lt Beal, 2026-09-24.",
+      "status": "Figure notes 3D-3, 3D-5 and 3D-6 supplied verbatim by Lt Beal, 2026-09-24.",
       "figures_used": [
+        "3D-3",
+        "3D-5",
         "3D-6"
       ],
+      "figure_3D-3_title": "Army Cadet CTC Qualification Insignia",
+      "note_3D-3_verbatim": "Worn on the right sleeve of the cadet jacket in their order of precedence, 1 cm above the Star Level badge. Advanced qualification supersedes basic qualification.",
+      "figure_3D-5_title": "Air Cadet CTC Qualification Insignia",
+      "note_3D-5_verbatim": "These badges shall be worn with the participation badges on the right sleeve in the order that they are awarded. The first badge awarded is centred immediately above the cuff of the uniform jacket. The second badge awarded is placed immediately to the left of the first badge, to the front of the sleeve. The third badge awarded is placed immediately to the right of the first badge, to the rear of the sleeve. The fourth, fifth and sixth badges are placed immediately above badges one, two and three forming a second row of badges and they are placed in the same order as the first row. If a seventh badge is awarded, it shall be placed immediately over the fourth badge. Only a maximum of seven badges shall be worn.",
       "figure_3D-6_title": "Air Cadet Pilot Qualification Insignia",
-      "note_verbatim": "The Glider Pilot CTC badge is never worn with the Glider Pilot Wings. Issued Glider Pilot / Power Pilot sewn (nylon thread) insignia shall be worn centred directly above the left breast pocket and horizontal on the cadet jacket and flight suit. Glider Pilot / Power Pilot pin may be purchased and worn on the collared shirt when the jacket is removed, directly centred 0.5 cm over the left breast pocket. Silver and Gold wire thread embroidered Glider Pilot / Power Pilot badges may be purchased by the cadet and are authorized for wear only on the uniform jacket in lieu of issued wings. If a cadet successfully completes both Scholarships, only the Power Pilot Wings shall be worn. The Glider Pilot Scholarship CTC Qualification Badge shall then be worn with the other CTC Qualification Badges."
+      "note_3D-6_verbatim": "The Glider Pilot CTC badge is never worn with the Glider Pilot Wings. Issued Glider Pilot / Power Pilot sewn (nylon thread) insignia shall be worn centred directly above the left breast pocket and horizontal on the cadet jacket and flight suit. Glider Pilot / Power Pilot pin may be purchased and worn on the collared shirt when the jacket is removed, directly centred 0.5 cm over the left breast pocket. Silver and Gold wire thread embroidered Glider Pilot / Power Pilot badges may be purchased by the cadet and are authorized for wear only on the uniform jacket in lieu of issued wings. If a cadet successfully completes both Scholarships, only the Power Pilot Wings shall be worn. The Glider Pilot Scholarship CTC Qualification Badge shall then be worn with the other CTC Qualification Badges.",
+      "dating": "Lt Beal: the section text (CH3S1 for Army, para 3 for Sea and Air) is dated newer than these figure notes, so where the two disagree the section text governs."
     },
     {
       "id": "CH5-A",
@@ -522,7 +529,8 @@
             "Glider Pilot Familiarization"
           ],
           "condition": "one badge per family, the highest held; the sixth position has no family yet",
-          "citation": "SEWN-3 para 3 Air (e); ANNEX-H 3H-5; Lt Beal, 2026-09-24"
+          "citation": "SEWN-3 para 3 Air (e); ANNEX-H 3H-5; Lt Beal, 2026-09-24",
+          "confirmed": "Lt Beal, 2026-09-24: Marksmanship Classification and Glider Pilot Familiarization are worn in this block."
         }
       }
     },
@@ -653,7 +661,8 @@
           "max_worn": 1,
           "rule": "Takes whichever right-sleeve rank anchor the rank leaves free: the LOWER (bottom 9 cm above the cuff top) for Cadet and LAC to FSgt, the UPPER (top edge on the elbow-shoulder mid-point) for WO2 and WO1.",
           "citation": "SEWN-3 para 3 Air (f); ANNEX-H 3H-5 / 3H-6; Lt Beal, 2026-09-24",
-          "note": "A dedicated spot, unlike Army, which pushes the senior rank up off the appointment. A Cadet holding an appointment has both anchors free; the lower is used, as for every non-WO rank."
+          "note": "A dedicated spot, unlike Army, which pushes the senior rank up off the appointment. A Cadet holding an appointment has both anchors free; the lower is used, as for every non-WO rank.",
+          "confirmed": "Lt Beal, 2026-09-24. A Cadet holding an appointment probably never happens, but isn't known to be impossible; the lower anchor is used."
         }
       }
     },
@@ -718,6 +727,18 @@
           "alternate_value": "left arm",
           "source": "SEWN-3 para 3 Air (g)",
           "resolution": "Right arm adopted per ANNEX-H Figure 3H-6, which Lt Beal treats as authoritative: para 3 is a typo here. As written, (g) puts the CTC block on the left arm 'immediately above the top of the cuff', exactly where (e) puts the proficiency block, so the instruction cannot be followed. This is the one recorded case where a figure beats the instruction, and only because the instruction contradicts itself. Its 'second insignia to the left of the first, to the front of the sleeve' points both ways on the right arm; 'front' is kept, as on Army's right-arm grid."
+        },
+        {
+          "field": "sequence_basis (Army)",
+          "alternate_value": "order of precedence",
+          "source": "CH3-ANNEX-D Figure 3D-3 note",
+          "resolution": "Order awarded adopted per CH3S1 3.b.(9). Lt Beal: the section text is dated newer than the Annex D figure notes, so it governs where they differ."
+        },
+        {
+          "field": "max_worn (Air)",
+          "alternate_value": "7, the seventh placed immediately over the fourth",
+          "source": "CH3-ANNEX-D Figure 3D-5 note",
+          "resolution": "Six adopted per SEWN-3 para 3 (g), the newer text (Lt Beal). This is where the old seventh-badge note came from. The same 3D-5 note puts the block on the RIGHT sleeve, corroborating Figure 3H-6 against para 3's left."
         }
       ],
       "notes": [
@@ -731,10 +752,11 @@
           "anchor_edge": "bottom_of_grid",
           "max_worn": 6,
           "fill_order": "as the base slot",
-          "citation": "ANNEX-H 3H-6 for the arm; SEWN-3 para 3 Air (g) for the rest",
-          "note": "Right arm per the figure; para 3 says left (see conflicts). Staff and exchange insignia share the block; Effective Speaking does not."
+          "citation": "ANNEX-H 3H-6 and CH3-ANNEX-D 3D-5 for the arm; SEWN-3 para 3 Air (g) for the rest",
+          "note": "Right arm per both figures; para 3 says left (see conflicts). Staff and exchange insignia share the block; Effective Speaking does not. Para 3 also lists Deployment insignia, but Air has none currently (Lt Beal, 2026-09-24). Supersession is not stated for Air."
         }
-      }
+      },
+      "supersession_status": "Stated for Army in CH3S1 3.b.(9) and the Figure 3D-3 note. How it applies is unclear for every element (Lt Beal, 2026-09-24), so the renderer does not apply it: every badge selected is drawn. See open questions."
     },
     {
       "id": "star_level",
@@ -796,7 +818,13 @@
         "A full row of three is 10.5 cm at the locally measured 3.5 x 1.0 cm ribbon, against a 13 cm pocket - fits with 1.25 cm each side.",
         "Precedence order is NOT in Chapter 5. It is in CATO 13-16, unsourced."
       ],
-      "sleeve": null
+      "sleeve": null,
+      "elements": {
+        "air": {
+          "confirmed_shared": true,
+          "source": "Lt Beal, 2026-09-24: placed the same on an Air tunic as on an Army one."
+        }
+      }
     },
     {
       "id": "right_medals",
@@ -914,7 +942,13 @@
           ]
         }
       ],
-      "order_of_precedence_citation": "CJCRGPO-10050 7.4"
+      "order_of_precedence_citation": "CJCRGPO-10050 7.4",
+      "elements": {
+        "air": {
+          "confirmed_shared": true,
+          "source": "Lt Beal, 2026-09-24: placed the same on an Air tunic as on an Army one."
+        }
+      }
     },
     {
       "id": "front_right_anniversary_pin",
@@ -926,7 +960,13 @@
       "align": "centre",
       "condition": "anniversary pin held",
       "citation": "CH5-A 5A-1",
-      "sleeve": null
+      "sleeve": null,
+      "elements": {
+        "air": {
+          "confirmed_shared": true,
+          "source": "Lt Beal, 2026-09-24: placed the same on an Air tunic as on an Army one."
+        }
+      }
     },
     {
       "id": "front_right_nametag",
@@ -942,7 +982,14 @@
         "Three cases, in this order: (a) ribbons or medals worn -> 0.5 cm above their top edge; (b) nothing suspended but an anniversary pin worn -> EQUIDISTANT between the pin and the pocket top; (c) nothing above the pocket at all -> the tag's bottom edge sits FLUSH on the pocket top. Case (c) confirmed by Lt Beal; it was previously guessed at 0.5 cm.",
         "6.3 x 1.2 cm, surname only, black for army."
       ],
-      "sleeve": null
+      "sleeve": null,
+      "elements": {
+        "air": {
+          "confirmed_shared": true,
+          "source": "Lt Beal, 2026-09-24: placed the same on an Air tunic as on an Army one.",
+          "note": "Same place and size; the tag itself is air force blue, not black."
+        }
+      }
     },
     {
       "id": "front_right_expedition",
@@ -966,7 +1013,13 @@
           "source": "D - Qual Info slots every Participation | Expedition row as out_of_scope_left_pocket, following CH3S1 4.b",
           "resolution": "RIGHT pocket, above the nametag. The Chapter 5 Annex B expedition figure is explicit and specific: 'Expedition participation insignia is worn over the right jacket/shirt pocket, centred 0.5 cm over the nametag.' CH3S1 4.b is the general rule for participation pins and the figure is the specific case, so the figure governs. Confirmed by Lt Beal. The workbook's Slot value for these rows should be corrected."
         }
-      ]
+      ],
+      "elements": {
+        "air": {
+          "confirmed_shared": true,
+          "source": "Lt Beal, 2026-09-24: placed the same on an Air tunic as on an Army one."
+        }
+      }
     },
     {
       "id": "right_commendation_stack",
@@ -1008,7 +1061,14 @@
           "resolution": "Held as 'Command Commendation', which is what Chapter 5 and the CAF Dress Instructions call the second-tier commendation. Unresolved: 10050 ranks VCDS and offers Comd CJCR, and it is not established whether these are two names for the same slot or two separate awards."
         }
       ],
-      "conditional_placement": "Normally centred between the pocket's lower seam and the lower edge of the flap. WHEN MEDALS ARE WORN it sits between the BOTTOM OF THE MEDALS and the pocket's lower seam instead."
+      "conditional_placement": "Normally centred between the pocket's lower seam and the lower edge of the flap. WHEN MEDALS ARE WORN it sits between the BOTTOM OF THE MEDALS and the pocket's lower seam instead.",
+      "elements": {
+        "air": {
+          "confirmed_shared": true,
+          "source": "Lt Beal, 2026-09-24: placed the same on an Air tunic as on an Army one.",
+          "note": "Same as Army for now. How commendation pins rank against competition pins is unclear for every element (see open questions)."
+        }
+      }
     },
     {
       "id": "front_left_parachutist",
@@ -1032,24 +1092,25 @@
       "sleeve": null,
       "element": "air",
       "anchor": "pocket_top",
-      "offset_cm": 0.5,
-      "anchor_edge": "bottom_of_badge",
+      "offset_cm": 0,
+      "anchor_edge": "bottom_of_badge_on_the_pocket_edge",
       "align": "centre",
       "max_worn": 1,
       "condition": "Air: highest pilot wings held. Power Pilot Wings replace Glider Pilot Wings.",
-      "citation": "SEWN-3 para 3 Air (a); CH3-ANNEX-D 3D-6",
+      "citation": "CH3-ANNEX-D 3D-6; SEWN-3 para 3 Air (a); Lt Beal, 2026-09-24",
       "conflicts": [
         {
           "field": "offset_cm",
-          "alternate_value": "0 - 'centred directly above the left breast pocket'",
-          "source": "CH3-ANNEX-D Figure 3D-6 note",
-          "resolution": "0.5 cm adopted per SEWN-3 para 3 (a), the only figure given for the sewn jacket insignia. The same 3D-6 note puts the purchased pin on the shirt 'directly centred 0.5 cm over' the pocket, so 'directly' there reads as centring rather than as no gap. Not yet checked against the 3D-6 drawing itself."
+          "alternate_value": 0.5,
+          "source": "SEWN-3 para 3 Air (a)",
+          "resolution": "0 adopted: sewn wings sit directly on the pocket's top edge (CH3-ANNEX-D 3D-6 note, Lt Beal, 2026-09-24). The 3D-6 note gives the sewn wings on the jacket ('centred directly above the left breast pocket') and the metal pin on the collared shirt ('directly centred 0.5 cm over') separately, and para 3 (a) gave the sewn wings the pin's gap. The more specific source governs, as with front_right_expedition."
         }
       ],
       "notes": [
         "The Glider Pilot Scholarship CTC badge is never worn with Glider Pilot Wings; it joins the other CTC badges once Power Pilot Wings replace them (3D-6). The renderer raises the combination as a crit.",
         "Silver and gold wire-thread wings may be bought and worn on the jacket in lieu of the issued ones (3D-6). Not drawn: no artwork.",
-        "Same size as the army parachutist badge, 9.0 x 3.87 cm (Lt Beal, 2026-09-24), which is itself a placeholder. The Air wing art trims to about 2.0:1 against the box's 2.33:1."
+        "Same size as the army parachutist badge, 9.0 x 3.87 cm (Lt Beal, 2026-09-24), which is itself a placeholder. The Air wing art trims to about 2.0:1 against the box's 2.33:1.",
+        "The metal wings pin, bought for the collared shirt when the jacket is off, sits 0.5 cm above the pocket (3D-6). The tool draws the jacket only."
       ]
     },
     {
@@ -1082,7 +1143,8 @@
             "Canadian Cadet Movement Biathlon Series"
           ],
           "citation": "Lt Beal, 2026-09-24",
-          "note": "Effective Speaking is Air's competition pin series, in the top-of-precedence place Army gives the Bisley Series and Sea its Regatta series. Same 1 in square as the championship pins (Lt Beal, 2026-09-24)."
+          "note": "Effective Speaking is Air's competition pin series, in the top-of-precedence place Army gives the Bisley Series and Sea its Regatta series. Same 1 in square as the championship pins (Lt Beal, 2026-09-24).",
+          "confirmed": "Lt Beal, 2026-09-24: worn with the marksmanship and biathlon championship pins, above them, inside the three-pin limit."
         }
       }
     },
@@ -1096,7 +1158,13 @@
       "max_worn": 1,
       "condition": "commemorative pin authorised by the RCSU CO",
       "citation": "CH3S1 4.a",
-      "sleeve": null
+      "sleeve": null,
+      "elements": {
+        "air": {
+          "confirmed_shared": true,
+          "source": "Lt Beal, 2026-09-24: placed the same on an Air tunic as on an Army one."
+        }
+      }
     },
     {
       "id": "front_left_poppy",
@@ -1110,7 +1178,13 @@
       "notes": [
         "Worn on the left pocket flap. Seasonal, so it is not part of a standing layout."
       ],
-      "sleeve": null
+      "sleeve": null,
+      "elements": {
+        "air": {
+          "confirmed_shared": true,
+          "source": "Lt Beal, 2026-09-24: placed the same on an Air tunic as on an Army one."
+        }
+      }
     }
   ],
   "terminated_programs": {
@@ -1217,7 +1291,7 @@
     "CJCRGPO-10050 contradicts itself on the second-tier commendation: 5.1 offers a 'Comd CJCR Commendation', 7.5 ranks a 'VCDS Commendation'. Same slot under two names, or two awards?",
     "If national commendations move to the left pocket, the left pocket needs its own stack geometry. 5D-1 gives the single-pin case (centred between the lower seam and the flap's lower edge) but not the two-pin case, and CDS + VCDS is possible.",
     "A cadet transferring between elements retains awards earned there (the principle is stated for JCR at CJCRGPO-10050 6.2). Confirm it holds for cadets, since it is what makes the Sea and Air entries in the 11-medal list reachable on an army tunic.",
-    "Cadet Service Medal bars: the ARMY scheme is now sourced. ACLC Policy 13.1 paras 5 and 12 - four years earns the medal, each further year adds a gold bar on the medal and a gold maple leaf on the undress ribbon, accumulating rather than replacing. The tool offers 4/5/6/7 years. Still open: no published maximum (7 is a practical ceiling for a cadet who joins at 12, a LOCAL DECISION), and the SEA and AIR service medals use different schemes - Sea reportedly uses anchor devices rather than an accumulating stack, Air's bars exist commercially but no source describes them. Both are drawn base state only.",
+    "Cadet Service Medal bars: the ARMY scheme is now sourced. ACLC Policy 13.1 paras 5 and 12 - four years earns the medal, each further year adds a gold bar on the medal and a gold maple leaf on the undress ribbon, accumulating rather than replacing. The tool offers 4/5/6/7 years. Still open: no published maximum (7 is a practical ceiling for a cadet who joins at 12, a LOCAL DECISION), and the SEA and AIR service medals use different schemes - Sea reportedly uses anchor devices rather than an accumulating stack, Air's bars exist commercially but no source describes them. Both are drawn base state only. AIR, per Lt Beal, 2026-09-24: the same accumulating system as Army, with its own devices: each further year adds a gold bar with a bird, wings spread, on the medal, and a rosette rather than a maple leaf on the undress ribbon. No artwork yet; the renderer draws Air bars as soon as medal_airservice_Nyr / ribbon_airservice_Nyr exist.",
     "The Sea, Army and Air Cadet Service Medals are modelled as one award in three elements, exclusive by the element the cadet served in, with a transfer carrying the earlier one. Confirm a cadet cannot hold two.",
     "Order of St. George is absent from CATO 13-16 para 19 entirely. Its seq 8 position rests on CJCR Gp O 10050 para 7.4 alone, which is a JCR order. Every other medal in the list is now confirmed against CATO; this one is not, and a cadet holding it could be wearing it in the wrong place in the group.",
     "RESOLVED in 0.25. Air Force Association Medal (CATO 13-16 para 19.f): no text source describes its ribbon, but A-CR-CCP-850/DA-003 shows it in full colour. The medal pack now carries medal_afa / ribbon_afa, colour sampled off that image and geometry estimated at the standard 35 mm, and seq 6 is drawn. It is an air-element award and reaches an army tunic only by transfer.",
@@ -1228,10 +1302,10 @@
     "Sea's corps title slot is modelled (a rectangular title directly below the shoulder title, which is common to all sea cadets) but has no dimensions and no artwork.",
     "RESOLVED in 0.26, superseded. This note predates para 3. Air's CTC block starts immediately above the top of the cuff on the RIGHT arm (Figure 3H-6), six maximum, and the training level sits on the left arm with its bottom 9 cm above the cuff (para 3 (d)). The seven-badge rule was wrong; see 33.",
     "RESOLVED in 0.26: Air pilot wings are modelled (slot front_left_pilot_wings), sourced to para 3 (a) and CH3 Annex D Figure 3D-6. 3D-6 also supplies the rule that the Glider Pilot CTC badge is never worn with Glider Pilot Wings, which the renderer raises as a crit. Power supersedes Glider, and a single dropdown enforces highest only. Para 3's 0.5 cm against 3D-6's 'directly above' is recorded as a conflict on the slot.",
-    "Element-specific participation insignia: Sea's Regatta series is still not modelled, and Sea shows the army Bisley stream in its place. Sea wears Staff Cadet on the lower LEFT sleeve and everything else lower right. RESOLVED for Air in 0.26: Effective Speaking is a competition pin series, not a sewn badge. It takes the top-of-precedence place in the left-pocket pin strip that Army gives the Bisley Series (Lt Beal), and para 3 (g)'s CTC block (CTC, Staff, Deployment, Exchanges) never included it. The first Effective Speaking artwork arrived fully opaque with white corners; the re-cut (air pack revision 2) keys the white paper out, and nothing else in the pack changed.",
+    "Element-specific participation insignia: Sea's Regatta series is still not modelled, and Sea shows the army Bisley stream in its place. Sea wears Staff Cadet on the lower LEFT sleeve and everything else lower right. RESOLVED for Air in 0.26: Effective Speaking is a competition pin series, not a sewn badge. It takes the top-of-precedence place in the left-pocket pin strip that Army gives the Bisley Series (Lt Beal), and para 3 (g)'s CTC block (CTC, Staff, Deployment, Exchanges) never included it. The first Effective Speaking artwork arrived fully opaque with white corners; the re-cut (air pack revision 2) keys the white paper out, and nothing else in the pack changed. Confirmed by Lt Beal: worn with the championship pins, above them, inside the three-pin limit.",
     "RESOLVED in 0.26: the Air CTC block is on the RIGHT arm per Figure 3H-6. Para 3 put both the six proficiency insignia and the six CTC / Staff / Deployment / Exchange insignia on the LEFT arm, both immediately above the cuff, which cannot be done; Lt Beal confirms a typo. Recorded as a conflict on ctc_grid.",
     "RESOLVED in 0.26: Air has four rank anchors, upper and lower on each arm (Figures 3H-5 / 3H-6). LAC to FSgt use the upper pair, WO2 and WO1 the lower, and an appointment takes whichever right-sleeve anchor the rank leaves free (Lt Beal). Para 3 (f) attaches both positions to WO2 and WO1. The reading 0.22 adopted (9 cm for WO2/WO1, mid-way for the rest) put the appointment on top of the rank every time, and the renderer had in fact been drawing every Air appointment at the cuff.",
-    "RESOLVED in 0.26: six. Para 3 says six for each block, twice, and Figures 3H-5 / 3H-6 agree. The earlier seven-badge note was wrong.",
+    "RESOLVED in 0.26: six. Para 3 says six for each block, twice, and Figures 3H-5 / 3H-6 agree. The earlier seven-badge note was wrong. Found in 0.29: the seven-badge rule is the CH3 Annex D Figure 3D-5 note, which Lt Beal dates older than para 3. Recorded as a conflict on ctc_grid; six stands.",
     "Sea's corps badge is worn on the RIGHT BREAST, centred 3 cm above the pocket, moving to 4.5 cm with a second row of ribbons and 5.5 cm with a third. Not drawn yet, and it interacts with the ribbon rows the tool already lays out, so it should be straightforward to add.",
     "RESOLVED in 0.26, see 29. Air's Glider / Power Pilot sewn wings are drawn centred 0.5 cm above the LEFT breast pocket, highest level only, with the Glider CTC exclusion raised as a crit. Artwork is in the air pack; size unmeasured.",
     "Sea's proficiency arrangement is unspecified. Para 3 gives the sleeve, the anchor and the maximum of six but not the layout, so the renderer chains them vertically the way the army stack does. Air's is RESOLVED in 0.26: para 3 (e)'s 1-2-3 / 4-5-6 fill is applied from the top of the cuff in award order, with the order the dropdowns were set standing in until dates exist.",
@@ -1239,8 +1313,12 @@
     "RESOLVED in 0.26: one badge per family, the highest held (Lt Beal). Air's families are Physical Fitness, First Aid, Music, Marksmanship Classification and Glider Pilot Familiarization; the sixth position has no family yet. Music Basic is worn until a level replaces it, and is now in the music list for every element: QualMap has no row for it, the same workbook gap as General Training. The earlier note that Air Music is six badges against Army's five was wrong; both are six.",
     "AIR: the poster calls the training level badges 'Proficiency Levels', which is the tool's word for the six cuff insignia. Same word, different badges. Kept as training_level here.",
     "RESOLVED in 0.25: medal_afa / ribbon_afa are in the medal pack and seq 6 is drawn. AIR: the Air Force Association Medal appears in full colour on the air poster, which settles the question that had it omitted from the tool as unsourced. Slot 6 can be unhidden once medal_afa / ribbon_afa are added to the medal pack.",
-    "RESOLVED in 0.25: bronze adopted. AIR: the Air Cadet Service Medal disc renders BRONZE on the air poster where Blatherwick describes 'a round gold coloured medal', and the artwork was built gold. A photograph against a text description. The artwork session sampled the poster's disc at mean #9E7B60, hue 26 degrees (a brown; gold sits near 44), and took the issuing authority's own 2018 artwork over Blatherwick, whose wording reads like the Army medal's description carried across. Recorded in the medal manifest. The updated Medals and Ribbons/medal_specs.py arrived with the air follow-up; the manifest regenerates from it identically. make_medals.py still cannot run from this repo: it needs src/maple_leaf_path.txt, which was never delivered, plus a Linux font path and cairo.",
-    "AIR: the squadron shoulder insignia is a half-round dome with the element name arched over the top, squadron number large in the centre and squadron name below - a different shape from Army's scrolled corps title, and it needs two text fields rather than one. The existing corps-title generator cannot produce it. In 0.25 the two poster samples draw as the Air unit choices (89 Pacific, 96 Alouette), sized from the 4.25 in x 52 mm measurement."
+    "RESOLVED in 0.29: GOLD. The Air Cadet Service Medal disc is gold (Lt Beal, 2026-09-24), as Blatherwick says. The air poster prints it brown (sampled mean #9E7B60, hue 26 degrees against gold's 44) and it was built bronze in 0.25 off that; reverted, with the gold artwork restored and medal_specs.py back to gold. The poster's colour is not reliable for metal. The same image does confirm the Blatherwick ribbon description.",
+    "AIR: the squadron shoulder insignia is a half-round dome with the element name arched over the top, squadron number large in the centre and squadron name below - a different shape from Army's scrolled corps title, and it needs two text fields rather than one. The existing corps-title generator cannot produce it. In 0.25 the two poster samples draw as the Air unit choices (89 Pacific, 96 Alouette), sized from the 4.25 in x 52 mm measurement.",
+    "CTC supersession is unclear for every element (Lt Beal, 2026-09-24). CH3S1 3.b.(9) and the Figure 3D-3 note say 'advanced qualification supersedes basic qualification' for Army; Air's texts (Figure 3D-5, para 3 (g)) and Sea's don't. Which badges count as advanced and basic, and whether it applies outside Army, is open. The renderer does not apply it: every badge selected is drawn.",
+    "Precedence between the commendation pins and the competition pins is unclear for every element (Lt Beal, 2026-09-24). Air follows Army for now: commendation pins in one right-pocket stack, competition pins in the left-pocket strip.",
+    "AIR proficiency block: when a cadet moves up within a family (Music Basic to Level 1, Bronze to Silver), does the new badge keep the old one's position or take the next free one? The renderer keeps the position. The block also holds six against five known families; the sixth is unknown.",
+    "CTC cap: once more badges are held than may be worn (six), which come off? The renderer drops the most recently awarded. Unsourced for every element."
   ],
   "changelog": [
     {
@@ -1350,6 +1428,10 @@
     {
       "version": "0.28-draft",
       "change": "Air follow-up delivery merged: Effective Speaking pins re-cut with the white paper keyed out (the other 60 air badges byte-identical), and the medal sources that match the medal pack (medal_specs.py with afa at seq 6, the bronze Air service disc and an empty UNSOURCED; the manifest regenerates from it identically). Air's training level badges are named Proficiency Level 1-5 in the rail and the drawing, per Lt Beal."
+    },
+    {
+      "version": "0.29-draft",
+      "change": "Lt Beal's answers to the Air officer questions. Front layout confirmed the same as Army (confirmed_shared on the front slots). Appointment reading, the cuff-block families and the Effective Speaking pin placement confirmed. Pilot wings moved onto the pocket edge: 3D-6 separates the sewn wings from the shirt pin, and para 3's 0.5 cm is the pin's gap. Figures 3D-3 and 3D-5 added; two conflicts recorded where they disagree with the newer section text (Army sequence basis, Air maximum of seven), and 3D-5 corroborates the Air CTC block on the right arm. Air Cadet Service Medal disc is gold, reverting 0.25's bronze. Air service bars described (bird bar, rosettes). New open questions: supersession, commendation versus competition pin precedence, Air level-ups within a family, and which CTC badges come off past the cap."
     }
   ],
   "orders_of_dress": {

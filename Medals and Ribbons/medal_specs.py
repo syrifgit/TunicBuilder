@@ -278,7 +278,7 @@ MEDALS = {
                     ("#E8B41F", 4), ("#10357F", 10)],
         "top_bar": None,
         "suspension": "ring",
-        "metal": "bronze",          # see source note: poster overrides Blatherwick
+        "metal": "gold",            # see source note: Lt Beal confirms gold
         "legend_top": "SERVICE \u2013 CADETS",
         "legend_bottom": "CANADA",
         "device": "leaf",
@@ -289,15 +289,13 @@ MEDALS = {
                   "stripes for the four years of service. Gold 35 mm medal "
                   "with the RCAirC crest, SERVICE - CADETS above, CANADA "
                   "below. Hues not published; the central device is a maple "
-                  "leaf standing in for the RCAirC crest. DISC METAL CHANGED "
-                  "gold -> bronze: Blatherwick says \"a round gold coloured "
-                  "medal\", but A-CR-CCP-850/DA-003 shows a bronze disc, "
-                  "sampled at 9x as mean #9E7B60 (hue 26deg, brown) where gold "
-                  "would sit near hue 44deg. Adopted the poster because it is "
-                  "the issuing authority's own current colour artwork and "
-                  "Blatherwick is a third-party text compendium. Revert by "
-                  "setting metal back to \"gold\". The ribbon description in "
-                  "Blatherwick is confirmed by the same image.",
+                  "leaf standing in for the RCAirC crest. DISC METAL: gold. "
+                  "A-CR-CCP-850/DA-003 prints the disc brown (mean #9E7B60, "
+                  "hue 26deg, where gold sits near 44deg) and it was briefly "
+                  "built bronze off that; Lt Beal (2026-09-24) confirms the "
+                  "medal is gold, as Blatherwick says, so the poster's colour "
+                  "is off here. The ribbon description in Blatherwick is "
+                  "confirmed by the same image.",
     },
 }
 

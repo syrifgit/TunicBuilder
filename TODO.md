@@ -4,7 +4,7 @@ Ordered by what it unblocks, not by effort. Every geometric item is also recorde
 `rules/army_tunic_placement_rules_2.json` under `open_questions`, which is the
 authoritative list — this file is the working view of it.
 
-Status as of rules **v0.28-draft**: 21 slots, 43 open questions, 8 recorded conflicts.
+Status as of rules **v0.29-draft**: 21 slots, 47 open questions, 10 recorded conflicts.
 
 ---
 
@@ -26,9 +26,10 @@ Things the tool currently gets *wrong* or cannot answer, not merely gaps.
 - [x] ~~**Cadet Service Medal bars are unsourced.**~~ The **army** scheme is sourced:
   ACLC Policy 13.1 paras 5 and 12 — four years earns the medal, each further year adds
   a gold bar and a ribbon leaf, **accumulating** rather than replacing. Drawn, not just
-  named. Still open: no published maximum (7 years is a local ceiling), and **Sea and
-  Air use different schemes** — Sea reportedly anchor devices rather than a stack, Air's
-  bars exist commercially but undescribed. Both draw base state only.
+  named. Still open: no published maximum (7 years is a local ceiling), and **Sea's
+  scheme** is undescribed (reportedly anchor devices rather than a stack). **Air** uses
+  the Army's system with its own devices, a gold bar with a bird on the medal and
+  rosettes on the ribbon (Lt Beal). It draws as soon as there's artwork (§3).
 - [ ] **`Date Awarded` is placeholder data** in the workbook. It drives CTC grid fill
   order, so grid *order* is not sewing-safe even though grid *geometry* is.
 - [ ] **Resolve "Command" vs "VCDS" vs "Comd CJCR".** 10050 contradicts itself: its
@@ -41,9 +42,16 @@ Things the tool currently gets *wrong* or cannot answer, not merely gaps.
   3H-6. Every Air rank now clears the squadron insignia by 7.3 cm. The same figures
   settled the CTC arm (right), the appointment (whichever right-sleeve anchor the rank
   leaves free) and the six-badge blocks.
-- [ ] **Check Figure 3D-6 for the wing gap.** Para 3 says pilot wings sit 0.5 cm above
-  the left pocket; the 3D-6 note says "directly above". Drawn at 0.5 cm and logged as a
-  conflict. If the drawing shows them touching the pocket, it's a one-line change.
+- [x] ~~**Check Figure 3D-6 for the wing gap.**~~ Sewn wings sit directly on the pocket
+  edge. Para 3's 0.5 cm is the gap for the metal pin on the collared shirt (Lt Beal).
+- [ ] **CTC supersession is unclear for every element.** The Army texts (CH3S1 3.b.(9),
+  Figure 3D-3) say "advanced qualification supersedes basic qualification"; the Air
+  texts don't. Which badges count as advanced and basic is open, so the tool applies
+  nothing and draws every badge selected.
+- [ ] **Commendation pins against competition pins.** How the two rank against each
+  other is unclear for every element. Air follows Army for now.
+- [ ] **Which CTC badges come off past six?** The tool drops the most recently awarded,
+  on no source, for every element.
 
 Medals are done. **CATO 13-16 para 19 is now sourced verbatim** and confirms the order
 for every medal except the Order of St. George, which is absent from it — that one still
@@ -116,8 +124,15 @@ than a number the rules pack can carry.
   central relief is not reproducible from the sources to hand. Per-item detail is in
   `Medals and Ribbons/medal_art_manifest.json`.
 - [x] ~~**Air Force Association Medal has no artwork.**~~ `medal_afa` / `ribbon_afa`
-  arrived with the air delivery and seq 6 is drawn. Air Cadet Service Medal disc
-  changed to **bronze**, off the poster's photograph over Blatherwick's "gold".
+  arrived with the air delivery and seq 6 is drawn. The Air Cadet Service Medal disc
+  is **gold** (Lt Beal). It was built bronze for a while off the poster, which prints it
+  brown, and that's been reverted.
+- [ ] **Next note to the artwork creator.** Their `medal_specs.py` still says bronze for
+  the Air service disc; ours is back to gold. Ask for the **Air service bars**: a gold
+  bar with a bird, wings spread, for 5, 6 and 7 years (`medal_airservice_5yr` etc.), and
+  rosettes on the ribbon (`ribbon_airservice_5yr` etc.). The tool draws them as soon as
+  they land. Also the **AFA ribbon colours**, pending: Lt Beal says it looks like the
+  ANAVETS palette, where ours is sampled off the poster.
 - [x] ~~**Get the updated `medal_specs.py` and `make_medals.py`.**~~ Arrived with the
   air follow-up. Only `medal_specs.py` changed, and the manifest regenerates from it
   identically.

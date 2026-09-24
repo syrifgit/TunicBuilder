@@ -1268,9 +1268,14 @@ const ACMM_BARS = [
 ];
 // Artwork suffix for a medal or ribbon. ACMM keys by its bars, the service medal by
 // total years served; everything else is a single state.
+// A service bar draws wherever the medal pack has that medal and year: Army's do now,
+// and Air's will the moment medal_airservice_Nyr and ribbon_airservice_Nyr exist.
 function artSuffix(m, F){
   if (m.bars) return "_" + ACMM_BARS.filter(b => F.acmm[b.key]).map(b => b.key).join("");
-  if (m.service === "army" && F.service.bar) return "_" + F.service.bar + "yr";
+  if (m.service && F.service.bar){
+    const sfx = "_" + F.service.bar + "yr";
+    if (BADGE_ART["medal_" + m.key + sfx]) return sfx;
+  }
   return "";
 }
 
@@ -1283,10 +1288,10 @@ const SERVICE = {
   sea:  {label:"Sea"},
   air:  {label:"Air"}
 };
-// UNSOURCED. Bars are worn for service beyond the medal's own qualifying period, and
-// the naming here follows Lt Beal. Whether a cadet wears every bar earned or only the
-// highest is not established, and neither is how a bar shows on the undress ribbon -
-// so a bar changes the label and nothing about the geometry. See the rules pack.
+// Bars for service past the medal's own four years. Army's are sourced (ACLC Policy
+// 13.1: they accumulate, a gold bar on the medal and a maple leaf on the ribbon per
+// year) and drawn. Air's work the same way with a bird bar and rosettes (Lt Beal) and
+// draw once there's artwork. Sea's are undescribed. A bar changes no geometry.
 const SERVICE_BARS = [
   {v:0, nm:"None"}, {v:5, nm:"5-year bar"}, {v:6, nm:"6-year bar"}, {v:7, nm:"7-year bar"}
 ];
@@ -1462,9 +1467,15 @@ function resolveFront(){
         "info", "CJCR Gp O 10050 para 7.4");
   }
 
-  if (F.service.element !== "none" && F.service.bar)
-    add(`A ${F.service.bar}-year bar is recorded against the ${SERVICE[F.service.element].label} Cadet Service Medal. It is named in the guide but not drawn: nothing to hand states the bar's size, or how it shows on an undress ribbon.`,
+  // Only when the bar can't be drawn. Army's are, so this used to fire wrongly for them.
+  const svc = MEDALS.find(m => m.service === F.service.element);
+  if (svc && F.service.bar && !artSuffix(svc, F)){
+    const why = F.service.element === "air"
+      ? "Air uses the Army's system with its own devices, a gold bar with a bird, wings spread, on the medal and rosettes on the ribbon (Lt Beal), but there's no artwork for them yet"
+      : "nothing to hand describes the bar or how it shows on the undress ribbon";
+    add(`A ${F.service.bar}-year bar is recorded against the ${SERVICE[F.service.element].label} Cadet Service Medal. It's named, not drawn: ${why}.`,
         "warn", "open question: service medal bars");
+  }
 
   // anniversary pin, 3 cm above the pocket top
   let annivBottom = null;
@@ -1540,13 +1551,16 @@ function resolveFront(){
       conf:"placeholder", fdatum:"pocket_top", edge:"bottom",
       cite:"CH3S1 3.b.(1) — 0.5 cm above the left breast pocket" });
   }
-  // Air pilot wings: issued nylon, centred above the left pocket, highest only. Para 3
-  // gives 0.5 cm; Figure 3D-6's note says only "directly above". Same size as the army
+  // Air pilot wings: issued nylon, centred on the left pocket's top edge, highest only.
+  // Sewn wings sit directly on the edge; para 3's 0.5 cm is the gap for the metal pin
+  // worn on the collared shirt (Figure 3D-6, Lt Beal). Same size as the army
   // parachutist badge (Lt Beal), which is itself a placeholder.
   const wg = EL().wings && EL().wings[F.wings];
   if (wg && wg.art){
+    add("Pilot wings sit directly on the top edge of the left pocket, with no gap. Para 3's 0.5 cm is the gap for the metal pin on the collared shirt, not the sewn wings on the jacket.",
+        "info", "CH3 Annex D 3D-6; Lt Beal");
     put(L,{ face:"front", side:"left", slot:"front_left_pilot_wings",
-      label:wg.label, x:0, y:0.5, w:PARA_W, h:PARA_H,
+      label:wg.label, x:0, y:0, w:PARA_W, h:PARA_H,
       art:wg.art, conf:"placeholder", fdatum:"pocket_top", edge:"bottom",
       cite:"SEWN-3 para 3 Air (a); CH3 Annex D 3D-6" });
     add(`${wg.label} are drawn at the parachutist badge's size, ${PARA_W.toFixed(2)} × ${PARA_H.toFixed(2)} cm, and that size is itself unmeasured.`,

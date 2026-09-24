@@ -195,6 +195,8 @@ docs/     build_site.py output. Tracked; a release, not a build step.
 air badges/         Air artwork delivery, revision 2: air_art_pack.js (ignored), manifest
                     with the hand measurements per key, NOTES.md, extract.py, segment.py
 Medals and Ribbons/ medal artwork delivery, authored rather than extracted; tracked
+cadet_medal_art_full/ the next medal delivery, every face traced. Ignored; merged into
+                    Medals and Ribbons/ once its ribbons are back at 35 mm (TODO §3)
 ```
 
 `notes/CLAUDE_1.md` is the founding brief and still useful for background, but its
@@ -223,7 +225,7 @@ workaround, and they are all in the pipeline.
 
 ## Where things stand
 
-Rules **v0.30-draft**: 21 slots, 48 open questions, 10 conflicts, sources CH3S1,
+Rules **v0.31-draft**: 21 slots, 48 open questions, 10 conflicts, sources CH3S1,
 ANNEX-H, CH3-ANNEX-D, CH5-A–D, CH5-S7, CH4-A, SEWN-3, CJCRGPO-10050 and CATO 13-16
 (para 19 now sourced verbatim, confirming the precedence for every medal but the
 Order of St. George).

@@ -4,7 +4,7 @@ Ordered by what it unblocks, not by effort. Every geometric item is also recorde
 `rules/army_tunic_placement_rules_2.json` under `open_questions`, which is the
 authoritative list — this file is the working view of it.
 
-Status as of rules **v0.30-draft**: 21 slots, 48 open questions, 10 recorded conflicts.
+Status as of rules **v0.31-draft**: 21 slots, 48 open questions, 10 recorded conflicts.
 
 ---
 
@@ -26,10 +26,11 @@ Things the tool currently gets *wrong* or cannot answer, not merely gaps.
 - [x] ~~**Cadet Service Medal bars are unsourced.**~~ The **army** scheme is sourced:
   ACLC Policy 13.1 paras 5 and 12 — four years earns the medal, each further year adds
   a gold bar and a ribbon leaf, **accumulating** rather than replacing. Drawn, not just
-  named. Still open: no published maximum (7 years is a local ceiling), and **Sea's
-  scheme** is undescribed (reportedly anchor devices rather than a stack). **Air** uses
-  the Army's system with its own devices, a gold bar with a bird on the medal and
-  rosettes on the ribbon (Lt Beal). It draws as soon as there's artwork (§3).
+  named. Blatherwick puts the ceiling at three bars (seven years) by arithmetic. Still
+  open: **Sea's scheme** is undescribed (reportedly anchor devices rather than a stack).
+  **Air** uses the Army's system with its own devices, a gold bar with a bird on the
+  medal and rosettes on the ribbon (Lt Beal). The artwork's built and arrives with the
+  resized medal pack (§3).
 - [ ] **`Date Awarded` is placeholder data** in the workbook. It drives CTC grid fill
   order, so grid *order* is not sewing-safe even though grid *geometry* is.
 - [ ] **Resolve "Command" vs "VCDS" vs "Comd CJCR".** 10050 contradicts itself: its
@@ -122,18 +123,24 @@ than a number the rules pack can carry.
   and the Army Cadet Service Medal are sampled from source images. **Bravery and ANAVETS
   stripe widths are still eyeballed**, and every medallion obverse is stylised — the
   central relief is not reproducible from the sources to hand. Per-item detail is in
-  `Medals and Ribbons/medal_art_manifest.json`.
+  `Medals and Ribbons/medal_art_manifest.json`. The full delivery traces every face, so
+  this closes when it's merged.
 - [x] ~~**Air Force Association Medal has no artwork.**~~ `medal_afa` / `ribbon_afa`
   arrived with the air delivery and seq 6 is drawn. The Air Cadet Service Medal disc
   is **gold** (Lt Beal). It was built bronze for a while off the poster, which prints it
   brown, and that's been reverted.
-- [ ] **Send `AIR_ARTWORK_FOLLOWUP_2.md`** to the artwork creator, with our
-  `Medals and Ribbons/medal_specs.py` attached. It asks for:
-  - the **Air service bars** (a gold bar with a bird for 5, 6 and 7 years, rosettes on
-    the ribbon), which the tool draws as soon as they land
-  - the **AFA ribbon in ANAVETS colours**, blue / white / blue / red centre (Lt Beal)
-  - `src/maple_leaf_path.txt`, so the medals can be regenerated here
-  - an **Air squadron title generator**, so any squadron can be drawn
+- [x] ~~**Send `AIR_ARTWORK_FOLLOWUP_2.md`.**~~ Answered in the full medal delivery
+  (`cadet_medal_art_full/`): the Air service bars, `src/maple_leaf_path.txt` and bundled
+  fonts all came back. The ANAVETS recolour for the AFA was overtaken by a reference
+  photo, so navy / light blue / maroon stands (Lt Beal). Still to come: the **Air
+  squadron title generator**.
+- [ ] **Merge the full medal delivery once it's resized.** It traces every medal face and
+  adds the Air bars, but shrank each medal ribbon to 28 mm on the 35 mm canvas so the
+  bars could overhang, which opens a 7 mm gap between ribbons in the tool. Sent back:
+  ribbon at 35 mm, canvas widened for the overhang, AFA manifest note corrected. The
+  tool already draws a wider canvas centred on its slot. When it lands, replace
+  `Medals and Ribbons/`, decide which of the traced emblem sources get committed, and
+  rebuild.
 - [ ] **Court-mounted medals.** Every medal is drawn swing-mounted, its ribbon ending at
   the suspender, at the 10 cm court-mount length, and the front note calls that "Court
   mounted". The request is written: 27 `medal_<key>_court` twins on the same 35 × 100 mm
@@ -144,9 +151,9 @@ than a number the rules pack can carry.
 - [x] ~~**Get the updated `medal_specs.py` and `make_medals.py`.**~~ Arrived with the
   air follow-up. Only `medal_specs.py` changed, and the manifest regenerates from it
   identically.
-- [ ] **`make_medals.py` can't run from this repo.** It needs `src/maple_leaf_path.txt`,
-  which was never delivered, a Linux font path (TeX Gyre Heros), and cairo. The pack
-  is fine as delivered. Ask for the leaf path file before anyone needs to regenerate.
+- [ ] **`make_medals.py` can't run from this repo.** The full delivery bundles the leaf
+  path and the fonts, so once it's merged only cairo is missing. The pack is fine as
+  delivered.
 - [x] ~~**Air badge artwork.**~~ 63 badges from `air badges/air_art_pack.js`, wired in
   at hand-measured sizes. Still to do:
   - [x] ~~**Effective Speaking re-cut.**~~ Revision 2 keys the white paper out of all

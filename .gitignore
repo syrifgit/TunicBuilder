@@ -26,6 +26,10 @@ air badges/*
 # "Medals and Ribbons/". Safe to delete; ignored so its pack can't be committed.
 Air follow up.zip
 Air follow up/
+# Full medal delivery, 2026-09-24: 1200 dpi renders, traced emblem sources, fonts. Held
+# back until its ribbons are resized, then merged into "Medals and Ribbons/".
+cadet_medal_art_full.zip
+cadet_medal_art_full/
 # Generated packs. Note `art/*` not `art/` - git cannot re-include anything
 # under an excluded DIRECTORY, so the directory itself must stay visible.
 art/*

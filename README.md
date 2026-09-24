@@ -198,8 +198,8 @@ behaves identically everywhere.
   balance of evidence has moved and the tool has not. This is the one open question
   that puts a badge on the wrong side of a cadet.
 - **Cadet Service Medal bars.** Army's scheme is sourced (ACLC Policy 13.1) and drawn
-  for 5 to 7 years; 7 is a local ceiling, since no maximum is published. Air's bars are
-  described but have no artwork yet, and Sea's scheme is unsourced.
+  for 5 to 7 years; Blatherwick puts the ceiling at three bars by arithmetic. Air's
+  bars are built and arrive with the next medal pack. Sea's scheme is unsourced.
 - **Some front sizes are estimates.** The parachutist wings (which also size the Air
   pilot wings) and the anniversary, expedition, Duke of Edinburgh, NRT, Bisley and
   national-winner pins are placed by rule but sized by estimate.

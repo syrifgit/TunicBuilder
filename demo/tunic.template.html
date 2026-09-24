@@ -1127,7 +1127,7 @@ function resolve(){
 /* ============================================================
    VALIDATION  -  flags, never fixes
    ============================================================ */
-function validate(items, sleeve, warn){
+function validate(items, surface, warn){
   const real = items.filter(i => !i.ghost);
 
   // pairwise overlap
@@ -1147,13 +1147,13 @@ function validate(items, sleeve, warn){
         if (gap >= 0 && gap < 3.0){
           const at = SLEEVE_LEN - gap;   // the length at which they meet
           warn.push({lvl:"warn", cite:"two datum families",
-            msg:`${sleeve} sleeve: ${A.label} is measured from the ${A.root}, ${B.label} from the ${B.root}, and only ${gap.toFixed(2)} cm separates them. That gap moves with sleeve length — they touch at about ${at.toFixed(0)} cm, against ${SLEEVE_LEN.toFixed(0)} cm here.`});
+            msg:`${surface}: ${A.label} is measured from the ${A.root}, ${B.label} from the ${B.root}, and only ${gap.toFixed(2)} cm separates them. That gap moves with sleeve length — they touch at about ${at.toFixed(0)} cm, against ${SLEEVE_LEN.toFixed(0)} cm here.`});
         }
       }
       if (ox > 1e-6 && oy > 1e-6){
         A.clash = B.clash = true;
         warn.push({lvl:"crit", cite:`${A.slot} ✕ ${B.slot}`,
-          msg:`${sleeve} sleeve: ${A.label} overlaps ${B.label} by ${oy.toFixed(2)} cm vertically.`});
+          msg:`${surface}: ${A.label} overlaps ${B.label} by ${oy.toFixed(2)} cm vertically.`});
       }
     }
   }
@@ -1166,7 +1166,7 @@ function validate(items, sleeve, warn){
     const gap = B.y - (A.y+A.h);
     if (gap >= 0 && gap < 1.0){
       warn.push({lvl:"warn", cite:`${A.slot} → ${B.slot}`,
-        msg:`${sleeve} sleeve: only ${gap.toFixed(2)} cm between ${A.label} and ${B.label}. Tight for a sewn edge.`});
+        msg:`${surface}: only ${gap.toFixed(2)} cm between ${A.label} and ${B.label}. Tight for a sewn edge.`});
     }
   }
 
@@ -1178,10 +1178,10 @@ function validate(items, sleeve, warn){
     it.clearance = perSide;
     if (perSide < 0){
       warn.push({lvl:"crit", cite:"size 6436 taper profile",
-        msg:`${sleeve} sleeve: ${it.label} is ${it.w.toFixed(2)} cm wide but the sleeve is only ${avail.toFixed(2)} cm across at ${it.y.toFixed(1)} cm. It does not fit.`});
+        msg:`${surface}: ${it.label} is ${it.w.toFixed(2)} cm wide but the sleeve is only ${avail.toFixed(2)} cm across at ${it.y.toFixed(1)} cm. It does not fit.`});
     } else if (perSide < 1.0){
       warn.push({lvl:"warn", cite:"size 6436 taper profile",
-        msg:`${sleeve} sleeve: ${it.label} leaves ${perSide.toFixed(2)} cm each side at ${it.y.toFixed(1)} cm. Smaller tunics are narrower and were never measured.`});
+        msg:`${surface}: ${it.label} leaves ${perSide.toFixed(2)} cm each side at ${it.y.toFixed(1)} cm. Smaller tunics are narrower and were never measured.`});
     }
   }
 }
@@ -1222,6 +1222,8 @@ const ANNIV_D = 2.0;
 // the nametag sits in the same place for medals as for ribbons.
 // Court mounting fixes the length at 10 cm from the top of the suspender to the
 // bottom edge of the medal, which puts the medal's bottom 9 cm down the pocket.
+// MEDAL_W is the ribbon, so it is also the pitch: medals are worn without interval.
+// The artwork can be wider, because the metal overhangs; drawPocket handles that.
 const MEDAL_W = 3.5, MEDAL_BAR_H = RIBBON_H, MEDAL_LEN = 10.0;
 
 const DOFE = {none:"None", bronze:"Bronze", silver:"Silver", gold:"Gold"};
@@ -1412,11 +1414,14 @@ function resolveFront(){
   if (acmmBars.length && F.acmm.w && !F.acmm.p)
     add("Army Cadet Medal of Merit: the Walsh bar cannot be worn without the President bar. No artwork exists for that combination and it is not a wearable state.",
         "crit", "confirmed by Lt Beal");
-  // a bar is named on the award, not drawn: nothing is sourced for the device itself
+  // the label names the bars; the art draws them wherever the pack has that state
   const mName = m =>
       (m.service && F.service.bar) ? `${m.label} (${F.service.bar}-year bar)`
     : (m.bars && acmmBars.length)  ? `${m.label} (${acmmBars.map(b => b.label).join(", ")})`
     : m.label;
+  // CATO 13-16 para 19 orders every medal but St. George, which it leaves out
+  const precSrc = "CATO 13-16 para 19" + (mHeld.some(m => m.key === "stgeorge")
+    ? ". The Order of St. George isn't in it; its place rests on CJCR Gp O 10050 para 7.4 alone" : "");
 
   if (order.medals && mHeld.length){
     const n = mHeld.length;
@@ -1444,8 +1449,8 @@ function resolveFront(){
     else if (barW > POCKET_W)
       add(`The medal bar is ${barW.toFixed(1)} cm wide against a ${POCKET_W} cm pocket. Centred on the pocket it must not run past the jacket arm seam — check it on the cadet.`,
           "warn", "CH5-A");
-    add(`Worn in order of precedence, ${mName(mHeld[0])} inboard. CATO 13-16 is the cadet-programme authority and is still unsourced, so this order comes from the JCR order, which the CJCR honours committee sets for both programmes.`,
-        "info", "CJCR Gp O 10050 para 7.4");
+    add(`Worn in order of precedence, ${mName(mHeld[0])} inboard, per ${precSrc}.`,
+        "info", "CATO 13-16 para 19; CJCR Gp O 10050 para 7.4");
   } else if (mHeld.length){
     const rr = ribbonRows(mHeld.length);
     for (const c of rr.items){
@@ -1462,8 +1467,8 @@ function resolveFront(){
     if (rr.rows > 1)
       add(`${mHeld.length} ribbons make ${rr.rows} rows. No gaps between ribbons or between rows; a partial row sits on top, centred on the row below. Precedence 1 is top row, innermost.`,
           "info", "CH5-C 5C-1.2");
-    add(`One undress ribbon per award held, worn in order of precedence with ${mName(mHeld[0])} top row, innermost. Order from the JCR order, which the CJCR honours committee sets for both programmes; CATO 13-16 is still unsourced.`,
-        "info", "CJCR Gp O 10050 para 7.4");
+    add(`One undress ribbon per award held, worn in order of precedence with ${mName(mHeld[0])} top row, innermost, per ${precSrc}.`,
+        "info", "CATO 13-16 para 19; CJCR Gp O 10050 para 7.4");
   }
 
   // Only when the bar can't be drawn. Army's are, so this used to fire wrongly for them.
@@ -1816,8 +1821,12 @@ function drawPocket(g, items, side, cx, ptopY, out, topCm){
     const round = Math.abs(it.w - it.h) < 1e-6;
 
     if (art){
-      g.appendChild(el("image",{x,y,width:w,height:h, preserveAspectRatio:"none",
-        href:"data:"+(art.m||"image/png")+";base64,"+art.d}));
+      // On a real group the suspension bars and claws overhang the ribbon onto the
+      // neighbouring medal, so a medal's canvas can be wider than its slot. Draw it at
+      // its own width, centred on the slot; the box, and every check, stays the ribbon.
+      const aw = it.medal ? Math.max(w, h * art.aspect) : w;
+      g.appendChild(el("image",{x: x - (aw - w)/2, y, width:aw, height:h,
+        preserveAspectRatio:"none", href:"data:"+(art.m||"image/png")+";base64,"+art.d}));
     } else if (it.nametag){
       g.appendChild(el("rect",{x,y,width:w,height:h, rx:1, fill:"#14181A",
         stroke:"var(--ink-3)", "stroke-width":.6}));
@@ -1978,13 +1987,13 @@ function render(){
   document.documentElement.style.setProperty("--cloth-edge", el.cloth.edge);
   document.documentElement.dataset.element = state.element;
   const {L,R,warn} = resolve();
-  validate(L,"Left",warn);
-  validate(R,"Right",warn);
+  validate(L,"Left sleeve",warn);
+  validate(R,"Right sleeve",warn);
 
   /* --- drawings --- */
   const fr = resolveFront();
-  validate(fr.R, "Front right", fr.warn);
-  validate(fr.L, "Front left",  fr.warn);
+  validate(fr.R, "Right breast", fr.warn);
+  validate(fr.L, "Left breast",  fr.warn);
   warn.push(...fr.warn);
 
   paintUnified(document.getElementById("draw"), L, R, fr);

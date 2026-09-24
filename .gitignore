@@ -26,10 +26,18 @@ air badges/*
 # "Medals and Ribbons/". Safe to delete; ignored so its pack can't be committed.
 Air follow up.zip
 Air follow up/
-# Full medal delivery, 2026-09-24: 1200 dpi renders, traced emblem sources, fonts. Held
-# back until its ribbons are resized, then merged into "Medals and Ribbons/".
+# Full medal delivery, 2026-09-24, merged into "Medals and Ribbons/". The delivery keeps
+# the 1200 dpi renders, png/, svg/ and previews.
 cadet_medal_art_full.zip
 cadet_medal_art_full/
+# Medal faces are traced from supplied artwork: the Legion badge, the RCAC and Air Cadet
+# League emblems, St Edward's Crown, supplied renders. The pack and the traced sources
+# stay local like the Air pack (Lt Beal, 2026-09-24); the generator, specs, manifest and
+# docs are tracked, and the published page carries the medals as rendered in the tool.
+Medals and Ribbons/medal_art_pack.js
+Medals and Ribbons/src/
+Medals and Ribbons/fonts/
+Medals and Ribbons/PREVIEW_*.png
 # Generated packs. Note `art/*` not `art/` - git cannot re-include anything
 # under an excluded DIRECTORY, so the directory itself must stay visible.
 art/*

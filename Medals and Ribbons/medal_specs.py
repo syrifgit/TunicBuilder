@@ -30,17 +30,26 @@ MEDALS = {
                     ("#D14124", 13), ("#1C2E52", 19)],
         "top_bar": "CANADA",
         "suspension": "bar",
+        "susp_gap": 8.6,
         "suspension_text": "CADET",
         "metal": "silver",
-        "legend_top": "FOR BRAVERY",
-        "legend_top2": "POUR BRAVOURE",
+        "legend_top": None,
         "legend_bottom": None,
-        "device": None,
+        "legend_lines_top": ["FOR BRAVERY", "POUR BRAVOURE"],
+        "serif": True,
+        "bar_shape": "fishtail",            # concave flared ends, both bars
+        "suspension": "scroll",             # ornate scroll, no ring
+        "device": "busts",                  # three cadet busts, stylised
+        "device_scale": 1.743,
+        "device_offset": 0.299,
+        "bars_overhang": True,
         "fidelity": "ESTIMATED",
         "source": "Stripe order from CATO 13-16 Annex B para 2 and Blatherwick "
                   "ch40 (dark blue edges, red stripes, wide light blue centre). "
                   "Widths and hex values read off a product photo by eye. "
-                  "Blatherwick confirms both legend lines sit in the top third.",
+                  "Blatherwick confirms both legend lines sit in the top third."
+                  " BUSTS traced from a supplied silver render, "
+                  "2026-09-24, via trace_bravery.py.",
     },
     # ------------------------------------------------------------- 2 ------
     "strathcona": {
@@ -55,14 +64,21 @@ MEDALS = {
         "top_bar": None,
         "suspension": "ring",
         "metal": "bronze",
+        "beaded_border": True,
+        "ring_style": "ball",               # spherical finial, thicker ring
+        "serif": True,
         "legend_top": "AGMINA DUCENS",
         "legend_bottom": None,
-        "device": None,
+        "device": "bust",
+        "device_scale": 1.24,
+        "ring_style": "ball",
         "fidelity": "MEASURED",
         "source": "Scanline of 10050-Annex-B.pdf art gave five near-equal "
                   "stripes; Blatherwick ch40 confirms five EQUAL stripes of "
                   "dark crimson and dark green on a 32 mm ribbon, and the "
-                  "AGMINA DUCENS legend on a copper medal.",
+                  "AGMINA DUCENS legend on a copper medal."
+                  " PORTRAIT traced from a supplied bronze render, "
+                  "2026-09-24, via trace_strathcona.py.",
     },
     # ------------------------------------------------------------- 3 ------
     "legion": {
@@ -76,9 +92,13 @@ MEDALS = {
         "suspension": "ring",
         "metal": "silver",
         "legend_top": "ROYAL CANADIAN LEGION",
+        "legend_top2": "CADET",
         "legend_bottom": "LA LÉGION ROYALE CANADIENNE",
-        "centre_lines": ["CADET", "EXCELLENCE"],
-        "device": None,
+        "legend_bottom2": "EXCELLENCE",
+        "side_dashes": True,                # short dashes at 9 and 3 o'clock
+        "device": "legion_emblem",                # crowned roundel, maple leaf centre
+        "ring_style": "tab",
+        "inner_arc_k": 0.84,
         "fidelity": "MEASURED",
         "source": "Scanline of 10050-Annex-C.pdf art gave blue 23.7 / gold 48.4 "
                   "/ blue 23.7%, rounded to 25/50/25. Blatherwick ch40 confirms "
@@ -91,14 +111,17 @@ MEDALS = {
         "authority": "CATO 13-16 para 10.b (Navy League of Canada documents)",
         "precedence": 4,
         "ribbon_width_mm": 38,      # Blatherwick ch40
-        "stripes": [("#C8102E", 10.5), ("#F4F4F2", 7.5), ("#1F4FA8", 2),
+        "stripes": [("#C8102E", 10.5), ("#F4F4F2", 7.5), ("#1B2350", 2),
                     ("#F4F4F2", 7.5), ("#C8102E", 10.5)],
         "top_bar": None,
         "suspension": "ring",
         "metal": "silver",
         "legend_top": "CADET",
         "legend_bottom": "EXCELLENCE",
-        "device": "anchor",
+        "device": "fouled_anchor",
+        "serif": True,
+        "ring_style": "ball",
+        "anchor_slim": True,
         "fidelity": "MEASURED geometry / ESTIMATED colour",
         "source": "Blatherwick ch40: 38 mm red ribbon, central white stripe "
                   "17 mm, a single 2 mm blue stripe in the centre of the white. "
@@ -116,11 +139,11 @@ MEDALS = {
         "ribbon_width_mm": 35,
         "stripes": [("#C8102E", 50), ("#00703C", 50)],   # scarlet LEFT
         "top_bar": None,
-        "suspension": "bar_plain",
+        "suspension": "trapezoid",
         "metal": "gold",
         "legend_top": None,
-        "legend_bottom": "MERIT \u2022 MÉRITE",
-        "device": "leaf",
+        "legend_bottom": "MERIT / MÉRITE",
+        "device": "army_emblem",
         "award_bars": [
             ("RODGER", "bar_rodger"),
             ("HOWARD", "bar_howard"),
@@ -132,6 +155,8 @@ MEDALS = {
         "bar_ink": {"WALSH": "#F0A526"},
         "bar_band_frac": 0.75,
         "bar_max_pitch": 2.2,
+        "bars_overhang": True,
+        "device_scale": 1.30,
         "fidelity": "ESTIMATED",
         "source": "Redrawn from the ACLC per-bar illustrations. Blatherwick "
                   "ch40 confirms the ribbon is scarlet on the LEFT half and "
@@ -145,27 +170,37 @@ MEDALS = {
         "authority": "CATO 13-16 para 19.f / para 12.a",
         "precedence": 6,
         "ribbon_width_mm": 35,      # not published; assumed
-        "stripes": [("#101A3D", 9), ("#70B3BD", 8), ("#101A3D", 9),
-                    ("#491219", 41), ("#101A3D", 9), ("#70B3BD", 8),
-                    ("#101A3D", 9)],
+        "stripes": [("#1B2350", 9), ("#7EC3C8", 9), ("#1B2350", 9),
+                    ("#6B1D2E", 46), ("#1B2350", 9), ("#7EC3C8", 9),
+                    ("#1B2350", 9)],
         "top_bar": None,
-        "suspension": "bar",
+        "suspension": "claw_bar",           # as St. George: leaf on bar, claw
+        "susp_gap": 10.5,
         "suspension_text": None,
         "metal": "gold",
         "legend_top": None,
         "legend_bottom": "ASSOCIATION",
-        "device": "leaf",
-        "fidelity": "MEASURED colour / ESTIMATED geometry",
-        "source": "Sampled off the full-colour medal image on A-CR-CCP-850/DA-003 "
-                  "(Symbols of the Royal Canadian Air Cadets, 2018), rendered at "
-                  "9x and scanlined: navy / pale teal / navy / dark maroon centre "
-                  "/ navy / teal / navy, centre stripe 41% of the width. No text "
-                  "source describes this ribbon - Blatherwick ch40 carries the "
-                  "award terms but no DESCRIPTION or RIBBON section - so stripe "
-                  "PROPORTIONS come from the image and the 35 mm width is assumed. "
-                  "Gold disc, plain straight bar suspender with a maple leaf lug, "
-                  "crown and laurels above an RCAF eagle, ASSOCIATION around the "
-                  "lower edge. Upper legend not legible at poster resolution.",
+        "device": "eagle_on_leaf",          # upright leaf, eagle across it
+        "crown_laurels": True,              # crown with a sprig either side
+        "device_scale": 1.22,
+        "legend_bottom_size": 3.5,
+        "legend_bottom_sweep": 150.0,
+        "fidelity": "MEASURED pattern / MEASURED colour",
+        "source": "Stripe PATTERN scanlined at 9x off the full-colour "
+                  "medal image on A-CR-CCP-850/DA-003: seven stripes. "
+                  "WIDTHS 9/9/9/46/9/9/9 and COLOURS navy #1B2350, "
+                  "light aqua #7EC3C8, maroon #6B1D2E are both read off "
+                  "the close-up reference photo, per the round-4 "
+                  "corrections; the 46% centre replaces an earlier 41% "
+                  "taken from the poster. An earlier note here recorded "
+                  "the ANAVETS palette per Lt Beal on the theory that "
+                  "the poster print had shifted - that is superseded: "
+                  "Lt Beal confirms the photo. No text source describes "
+                  "this ribbon, so the 35 mm rendered width is still "
+                  "assumed. Gold disc, bar-and-claw suspension with a "
+                  "straddling maple leaf, crown and free-floating "
+                  "laurels above the eagle on a maple leaf, ASSOCIATION "
+                  "around the lower edge.",
     },
     # ------------------------------------------------------------- 7 ------
     "anavets": {
@@ -179,13 +214,21 @@ MEDALS = {
                     ("#3A5BA8", 12)],
         "top_bar": "CADET",
         "suspension": "bar",
+        "susp_gap": 10.5,
         "suspension_text": "MERITUM",
         "bar_end_leaves": True,
-        "disc_checker": ["#C0272E", "#F2F2F0", "#2B4A9B"],
+        "disc_checker": ["#C0272E", "#F2F2F0", "#131C3F"],
         "metal": "pewter",
-        "legend_top": "ARMY NAVY AIR FORCE",
-        "legend_bottom": "VETERANS IN CANADA",
-        "device": None,
+        "legend_top": "ARMY, NAVY & AIR FORCE VETERANS",
+        "legend_bottom": "IN CANADA",
+        "device": "shield",                 # Union Jack heater shield, crowned
+        "device_scale": 1.245,
+        "bottom_bar_flare": True,
+        "hanging_rings": True,
+        "bar_shape": "trap_down",
+        "serif": True,
+        "maple_sprays": True,
+        "dot_ornaments": True,
         "fidelity": "ESTIMATED",
         "source": "Blatherwick ch40: 35 mm, blue, red and white edges with a "
                   "wide blue centre - which matches the original scanline of "
@@ -194,7 +237,9 @@ MEDALS = {
                   "wrong). Blatherwick also confirms the outer annulus is "
                   "divided into 24 equal areas enamelled alternately red, "
                   "white and blue, and that both bars carry a maple leaf at "
-                  "each end of the word. Widths and hues still eyeballed.",
+                  "each end of the word. Widths and hues still eyeballed."
+                  " CENTRE traced from a supplied silver render, "
+                  "2026-09-24, via trace_anavets.py.",
     },
     # ------------------------------------------------------------- 8 ------
     "stgeorge": {
@@ -205,16 +250,22 @@ MEDALS = {
         "ribbon_width_mm": 35,
         "stripes": [("#F4F4F2", 10), ("#CE1F2E", 80), ("#F4F4F2", 10)],
         "top_bar": None,
-        "suspension": "bar",
+        "suspension": "claw_bar",           # flat bar, leaf on top, stem + claw
+        "susp_gap": 10.5,
         "suspension_text": None,
-        "metal": "dark",
+        "serif": True,
+        "metal": "silver",   # mirror-polished: the FIELD reads dark, not the metal
         "legend_top": "PRO MERITO",
         "legend_bottom": "ORDER OF ST. GEORGE",
-        "device": None,
-        "fidelity": "MEASURED",
+        "device": "st_george",
+        "finish": "mirror",
+        "device_scale": 1.26,
+        "fidelity": "MEASURED geometry / TRACED figure",
         "source": "Scanline of 10050-Annex-E.pdf art (290x663 @300ppi), legends "
                   "read off a product photo. Neither Blatherwick ch40 nor "
-                  "CATO 13-16 covers this medal.",
+                  "CATO 13-16 covers this medal."
+                  " FIGURE traced from a supplied silver render, "
+                  "2026-09-24, via trace_stgeorge.py.",
     },
     # ------------------------------------------------------------- 9 ------
     "seaservice": {
@@ -223,15 +274,18 @@ MEDALS = {
         "authority": "CATO 13-16 para 10.c (Navy League of Canada documents)",
         "precedence": 9,
         "ribbon_width_mm": 38,      # Blatherwick ch40
-        "stripes": [("#16478A", 10.5), ("#E8B41F", 2), ("#F4F4F2", 5.5),
-                    ("#14512B", 2), ("#F4F4F2", 5.5), ("#E8B41F", 2),
-                    ("#16478A", 10.5)],
+        "stripes": [("#2350A8", 33), ("#FFCC00", 7), ("#F4F4F2", 5),
+                    ("#007A33", 10), ("#F4F4F2", 5), ("#FFCC00", 7),
+                    ("#2350A8", 33)],
         "top_bar": None,
         "suspension": "ring",
         "metal": "silver",
         "legend_top": "FOR SERVICE",
         "legend_bottom": "POUR SERVICE",
-        "device": "anchor",
+        "device": "fouled_anchor",
+        "serif": True,
+        "ring_style": "ball",
+        "anchor_scale": 1.25,
         "fidelity": "MEASURED geometry / ESTIMATED colour",
         "source": "Blatherwick ch40 (38 mm blue, central white 17 mm carrying "
                   "2 mm yellow at each edge of the white and a 2 mm dark green "
@@ -252,13 +306,15 @@ MEDALS = {
         "top_bar": None,
         "suspension": "ring",
         "metal": "gold",
-        "legend_top": "SERVICE \u2013 CADETS",
+        "legend_top": "SERVICE \u00b7 CADETS",
         "legend_bottom": "CANADA",
-        "device": "leaf",
+        "device": "army_emblem",
         "service_device": "leaf",
         "service_bar_metal": "gold",
         "service_bar_device": True,
         "max_service_bars": 3,
+        "ring_style": "lug",
+        "device_scale": 1.30,
         "fidelity": "MEASURED",
         "source": "Scanline of the ACSM.pdf p5 embedded image, colours re-read "
                   "off a product photo. Blatherwick ch40 fixes the stripe "
@@ -279,9 +335,15 @@ MEDALS = {
         "top_bar": None,
         "suspension": "ring",
         "metal": "gold",            # see source note: Lt Beal confirms gold
-        "legend_top": "SERVICE \u2013 CADETS",
+        "legend_top": "SERVICE \u00b7 CADETS",
         "legend_bottom": "CANADA",
-        "device": "leaf",
+        "device": "air_emblem",
+        "service_bar_metal": "gold",
+        "service_bar_device": "bird",       # gold bar, spread-wing eagle
+        "service_ribbon_device": "rosette", # one rosette per bar
+        "max_service_bars": 3,
+        "ring_style": "lug",
+        "device_scale": 1.15,
         "fidelity": "MEASURED geometry / ESTIMATED colour",
         "source": "Blatherwick ch40 gives all five stripe widths in mm: 10 mm "
                   "royal blue borders for the Air Cadet League's Royal title, "

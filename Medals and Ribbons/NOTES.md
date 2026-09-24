@@ -166,6 +166,29 @@ with a single `pin_dofe` key, since it is issued at three levels.
 
 ---
 
+## Air Cadet Service Medal: bars, and the emblem on the disc
+
+**Disc.** The emblem is traced from the League's artwork you sent - silhouette
+plus line work as two paths, drawn in the metal's own dark shade so it reads
+as gold relief rather than a black engraving, which is how you described it.
+That replaces the maple leaf placeholder. **Traced, not stylised.**
+
+**Bar device: stylised, and you should know why.** The additional-years bar is
+actually printed on A-CR-CCP-850/DA-003, under the service medal. I tried to
+trace it and could not: the embedded image is 422 x 98 px of gold relief on a
+gold face, and both a luminance threshold and a local-variance segmentation
+returned unusable blobs. The eagle in the emblem you sent will not separate
+either - it shares its exact yellow `#FDDD04` with the maple leaves behind it,
+and their outlines merge.
+
+So the eagle is **drawn**, to the proportions measured off the real bar
+(wingspan:height 3.1:1, wings swept up from the shoulder, four primary
+notches). `gen_bird.py` regenerates it. If a straight-on photo of a real bar
+ever turns up, this is a half-hour job to redo properly.
+
+**Rosette: stylised**, as you said - described in words only. Scalloped disc,
+recessed ring, raised centre.
+
 ## Corrections carried in from Blatherwick
 
 Worth recording, since two of these reverse things I sent earlier.
@@ -198,12 +221,46 @@ true width in the manifest as `true_ribbon_width_mm` plus a `width_note`:
 | `navyleague` | 38 mm | Blatherwick |
 | `seaservice` | 38 mm | Blatherwick |
 
+## Device clearance
+
+Centre devices are clamped to whatever room the legends leave. The legends are
+positioned first, the innermost legend ink gives `legend_min_r`, and an emblem
+is scaled so its whole bounding box fits inside that less `DEVICE_CLEAR`
+(0.9 mm). Both axes are bounded, since the emblems run from 0.99 to 1.58 h/w.
+
+So `device_scale` in a spec is a *request*, not a guarantee - raising it past
+the available room has no effect rather than pushing the artwork across the
+lettering. To make a device genuinely bigger, move the legends in (a smaller
+`inner_arc_k`, or a shorter legend) rather than raising the scale.
+
+## Finishes and mounts
+
+`finish: "mirror"` gives a dark reflective field with the raised design and
+lettering in bright metal, which is how a mirror-polished face photographs.
+Only the Order of St. George uses it.
+
+Loop-medal mounts are set per spec by `ring_style`: `lug` (Air and Army
+Service), `ball` (Sea Service, and Lord Strathcona with a heavier ring), `tab`
+(RCL). The ANAVETS medal is not a loop medal - `hanging_rings` gives it a ring
+and jump ring under the MERITUM bar so it dangles, and suppresses the rigid lug.
+
 ## Legibility overrides, unchanged
 
 Black hairline on every bar and device; black legends on every disc face;
 ACSM and St. George discs solid rather than dark-fielded; WALSH bar solid red
 with gold lettering. All deliberate departures from the issued artwork, all
 one-line reverts in `make_medals.py`.
+
+## Fidelity of the new items
+
+| Item | Flag |
+|---|---|
+| `airservice` disc emblem | traced from League artwork |
+| `airservice` bar eagle | **stylised** - proportions measured, shape drawn |
+| `airservice` ribbon rosette | **stylised** - words only |
+| `afa` stripe pattern | measured off the poster at 9x |
+| `afa` colours | **stated** - ANAVETS palette per Lt Beal |
+| `afa` ribbon width | assumed 35 mm, still unsourced |
 
 ## Still stylised
 

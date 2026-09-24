@@ -4,7 +4,7 @@ Ordered by what it unblocks, not by effort. Every geometric item is also recorde
 `rules/army_tunic_placement_rules_2.json` under `open_questions`, which is the
 authoritative list — this file is the working view of it.
 
-Status as of rules **v0.31-draft**: 21 slots, 48 open questions, 10 recorded conflicts.
+Status as of rules **v0.32-draft**: 21 slots, 48 open questions, 10 recorded conflicts.
 
 ---
 
@@ -29,8 +29,8 @@ Things the tool currently gets *wrong* or cannot answer, not merely gaps.
   named. Blatherwick puts the ceiling at three bars (seven years) by arithmetic. Still
   open: **Sea's scheme** is undescribed (reportedly anchor devices rather than a stack).
   **Air** uses the Army's system with its own devices, a gold bar with a bird on the
-  medal and rosettes on the ribbon (Lt Beal). The artwork's built and arrives with the
-  resized medal pack (§3).
+  medal and rosettes on the ribbon (Lt Beal). Drawn now, the bar's eagle and the
+  rosette stylised.
 - [ ] **`Date Awarded` is placeholder data** in the workbook. It drives CTC grid fill
   order, so grid *order* is not sewing-safe even though grid *geometry* is.
 - [ ] **Resolve "Command" vs "VCDS" vs "Comd CJCR".** 10050 contradicts itself: its
@@ -58,8 +58,8 @@ Medals are done. **CATO 13-16 para 19 is now sourced verbatim** and confirms the
 for every medal except the Order of St. George, which is absent from it — that one still
 rests on CJCR Gp O 10050 alone. Seq 5 is the **Army Cadet Medal of Merit** (four award
 bars, at least one worn, Walsh requires President — 11 states, all drawn). Seq 6, the
-**Air Force Association Medal**, is drawn now too: no text describes its ribbon, but the
-air poster shows it in full colour, so its colour is measured and its geometry estimated.
+**Air Force Association Medal**, is drawn now too: no text describes its ribbon, so its
+stripes and colours are read off a reference photo, which the air poster agrees with.
 
 ## 2. Measurements — one ruler each
 
@@ -119,12 +119,10 @@ than a number the rules pack can carry.
   award draws as itself. Not extracted from the poster — it never carried them.
 - [x] ~~**Commendation and award insignia.**~~ CDS, Command, Cadet and Navy League now
   draw as real insignia at the Chapter 5 sizes. The DofE slot already had artwork.
-- [ ] **Fidelity is mixed and worth knowing.** Strathcona, RCL Excellence, St. George
-  and the Army Cadet Service Medal are sampled from source images. **Bravery and ANAVETS
-  stripe widths are still eyeballed**, and every medallion obverse is stylised — the
-  central relief is not reproducible from the sources to hand. Per-item detail is in
-  `Medals and Ribbons/medal_art_manifest.json`. The full delivery traces every face, so
-  this closes when it's merged.
+- [ ] **Ribbon fidelity is still mixed.** Every medal face is traced now, bar the fouled
+  anchor on the two navy medals. **Bravery and ANAVETS ribbons are still estimated**:
+  stripe order sourced, widths and hues by eye. Per-item detail is in
+  `Medals and Ribbons/medal_art_manifest.json`.
 - [x] ~~**Air Force Association Medal has no artwork.**~~ `medal_afa` / `ribbon_afa`
   arrived with the air delivery and seq 6 is drawn. The Air Cadet Service Medal disc
   is **gold** (Lt Beal). It was built bronze for a while off the poster, which prints it
@@ -134,13 +132,10 @@ than a number the rules pack can carry.
   fonts all came back. The ANAVETS recolour for the AFA was overtaken by a reference
   photo, so navy / light blue / maroon stands (Lt Beal). Still to come: the **Air
   squadron title generator**.
-- [ ] **Merge the full medal delivery once it's resized.** It traces every medal face and
-  adds the Air bars, but shrank each medal ribbon to 28 mm on the 35 mm canvas so the
-  bars could overhang, which opens a 7 mm gap between ribbons in the tool. Sent back:
-  ribbon at 35 mm, canvas widened for the overhang, AFA manifest note corrected. The
-  tool already draws a wider canvas centred on its slot. When it lands, replace
-  `Medals and Ribbons/`, decide which of the traced emblem sources get committed, and
-  rebuild.
+- [x] ~~**Merge the full medal delivery.**~~ Merged once resized: 35 mm ribbons on a
+  46 mm canvas, drawn centred on the 3.5 cm pitch so the metal overhangs the
+  neighbouring medal, senior on top. Every face is traced and the Air bars draw. The
+  first cut had shrunk the ribbon to 28 mm instead, which gapped the row.
 - [ ] **Court-mounted medals.** Every medal is drawn swing-mounted, its ribbon ending at
   the suspender, at the 10 cm court-mount length, and the front note calls that "Court
   mounted". The request is written: 27 `medal_<key>_court` twins on the same 35 × 100 mm
@@ -151,8 +146,9 @@ than a number the rules pack can carry.
 - [x] ~~**Get the updated `medal_specs.py` and `make_medals.py`.**~~ Arrived with the
   air follow-up. Only `medal_specs.py` changed, and the manifest regenerates from it
   identically.
-- [ ] **`make_medals.py` can't run from this repo.** The full delivery bundles the leaf
-  path and the fonts, so once it's merged only cairo is missing. The pack is fine as
+- [ ] **`make_medals.py` can't run here yet.** The leaf path, traced emblems and fonts
+  it reads are now local in `Medals and Ribbons/` (gitignored), so only cairo is
+  missing. A fresh clone can't rebuild the medals, by design. The pack is fine as
   delivered.
 - [x] ~~**Air badge artwork.**~~ 63 badges from `air badges/air_art_pack.js`, wired in
   at hand-measured sizes. Still to do:

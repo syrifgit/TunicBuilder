@@ -77,6 +77,7 @@ set up to keep it that way.
 | `ACRCCP750DA003.pdf` | A-CR-CCP-750/DA-003, *Symbols of the Royal Canadian Army Cadets*, March 2018 | National publication |
 | `rcac_badges.zip` | Badge artwork extracted from that poster | `python src/extract_badges.py ACRCCP750DA003.pdf out_dir` |
 | `air badges/air_art_pack.js` | Air badge artwork extracted from A-CR-CCP-850/DA-003, the air poster | The air artwork delivery. Optional: without it Air falls back to army artwork where there's an equivalent and draws an empty box where there isn't |
+| `Medals and Ribbons/medal_art_pack.js` | Medal and ribbon artwork, faces traced from supplied emblem artwork | The medal artwork delivery. Optional: without it medals and ribbons draw as placeholders |
 
 The badge artwork is **Crown copyright**. Publishing it as part of the tool is cleared;
 publishing the files themselves isn't, so they stay local. See *Copyright*.
@@ -108,7 +109,8 @@ notes/    CLAUDE_1.md     project brief and settled decisions
 docs/     build_site.py output: index.html + plate.html. Tracked; a release, not a build
 air badges/         Air artwork delivery: notes, per-badge measurements, extraction
                     scripts. The pack itself stays local
-Medals and Ribbons/ medal and ribbon artwork, authored as SVG rather than extracted
+Medals and Ribbons/ medal and ribbon generator, specs and manifest; the pack and the
+                    traced emblems it draws from stay local
 ```
 
 Edit a `.template.html`, run its build script, and the `.html` next to it is
@@ -199,7 +201,7 @@ behaves identically everywhere.
   that puts a badge on the wrong side of a cadet.
 - **Cadet Service Medal bars.** Army's scheme is sourced (ACLC Policy 13.1) and drawn
   for 5 to 7 years; Blatherwick puts the ceiling at three bars by arithmetic. Air's
-  bars are built and arrive with the next medal pack. Sea's scheme is unsourced.
+  are drawn too. Sea's scheme is unsourced.
 - **Some front sizes are estimates.** The parachutist wings (which also size the Air
   pilot wings) and the anniversary, expedition, Duke of Edinburgh, NRT, Bisley and
   national-winner pins are placed by rule but sized by estimate.

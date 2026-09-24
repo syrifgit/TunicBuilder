@@ -127,12 +127,13 @@ than a number the rules pack can carry.
   arrived with the air delivery and seq 6 is drawn. The Air Cadet Service Medal disc
   is **gold** (Lt Beal). It was built bronze for a while off the poster, which prints it
   brown, and that's been reverted.
-- [ ] **Next note to the artwork creator.** Their `medal_specs.py` still says bronze for
-  the Air service disc; ours is back to gold. Ask for the **Air service bars**: a gold
-  bar with a bird, wings spread, for 5, 6 and 7 years (`medal_airservice_5yr` etc.), and
-  rosettes on the ribbon (`ribbon_airservice_5yr` etc.). The tool draws them as soon as
-  they land. Also the **AFA ribbon colours**, pending: Lt Beal says it looks like the
-  ANAVETS palette, where ours is sampled off the poster.
+- [ ] **Send `AIR_ARTWORK_FOLLOWUP_2.md`** to the artwork creator, with our
+  `Medals and Ribbons/medal_specs.py` attached. It asks for:
+  - the **Air service bars** (a gold bar with a bird for 5, 6 and 7 years, rosettes on
+    the ribbon), which the tool draws as soon as they land
+  - the **AFA ribbon in ANAVETS colours**, blue / white / blue / red centre (Lt Beal)
+  - `src/maple_leaf_path.txt`, so the medals can be regenerated here
+  - an **Air squadron title generator**, so any squadron can be drawn
 - [x] ~~**Get the updated `medal_specs.py` and `make_medals.py`.**~~ Arrived with the
   air follow-up. Only `medal_specs.py` changed, and the manifest regenerates from it
   identically.
@@ -150,8 +151,8 @@ than a number the rules pack can carry.
     Glider CTC exclusion; Effective Speaking tops the Air pin strip.
   - [x] ~~**Publication.**~~ Lt Beal: same poster family, individual tool for now.
     `AIR_ART_CLEARED` is set in `build_site.py`.
-  - [ ] **Silver and gold wire wings.** Authorized on the jacket in lieu of the issued
-    ones (3D-6). No artwork for them, so the tool draws the issued nylon wings only.
+  - [x] ~~**Silver and gold wire wings.**~~ Authorized on the jacket in lieu of the
+    issued ones (3D-6), but not needed: the tool draws the issued nylon wings (Lt Beal).
 
 ## 4. Workbook corrections
 

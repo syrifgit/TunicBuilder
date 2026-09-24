@@ -58,6 +58,10 @@ WANTED = {
     "pipe_band": "ctc_pb_1", "pipe_band_2": "ctc_pb_2", "pipe_band_3": "ctc_pb_3",
     "military_band": "ctc_mb_1", "military_band_2": "ctc_mb_2", "military_band_3": "ctc_mb_3",
     "staff_cadet": "ctc_staff",
+    # On the poster but with no QualMap row. The tool carries all three and they drew
+    # as "no art" boxes because nothing here packed them.
+    "general_training": "ctc_gen", "army_cadet_voyage": "ctc_voyage",
+    "maple_leaf": "ctc_exchange",
 }
 
 # Badges recovered from bad crops by recut_music.py / recut_shoulder.py.

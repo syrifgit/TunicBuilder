@@ -4,7 +4,7 @@ Ordered by what it unblocks, not by effort. Every geometric item is also recorde
 `rules/army_tunic_placement_rules_2.json` under `open_questions`, which is the
 authoritative list — this file is the working view of it.
 
-Status as of rules **v0.23-draft**: 20 slots, 43 open questions, 6 recorded conflicts.
+Status as of rules **v0.24-draft**: 20 slots, 43 open questions, 6 recorded conflicts.
 
 ---
 
@@ -42,8 +42,8 @@ Medals are done. **CATO 13-16 para 19 is now sourced verbatim** and confirms the
 for every medal except the Order of St. George, which is absent from it — that one still
 rests on CJCR Gp O 10050 alone. Seq 5 is the **Army Cadet Medal of Merit** (four award
 bars, at least one worn, Walsh requires President — 11 states, all drawn). Seq 6, the
-**Air Force Association Medal, is omitted**: no source describes its ribbon, so the tool
-leaves a gap in the numbering rather than inventing one.
+**Air Force Association Medal, is still omitted**, leaving a gap in the numbering. The air
+poster now shows it in full colour, so it is sourced; the artwork is requested (§3).
 
 ## 2. Measurements — one ruler each
 
@@ -99,8 +99,15 @@ than a number the rules pack can carry.
   stripe widths are still eyeballed**, and every medallion obverse is stylised — the
   central relief is not reproducible from the sources to hand. Per-item detail is in
   `Medals and Ribbons/medal_art_manifest.json`.
-- [ ] **Air Force Association Medal has no artwork and no source.** Omitted rather than
-  guessed. Air-element award, so it reaches an army tunic only by transfer.
+- [ ] **Air Force Association Medal has no artwork yet.** Sourced at last: the air poster
+  (A-CR-CCP-850/DA-003) shows ribbon and disc in full colour. Requested from the medal
+  pack as `medal_afa` / `ribbon_afa`; unhide seq 6 when it lands. Air-element award, so
+  it reaches an army tunic only by transfer.
+- [ ] **Air badge artwork.** Keys and scope settled in `AIR_ARTWORK_DECISIONS.md`: 63
+  badges, `air_` + the key the tool already uses for each row. When `air_art_pack.js`
+  lands: merge it into `BADGE_ART` in `demo/build.py`, point `RANKS_AIR` and
+  `LEVELS_AIR` at their `air_` keys, and give proficiency and appointments the
+  prefix lookup `ctcArt()` already does for the CTC grid.
 
 ## 4. Workbook corrections
 

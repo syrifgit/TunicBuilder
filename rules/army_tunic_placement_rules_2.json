@@ -1,6 +1,6 @@
 {
   "$comment": "Placement rules for Royal Canadian Army Cadet tunic (jacket) insignia. Sleeves only. Front of tunic not yet in scope.",
-  "version": "0.27-draft",
+  "version": "0.28-draft",
   "scope": "army_cadet_sleeves_and_front",
   "sources": [
     {
@@ -769,7 +769,8 @@
           },
           "condition": "highest training level held; not worn by WO2 or WO1",
           "citation": "SEWN-3 para 3 Air (d); ANNEX-H 3H-5",
-          "note": "The poster calls these 'Proficiency Levels'. They are the training level badge, Level 1 to 5, all five with a badge."
+          "note": "Air's own name for them, on the poster and per Lt Beal, and what the rail and the drawing say. Para 3 calls them training level insignia. Not the cuff proficiency badges, which are a different thing with a confusingly similar name. All five levels carry a badge.",
+          "name": "Proficiency Level 1-5"
         }
       }
     },
@@ -1227,7 +1228,7 @@
     "Sea's corps title slot is modelled (a rectangular title directly below the shoulder title, which is common to all sea cadets) but has no dimensions and no artwork.",
     "RESOLVED in 0.26, superseded. This note predates para 3. Air's CTC block starts immediately above the top of the cuff on the RIGHT arm (Figure 3H-6), six maximum, and the training level sits on the left arm with its bottom 9 cm above the cuff (para 3 (d)). The seven-badge rule was wrong; see 33.",
     "RESOLVED in 0.26: Air pilot wings are modelled (slot front_left_pilot_wings), sourced to para 3 (a) and CH3 Annex D Figure 3D-6. 3D-6 also supplies the rule that the Glider Pilot CTC badge is never worn with Glider Pilot Wings, which the renderer raises as a crit. Power supersedes Glider, and a single dropdown enforces highest only. Para 3's 0.5 cm against 3D-6's 'directly above' is recorded as a conflict on the slot.",
-    "Element-specific participation insignia: Sea's Regatta series is still not modelled, and Sea shows the army Bisley stream in its place. Sea wears Staff Cadet on the lower LEFT sleeve and everything else lower right. RESOLVED for Air in 0.26: Effective Speaking is a competition pin series, not a sewn badge. It takes the top-of-precedence place in the left-pocket pin strip that Army gives the Bisley Series (Lt Beal), and para 3 (g)'s CTC block (CTC, Staff, Deployment, Exchanges) never included it. The Effective Speaking artwork arrived fully opaque with white corners; a re-cut is requested.",
+    "Element-specific participation insignia: Sea's Regatta series is still not modelled, and Sea shows the army Bisley stream in its place. Sea wears Staff Cadet on the lower LEFT sleeve and everything else lower right. RESOLVED for Air in 0.26: Effective Speaking is a competition pin series, not a sewn badge. It takes the top-of-precedence place in the left-pocket pin strip that Army gives the Bisley Series (Lt Beal), and para 3 (g)'s CTC block (CTC, Staff, Deployment, Exchanges) never included it. The first Effective Speaking artwork arrived fully opaque with white corners; the re-cut (air pack revision 2) keys the white paper out, and nothing else in the pack changed.",
     "RESOLVED in 0.26: the Air CTC block is on the RIGHT arm per Figure 3H-6. Para 3 put both the six proficiency insignia and the six CTC / Staff / Deployment / Exchange insignia on the LEFT arm, both immediately above the cuff, which cannot be done; Lt Beal confirms a typo. Recorded as a conflict on ctc_grid.",
     "RESOLVED in 0.26: Air has four rank anchors, upper and lower on each arm (Figures 3H-5 / 3H-6). LAC to FSgt use the upper pair, WO2 and WO1 the lower, and an appointment takes whichever right-sleeve anchor the rank leaves free (Lt Beal). Para 3 (f) attaches both positions to WO2 and WO1. The reading 0.22 adopted (9 cm for WO2/WO1, mid-way for the rest) put the appointment on top of the rank every time, and the renderer had in fact been drawing every Air appointment at the cuff.",
     "RESOLVED in 0.26: six. Para 3 says six for each block, twice, and Figures 3H-5 / 3H-6 agree. The earlier seven-badge note was wrong.",
@@ -1238,7 +1239,7 @@
     "RESOLVED in 0.26: one badge per family, the highest held (Lt Beal). Air's families are Physical Fitness, First Aid, Music, Marksmanship Classification and Glider Pilot Familiarization; the sixth position has no family yet. Music Basic is worn until a level replaces it, and is now in the music list for every element: QualMap has no row for it, the same workbook gap as General Training. The earlier note that Air Music is six badges against Army's five was wrong; both are six.",
     "AIR: the poster calls the training level badges 'Proficiency Levels', which is the tool's word for the six cuff insignia. Same word, different badges. Kept as training_level here.",
     "RESOLVED in 0.25: medal_afa / ribbon_afa are in the medal pack and seq 6 is drawn. AIR: the Air Force Association Medal appears in full colour on the air poster, which settles the question that had it omitted from the tool as unsourced. Slot 6 can be unhidden once medal_afa / ribbon_afa are added to the medal pack.",
-    "RESOLVED in 0.25: bronze adopted. AIR: the Air Cadet Service Medal disc renders BRONZE on the air poster where Blatherwick describes 'a round gold coloured medal', and the artwork was built gold. A photograph against a text description. The artwork session sampled the poster's disc at mean #9E7B60, hue 26 degrees (a brown; gold sits near 44), and took the issuing authority's own 2018 artwork over Blatherwick, whose wording reads like the Army medal's description carried across. Recorded in the medal manifest. The tracked Medals and Ribbons/medal_specs.py still says gold and still lists afa as unsourced, so regenerating the pack from it would silently undo both until the updated copy arrives.",
+    "RESOLVED in 0.25: bronze adopted. AIR: the Air Cadet Service Medal disc renders BRONZE on the air poster where Blatherwick describes 'a round gold coloured medal', and the artwork was built gold. A photograph against a text description. The artwork session sampled the poster's disc at mean #9E7B60, hue 26 degrees (a brown; gold sits near 44), and took the issuing authority's own 2018 artwork over Blatherwick, whose wording reads like the Army medal's description carried across. Recorded in the medal manifest. The updated Medals and Ribbons/medal_specs.py arrived with the air follow-up; the manifest regenerates from it identically. make_medals.py still cannot run from this repo: it needs src/maple_leaf_path.txt, which was never delivered, plus a Linux font path and cairo.",
     "AIR: the squadron shoulder insignia is a half-round dome with the element name arched over the top, squadron number large in the centre and squadron name below - a different shape from Army's scrolled corps title, and it needs two text fields rather than one. The existing corps-title generator cannot produce it. In 0.25 the two poster samples draw as the Air unit choices (89 Pacific, 96 Alouette), sized from the 4.25 in x 52 mm measurement."
   ],
   "changelog": [
@@ -1345,6 +1346,10 @@
     {
       "version": "0.27-draft",
       "change": "Sizes for the last unmeasured Air badges, per Lt Beal: WO2 and WO1 take the army MWO (7.62 x 5.08, measured) and CWO (7.62 x 10.16, still an estimate) sizes, the pilot wings the army parachutist badge's 9.0 x 3.87, and the Effective Speaking pins the championship pins' 1 in square. Only the Air appointments are left on an adopted army size with no decision recorded."
+    },
+    {
+      "version": "0.28-draft",
+      "change": "Air follow-up delivery merged: Effective Speaking pins re-cut with the white paper keyed out (the other 60 air badges byte-identical), and the medal sources that match the medal pack (medal_specs.py with afa at seq 6, the bronze Air service disc and an empty UNSOURCED; the manifest regenerates from it identically). Air's training level badges are named Proficiency Level 1-5 in the rail and the drawing, per Lt Beal."
     }
   ],
   "orders_of_dress": {

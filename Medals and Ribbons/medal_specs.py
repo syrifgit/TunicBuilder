@@ -138,6 +138,35 @@ MEDALS = {
                   "green on the right, and flags that a pre-2019 edition had "
                   "this reversed. Hues read by eye.",
     },
+    # ------------------------------------------------------------- 6 ------
+    "afa": {
+        "name": "Air Force Association Medal (Air Cadets)",
+        "short": "AFA",
+        "authority": "CATO 13-16 para 19.f / para 12.a",
+        "precedence": 6,
+        "ribbon_width_mm": 35,      # not published; assumed
+        "stripes": [("#101A3D", 9), ("#70B3BD", 8), ("#101A3D", 9),
+                    ("#491219", 41), ("#101A3D", 9), ("#70B3BD", 8),
+                    ("#101A3D", 9)],
+        "top_bar": None,
+        "suspension": "bar",
+        "suspension_text": None,
+        "metal": "gold",
+        "legend_top": None,
+        "legend_bottom": "ASSOCIATION",
+        "device": "leaf",
+        "fidelity": "MEASURED colour / ESTIMATED geometry",
+        "source": "Sampled off the full-colour medal image on A-CR-CCP-850/DA-003 "
+                  "(Symbols of the Royal Canadian Air Cadets, 2018), rendered at "
+                  "9x and scanlined: navy / pale teal / navy / dark maroon centre "
+                  "/ navy / teal / navy, centre stripe 41% of the width. No text "
+                  "source describes this ribbon - Blatherwick ch40 carries the "
+                  "award terms but no DESCRIPTION or RIBBON section - so stripe "
+                  "PROPORTIONS come from the image and the 35 mm width is assumed. "
+                  "Gold disc, plain straight bar suspender with a maple leaf lug, "
+                  "crown and laurels above an RCAF eagle, ASSOCIATION around the "
+                  "lower edge. Upper legend not legible at poster resolution.",
+    },
     # ------------------------------------------------------------- 7 ------
     "anavets": {
         "name": "ANAVETS Cadet Medal of Merit",
@@ -249,7 +278,7 @@ MEDALS = {
                     ("#E8B41F", 4), ("#10357F", 10)],
         "top_bar": None,
         "suspension": "ring",
-        "metal": "gold",
+        "metal": "bronze",          # see source note: poster overrides Blatherwick
         "legend_top": "SERVICE \u2013 CADETS",
         "legend_bottom": "CANADA",
         "device": "leaf",
@@ -260,22 +289,21 @@ MEDALS = {
                   "stripes for the four years of service. Gold 35 mm medal "
                   "with the RCAirC crest, SERVICE - CADETS above, CANADA "
                   "below. Hues not published; the central device is a maple "
-                  "leaf standing in for the RCAirC crest.",
+                  "leaf standing in for the RCAirC crest. DISC METAL CHANGED "
+                  "gold -> bronze: Blatherwick says \"a round gold coloured "
+                  "medal\", but A-CR-CCP-850/DA-003 shows a bronze disc, "
+                  "sampled at 9x as mean #9E7B60 (hue 26deg, brown) where gold "
+                  "would sit near hue 44deg. Adopted the poster because it is "
+                  "the issuing authority's own current colour artwork and "
+                  "Blatherwick is a third-party text compendium. Revert by "
+                  "setting metal back to \"gold\". The ribbon description in "
+                  "Blatherwick is confirmed by the same image.",
     },
 }
 
-# Not built. No ribbon or medal description could be sourced.
-UNSOURCED = {
-    "afa": {
-        "name": "Air Force Association Medal",
-        "precedence": 6,
-        "authority": "CATO 13-16 para 12.a / CATO 52-08",
-        "reason": "Blatherwick ch40 carries the terms of the award but its "
-                  "entry stops after the selection criteria - there is no "
-                  "DESCRIPTION or RIBBON section. No other description found. "
-                  "Drawing one would be invention, so nothing was produced.",
-    },
-}
+# Everything in the CATO 13-16 precedence is now built. "afa" was previously
+# listed here as unsourced; A-CR-CCP-850/DA-003 supplied a full-colour image.
+UNSOURCED = {}
 
 # Commendation and award pins. Sizes from CJCR Dress Instructions ch 5 paras
 # 8-12. These are pins, not ribbons, so they carry their own dimensions.

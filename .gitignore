@@ -21,6 +21,11 @@ air badges/*
 !air badges/NOTES.md
 !air badges/air_art_manifest.json
 !air badges/extract.py
+!air badges/segment.py
+# Revision 2 of the same delivery, already merged into "air badges/" and
+# "Medals and Ribbons/". Safe to delete; ignored so its pack can't be committed.
+Air follow up.zip
+Air follow up/
 # Generated packs. Note `art/*` not `art/` - git cannot re-include anything
 # under an excluded DIRECTORY, so the directory itself must stay visible.
 art/*

@@ -4,7 +4,7 @@ Ordered by what it unblocks, not by effort. Every geometric item is also recorde
 `rules/army_tunic_placement_rules_2.json` under `open_questions`, which is the
 authoritative list — this file is the working view of it.
 
-Status as of rules **v0.27-draft**: 21 slots, 43 open questions, 8 recorded conflicts.
+Status as of rules **v0.28-draft**: 21 slots, 43 open questions, 8 recorded conflicts.
 
 ---
 
@@ -118,16 +118,16 @@ than a number the rules pack can carry.
 - [x] ~~**Air Force Association Medal has no artwork.**~~ `medal_afa` / `ribbon_afa`
   arrived with the air delivery and seq 6 is drawn. Air Cadet Service Medal disc
   changed to **bronze**, off the poster's photograph over Blatherwick's "gold".
-- [ ] **Get the updated `medal_specs.py` and `make_medals.py`.** The medal pack and
-  manifest in `Medals and Ribbons/` were regenerated from them, but they weren't in the
-  delivery. The tracked copies still list `afa` as unsourced and the Air service disc
-  as gold, so regenerating from them would silently undo both. Don't regenerate until
-  they arrive.
+- [x] ~~**Get the updated `medal_specs.py` and `make_medals.py`.**~~ Arrived with the
+  air follow-up. Only `medal_specs.py` changed, and the manifest regenerates from it
+  identically.
+- [ ] **`make_medals.py` can't run from this repo.** It needs `src/maple_leaf_path.txt`,
+  which was never delivered, a Linux font path (TeX Gyre Heros), and cairo. The pack
+  is fine as delivered. Ask for the leaf path file before anyone needs to regenerate.
 - [x] ~~**Air badge artwork.**~~ 63 badges from `air badges/air_art_pack.js`, wired in
   at hand-measured sizes. Still to do:
-  - [ ] **Effective Speaking re-cut.** The three crops are fully opaque with white
-    corners, and now that the pins are drawn the corners show on the pocket. Requested
-    in `AIR_ARTWORK_FOLLOWUP.md`.
+  - [x] ~~**Effective Speaking re-cut.**~~ Revision 2 keys the white paper out of all
+    three; the other 60 badges are byte-identical.
   - [x] ~~**Families with art but no control.**~~ Air marksmanship, glider
     familiarization and Music Basic are in the cuff block, one per family, in the order
     the dropdowns are set.

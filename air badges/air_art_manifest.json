@@ -182,7 +182,7 @@
     "bytes": 29126,
     "fidelity": "measured",
     "measured_mm": null,
-    "note": "no physical measurement supplied; size from poster proportions is NOT reliable"
+    "note": "no physical measurement supplied; poster proportions are NOT reliable for size"
   },
   "air_rank_WO1": {
     "px": [
@@ -201,7 +201,7 @@
     "bytes": 32444,
     "fidelity": "measured",
     "measured_mm": null,
-    "note": "no physical measurement supplied; size from poster proportions is NOT reliable"
+    "note": "no physical measurement supplied; poster proportions are NOT reliable for size"
   },
   "air_appt_drum_major": {
     "px": [
@@ -220,7 +220,7 @@
     "bytes": 18612,
     "fidelity": "measured",
     "measured_mm": null,
-    "note": "no physical measurement supplied; size from poster proportions is NOT reliable"
+    "note": "no physical measurement supplied; poster proportions are NOT reliable for size"
   },
   "air_appt_pipe_major": {
     "px": [
@@ -239,7 +239,7 @@
     "bytes": 21576,
     "fidelity": "measured",
     "measured_mm": null,
-    "note": "no physical measurement supplied; size from poster proportions is NOT reliable"
+    "note": "no physical measurement supplied; poster proportions are NOT reliable for size"
   },
   "air_level_1": {
     "px": [
@@ -378,7 +378,7 @@
     "bytes": 16586,
     "fidelity": "measured",
     "measured_mm": null,
-    "note": "no physical measurement supplied; size from poster proportions is NOT reliable"
+    "note": "no physical measurement supplied; poster proportions are NOT reliable for size"
   },
   "air_wings_glider": {
     "px": [
@@ -397,7 +397,7 @@
     "bytes": 15796,
     "fidelity": "measured",
     "measured_mm": null,
-    "note": "no physical measurement supplied; size from poster proportions is NOT reliable"
+    "note": "no physical measurement supplied; poster proportions are NOT reliable for size"
   },
   "air_ctc_gen": {
     "px": [
@@ -1421,10 +1421,11 @@
       2390.4
     ],
     "art": "raster",
-    "bytes": 8902,
+    "bytes": 11932,
     "fidelity": "measured",
+    "alpha": "white ground keyed: paper flood-filled from the frame, soft matte from whiteness, white divided back out of fringe pixels. PDF smask is a plain rectangle and does not key it.",
     "measured_mm": null,
-    "note": "no physical measurement supplied; size from poster proportions is NOT reliable"
+    "note": "no physical measurement supplied; poster proportions are NOT reliable for size"
   },
   "air_es_prov": {
     "px": [
@@ -1440,17 +1441,18 @@
       2390.9
     ],
     "art": "raster",
-    "bytes": 7848,
+    "bytes": 10652,
     "fidelity": "measured",
+    "alpha": "white ground keyed: paper flood-filled from the frame, soft matte from whiteness, white divided back out of fringe pixels. PDF smask is a plain rectangle and does not key it.",
     "measured_mm": null,
-    "note": "no physical measurement supplied; size from poster proportions is NOT reliable"
+    "note": "no physical measurement supplied; poster proportions are NOT reliable for size"
   },
   "air_es_nat": {
     "px": [
       257,
-      261
+      257
     ],
-    "aspect": 0.9847,
+    "aspect": 1.0,
     "source": "A-CR-CCP-850/DA-003 p1",
     "region_pt": [
       480.0,
@@ -1459,9 +1461,10 @@
       2390.4
     ],
     "art": "raster",
-    "bytes": 7422,
+    "bytes": 8398,
     "fidelity": "measured",
+    "alpha": "white ground keyed: paper flood-filled from the frame, soft matte from whiteness, white divided back out of fringe pixels. PDF smask is a plain rectangle and does not key it.",
     "measured_mm": null,
-    "note": "no physical measurement supplied; size from poster proportions is NOT reliable"
+    "note": "no physical measurement supplied; poster proportions are NOT reliable for size"
   }
 }

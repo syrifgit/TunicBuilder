@@ -116,6 +116,29 @@ panel-outline artefacts. All accounted for, none dropped.
 
 Caption guard fired on **zero** badges — no padding had to be reduced.
 
+## Effective Speaking: white ground keyed (revision 2)
+
+`air_es_zone`, `air_es_prov` and `air_es_nat` shipped opaque the first time.
+They are photographs on white paper, and their PDF smask is a plain rectangle,
+so page alpha never touched the paper. Fixed in `extract.py`
+(`key_white_ground`), which now runs on any raster-backed badge.
+
+Paper is flood-filled inward from the frame, so the badge's own cream and
+metallic interior is kept — a plain whiteness threshold would have eaten it.
+The fill has to treat already-transparent pixels as passable, because the
+frame of the clip is the 1 pt transparent bleed rather than paper; that was
+the bug in my first attempt at the fix. Fringe pixels then get a soft matte
+from the whiteness and the white divided back out, so there is no pale halo
+when the badge draws on cloth.
+
+Result: all three RGBA with transparent corners, 3.4–6.0% of each frame keyed,
+2–4% partial alpha at the rounded edge. Checked against a mid-green ground.
+Aspects moved slightly with the re-trim: zone 1.027, provincial 1.000,
+national 1.000.
+
+Verified across the whole pack: **63 of 63 are RGBA, none has four opaque
+corners.**
+
 ## Fidelity
 
 Every key is `measured` in the sense that matters: the artwork is lifted

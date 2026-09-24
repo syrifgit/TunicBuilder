@@ -260,7 +260,7 @@ footer.foot p{margin:.5em 0}
 
     <div class="group">
       <div class="eyebrow">Sleeve badges</div>
-      <div class="field"><label for="star">Star level</label><select id="star"></select></div>
+      <div class="field"><label for="star" id="starLabel">Star level</label><select id="star"></select></div>
       <div class="field" id="mkField"><label for="mk">Marksmanship</label><select id="mk"></select></div>
       <div class="field"><label for="fit">Fitness</label><select id="fit"></select></div>
       <div class="field"><label for="fa">First aid</label><select id="fa"></select></div>
@@ -501,13 +501,14 @@ const LEVELS_SEA = {
   p3:{label:"Phase 3", art:"star_silver"}, p4:{label:"Phase 4", art:"star_gold"},
   p5:{label:"Phase 5", art:"star_gold"}
 };
-// The poster calls these "Proficiency Levels". They are the training level badge, not
-// the cuff proficiency insignia. Measured 1.5 in x 30 mm; see ELEMENTS.air.geom.
+// Air calls these Proficiency Levels 1-5 (the poster, and Lt Beal), so the rail does
+// too. Para 3 calls them training level insignia. Either way they are not the cuff
+// proficiency badges. Measured 1.5 in x 30 mm; see ELEMENTS.air.geom.
 const LEVELS_AIR = {
   none:{label:"None"},
-  l1:{label:"Level 1", art:"air_level_1"}, l2:{label:"Level 2", art:"air_level_2"},
-  l3:{label:"Level 3", art:"air_level_3"}, l4:{label:"Level 4", art:"air_level_4"},
-  l5:{label:"Level 5", art:"air_level_5"}
+  l1:{label:"Proficiency Level 1", art:"air_level_1"}, l2:{label:"Proficiency Level 2", art:"air_level_2"},
+  l3:{label:"Proficiency Level 3", art:"air_level_3"}, l4:{label:"Proficiency Level 4", art:"air_level_4"},
+  l5:{label:"Proficiency Level 5", art:"air_level_5"}
 };
 
 // Air squadron shoulder insignia. The poster carries two finished patches rather than
@@ -773,7 +774,8 @@ const ELEMENTS = {
       participation:"right", appointment:"right"
     },
     ranks:RANKS_AIR, junior:JUNIOR_AIR, senior:SENIOR_AIR,
-    levels:LEVELS_AIR, units:UNITS_AIR, ctcExtra:CTC_AIR, participation:PART_AIR,
+    levels:LEVELS_AIR, levelLabel:"Proficiency level",
+    units:UNITS_AIR, ctcExtra:CTC_AIR, participation:PART_AIR,
     // Marksmanship and glider familiarization join fitness, first aid and music in
     // the cuff block. Wings are on the front; Effective Speaking tops the pin strip.
     profExtra:["mk", "gf"], wings:WINGS, pinTop:PIN_ES,
@@ -1002,7 +1004,7 @@ function resolve(){
   // is also what stops it colliding with their rank, since both sit 9 cm above the cuff.
   const levelBlocked = state.element === "air" && (EL().senior || []).includes(state.rank);
   if (levelBlocked && state.star !== "none")
-    add(`${(EL().ranks || RANKS)[state.rank].label} wears no training level insignia. The badge is dropped, not moved.`,
+    add(`${(EL().ranks || RANKS)[state.rank].label} wears no ${(EL().levelLabel || "training level").toLowerCase()} insignia. The badge is dropped, not moved.`,
         "info", "Sewn Insignia para 3, Air Cadets");
   if (state.star !== "none" && !levelBlocked && has("training_level")) put("training_level", starBox);
   if (st.viaALP){
@@ -2104,6 +2106,7 @@ function fillElementLists(){
   fill("star", lv);
   if (!(state.star in lv)) state.star = "none";
   document.getElementById("star").value = state.star;
+  document.getElementById("starLabel").textContent = e.levelLabel || "Star level";
 
   const un = e.units || UNITS;
   fill("unit", un);

@@ -6,7 +6,7 @@ static host needs nothing but the files themselves - no server, no build step, n
 runtime dependency beyond the Google Fonts stylesheet.
 
 docs/ rather than site/ because GitHub Pages will only publish from a branch root or
-from /docs. Point Pages at main -> /docs and the layout tool is the site root.
+from /docs. Pages serves master -> /docs, and the layout tool is the site root.
 
 The built pages are tracked: the artwork they carry is cleared for publication as part
 of the tool. The poster PDF and the raw badge library are not, and stay ignored.
@@ -32,7 +32,8 @@ NOJEKYLL = ""
 
 # The publication clearance on record named A-CR-CCP-750/DA-003, the army poster. Air
 # artwork comes from its sibling, A-CR-CCP-850/DA-003. Lt Beal, 2026-09-24: "they are
-# basically the same poster", and the tool is for individual use for now. So it ships.
+# basically the same poster", and it went public with the 2026-09-24 release on Lt
+# Beal's direction. So it ships.
 # Set this back to False if that changes; a release carrying Air art then stops here.
 AIR_ART_CLEARED = True
 
@@ -65,14 +66,17 @@ def main():
     print("  python -m http.server -d docs 8000     # check it over HTTP first")
     print("\nTo publish on GitHub Pages:")
     print("  1. commit these files - they are tracked")
-    print("  2. add a remote and push - neither is set up, ask first")
-    print("  3. repo Settings > Pages > Source: main, folder /docs")
+    print("  2. push: the repo is syrifgit/TunicBuilder, and the local clone has no")
+    print("     remote on purpose, so push to its URL (ask first)")
+    print("  3. Pages serves master -> /docs")
     print("The layout tool lands at the site root; the plate at /plate.html.")
     print("\nBoth pages carry Crown copyright artwork from A-CR-CCP-750/DA-003,")
     print("cleared for publication as part of the tool, and both attribute it. The")
     print("poster itself and the raw badge library are NOT cleared and stay ignored.")
     if has_air:
         print("The layout tool also carries Air artwork from A-CR-CCP-850/DA-003.")
+    print("And the medal artwork, faces traced from supplied emblem artwork: published")
+    print("as rendered in the tool; the pack and its traced sources stay local.")
     return 0
 
 

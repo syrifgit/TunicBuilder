@@ -162,8 +162,9 @@ python build_all.py      # regenerates artwork, both pages, and smoke-tests them
   artwork as a *library* rather than as a tool, and stay out of the repo. Do not
   commit them, and do not add the raw crops to a page just to make them downloadable.
 - **Air artwork** comes from the army poster's sibling, A-CR-CCP-850/DA-003. Lt Beal
-  treats the clearance as covering it ("basically the same poster"; the tool is for
-  individual use for now), recorded as `AIR_ART_CLEARED` in `build_site.py`. The pack
+  treats the clearance as covering it ("basically the same poster"), recorded as
+  `AIR_ART_CLEARED` in `build_site.py`, and it went public with the 2026-09-24
+  release. The pack
   in `air badges/` is library artwork and is gitignored; only its notes, manifest and
   extraction script are tracked.
 - **Medal artwork** is authored in another session, and its faces are traced from

@@ -270,11 +270,12 @@ footer.foot p{margin:.5em 0}
 
     <div class="group">
       <div class="eyebrow">Sleeve badges</div>
-      <div class="field"><label for="star">Star level</label><select id="star"></select></div>
+      <div class="field"><label for="star" id="starLabel">Star level</label><select id="star"></select></div>
       <div class="field" id="mkField"><label for="mk">Marksmanship</label><select id="mk"></select></div>
       <div class="field"><label for="fit">Fitness</label><select id="fit"></select></div>
       <div class="field"><label for="fa">First aid</label><select id="fa"></select></div>
       <div class="field"><label for="mus">Music</label><select id="mus"></select></div>
+      <div class="field" id="gfField" hidden><label for="gf">Glider familiarization</label><select id="gf"></select></div>
     </div>
 
     <details class="group">
@@ -287,6 +288,7 @@ footer.foot p{margin:.5em 0}
       <div id="pinPick" style="display:flex; flex-direction:column; gap:6px"></div>
       <div class="field" style="margin-top:6px"><label for="fExped">Expedition</label><select id="fExped"></select></div>
       <div class="field"><label for="fDofe">Duke of Edinburgh</label><select id="fDofe"></select></div>
+      <div class="field" id="wingsField" hidden><label for="fWings">Pilot wings</label><select id="fWings"></select></div>
       <div class="toggles" style="margin-top:4px">
         <label class="toggle"><input type="checkbox" id="fPara"> Parachutist</label>
         <label class="toggle"><input type="checkbox" id="fCommem"> Commemorative pin</label>
@@ -349,7 +351,7 @@ footer.foot p{margin:.5em 0}
 </div>
 
 <footer class="foot">
-  <p>Badge artwork &copy; His Majesty the King in Right of Canada, reproduced from A-CR-CCP-750/DA-003, <em>Symbols of the Royal Canadian Army Cadets</em> (March 2018), for Royal Canadian Army Cadet use. Nothing is stored and nothing leaves this page.</p>
+  <p>Badge artwork &copy; His Majesty the King in Right of Canada, reproduced from A-CR-CCP-750/DA-003, <em>Symbols of the Royal Canadian Army Cadets</em> (March 2018), for Royal Canadian Army Cadet use. Air badge artwork is reproduced from A-CR-CCP-850/DA-003, <em>Symbols of the Royal Canadian Air Cadets</em> (2018). Nothing is stored and nothing leaves this page.</p>
   <p>Not an official publication. Placement follows the CJCR Dress Instructions, but some figures rest on local measurement and a few questions are still open &mdash; check anything load-bearing against the instructions before sewing.</p>
 </footer>
 
@@ -450,10 +452,12 @@ const RCAC_MEASURED = 6.35;
 
 /* ============================================================
    SEA AND AIR TABLES
-   Names and structure are from Lt Beal. EVERY dimension and position below is a
-   guess scaled off the army model, marked conf:"guess", and expected to change.
-   Artwork is army artwork throughout: there is no sea or air pack yet, so a sea
-   Petty Officer draws an army chevron. The validator says so.
+   Names and structure are from Lt Beal; positions from para 3 (SEWN-3), and for Air
+   also Figures 3H-5 / 3H-6. Both still rest on an assumed elbow. Sea has no artwork
+   pack, so a sea Petty Officer still draws an army chevron and the validator says so.
+   Air has its own pack (air_art_pack.js, from A-CR-CCP-850/DA-003), and its sizes are
+   hand-measured where the air artwork manifest has a measurement - flagged "estimate"
+   where it does not.
    ============================================================ */
 
 // Sea. Junior rank sits high on the left sleeve, senior rank low on it.
@@ -470,17 +474,27 @@ const RANKS_SEA = {
 const JUNIOR_SEA = ["AC","LC","MC","PO2"];        // high on the left sleeve
 const SENIOR_SEA = ["PO1","CPO2","CPO1"];         // low on the left sleeve
 
+// Sized from hand measurements of issued badges (air artwork manifest, measured_mm):
+// chevrons 10.5 cm wide and 3.25 / 4 / 4 / 4.75 in tall. The poster art runs 4-10%
+// taller than that, the same fixed embroidered border the army chevrons showed, so it
+// is stretched to the measured box exactly as the army art is. LAC is 8 x 2 cm at the
+// tallest part; the art is 18% flatter than that. WO2 and WO1 take the army MWO and
+// CWO sizes (Lt Beal). MWO is measured; CWO is still an estimate, so WO1 inherits
+// its flag. The WO2 art is 1.14:1 in a 1.5:1 box, much as the army MWO poster art
+// (1.26) lost to its measured 3 x 2 in.
 const RANKS_AIR = {
   Cdt : {label:"Cadet",                        cls:"none"},
-  LAC : {label:"Leading Air Cadet",            cls:"chevron", w:10.00, h: 6.50, art:"rank_LCpl"},
-  Cpl : {label:"Corporal",                     cls:"chevron", w:10.00, h: 8.00, art:"rank_Cpl"},
-  FCpl: {label:"Flight Corporal",              cls:"chevron", w:10.00, h: 9.50, art:"rank_MCpl"},
-  Sgt : {label:"Sergeant",                     cls:"chevron", w:10.00, h:11.00, art:"rank_Sgt"},
-  FSgt: {label:"Flight Sergeant",              cls:"crown",   w: 5.08, h: 5.08, art:"rank_WO"},
-  WO2 : {label:"Warrant Officer Second Class", cls:"crown",   w: 7.62, h: 5.08, art:"rank_MWO"},
-  WO1 : {label:"Warrant Officer First Class",  cls:"crown",   w: 7.62, h:10.16, art:"rank_CWO"}
+  LAC : {label:"Leading Air Cadet",            cls:"chevron", w: 8.00, h: 2.00,  art:"air_rank_LAC"},
+  Cpl : {label:"Corporal",                     cls:"chevron", w:10.50, h: 8.255, art:"air_rank_Cpl"},
+  FCpl: {label:"Flight Corporal",              cls:"chevron", w:10.50, h:10.16,  art:"air_rank_FCpl"},
+  Sgt : {label:"Sergeant",                     cls:"chevron", w:10.50, h:10.16,  art:"air_rank_Sgt"},
+  FSgt: {label:"Flight Sergeant",              cls:"chevron", w:10.50, h:12.065, art:"air_rank_FSgt"},
+  WO2 : {label:"Warrant Officer Second Class", cls:"crown",   w: 7.62, h: 5.08,  art:"air_rank_WO2"},
+  WO1 : {label:"Warrant Officer First Class",  cls:"crown",   w: 7.62, h:10.16,  art:"air_rank_WO1", conf:"estimate"}
 };
-const JUNIOR_AIR = ["LAC","Cpl","FCpl","Sgt"];
+// FSgt belongs here: "junior" is the mid-way placement, and only WO2 and WO1 move low.
+// It was missing, so a Flight Sergeant drew at 14 cm with the Warrant Officers.
+const JUNIOR_AIR = ["LAC","Cpl","FCpl","Sgt","FSgt"];
 // Only WO2 and WO1 move low. FSgt still sits mid-way between elbow and seam.
 const SENIOR_AIR = ["WO2","WO1"];
 
@@ -493,12 +507,51 @@ const LEVELS_SEA = {
   p3:{label:"Phase 3", art:"star_silver"}, p4:{label:"Phase 4", art:"star_gold"},
   p5:{label:"Phase 5", art:"star_gold"}
 };
+// Air calls these Proficiency Levels 1-5 (the poster, and Lt Beal), so the rail does
+// too. Para 3 calls them training level insignia. Either way they are not the cuff
+// proficiency badges. Measured 1.5 in x 30 mm; see ELEMENTS.air.geom.
 const LEVELS_AIR = {
   none:{label:"None"},
-  l1:{label:"Level 1", art:"star_green"},  l2:{label:"Level 2", art:"star_red"},
-  l3:{label:"Level 3", art:"star_silver"}, l4:{label:"Level 4", art:"star_gold"},
-  l5:{label:"Level 5", art:"star_gold"}
+  l1:{label:"Proficiency Level 1", art:"air_level_1"}, l2:{label:"Proficiency Level 2", art:"air_level_2"},
+  l3:{label:"Proficiency Level 3", art:"air_level_3"}, l4:{label:"Proficiency Level 4", art:"air_level_4"},
+  l5:{label:"Proficiency Level 5", art:"air_level_5"}
 };
+
+// Air squadron shoulder insignia. The poster carries two finished patches rather than
+// a blank plate, and the dome shape needs a generator with two text fields that does
+// not exist yet, so the samples stand in. Measured 4.25 in x 52 mm.
+const UNITS_AIR = {
+  sample_en: {label:"89 Pacific (poster sample)",  art:"air_squadron_title_en"},
+  sample_fr: {label:"96 Alouette (poster sample)", art:"air_squadron_title_fr"}
+};
+
+// Air's two proficiency families that Army has no row for. Marksmanship is Army's own
+// MARKS list, worn in Air's cuff block instead of a dedicated slot; glider
+// familiarization is Air's alone. One badge per family (Lt Beal).
+const GLIDER_FAM = {
+  none:{label:"None"},
+  gf_1:{label:"Front Seat", art:"air_glider_fam_1"},
+  gf_2:{label:"Back Seat",  art:"air_glider_fam_2"}
+};
+
+// Air pilot wings, issued nylon. Highest only: Power replaces Glider (Figure 3D-6).
+// Drawn at the army parachutist badge's size (Lt Beal), PARA_W x PARA_H below, which
+// is itself unmeasured.
+const WINGS = {
+  none:  {label:"None"},
+  glider:{label:"Glider Pilot Wings", art:"air_wings_glider"},
+  power: {label:"Power Pilot Wings",  art:"air_wings_power"}
+};
+
+// Effective Speaking is a competition pin series, Air's equivalent of Army's Bisley
+// Series and Sea's Regatta, and it takes the same top-of-precedence place in the pin
+// strip. Same size as the marksmanship and biathlon championship pins, the measured
+// 1 in square (Lt Beal).
+const PIN_ES = {key:"es", label:"Effective Speaking", slot:"Effective Speaking Series", opts:[
+  {v:"none",        nm:"None"},
+  {v:"air_es_zone", nm:"Zone Championship"},
+  {v:"air_es_prov", nm:"Provincial Championship"},
+  {v:"air_es_nat",  nm:"National Championship"}]};
 
 // Sea appointments. More than army's two, worn as a grid low on the left sleeve.
 const APPTS_SEA = {
@@ -546,7 +599,12 @@ const CTC_AIR = [
   {k:"air_avtech_am",cat:"Advanced Aviation Technology", nm:"Aircraft Maintenance"},
   {k:"air_avtech_ao",cat:"Advanced Aviation Technology", nm:"Airport Operations"},
   {k:"air_glider",   cat:"Glider Pilot",  nm:"Scholarship"},
-  {k:"air_power",    cat:"Power Pilot",   nm:"Scholarship"}
+  // No Power Pilot CTC badge exists: that scholarship yields wings only, and the
+  // Glider CTC badge is never worn with Glider Pilot Wings - it goes on with the other
+  // CTC badges once Power wings replace them. CH3 Annex D Figure 3D-6, and absent from
+  // the air poster.
+  {k:"air_oshkosh",  cat:"Oshkosh Trip",  nm:"Oshkosh Trip"},
+  {k:"air_exchange", cat:"International Air Cadet Exchange", nm:"Exchange"}
 ];
 
 // Participation insignia. Sea wears Staff Cadet low on the LEFT and the rest low on
@@ -559,13 +617,14 @@ const PART_SEA = [
   {k:"sea_cg",       nm:"Coast Guard Deployment"},
   {k:"sea_tall",     nm:"Tall Ship Deployment"}
 ];
-const PART_AIR = [
-  {k:"air_staff",    nm:"Staff Cadet"},
-  {k:"air_exchange", nm:"International Exchange"}
-];
+// Air wears staff and exchange insignia in with the CTC block rather than as a
+// separate group, so both are summer-training rows above and this list is empty.
+// Staff Cadet is tri-service and was carried here a second time by mistake.
+const PART_AIR = [];
 
-// Grid fill patterns. Army is a 2x3; Air is the same order plus a seventh above the
-// fourth. Both are {row, col} with col 0 centre, +1 front, -1 rear.
+// Grid fill patterns. Army and Air are both a 2x3 of six, {row, col} with col 0
+// centre, +1 front, -1 rear. An earlier note gave Air a seventh above the fourth;
+// para 3 says six twice and Figures 3H-5 / 3H-6 agree.
 
 const RCAC_CEILING = 12 / (1 + TITLE_H_RATIO);   // 7.47 cm: title meets badge
 // Cadet Fitness Assessment. extract_badges.py skipped the whole PHYSICAL FITNESS
@@ -586,8 +645,11 @@ const FIRSTAID = {
 };
 // Music. Six badges in a left-to-right line on the poster: Basic, then levels 1-5.
 // Levels 2-4 were trapped in one bad crop and were recovered by recut_music.py.
+// Basic is worn until a level replaces it (Lt Beal). QualMap has no row for it, the
+// same workbook gap as General Training, which is why it was missing here.
 const MUSIC = {
   none :{label:"None"},
+  mus_basic:{label:"Basic", art:"mus_basic"},
   mus_1:{label:"Level 1", art:"mus_1"}, mus_2:{label:"Level 2", art:"mus_2"},
   mus_3:{label:"Level 3", art:"mus_3"}, mus_4:{label:"Level 4", art:"mus_4"},
   mus_5:{label:"Level 5", art:"mus_5"}
@@ -686,7 +748,6 @@ const ELEMENTS = {
     ranks:RANKS_SEA, junior:JUNIOR_SEA, senior:SENIOR_SEA,
     levels:LEVELS_SEA, appts:APPTS_SEA, profsExtra:PROF_SEA,
     ctcExtra:CTC_SEA, participation:PART_SEA,
-    // GUESSES, all of them. Elbow taken as mid-sleeve, 28 cm on a 57 cm sleeve.
     // SOURCED except where noted. Elbow is still an assumption: taken as mid-sleeve,
     // 28 cm on a 57 cm sleeve, which is what turns "mid-way" into a number.
     geom:{
@@ -697,40 +758,66 @@ const ELEMENTS = {
       partY:5.0
     },
     caps:{ctc:2, proficiency:6, leftGroup:4},
-    fillCtc:FILL_TWO, fillProf:FILL_SIX, fillPart:FILL_FOUR,
+    fillCtc:FILL_TWO, fillPart:FILL_FOUR,
     cite:"Sewn Insignia para 3, Sea Cadets"
   },
   air: {
-    label:"Air", art:false,
+    // Air has a pack of its own. Build without it and this goes false, the validator
+    // says so, and the Air-keyed ranks and levels draw as "no art" boxes.
+    label:"Air", art: typeof AIR_ART !== "undefined",
     cloth:{fill:"#3A4A5C", edge:"#22303C"},          // air force blue. UNSOURCED
     nametag:"air force blue",
     // No RCAC badge, no star. CTC and participation share one right-sleeve block.
     // Air DOES wear appointment insignia, on the right sleeve. The squadron shoulder
     // insignia hangs 2 cm below the seam rather than flush, unlike Army and Sea.
     slots:{element_badge:false, marksmanship:false},
+    // CTC is on the RIGHT arm per Figure 3H-6. Para 3 says left, which would put it
+    // on top of the proficiency block; Lt Beal: a typo, the figure governs.
     sleeves:{
       corps_name:"both", rank:"both",
-      proficiency_stack:"left", training_level:"left", ctc_grid:"left",
-      participation:"left", appointment:"right"
+      proficiency_stack:"left", training_level:"left", ctc_grid:"right",
+      participation:"right", appointment:"right"
     },
     ranks:RANKS_AIR, junior:JUNIOR_AIR, senior:SENIOR_AIR,
-    levels:LEVELS_AIR, ctcExtra:CTC_AIR, participation:PART_AIR,
-    // GUESSES. The fill order is not a guess: it is quoted in the air instruction.
-    // "9 cm above the top of the cuff" is measured from the cuff's UPPER seam, so on a
-    // 5 cm cuff that is y = 14. The shoulder insignia drop is 2 cm below the seam.
+    levels:LEVELS_AIR, levelLabel:"Proficiency level",
+    units:UNITS_AIR, ctcExtra:CTC_AIR, participation:PART_AIR,
+    // Marksmanship and glider familiarization join fitness, first aid and music in
+    // the cuff block. Wings are on the front; Effective Speaking tops the pin strip.
+    profExtra:["mk", "gf"], wings:WINGS, pinTop:PIN_ES,
+    // SOURCED: para 3 (SEWN-3) and Figures 3H-5 / 3H-6. The one assumption left is the
+    // elbow, taken as mid-sleeve (28 cm on a 57 cm sleeve). Air uses the army tunic's
+    // measurements (Lt Beal), so "9 cm above the top of the cuff" is y = 5 + 9 = 14.
+    // Four rank anchors, two per arm: UPPER, top edge on the mid-point between the
+    // elbow and the shoulder seam, for LAC to FSgt; LOWER, bottom edge at 14, for WO2
+    // and WO1. An appointment takes whichever right-sleeve anchor the rank leaves free.
     geom:{
-      rankJuniorY:42.5,      // mid-way between the elbow and the upper shoulder seam
-      rankSeniorY:14.0,      // WO2 / WO1: bottom 9 cm above the top of the cuff
-      levelY:14.0,           // same line, left arm, and not worn at all by WO2 / WO1
-      ctcY:5.0, gridY:5.0,   // immediately above the top of the cuff
-      shoulderDrop:2.0
+      rankUpperTop:42.5,     // (28 + 57) / 2, the TOP edge, per the figures
+      rankSeniorY:14.0,      // the lower anchor: bottom 9 cm above the top of the cuff
+      levelY:14.0,           // left arm, same line; not worn at all by WO2 / WO1
+      ctcY:5.0, gridY:5.0,   // both blocks start immediately above the top of the cuff
+      ctcOnCuff:true,        // so the CTC block is quoted from the cuff, not the level
+      shoulderDrop:2.0,
+      // Hand-measured, air artwork manifest. Every CTC and proficiency badge is the
+      // same octagon; the training level is a 1.5 in x 30 mm rectangle; the squadron
+      // insignia is a 4.25 in x 52 mm dome. Army sizes stand in for none of these.
+      badge:3.066, levelW:3.81, levelH:3.0, title:{w:10.795, h:5.2}
     },
     caps:{ctc:6, proficiency:6},
     fillCtc:FILL_SIX, fillProf:FILL_SIX,
-    cite:"Sewn Insignia para 3, Air Cadets"
+    cite:"Sewn Insignia para 3, Air Cadets; ANNEX-H 3H-5 / 3H-6"
   }
 };
 const EL = () => ELEMENTS[state.element] || ELEMENTS.army;
+// A shared row is one entry but a different badge per element: Army's Drill and
+// Ceremonial badge is not Air's, and neither is its Bronze fitness badge. An
+// element-prefixed art key wins where the pack has one, so ctc_dc_1 draws
+// air_ctc_dc_1 and fit_2 draws air_fit_2 for an Air cadet, and the army key for an
+// Army one. Keys that already carry their prefix (air_surv_1) fall through unchanged,
+// and so does anything an element has no picture for yet.
+function elArt(k){
+  const p = k && state.element + "_" + k;
+  return p && BADGE_ART[p] ? p : k;
+}
 // Rank has three placements depending on rank level and whether an appointment is
 // worn, but they are one thing as far as WHICH ARM is concerned. Slot ids stay
 // per-placement so they match the rules pack; the family is what gets assigned.
@@ -738,7 +825,7 @@ const SLOT_FAMILY = {
   rank_junior:"rank", rank_senior_no_appointment:"rank", rank_senior_with_appointment:"rank"
 };
 // Does this element wear this slot at all? Sea and Air have no RCAC badge and no
-// marksmanship badge; Air has no appointment insignia in this model.
+// dedicated marksmanship slot. Air's marksmanship is a cuff proficiency badge.
 const has = slot => (EL().slots || {})[slot] !== false;
 // Which sleeve or sleeves a slot lands on. The only place a slot meets a side.
 function sleevesFor(slot){
@@ -752,16 +839,17 @@ function sleevesFor(slot){
 const state = {
   element:"army",
   rank:"Cdt", appt:"none", unit:"fred242", star:"none", mk:"none",
-  fit:"none", fa:"none", mus:"none",
+  fit:"none", fa:"none", mus:"none", gf:"none",
   ctc:[],                                  // selection order == award order
+  profOrder:[],                            // same idea for Air's proficiency block
   sleeveLen:57.0,                          // size 6436, the only one measured
   front:{
     order:"ribbons", nametag:"Bloggins", anniversary:false,
     medals:{}, service:{element:"none", bar:0},
     acmm:{r:false, h:false, p:false, w:false},
     commend:{cds:false, command:false, cadet:false, navy:false}, dofe:"none",
-    parachutist:false, commemorative:false, poppy:false, expedition:"none",
-    pins:{bisley:"none", mkComp:"none", biComp:"none"}
+    parachutist:false, commemorative:false, poppy:false, expedition:"none", wings:"none",
+    pins:{bisley:"none", mkComp:"none", biComp:"none", es:"none"}
   },
   dims:true, env:false
 };
@@ -795,9 +883,12 @@ function resolve(){
   const D  = RCAC_MEASURED;
   const tw = TITLE_W_RATIO * D, th = TITLE_H_RATIO * D;
   const drop = (EL().geom || {}).shoulderDrop || 0;
-  put("corps_name", { label: drop ? "Squadron shoulder insignia" : "Corps name title (poster example art)",
-    x:0, y:SLEEVE_LEN-th-drop, w:tw, h:th,
-    art:(UNITS[state.unit] || UNITS.fred242).art, conf:"derived",
+  // Air's squadron insignia is its own measured dome, not the army title derived above.
+  const title = (EL().geom || {}).title || {w:tw, h:th};
+  const units = EL().units || UNITS;
+  put("corps_name", { label: drop ? "Squadron shoulder insignia (poster sample art)" : "Corps name title (poster example art)",
+    x:0, y:SLEEVE_LEN-title.h-drop, w:title.w, h:title.h,
+    art:(units[state.unit] || Object.values(units)[0]).art, conf:"derived",
     datum:"shoulder_seam", root:"shoulder", edge:"top", off:0,
     cite:"ANNEX-H 3H-3 / 3H-4-1; CH3S1 3.b.(2)" });
 
@@ -808,23 +899,32 @@ function resolve(){
   // Per-element anchors. Army's are the regulation values; Sea's and Air's are
   // guesses scaled off them and every one of them is flagged below.
   const G = EL().geom || {};
+  // CTC and proficiency badge size. Army's 3 cm circle unless the element measured its own.
+  const BD = G.badge ?? CIRCLE;
   const guess = state.element !== "army";
   const rcacBottom = SLEEVE_LEN - 12;   // y = 45, independent of D
 
+  // All of this is about the army title and the RCAC badge under it. Sea and Air wear
+  // neither, so none of it applies to them.
   const clear = 12 - (1 + TITLE_H_RATIO) * D;
-  if (clear < 0){
+  if (!has("element_badge")){
+    // nothing to check
+  } else if (clear < 0){
     add(`At diameter ${D.toFixed(2)} cm the RCAC badge runs into the corps name title by ${(-clear).toFixed(2)} cm. The badge bottom is pinned 12 cm below the shoulder seam and the title hangs from the seam, so anything over ${RCAC_CEILING.toFixed(2)} cm across cannot be worn.`,
         "crit", "CH3S1 3.b.(2) + 3.b.(3), poster proportions");
   } else if (clear < 1.0){
     add(`Only ${clear.toFixed(2)} cm of cloth between the corps name title and the RCAC badge at diameter ${D.toFixed(2)} cm. Tight for two sewn edges.`,
         "warn", "CH3S1 3.b.(2) + 3.b.(3)");
   }
-  add(`RCAC badge measured at 2.5 in (${RCAC_MEASURED.toFixed(2)} cm). That fixes the corps name title at ${tw.toFixed(2)} x ${th.toFixed(2)} cm through the poster's shared template, leaving ${clear.toFixed(2)} cm of cloth between them. The title is derived from the badge, not measured directly.`,
-      "info", "rules pack v0.2-draft");
+  if (has("element_badge"))
+    add(`RCAC badge measured at 2.5 in (${RCAC_MEASURED.toFixed(2)} cm). That fixes the corps name title at ${tw.toFixed(2)} x ${th.toFixed(2)} cm through the poster's shared template, leaving ${clear.toFixed(2)} cm of cloth between them. The title is derived from the badge, not measured directly.`,
+        "info", "rules pack v0.2-draft");
 
   /* ---- LEFT: marksmanship, anchored bottom at 6 ---- */
-  if (state.mk !== "none"){
-    const m = has("marksmanship") ? MARKS[state.mk] : MARKS.none;
+  // Army's dedicated slot only. Air wears marksmanship in its cuff block, and a value
+  // carried over from another element must not draw here as an unsized box.
+  if (state.mk !== "none" && has("marksmanship")){
+    const m = MARKS[state.mk];
     if (m.two){
       const nh = MK_NUM_H;
       put("marksmanship", { label:`${m.label} — numeral`,
@@ -848,39 +948,68 @@ function resolve(){
   }
 
   /* ---- LEFT: proficiency stack, bottom of lowest worn at 20, chain up 1 cm ---- */
-  const stack = [];
-  if (state.fit !== "none" && FITNESS[state.fit].worn !== false) stack.push({cat:"Fitness", d:FITNESS[state.fit]});
-  if (state.fa  !== "none") stack.push({cat:"First Aid", d:FIRSTAID[state.fa]});
-  if (state.mus !== "none") stack.push({cat:"Music", d:MUSIC[state.mus]});
+  // One badge per family, the highest held. Air adds marksmanship (Army's MARKS list,
+  // worn in the cuff block instead of its own slot) and glider familiarization.
+  const PROF = {
+    fit: () => state.fit !== "none" && FITNESS[state.fit].worn !== false ? {cat:"Fitness", d:FITNESS[state.fit]} : null,
+    fa:  () => state.fa  !== "none" ? {cat:"First Aid", d:FIRSTAID[state.fa]} : null,
+    mus: () => state.mus !== "none" ? {cat:"Music", d:MUSIC[state.mus]} : null,
+    mk:  () => state.mk  !== "none" ? {cat:"Marksmanship", d:{label:MARKS[state.mk].label, art:state.mk}} : null,
+    gf:  () => state.gf  !== "none" ? {cat:"Glider Familiarization", d:GLIDER_FAM[state.gf]} : null
+  };
+  const families = ["fit", "fa", "mus", ...(EL().profExtra || [])];
+  const worn = {};
+  for (const k of families){ const s = PROF[k](); if (s) worn[k] = s; }
 
-  let sy = G.gridY ?? 20, prevLabel = null;
-  for (const s of stack){
-    const label = `${s.cat} – ${s.d.label}`;
-    put("proficiency_stack", { label,
-      x:0, y:sy, w:CIRCLE, h:CIRCLE, art:s.d.art, missingArt:!!s.d.missingArt,
-      datum:"cuff_bottom", root:"cuff", edge:"bottom", off:sy,
-      // only the lowest badge takes the 20 cm anchor; the rest chain off it
-      rel: prevLabel ? {of:`the ${prevLabel} badge`, ofShort:prevLabel, gap:1, dir:"above"} : null,
-      cite:"CH3S1 3.b.(5) — 20 cm anchor, not Annex H's 12 cm" });
-    prevLabel = s.cat; sy += CIRCLE + 1;
-  }
-  if (stack.length && state.mk === "none"){
-    add("Empty band from 0 to 20 cm on the left sleeve. Correct, not a layout error — the stack holds at 20 cm whether or not marksmanship is worn. Do not close the gap.",
-        "info", "rules JSON proficiency_stack.notes[0]");
+  if (EL().fillProf){
+    // Air: para 3 (e)'s block of six, 1-2-3 along the cuff seam and 4-5-6 above, in
+    // award order. The order the dropdowns were set stands in for award dates, the way
+    // click order does for the CTC grid.
+    const order = [...state.profOrder, ...families].filter((k, i, a) => worn[k] && a.indexOf(k) === i);
+    const capProf = (EL().caps || {}).proficiency ?? EL().fillProf.length;
+    order.slice(0, capProf).forEach((k, i) => {
+      const s = worn[k], cell = EL().fillProf[i];
+      put("proficiency_stack", { label:`${s.cat} – ${s.d.label}`,
+        x: cell.col * BD, y: G.gridY + cell.row * BD, w:BD, h:BD, art:elArt(s.d.art),
+        cell:cell.nm, seq:i+1, dimShow: i === 0,
+        datum:"cuff_bottom", root:"cuff", edge:"bottom", off: G.gridY + cell.row * BD,
+        rel: cell.row === 0 ? null : {of:"the row below", ofShort:"Proficiency block, bottom row", gap:0, dir:"above"},
+        cite:"SEWN-3 para 3 Air (e); ANNEX-H 3H-5" });
+    });
+    if (order.length > 1)
+      add("Proficiency block order follows the order you set the dropdowns in. Para 3 fills it in award order.",
+          "warn", "SEWN-3 para 3 Air (e)");
+  } else {
+    const stack = families.filter(k => worn[k]).map(k => worn[k]);
+    let sy = G.gridY ?? 20, prevLabel = null;
+    for (const s of stack){
+      const label = `${s.cat} – ${s.d.label}`;
+      put("proficiency_stack", { label,
+        x:0, y:sy, w:BD, h:BD, art:elArt(s.d.art), missingArt:!!s.d.missingArt,
+        datum:"cuff_bottom", root:"cuff", edge:"bottom", off:sy,
+        // only the lowest badge takes the 20 cm anchor; the rest chain off it
+        rel: prevLabel ? {of:`the ${prevLabel} badge`, ofShort:prevLabel, gap:1, dir:"above"} : null,
+        cite:"CH3S1 3.b.(5) — 20 cm anchor, not Annex H's 12 cm" });
+      prevLabel = s.cat; sy += BD + 1;
+    }
+    if (stack.length && state.mk === "none"){
+      add("Empty band from 0 to 20 cm on the left sleeve. Correct, not a layout error — the stack holds at 20 cm whether or not marksmanship is worn. Do not close the gap.",
+          "info", "rules JSON proficiency_stack.notes[0]");
+    }
   }
 
   /* ---- RIGHT: star level. ALP resolves to a phantom so the grid still anchors ---- */
   const st = (EL().levels || STARS)[state.star] || {label:"None"};
   const starWorn = state.star !== "none" && !!st.art;
   const starBox = { label: starWorn ? st.label : "Star position (no training level yet)",
-    x:0, y:G.levelY ?? 6, w:STAR_W, h:STAR_H, art:st.art || null, conf: guess ? "guess" : null,
+    x:0, y:G.levelY ?? 6, w:G.levelW ?? STAR_W, h:G.levelH ?? STAR_H, art:st.art || null, conf: guess ? "guess" : null,
     ghost:!starWorn, datum:"cuff_bottom", root:"cuff", edge:"bottom", off:G.levelY ?? 6,
     cite:"ANNEX-H 3H-4-1; CH3S1 3.b.(10)" };
   // Air: "No training level qualification insignia is worn for WO2 and WO1" - which
   // is also what stops it colliding with their rank, since both sit 9 cm above the cuff.
   const levelBlocked = state.element === "air" && (EL().senior || []).includes(state.rank);
   if (levelBlocked && state.star !== "none")
-    add(`${(EL().ranks || RANKS)[state.rank].label} wears no training level insignia. The badge is dropped, not moved.`,
+    add(`${(EL().ranks || RANKS)[state.rank].label} wears no ${(EL().levelLabel || "training level").toLowerCase()} insignia. The badge is dropped, not moved.`,
         "info", "Sewn Insignia para 3, Air Cadets");
   if (state.star !== "none" && !levelBlocked && has("training_level")) put("training_level", starBox);
   if (st.viaALP){
@@ -894,25 +1023,27 @@ function resolve(){
   const capCtc  = (EL().caps || {}).ctc ?? fillCtc.length;
   const picks = state.ctc.slice(0, capCtc);
   if (picks.length){
-    // Army hangs the grid 1 cm off the training level star. Sea and Air anchor it
-    // somewhere else entirely, so they take a flat guess instead.
+    // Army hangs the grid 1 cm off the training level star. Sea anchors it at a fixed
+    // height, and Air starts it right on the cuff seam (para 3 (g), Figure 3H-6).
     const gridBottom = G.ctcY ?? (6 + STAR_H + 1);           // army 9.71
     const starRef = starWorn ? "the training level star" : "the star position";
     let bottomDrawn = false;
     picks.forEach((k,i) => {
       const cell = fillCtc[i];
       const q = CTC_EL.find(c => c.k === k);
-      // bottom row hangs 1 cm off the star; top row sits straight on the bottom row
+      // bottom row hangs 1 cm off the star, or for Air is quoted from the cuff; top
+      // row sits straight on the bottom row
       const rel = cell.row === 0
-        ? {of:starRef, ofShort:"Training level star", gap:1, dir:"above"}
+        ? (G.ctcOnCuff ? null : {of:starRef, ofShort:"Training level star", gap:1, dir:"above"})
         : {of:"the row below", ofShort:"CTC grid, bottom row", gap:0, dir:"above"};
       const show = cell.row === 0 && !bottomDrawn;
       if (show) bottomDrawn = true;
       put("ctc_grid", { label:`${q.cat} – ${q.nm}`,
-        x: cell.col * CIRCLE, y: gridBottom + cell.row * CIRCLE, w:CIRCLE, h:CIRCLE,
-        art:q.k, cell:cell.nm, seq:i+1, rel, dimShow: show,
-        datum:"cuff_bottom", root:"cuff", edge:"bottom", off: gridBottom + cell.row*CIRCLE,
-        cite:"CH3S1 3.b.(9); ANNEX-H 3H-4-2 / 3H-4-3" });
+        x: cell.col * BD, y: gridBottom + cell.row * BD, w:BD, h:BD,
+        art:elArt(q.k), cell:cell.nm, seq:i+1, rel, dimShow: show,
+        datum:"cuff_bottom", root:"cuff", edge:"bottom", off: gridBottom + cell.row*BD,
+        cite: G.ctcOnCuff ? "SEWN-3 para 3 Air (g); ANNEX-H 3H-6 - right arm, not para 3's left"
+                          : "CH3S1 3.b.(9); ANNEX-H 3H-4-2 / 3H-4-3" });
     });
     const orphans = picks.map(k => CTC_EL.find(c => c.k === k)).filter(q => q && q.noQual);
     if (orphans.length){
@@ -922,7 +1053,7 @@ function resolve(){
     const cap = capCtc;
     if (state.ctc.length > cap){
       add(`${state.ctc.length} CTC qualifications selected. Maximum worn is ${cap} — the last ${state.ctc.length-cap} are dropped.`,
-          "crit", state.element === "army" ? "CH3S1 3.b.(9)" : "element instruction, unsourced");
+          "crit", state.element === "army" ? "CH3S1 3.b.(9)" : (EL().cite || "element instruction, unsourced"));
     }
     add("Grid fill order here follows your click order. In production it sequences on Date Awarded ascending, which is still placeholder data in the workbook.",
         "warn", "open question 4");
@@ -934,10 +1065,17 @@ function resolve(){
     const a = (EL().appts || APPTS)[state.appt];
     if (!a || a.label === "None") return {L, R, warn};
     const it = {w:a.w};
+    // Army pushes the senior rank up off the appointment. Air has four fixed rank
+    // anchors instead, and the appointment takes whichever right-sleeve one the rank
+    // leaves free: the upper for WO2 / WO1, the lower for everyone else (Lt Beal).
+    const air = G.rankUpperTop != null;
+    const upper = air && (EL().senior || SENIOR).includes(state.rank);
     apptBox = put("appointment", { label:a.label,
-      x:0, y: G.gridY ?? 20, w:a.w, h:a.h, art:a.art, conf: guess ? "guess" : null,
-      datum:"cuff_bottom", root:"cuff", edge:"bottom", off:20,
-      cite:"CH3S1 3.b.(8); ANNEX-H 3H-4-3" });
+      x:0, y: upper ? G.rankUpperTop - a.h : air ? G.rankSeniorY : (G.gridY ?? 20),
+      w:a.w, h:a.h, art:elArt(a.art), conf: guess ? "guess" : null,
+      datum: upper ? "shoulder_seam" : "cuff_bottom", root: upper ? "shoulder" : "cuff",
+      edge: upper ? "top" : "bottom", off: upper ? SLEEVE_LEN - G.rankUpperTop : air ? G.rankSeniorY : 20,
+      cite: air ? "SEWN-3 para 3 Air (f); ANNEX-H 3H-5 / 3H-6" : "CH3S1 3.b.(8); ANNEX-H 3H-4-3" });
   }
 
   /* ---- RIGHT: rank ---- */
@@ -946,27 +1084,42 @@ function resolve(){
   if (rk.cls !== "none"){
     const it = {w:rk.w};
     const h = rk.h;
+    const air = G.rankUpperTop != null;
     if ((EL().junior || JUNIOR).includes(state.rank)){
-      // chevrons point down, so "tips" = bbox top, pinned 1 cm below the RCAC badge
-      put("rank_junior", { label:rk.label,
-        x:0, y: G.rankJuniorY ?? (rcacBottom - 1 - h), w:rk.w, h, art:rk.art,
-        conf: guess ? "guess" : rk.conf,
-        datum:"element_badge", root:"shoulder", edge:"top", off:1, dir:"below",
-        rel:{of:"the RCAC badge", ofShort:"RCAC badge", gap:1, dir:"below"},
-        cite:"ANNEX-H 3H-4-1; CH3S1 3.b.(7)(i)" });
-      if (state.appt !== "none"){
-        add(`${rk.label} is a junior rank and hangs from the RCAC badge, while the appointment badge sits at 20 cm. Both are drawn; check the gap between them.`,
-            "info", "CH3S1 3.b.(7)(i) vs 3.b.(8)");
+      if (air){
+        // Air's upper anchor: the TOP edge sits on the mid-point between the elbow and
+        // the shoulder seam (Figures 3H-5 / 3H-6), so it is quoted down from the seam.
+        put("rank_junior", { label:rk.label,
+          x:0, y: G.rankUpperTop - h, w:rk.w, h, art:rk.art,
+          conf: guess ? "guess" : rk.conf,
+          datum:"shoulder_seam", root:"shoulder", edge:"top", off: SLEEVE_LEN - G.rankUpperTop, dir:"below",
+          cite:"SEWN-3 para 3 Air (c); ANNEX-H 3H-5 / 3H-6" });
+      } else {
+        // chevrons point down, so "tips" = bbox top, pinned 1 cm below the RCAC badge
+        put("rank_junior", { label:rk.label,
+          x:0, y: G.rankJuniorY ?? (rcacBottom - 1 - h), w:rk.w, h, art:rk.art,
+          conf: guess ? "guess" : rk.conf,
+          datum:"element_badge", root:"shoulder", edge:"top", off:1, dir:"below",
+          rel:{of:"the RCAC badge", ofShort:"RCAC badge", gap:1, dir:"below"},
+          cite:"ANNEX-H 3H-4-1; CH3S1 3.b.(7)(i)" });
+        if (state.appt !== "none"){
+          add(`${rk.label} is a junior rank and hangs from the RCAC badge, while the appointment badge sits at 20 cm. Both are drawn; check the gap between them.`,
+              "info", "CH3S1 3.b.(7)(i) vs 3.b.(8)");
+        }
       }
     } else {
+      // Air's lower anchor is fixed, and its appointment has a spot of its own, so
+      // nothing gets pushed up the way Army's senior rank is.
+      const pushed = apptBox && !air;
       const y = G.rankSeniorY ?? (apptBox ? apptBox.y + apptBox.h + 1 : 20);
-      put(apptBox ? "rank_senior_with_appointment" : "rank_senior_no_appointment", {
+      put(pushed ? "rank_senior_with_appointment" : "rank_senior_no_appointment", {
         label:rk.label,
         x:0, y, w:rk.w, h, art:rk.art, conf: guess ? "guess" : rk.conf,
-        datum: apptBox ? "appointment" : "cuff_bottom", root:"cuff", edge:"bottom", off: apptBox ? 1 : 20,
-        dir: apptBox ? "above" : null,
-        rel: apptBox ? {of:`the ${apptBox.label} badge`, ofShort:"Appointment badge", gap:1, dir:"above"} : null,
-        cite: apptBox ? "ANNEX-H 3H-4-3; CH3S1 3.b.(7)(ii)" : "ANNEX-H 3H-4-2; CH3S1 3.b.(7)(ii)" });
+        datum: pushed ? "appointment" : "cuff_bottom", root:"cuff", edge:"bottom", off: pushed ? 1 : air ? y : 20,
+        dir: pushed ? "above" : null,
+        rel: pushed ? {of:`the ${apptBox.label} badge`, ofShort:"Appointment badge", gap:1, dir:"above"} : null,
+        cite: air ? "SEWN-3 para 3 Air (c); ANNEX-H 3H-5 / 3H-6"
+            : apptBox ? "ANNEX-H 3H-4-3; CH3S1 3.b.(7)(ii)" : "ANNEX-H 3H-4-2; CH3S1 3.b.(7)(ii)" });
     }
     if (rk.conf === "estimate"){
       add(`${rk.label} dimensions are an unverified estimate (${rk.w} × ${rk.h} cm). Measure before cutting thread.`,
@@ -980,7 +1133,7 @@ function resolve(){
 /* ============================================================
    VALIDATION  -  flags, never fixes
    ============================================================ */
-function validate(items, sleeve, warn){
+function validate(items, surface, warn){
   const real = items.filter(i => !i.ghost);
 
   // pairwise overlap
@@ -1000,13 +1153,13 @@ function validate(items, sleeve, warn){
         if (gap >= 0 && gap < 3.0){
           const at = SLEEVE_LEN - gap;   // the length at which they meet
           warn.push({lvl:"warn", cite:"two datum families",
-            msg:`${sleeve} sleeve: ${A.label} is measured from the ${A.root}, ${B.label} from the ${B.root}, and only ${gap.toFixed(2)} cm separates them. That gap moves with sleeve length — they touch at about ${at.toFixed(0)} cm, against ${SLEEVE_LEN.toFixed(0)} cm here.`});
+            msg:`${surface}: ${A.label} is measured from the ${A.root}, ${B.label} from the ${B.root}, and only ${gap.toFixed(2)} cm separates them. That gap moves with sleeve length — they touch at about ${at.toFixed(0)} cm, against ${SLEEVE_LEN.toFixed(0)} cm here.`});
         }
       }
       if (ox > 1e-6 && oy > 1e-6){
         A.clash = B.clash = true;
         warn.push({lvl:"crit", cite:`${A.slot} ✕ ${B.slot}`,
-          msg:`${sleeve} sleeve: ${A.label} overlaps ${B.label} by ${oy.toFixed(2)} cm vertically.`});
+          msg:`${surface}: ${A.label} overlaps ${B.label} by ${oy.toFixed(2)} cm vertically.`});
       }
     }
   }
@@ -1019,7 +1172,7 @@ function validate(items, sleeve, warn){
     const gap = B.y - (A.y+A.h);
     if (gap >= 0 && gap < 1.0){
       warn.push({lvl:"warn", cite:`${A.slot} → ${B.slot}`,
-        msg:`${sleeve} sleeve: only ${gap.toFixed(2)} cm between ${A.label} and ${B.label}. Tight for a sewn edge.`});
+        msg:`${surface}: only ${gap.toFixed(2)} cm between ${A.label} and ${B.label}. Tight for a sewn edge.`});
     }
   }
 
@@ -1031,10 +1184,10 @@ function validate(items, sleeve, warn){
     it.clearance = perSide;
     if (perSide < 0){
       warn.push({lvl:"crit", cite:"size 6436 taper profile",
-        msg:`${sleeve} sleeve: ${it.label} is ${it.w.toFixed(2)} cm wide but the sleeve is only ${avail.toFixed(2)} cm across at ${it.y.toFixed(1)} cm. It does not fit.`});
+        msg:`${surface}: ${it.label} is ${it.w.toFixed(2)} cm wide but the sleeve is only ${avail.toFixed(2)} cm across at ${it.y.toFixed(1)} cm. It does not fit.`});
     } else if (perSide < 1.0){
       warn.push({lvl:"warn", cite:"size 6436 taper profile",
-        msg:`${sleeve} sleeve: ${it.label} leaves ${perSide.toFixed(2)} cm each side at ${it.y.toFixed(1)} cm. Smaller tunics are narrower and were never measured.`});
+        msg:`${surface}: ${it.label} leaves ${perSide.toFixed(2)} cm each side at ${it.y.toFixed(1)} cm. Smaller tunics are narrower and were never measured.`});
     }
   }
 }
@@ -1075,6 +1228,8 @@ const ANNIV_D = 2.0;
 // the nametag sits in the same place for medals as for ribbons.
 // Court mounting fixes the length at 10 cm from the top of the suspender to the
 // bottom edge of the medal, which puts the medal's bottom 9 cm down the pocket.
+// MEDAL_W is the ribbon, so it is also the pitch: medals are worn without interval.
+// The artwork can be wider, because the metal overhangs; drawPocket handles that.
 const MEDAL_W = 3.5, MEDAL_BAR_H = RIBBON_H, MEDAL_LEN = 10.0;
 
 const DOFE = {none:"None", bronze:"Bronze", silver:"Silver", gold:"Gold"};
@@ -1091,9 +1246,10 @@ const ORDERS = {
 // elements; seven are available to an army cadet and the rest arrive with a cadet who
 // transferred in, so the whole list is carried and sorted by seq. Precedence 1 is worn
 // inboard, nearest the centre of the chest.
-// seq matches CATO 13-16 para 19, confirmed verbatim. Seq 6 (Air Force Association
-// Medal) is deliberately absent: no source describes its ribbon, so drawing one would
-// be invention. The gap in the numbering is the record of that.
+// seq matches CATO 13-16 para 19, confirmed verbatim. Seq 6, the Air Force Association
+// Medal, was left out until A-CR-CCP-850/DA-003 turned up showing it in full colour:
+// no text source describes its ribbon. The stripes are sampled off that image and the
+// width is the standard 35 mm, so its colour is measured and its geometry estimated.
 // Seq 8, the Order of St. George, is NOT in CATO 13-16 at all - it is placed here on
 // CJCR Gp O 10050 para 7.4 alone, and that remains an open question.
 const MEDALS = [
@@ -1102,6 +1258,7 @@ const MEDALS = [
   {key:"legion",      seq: 3, label:"Royal Canadian Legion Cadet Medal of Excellence"},
   {key:"navyleague",  seq: 4, label:"Navy League of Canada Medal of Excellence", element:"sea"},
   {key:"acmm",        seq: 5, label:"Army Cadet Medal of Merit", bars:true},
+  {key:"afa",         seq: 6, label:"Air Force Association Medal", element:"air"},
   {key:"anavets",     seq: 7, label:"Army, Navy and Air Force Veterans Cadet Medal of Merit"},
   {key:"stgeorge",    seq: 8, label:"Order of St. George Medal"},
   {key:"seaservice",  seq: 9, label:"Sea Cadet Service Medal",  element:"sea", service:"sea"},
@@ -1118,9 +1275,14 @@ const ACMM_BARS = [
 ];
 // Artwork suffix for a medal or ribbon. ACMM keys by its bars, the service medal by
 // total years served; everything else is a single state.
+// A service bar draws wherever the medal pack has that medal and year: Army's do now,
+// and Air's will the moment medal_airservice_Nyr and ribbon_airservice_Nyr exist.
 function artSuffix(m, F){
   if (m.bars) return "_" + ACMM_BARS.filter(b => F.acmm[b.key]).map(b => b.key).join("");
-  if (m.service === "army" && F.service.bar) return "_" + F.service.bar + "yr";
+  if (m.service && F.service.bar){
+    const sfx = "_" + F.service.bar + "yr";
+    if (BADGE_ART["medal_" + m.key + sfx]) return sfx;
+  }
   return "";
 }
 
@@ -1133,10 +1295,10 @@ const SERVICE = {
   sea:  {label:"Sea"},
   air:  {label:"Air"}
 };
-// UNSOURCED. Bars are worn for service beyond the medal's own qualifying period, and
-// the naming here follows Lt Beal. Whether a cadet wears every bar earned or only the
-// highest is not established, and neither is how a bar shows on the undress ribbon -
-// so a bar changes the label and nothing about the geometry. See the rules pack.
+// Bars for service past the medal's own four years. Army's are sourced (ACLC Policy
+// 13.1: they accumulate, a gold bar on the medal and a maple leaf on the ribbon per
+// year) and drawn. Air's work the same way with a bird bar and rosettes (Lt Beal) and
+// draw once there's artwork. Sea's are undescribed. A bar changes no geometry.
 const SERVICE_BARS = [
   {v:0, nm:"None"}, {v:5, nm:"5-year bar"}, {v:6, nm:"6-year bar"}, {v:7, nm:"7-year bar"}
 ];
@@ -1184,9 +1346,13 @@ const PIN_STREAMS = [
 ];
 // PIN_STREAMS is precedence order, top to bottom on the pocket. The rail shows them
 // commonest first instead, which is not the same thing.
-const PIN_UI_ORDER = ["mkComp", "biComp", "bisley"];
+const PIN_UI_ORDER = ["mkComp", "biComp", "bisley", "es"];
+// The top stream is the element's own series: Bisley for Army, Effective Speaking for
+// Air. Sea's Regatta is not modelled, so Sea keeps Bisley for now.
+const pinStreams = () => EL().pinTop ? [EL().pinTop, ...PIN_STREAMS.slice(1)] : PIN_STREAMS;
+const ALL_PIN_STREAMS = [...PIN_STREAMS, PIN_ES];
 const PIN_OPT = {};
-for (const st of PIN_STREAMS) for (const o of st.opts) if (o.v !== "none") PIN_OPT[o.v] = {...o, stream: st};
+for (const st of ALL_PIN_STREAMS) for (const o of st.opts) if (o.v !== "none") PIN_OPT[o.v] = {...o, stream: st};
 
 
 /* Rows of ribbons. Max three per row, no interval anywhere. Rows fill from the
@@ -1254,11 +1420,14 @@ function resolveFront(){
   if (acmmBars.length && F.acmm.w && !F.acmm.p)
     add("Army Cadet Medal of Merit: the Walsh bar cannot be worn without the President bar. No artwork exists for that combination and it is not a wearable state.",
         "crit", "confirmed by Lt Beal");
-  // a bar is named on the award, not drawn: nothing is sourced for the device itself
+  // the label names the bars; the art draws them wherever the pack has that state
   const mName = m =>
       (m.service && F.service.bar) ? `${m.label} (${F.service.bar}-year bar)`
     : (m.bars && acmmBars.length)  ? `${m.label} (${acmmBars.map(b => b.label).join(", ")})`
     : m.label;
+  // CATO 13-16 para 19 orders every medal but St. George, which it leaves out
+  const precSrc = "CATO 13-16 para 19" + (mHeld.some(m => m.key === "stgeorge")
+    ? ". The Order of St. George isn't in it; its place rests on CJCR Gp O 10050 para 7.4 alone" : "");
 
   if (order.medals && mHeld.length){
     const n = mHeld.length;
@@ -1286,8 +1455,8 @@ function resolveFront(){
     else if (barW > POCKET_W)
       add(`The medal bar is ${barW.toFixed(1)} cm wide against a ${POCKET_W} cm pocket. Centred on the pocket it must not run past the jacket arm seam — check it on the cadet.`,
           "warn", "CH5-A");
-    add(`Worn in order of precedence, ${mName(mHeld[0])} inboard. CATO 13-16 is the cadet-programme authority and is still unsourced, so this order comes from the JCR order, which the CJCR honours committee sets for both programmes.`,
-        "info", "CJCR Gp O 10050 para 7.4");
+    add(`Worn in order of precedence, ${mName(mHeld[0])} inboard, per ${precSrc}.`,
+        "info", "CATO 13-16 para 19; CJCR Gp O 10050 para 7.4");
   } else if (mHeld.length){
     const rr = ribbonRows(mHeld.length);
     for (const c of rr.items){
@@ -1304,13 +1473,19 @@ function resolveFront(){
     if (rr.rows > 1)
       add(`${mHeld.length} ribbons make ${rr.rows} rows. No gaps between ribbons or between rows; a partial row sits on top, centred on the row below. Precedence 1 is top row, innermost.`,
           "info", "CH5-C 5C-1.2");
-    add(`One undress ribbon per award held, worn in order of precedence with ${mName(mHeld[0])} top row, innermost. Order from the JCR order, which the CJCR honours committee sets for both programmes; CATO 13-16 is still unsourced.`,
-        "info", "CJCR Gp O 10050 para 7.4");
+    add(`One undress ribbon per award held, worn in order of precedence with ${mName(mHeld[0])} top row, innermost, per ${precSrc}.`,
+        "info", "CATO 13-16 para 19; CJCR Gp O 10050 para 7.4");
   }
 
-  if (F.service.element !== "none" && F.service.bar)
-    add(`A ${F.service.bar}-year bar is recorded against the ${SERVICE[F.service.element].label} Cadet Service Medal. It is named in the guide but not drawn: nothing to hand states the bar's size, or how it shows on an undress ribbon.`,
+  // Only when the bar can't be drawn. Army's are, so this used to fire wrongly for them.
+  const svc = MEDALS.find(m => m.service === F.service.element);
+  if (svc && F.service.bar && !artSuffix(svc, F)){
+    const why = F.service.element === "air"
+      ? "Air uses the Army's system with its own devices, a gold bar with a bird, wings spread, on the medal and rosettes on the ribbon (Lt Beal), but there's no artwork for them yet"
+      : "nothing to hand describes the bar or how it shows on the undress ribbon";
+    add(`A ${F.service.bar}-year bar is recorded against the ${SERVICE[F.service.element].label} Cadet Service Medal. It's named, not drawn: ${why}.`,
         "warn", "open question: service medal bars");
+  }
 
   // anniversary pin, 3 cm above the pocket top
   let annivBottom = null;
@@ -1386,8 +1561,26 @@ function resolveFront(){
       conf:"placeholder", fdatum:"pocket_top", edge:"bottom",
       cite:"CH3S1 3.b.(1) — 0.5 cm above the left breast pocket" });
   }
+  // Air pilot wings: issued nylon, centred on the left pocket's top edge, highest only.
+  // Sewn wings sit directly on the edge; para 3's 0.5 cm is the gap for the metal pin
+  // worn on the collared shirt (Figure 3D-6, Lt Beal). Same size as the army
+  // parachutist badge (Lt Beal), which is itself a placeholder.
+  const wg = EL().wings && EL().wings[F.wings];
+  if (wg && wg.art){
+    add("Pilot wings sit directly on the top edge of the left pocket, with no gap. Para 3's 0.5 cm is the gap for the metal pin on the collared shirt, not the sewn wings on the jacket.",
+        "info", "CH3 Annex D 3D-6; Lt Beal");
+    put(L,{ face:"front", side:"left", slot:"front_left_pilot_wings",
+      label:wg.label, x:0, y:0, w:PARA_W, h:PARA_H,
+      art:wg.art, conf:"placeholder", fdatum:"pocket_top", edge:"bottom",
+      cite:"SEWN-3 para 3 Air (a); CH3 Annex D 3D-6" });
+    add(`${wg.label} are drawn at the parachutist badge's size, ${PARA_W.toFixed(2)} × ${PARA_H.toFixed(2)} cm, and that size is itself unmeasured.`,
+        "warn", "rules pack: front_left_pilot_wings");
+    if (F.wings === "glider" && state.ctc.includes("air_glider"))
+      add("The Glider Pilot Scholarship CTC badge is never worn with Glider Pilot Wings. It goes on with the other CTC badges only once Power Pilot Wings replace them.",
+          "crit", "CH3 Annex D 3D-6");
+  }
   // one pick per stream; the three-pin cap then applies across all four
-  const held = PIN_STREAMS.map(st => F.pins[st.key])
+  const held = pinStreams().map(st => F.pins[st.key])
     .filter(v => v && v !== "none").map(v => PIN_OPT[v]).filter(Boolean);
   const worn = held.filter(o => o.worn !== false);
   if (worn.length){
@@ -1410,7 +1603,7 @@ function resolveFront(){
       add(`${worn.length} pins held across the four streams, but only three may be worn. The last ${worn.length-3} are dropped. The 3 × 9 cm strip fits exactly three 1 in pins, which independently confirms the cap.`,
           "crit", "CH3S1 4.b");
     if (shown.length > 1)
-      add("Order of precedence, top to bottom: Bisley Series, then Canadian Cadet Movement Marksmanship Series, then Canadian Cadet Movement Biathlon Series.",
+      add(`Order of precedence, top to bottom: ${pinStreams()[0].slot}, then Canadian Cadet Movement Marksmanship Series, then Canadian Cadet Movement Biathlon Series.`,
           "info", "confirmed by Lt Beal");
     if (shown.some(o => o.est))
       add("Only the championship pins (zone, provincial, national) are confirmed 1 in square. The award, expedition and rifle team pins have never been measured — they are drawn 2.54 cm wide with the height taken from the artwork, so the shape is right but the scale is a guess.",
@@ -1578,7 +1771,9 @@ function drawSleeve(g, items, side, cx, ybase, out){
 
     if (state.dims && !it.ghost){
       const d = dimOf(it);
-      if (d.kind === "abs"){
+      // dimShow:false keeps a block to one callout: every cell on a row that starts on
+      // the cuff seam would otherwise print the same "5.00 cm" over the others
+      if (d.kind === "abs" && it.dimShow !== false){
         const py = ybase - d.atY*SC;
         g.appendChild(el("line",{x1: out < 0 ? x : x + w, y1:py, x2:gx, y2:py,
           stroke:"var(--brass)", "stroke-width":.6, opacity:.45}));
@@ -1632,8 +1827,12 @@ function drawPocket(g, items, side, cx, ptopY, out, topCm){
     const round = Math.abs(it.w - it.h) < 1e-6;
 
     if (art){
-      g.appendChild(el("image",{x,y,width:w,height:h, preserveAspectRatio:"none",
-        href:"data:"+(art.m||"image/png")+";base64,"+art.d}));
+      // On a real group the suspension bars and claws overhang the ribbon onto the
+      // neighbouring medal, so a medal's canvas can be wider than its slot. Draw it at
+      // its own width, centred on the slot; the box, and every check, stays the ribbon.
+      const aw = it.medal ? Math.max(w, h * art.aspect) : w;
+      g.appendChild(el("image",{x: x - (aw - w)/2, y, width:aw, height:h,
+        preserveAspectRatio:"none", href:"data:"+(art.m||"image/png")+";base64,"+art.d}));
     } else if (it.nametag){
       g.appendChild(el("rect",{x,y,width:w,height:h, rx:1, fill:"#14181A",
         stroke:"var(--ink-3)", "stroke-width":.6}));
@@ -1794,13 +1993,13 @@ function render(){
   document.documentElement.style.setProperty("--cloth-edge", el.cloth.edge);
   document.documentElement.dataset.element = state.element;
   const {L,R,warn} = resolve();
-  validate(L,"Left",warn);
-  validate(R,"Right",warn);
+  validate(L,"Left sleeve",warn);
+  validate(R,"Right sleeve",warn);
 
   /* --- drawings --- */
   const fr = resolveFront();
-  validate(fr.R, "Front right", fr.warn);
-  validate(fr.L, "Front left",  fr.warn);
+  validate(fr.R, "Right breast", fr.warn);
+  validate(fr.L, "Left breast",  fr.warn);
   warn.push(...fr.warn);
 
   paintUnified(document.getElementById("draw"), L, R, fr);
@@ -1935,15 +2134,29 @@ function fillElementLists(){
   fill("star", lv);
   if (!(state.star in lv)) state.star = "none";
   document.getElementById("star").value = state.star;
+  document.getElementById("starLabel").textContent = e.levelLabel || "Star level";
 
-  // marksmanship is army only
-  document.getElementById("mkField").hidden = !has("marksmanship");
+  const un = e.units || UNITS;
+  fill("unit", un);
+  if (!(state.unit in un)) state.unit = Object.keys(un)[0];
+  document.getElementById("unit").value = state.unit;
+
+  // Marksmanship is Army's own slot or one of Air's cuff families; Sea wears neither.
+  // Glider familiarization and pilot wings are Air's alone.
+  const extra = e.profExtra || [];
+  document.getElementById("mkField").hidden = !has("marksmanship") && !extra.includes("mk");
+  document.getElementById("gfField").hidden = !extra.includes("gf");
+  document.getElementById("wingsField").hidden = !e.wings;
+  // the top pin stream is the element's own series, so only one of them shows
+  for (const st of [PIN_STREAMS[0], PIN_ES])
+    document.getElementById("pinRow_" + st.key).hidden = st !== pinStreams()[0];
   buildCtc();
 }
 fill("mk", MARKS, (k,v) => v.ui || v.label);
 fill("fit", FITNESS);
 fill("fa", FIRSTAID);
 fill("mus", MUSIC);
+fill("gf", GLIDER_FAM);
 
 const ctcBox = document.getElementById("ctc");
 // Rebuilt on every element change: the course list is not the same for all three.
@@ -1976,9 +2189,10 @@ function syncCtc(){
 
 // one dropdown per stream: each is Highest Only / Max Worn 1 in the workbook
 const pinBox = document.getElementById("pinPick");
-for (const st of PIN_UI_ORDER.map(k => PIN_STREAMS.find(p => p.key === k))){
+for (const st of PIN_UI_ORDER.map(k => ALL_PIN_STREAMS.find(p => p.key === k))){
   const row = document.createElement("div");
   row.className = "field";
+  row.id = "pinRow_" + st.key;
   row.innerHTML = `<label for="pin_${st.key}">${st.label}</label><select id="pin_${st.key}"></select>`;
   pinBox.appendChild(row);
   const sel = row.querySelector("select");
@@ -1990,22 +2204,33 @@ for (const st of PIN_UI_ORDER.map(k => PIN_STREAMS.find(p => p.key === k))){
 }
 function syncPins(){
   let n = 0;
-  for (const st of PIN_STREAMS){
+  for (const st of ALL_PIN_STREAMS){
     const v = state.front.pins[st.key] || "none";
     document.getElementById("pin_" + st.key).value = v;
     const o = PIN_OPT[v];
-    if (o && o.worn !== false) n++;
+    if (o && o.worn !== false && pinStreams().includes(st)) n++;
   }
   document.getElementById("pinCount").textContent = n ? `${n} of 3` : "";
 }
 
-const BIND = {element:"element", rank:"rank", appt:"appt", unit:"unit", star:"star", mk:"mk", fit:"fit", fa:"fa", mus:"mus"};
+// Air fills its proficiency block in award order, and the rail has no dates, so the
+// order the family dropdowns are set in stands in for it. A new level keeps the
+// family's place; None (or fitness "Participated", which has no badge) frees it.
+const PROF_KEYS = ["fit", "fa", "mus", "mk", "gf"];
+function trackProf(k, v){
+  const on = v !== "none" && !(k === "fit" && FITNESS[v].worn === false);
+  const i = state.profOrder.indexOf(k);
+  if (!on && i >= 0) state.profOrder.splice(i, 1);
+  else if (on && i < 0) state.profOrder.push(k);
+}
+const BIND = {element:"element", rank:"rank", appt:"appt", unit:"unit", star:"star", mk:"mk", fit:"fit", fa:"fa", mus:"mus", gf:"gf"};
 for (const id in BIND){
   document.getElementById(id).addEventListener("change", e => {
     state[BIND[id]] = e.target.value;
     // element changes the rank names, the training levels, the appointments and the
     // course list all at once, so the lists are rebuilt before drawing.
     if (id === "element"){ fillElementLists(); syncAll(); }
+    if (PROF_KEYS.includes(id)) trackProf(id, e.target.value);
     render();
   });
 }
@@ -2020,15 +2245,15 @@ for (const [id,key] of [["sleeveLen","sleeveLen"]]){
 }
 const FRONT_BIND = {
   fName:"nametag", fDofe:"dofe", fOrder:"order",
-  fAnniv:"anniversary", fPara:"parachutist", fExped:"expedition",
+  fAnniv:"anniversary", fPara:"parachutist", fExped:"expedition", fWings:"wings",
   fCommem:"commemorative", fPoppy:"poppy"
 };
 (function wireFront(){
   fill("element", ELEMENTS, (k,v) => v.art ? v.label : `${v.label} (army artwork)`);
-  fill("unit", UNITS);
   fill("fDofe", DOFE, k => DOFE[k]);
   fill("fOrder", ORDERS, k => ORDERS[k].label);
   fill("fExped", EXPEDITION, k => EXPEDITION[k].label);
+  fill("fWings", WINGS);
   for (const id in FRONT_BIND){
     const el2 = document.getElementById(id), key = FRONT_BIND[id];
     el2.addEventListener(el2.type === "checkbox" ? "change" : "input", e => {

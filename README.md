@@ -33,8 +33,7 @@ serve. It is committed, so a clone or a ZIP download runs straight away.
 
 `docs/plate.html` is the badge identification sheet, same deal.
 
-`docs/` is the last release, so it can lag the source. The current release predates
-the Air artwork and most of the Air placement.
+`docs/` is the last release, so it can lag the source.
 
 Each page loads its artwork from a sibling file (`tunic_art.js`, `plate_art.js`), so
 **keep the folder together** - the page alone will draw empty boxes. That split is
